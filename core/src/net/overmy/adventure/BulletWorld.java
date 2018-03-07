@@ -46,10 +46,66 @@ public final class BulletWorld {
     private static btBroadphaseInterface    broadphase       = null;
     private static btConstraintSolver       constraintSolver = null;
 
+    // Те UserValues, которые сейчас назначены физическим телам.
     private static Array< Integer > actualUserValues = null;
 
 
     private BulletWorld () {
+    }
+
+
+    public static void step ( float delta ) {
+        dynamicsWorld.stepSimulation( delta, 2 );
+    }
+
+
+    public static void init () {
+        Bullet.init();
+
+        resetUserValue();
+
+        collisionConfig = new btDefaultCollisionConfiguration();
+        dispatcher = new btCollisionDispatcher( collisionConfig );
+        broadphase = new btDbvtBroadphase();
+        constraintSolver = new btSequentialImpulseConstraintSolver();
+
+        dynamicsWorld = new btDiscreteDynamicsWorld(
+                dispatcher,
+                broadphase,
+                constraintSolver,
+                collisionConfig );
+
+        dynamicsWorld.setGravity( new Vector3( 0, -20f, 0 ) );
+
+        if ( DEBUG.PHYSICAL_MESH.get() ) {
+            debugDrawer = new DebugDrawer();
+            dynamicsWorld.setDebugDrawer( debugDrawer );
+            final int mode = btIDebugDraw.DebugDrawModes.DBG_MAX_DEBUG_DRAW_MODE;
+            debugDrawer.setDebugMode( mode );
+        }
+
+        actualUserValues = new Array< Integer >();
+    }
+
+
+    public static void addBody ( btRigidBody body ) {
+        // Генерируем и задаем идентификатор физического тела
+        body.setUserValue( getNextUserValue() );
+
+        dynamicsWorld.addRigidBody( body );
+    }
+
+
+    public static void removeBody ( btRigidBody body ) {
+        actualUserValues.removeValue( body.getUserValue(), true );
+        dynamicsWorld.removeRigidBody( body );
+    }
+
+
+    public static void drawDebug () {
+        debugDrawer.begin( MyCamera.get() );
+        dynamicsWorld.debugDrawWorld();
+        debugDrawer.end();
     }
 
 
@@ -81,65 +137,6 @@ public final class BulletWorld {
         actualUserValues.add( userValue );
 
         return userValue;
-    }
-
-
-    public static void step ( float delta ) {
-        dynamicsWorld.stepSimulation( delta, 2 );
-    }
-
-
-    public static void init () {
-        Bullet.init();
-
-        dynamicsWorld = createDynamicWorld();
-
-        actualUserValues = new Array< Integer >();
-    }
-
-
-    public static void addBody ( btRigidBody body ) {
-        dynamicsWorld.addRigidBody( body );
-    }
-
-
-    public static void removeBody ( btRigidBody body ) {
-        actualUserValues.removeValue( body.getUserValue(), true );
-        dynamicsWorld.removeRigidBody( body );
-    }
-
-
-    private static btDynamicsWorld createDynamicWorld () {
-        resetUserValue();
-
-        collisionConfig = new btDefaultCollisionConfiguration();
-        dispatcher = new btCollisionDispatcher( collisionConfig );
-        broadphase = new btDbvtBroadphase();
-        constraintSolver = new btSequentialImpulseConstraintSolver();
-
-        final btDynamicsWorld world = new btDiscreteDynamicsWorld(
-                dispatcher,
-                broadphase,
-                constraintSolver,
-                collisionConfig );
-
-        world.setGravity( new Vector3( 0, -20f, 0 ) );
-
-        if ( DEBUG.PHYSICAL_MESH.get() ) {
-            debugDrawer = new DebugDrawer();
-            world.setDebugDrawer( debugDrawer );
-            final int mode = btIDebugDraw.DebugDrawModes.DBG_MAX_DEBUG_DRAW_MODE;
-            debugDrawer.setDebugMode( mode );
-        }
-
-        return world;
-    }
-
-
-    public static void drawDebug () {
-        debugDrawer.begin( MyCamera.get() );
-        dynamicsWorld.debugDrawWorld();
-        debugDrawer.end();
     }
 
 

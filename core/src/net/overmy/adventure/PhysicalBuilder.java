@@ -255,9 +255,6 @@ public class PhysicalBuilder {
         // Создание физического тела
         final btRigidBody body = new btRigidBody( constructionInfo );
 
-        // Генерируем и задаем идентификатор физического тела
-        body.setUserValue( BulletWorld.getNextUserValue() );
-
         // Размещаем физическое тело
         if ( modelInstance != null ) {
             body.proceedToTransform( modelInstance.transform );
