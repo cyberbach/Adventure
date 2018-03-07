@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs> 
+	<!-- Порядковый 0 -->
+	<!-- Разговор об том-то -->
+	<dialog text="6">
+		<answer connect="1" text="1" /> 
+		<answer text="3" /> 
+	</dialog>
+	
+	<!-- Порядковый 1 -->
+	<!-- Продолжение первого разговора -->
+	<dialog text="7"> 
+		<answer connect="2" quest="0" text="5" script="4" /> 
+		<answer connect="0" text="2" /> 
+		<answer text="3" /> 
+	</dialog>
+	
+	<!-- Порядковый 2 -->
+	<!-- Конец диалога -->
+	<dialog text="8"> 
+		<answer text="1" /> 
+	</dialog> 
+	
+	<!-- Порядковый 3 -->
+	<!-- Второй диалог - начало -->
+	<dialog text="9">
+		<answer connect="0" text="1" /> 
+		<answer connect="4" quest="1" text="5" script="6" /> 
+		<answer text="3" /> 
+	</dialog>
+	
+	<!-- Порядковый 4 -->
+	<!-- Конец диалога - спасибо что взяли квест -->
+	<dialog text="10">
+		<answer text="3" /> 
+	</dialog>
+
+	<!-- Порядковый 5 -->
+	<!-- Конец диалога - квест не взяли -->
+	<dialog text="11">
+		<answer text="3" /> 
+	</dialog>
+</dialogs>

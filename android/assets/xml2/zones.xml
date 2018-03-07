@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zones>
+	<level connect="0, 2, 3" />
+	<level connect="1, 2, 3" />
+	<level connect="2, 0, 1, 7" />
+	<level connect="3, 0, 1, 6, 8" />
+	<level connect="4, 9, 3" />
+	<level connect="5, 9, 10" />
+	<level connect="6, 3, 10" />
+	<level connect="7, 2, 10, 8" />
+	<level connect="3, 7, 16" />
+	<level connect="9, 4, 5, 12" />
+
+	<level connect="10, 5, 6, 7" />
+	<level connect="11, 15, 16, 21" />
+	<level connect="12, 18, 9, 13" />
+	<level connect="13, 12, 14" />
+	<level connect="14, 13, 15, 19" />
+	<level connect="15, 14, 11">
+		<npc model="52" pos="12" script="5" />
+	</level>
+	<level connect="16, 11, 8, 23" />
+	<level connect="17, 18" />
+	<level connect="18, 17, 12, 25" />
+	<level connect="19, 14, 20, 28" >
+		<npc model="50" pos="0" dialog="3" script="0" />
+		<npc model="51" pos="8" dialog="0" script="1" />
+		<npc model="50" pos="10" script="3" />
+	</level>
+
+	<level connect="20, 19, 21, 22" />
+	<level connect="21, 20, 11, 23" />
+	<level connect="22, 20, 23" />
+	<level connect="23, 21, 22, 16, 24, 31" />
+	<level connect="24, 23" />
+	<level connect="25, 18, 26" />
+	<level connect="26, 25, 27" />
+	<level connect="27, 26, 28" />
+	<level connect="28, 27, 19, 29, 32" />
+	<level connect="29, 28, 30" />
+
+	<level connect="30, 29, 31, 32" />
+	<level connect="31, 30, 23" />
+	<level connect="32, 28, 30" />
+</zones>

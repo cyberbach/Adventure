@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<quests>
+	<!-- Задача: сбрать 5 ягод -->
+	<!-- Награда: +10 ХП, +100 монет -->
+	<quest title="12" about="13">
+		<requirement type="collect" id="3" count="5" />
+		<gratitude type="internals" id="0" count="10" />
+		<gratitude type="add" id="0" count="100" />
+	</quest>
+	
+	<!-- Задача: убить 5 врагов (типа 7), активировать триггер 1 -->
+	<!-- Награда: +10 ХП, +100 монет, +объект Ботинки, +перк № 0 -->
+	<quest title="14" about="15">
+		<requirement type="kill" id="7" count="5" />
+		<requirement type="trigger" id="1" />
+		<gratitude type="internals" id="0" count="10" />
+		<gratitude type="add" id="0" count="100" />
+		<gratitude type="add" id="10" />
+		<gratitude type="perk" id="0" />
+	</quest>
+	
+	<!-- Задача: собрать 5 красных и 5 зелёных яблок -->
+	<!-- Награда: +10 ХП, +100 монет, +начинается квест № 3 -->
+	<quest title="16" about="17">
+		<requirement type="collect" id="1" count="5" />
+		<requirement type="collect" id="2" count="5" />
+		<gratitude type="internals" id="0" count="10" />
+		<gratitude type="add" id="0" count="100" />
+		<gratitude type="quest" id="3" />
+	</quest>
+
+	<!-- Задача: собрать 5 красных яблок и убить одного монстра № 3 -->
+	<!-- Награда: +10 ХП, +100 монет -->
+	<quest title="12" about="13">
+		<requirement type="collect" id="1" count="5" />
+		<requirement type="kill" id="3" />
+		<gratitude type="internals" id="0" count="10" />
+		<gratitude type="add" id="0" count="100" />
+	</quest>
+</quests>
