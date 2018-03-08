@@ -15,7 +15,7 @@ public class DesktopLauncher {
 */
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-        SCREEN_CFG screenConfig = SCREEN_CFG.DEFAULT;
+        SCREEN_CFG screenConfig = SCREEN_CFG.DEMO;
         screenConfig.setScreenOrientation( SCREEN_ORIENTATION.LANDSCAPE );
 
         config.width = screenConfig.getWidth();

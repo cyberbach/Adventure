@@ -35,7 +35,7 @@ public final class DecalSubs {
         final float toY = MathUtils.random( 0.5f, 1.5f );
         final float toZ = MathUtils.random( -0.5f, 0.5f );
 
-        final float myTime = MathUtils.random( 0.5f * time, time );
+        final float myTime = MathUtils.random( 0.8f * time, time );
 
         final Vector3Animator animator = new Vector3Animator();
         animator.setFrom( fromX, fromY, fromZ );
@@ -48,20 +48,20 @@ public final class DecalSubs {
 
     static DecalComponent BubbleEffect ( float time ) {
 
-        final float decalSize = 0.12f;
+        final float decalSize = 0.18f;
 
-        TextureRegion bubbleTextureRegion = IMG.PARTICLE.getRegion();
+        TextureRegion bubbleTextureRegion = IMG.STAR_PARTICLE.getRegion();
         final Decal decal = Decal.newDecal( decalSize, decalSize, bubbleTextureRegion, true );
 
         final float fromX = MathUtils.random( -0.5f, 0.5f );
         final float fromY = 0.0f;
         final float fromZ = MathUtils.random( -0.5f, 0.5f );
 
-        final float toX = MathUtils.random( -0.8f, 0.8f );
-        final float toY = MathUtils.random( 0.5f, 1.8f );
-        final float toZ = MathUtils.random( -0.8f, 0.8f );
+        final float toX = MathUtils.random( -1.5f, 1.5f );
+        final float toY = MathUtils.random( 0.5f, 2.0f );
+        final float toZ = MathUtils.random( -1.5f, 1.5f );
 
-        final float myTime = MathUtils.random( 0.5f * time, time );
+        final float myTime = MathUtils.random( 0.8f * time, time );
 
         final Vector3Animator animator = new Vector3Animator();
         animator.setFrom( fromX, fromY, fromZ );

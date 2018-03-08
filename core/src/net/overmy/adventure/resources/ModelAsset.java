@@ -25,7 +25,13 @@ public enum ModelAsset {
     Level3,
     //Level2,
 
-    LADDER( "ladder" ),
+    GSTAR( "gstar" ),
+    BSTAR( "bstar" ),
+    YSTAR( "ystar" ),
+
+    COIN( "coin" ),
+    BOTTLE( "bottle" ),
+    //LADDER( "ladder" ),
     STUFF( "stuff" ),
 
     FOX( "fox" ),

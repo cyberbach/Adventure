@@ -2,6 +2,7 @@ package net.overmy.adventure.logic;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
 import com.badlogic.gdx.utils.Array;
@@ -19,6 +20,7 @@ import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.MyAnimationComponent;
 import net.overmy.adventure.ashley.components.NPCAction;
 import net.overmy.adventure.ashley.components.NPCComponent;
+import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
@@ -98,29 +100,31 @@ public class LevelObject {
         // Из свича вынесены вверх одинаковые кусочки для всех вариантов сборки
         entity = AshleyWorld.getPooledEngine().createEntity();
 
-        ModelInstance modelInstance = modelAsset.get();
-        modelInstance.transform.setToTranslation( position );
-
-        // У всех объектов есть какие-то физические тела,
-        // и всем объектам нужна modelInstance для генерации физического тела
-        PhysicalBuilder physicalBuilder = new PhysicalBuilder()
-                .setModelInstance( modelInstance );
-
         switch ( type ) {
             case LADDER:
-                physicalBuilder
+                PhysicalBuilder physicalBuilderLADDER = new PhysicalBuilder();
+
+                physicalBuilderLADDER
                         .defaultMotionState()
                         .zeroMass()
-                        .hullShape()
+                        .cylinderShape( 0.5f, 4.0f )
                         .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.LADDER_FLAG )
-                        .setCallbackFilter( BulletWorld.PLAYER_FLAG );
+                        .setCallbackFilter( BulletWorld.PLAYER_FLAG )
+                        .setPosition( position );
 
+                entity.add( physicalBuilderLADDER.buildPhysicalComponent() );
                 entity.add( new TypeOfComponent( COMP_TYPE.LADDER ) );
                 break;
 
             case PICKABLE:
-                physicalBuilder
+                ModelInstance modelInstancePICKABLE = modelAsset.get();
+                modelInstancePICKABLE.transform.setToTranslation( position );
+
+                PhysicalBuilder physicalBuilderPICKABLE = new PhysicalBuilder()
+                        .setModelInstance( modelInstancePICKABLE );
+
+                physicalBuilderPICKABLE
                         .defaultMotionState()
                         .setMass( 1.0f )
                         .hullShape()
@@ -128,14 +132,27 @@ public class LevelObject {
                         .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
                         .setCallbackFilter( BulletWorld.ALL_FLAG );
 
-                entity.add( new ModelComponent( modelInstance ) );
+                if ( modelInstancePICKABLE.animations.size > 0 ) {
+                    entity.add( new AnimationComponent( modelInstancePICKABLE ) );
+                }
+
+                entity.add( new MyAnimationComponent() );
+                entity.add( new ModelComponent( modelInstancePICKABLE ) );
                 entity.add( new TypeOfComponent( COMP_TYPE.PICKABLE ) );
                 entity.add( new InteractComponent( TYPE_OF_INTERACT.LOOT, item ) );
                 entity.add( new LevelObjectComponent( this ) );
+                entity.add( physicalBuilderPICKABLE.buildPhysicalComponent() );
                 break;
 
             case COLLECTABLE:
-                physicalBuilder
+
+                ModelInstance modelInstanceCOLLECTABLE = modelAsset.get();
+                modelInstanceCOLLECTABLE.transform.setToTranslation( position );
+
+                PhysicalBuilder physicalBuilderCOLLECTABLE = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceCOLLECTABLE );
+
+                physicalBuilderCOLLECTABLE
                         .defaultMotionState()
                         .setMass( 1.0f )
                         .boxShape()
@@ -143,15 +160,28 @@ public class LevelObject {
                         .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
                         .setCallbackFilter( BulletWorld.ALL_FLAG );
 
-                entity.add( new ModelComponent( modelInstance ) );
+                entity.add( new ModelComponent( modelInstanceCOLLECTABLE ) );
+
+                if ( modelInstanceCOLLECTABLE.animations.size > 0 ) {
+                    entity.add( new AnimationComponent( modelInstanceCOLLECTABLE ) );
+                }
+
                 entity.add( new MyAnimationComponent() );
                 entity.add( new TypeOfComponent( COMP_TYPE.COLLECTABLE ) );
                 entity.add( new CollectableComponent( item ) );
                 entity.add( new LevelObjectComponent( this ) );
+                entity.add( physicalBuilderCOLLECTABLE.buildPhysicalComponent() );
                 break;
 
             case HOVER_COLLECTABLE:
-                physicalBuilder
+
+                ModelInstance modelInstanceHOVER_COLLECTABLE = modelAsset.get();
+                modelInstanceHOVER_COLLECTABLE.transform.setToTranslation( position );
+
+                PhysicalBuilder physicalBuilderHOVER_COLLECTABLE = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceHOVER_COLLECTABLE );
+
+                physicalBuilderHOVER_COLLECTABLE
                         .defaultMotionState()
                         .zeroMass()
                         .boxShape()
@@ -159,15 +189,27 @@ public class LevelObject {
                         .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
                         .setCallbackFilter( BulletWorld.ALL_FLAG );
 
-                entity.add( new ModelComponent( modelInstance ) );
+                if ( modelInstanceHOVER_COLLECTABLE.animations.size > 0 ) {
+                    entity.add( new AnimationComponent( modelInstanceHOVER_COLLECTABLE ) );
+                }
+
+                entity.add( new ModelComponent( modelInstanceHOVER_COLLECTABLE ) );
                 entity.add( new MyAnimationComponent() );
                 entity.add( new TypeOfComponent( COMP_TYPE.COLLECTABLE ) );
                 entity.add( new CollectableComponent( item ) );
                 entity.add( new LevelObjectComponent( this ) );
+                entity.add( physicalBuilderHOVER_COLLECTABLE.buildPhysicalComponent() );
                 break;
 
             case NPC:
-                physicalBuilder
+
+                ModelInstance modelInstanceNPC = modelAsset.get();
+                modelInstanceNPC.transform.setToTranslation( position );
+
+                PhysicalBuilder physicalBuilderNPC = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceNPC );
+
+                physicalBuilderNPC
                         .defaultMotionState()
                         .setMass( 60.0f )
                         .capsuleShape()
@@ -176,15 +218,22 @@ public class LevelObject {
                         .setCallbackFilter( BulletWorld.ALL_FLAG )
                         .disableDeactivation();
 
-                entity.add( new ModelComponent( modelInstance ) );
-                entity.add( new AnimationComponent( modelInstance ) );
+                entity.add( new ModelComponent( modelInstanceNPC ) );
+                entity.add( new AnimationComponent( modelInstanceNPC ) );
                 entity.add( new InteractComponent( TYPE_OF_INTERACT.TALK, textBlock ) );
                 entity.add( new TypeOfComponent( COMP_TYPE.NPC ) );
                 entity.add( new NPCComponent( actionArray ) );
+                entity.add( physicalBuilderNPC.buildPhysicalComponent() );
                 break;
 
             case ENEMY:
-                physicalBuilder
+                ModelInstance modelInstanceENEMY = modelAsset.get();
+                modelInstanceENEMY.transform.setToTranslation( position );
+
+                PhysicalBuilder physicalBuilderENEMY = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceENEMY );
+
+                physicalBuilderENEMY
                         .defaultMotionState()
                         .setMass( 60.0f )
                         .capsuleShape()
@@ -193,14 +242,14 @@ public class LevelObject {
                         .setCallbackFilter( BulletWorld.ALL_FLAG )
                         .disableDeactivation();
 
-                entity.add( new ModelComponent( modelInstance ) );
-                entity.add( new AnimationComponent( modelInstance ) );
+                entity.add( new ModelComponent( modelInstanceENEMY ) );
+                entity.add( new AnimationComponent( modelInstanceENEMY ) );
                 entity.add( new TypeOfComponent( COMP_TYPE.NPC ) );
                 entity.add( new NPCComponent( actionArray, true ) );
+                entity.add( physicalBuilderENEMY.buildPhysicalComponent() );
                 break;
         }
 
-        entity.add( physicalBuilder.buildPhysicalComponent() );
         AshleyWorld.getPooledEngine().addEntity( entity );
     }
 

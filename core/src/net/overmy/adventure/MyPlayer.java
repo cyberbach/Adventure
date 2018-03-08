@@ -23,10 +23,12 @@ import net.overmy.adventure.ashley.components.COMP_TYPE;
 import net.overmy.adventure.ashley.components.GroundedComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.MyPlayerComponent;
+import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
 import net.overmy.adventure.logic.Item;
+import net.overmy.adventure.logic.ItemInBagg;
 import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.Settings;
 
@@ -44,10 +46,10 @@ public final class MyPlayer {
     private static       float      modelAngle     = 0.0f;
     private static       float      dustTime       = 0.1f;
 
-    private static ArrayList< Item > bag = null;
+    private static ArrayList< ItemInBagg > bag = null;
 
 
-    public static ArrayList< Item > getBag () {
+    public static ArrayList< ItemInBagg > getBag () {
         return bag;
     }
 
@@ -75,12 +77,26 @@ public final class MyPlayer {
 
     public static void addToBag ( Item item ) {
         Gdx.app.debug( "Добавлено в сумку", "" + item.getName() );
-        bag.add( item );
+
+        boolean alreadyPresent = false;
+
+        if ( bag.size() > 0 ) {
+            for ( ItemInBagg itemInBag : bag ) {
+                if ( itemInBag.item.equals( item ) ) {
+                    itemInBag.count++;
+                    alreadyPresent = true;
+                }
+            }
+        }
+
+        if ( !alreadyPresent ) {
+            bag.add( new ItemInBagg( item ) );
+        }
     }
 
 
     public static void init () {
-        bag = new ArrayList< Item >();
+        bag = new ArrayList< ItemInBagg >();
 
         if ( playerEntity != null ) {
             return;
@@ -97,10 +113,12 @@ public final class MyPlayer {
         modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
 */
 
+        modelInstance.transform.setToTranslation( new Vector3( 0,3,0 ) );
+
         final PhysicalBuilder physicalBuilder = new PhysicalBuilder()
                 .setModelInstance( modelInstance )
                 .defaultMotionState()
-                .setMass( 60.0f )
+                .setMass( 20.0f )
                 //.capsuleShape( 0.5f, 0.2f )
                 .capsuleShape()
                 .setCollisionFlag( btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT )
@@ -108,8 +126,13 @@ public final class MyPlayer {
                 .setCallbackFilter( BulletWorld.ALL_FLAG )
                 .disableDeactivation();
 
+        PhysicalComponent physicalComponent = physicalBuilder.buildPhysicalComponent();
+        physicalComponent.body.setFriction( 0.1f );
+                //body.setSpinningFriction( 0.1f );
+                //body.setRollingFriction( 0.1f );
+
         playerEntity = AshleyWorld.getPooledEngine().createEntity();
-        playerEntity.add( physicalBuilder.buildPhysicalComponent() );
+        playerEntity.add( physicalComponent );
         playerEntity.add( new ModelComponent( modelInstance ) );
         playerEntity.add( new AnimationComponent( modelInstance ) );
         playerEntity.add( new GroundedComponent() );
@@ -151,7 +174,13 @@ public final class MyPlayer {
         } else {
             velocity.add( 0, -moveY * 5, 0 );
         }
+
         body.setLinearVelocity( velocity );
+            //body.applyCentralImpulse( velocity );
+
+            //body.setFriction( 0.1f );
+            //body.setSpinningFriction( 0.1f );
+            //body.setRollingFriction( 0.1f );
 
         if ( jump ) {
             if ( playerOnGround ) {
@@ -159,13 +188,14 @@ public final class MyPlayer {
                 final AnimationComponent animationComponent = MyMapper.ANIMATION.get(
                         playerEntity );
                 animationComponent.play( HIT, 2.6f );
-                final float jumpSpeed = 8.0f;
+                final float jumpSpeed = 148.0f;
                 velocity.set( direction.x, jumpSpeed, direction.y );
-                body.setLinearVelocity( velocity );
+                //body.setLinearVelocity( velocity );
+                body.applyCentralImpulse( velocity );
             }
             jump = false;
         }
-        body.getWorldTransform( bodyTransform );
+       body.getWorldTransform( bodyTransform );
         bodyTransform.getTranslation( notFilteredPos );
         bodyTransform.idt();
         bodyTransform.setToTranslation( notFilteredPos );
@@ -242,7 +272,7 @@ public final class MyPlayer {
                     animationComponent.play( IDLE, 2.0f );
                 }
             }
-            final float runSpeed = 6.0f;
+            final float runSpeed = 4.0f;
             speed = ( runSpeed + 1 ) * directionLen;
 
             direction.nor();

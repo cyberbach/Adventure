@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.bullet.collision.btBvhTriangleMeshShape;
 import com.badlogic.gdx.physics.bullet.collision.btCapsuleShape;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
 import com.badlogic.gdx.physics.bullet.collision.btConvexHullShape;
+import com.badlogic.gdx.physics.bullet.collision.btCylinderShape;
 import com.badlogic.gdx.physics.bullet.collision.btIndexedMesh;
 import com.badlogic.gdx.physics.bullet.collision.btTriangleIndexVertexArray;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
@@ -50,6 +51,14 @@ public class PhysicalBuilder {
     private btRigidBodyConstructionInfo savedInfo = null;
 
 
+/*
+    PhysicalBuilder setPosition( Vector3 newPosition ) {
+        Matrix4 matrix4 = savedBody.getWorldTransform();
+        matrix4.setToTranslation( newPosition );
+        savedBody.setWorldTransform( matrix4 );
+
+        return this;
+    }*/
 /*
 
     PhysicalBuilder setScale( float scale ) {
@@ -117,6 +126,14 @@ public class PhysicalBuilder {
         return this;
     }
 
+
+    public PhysicalBuilder cylinderShape( float radius, float height ) {
+        //Vector3 halfExtents = new Vector3( 0.26f, 0.5f, 0.26f );
+        Vector3 halfExtents = new Vector3( radius, height, radius );
+        bodyShape = new btCylinderShape( halfExtents );
+        bodyShape.calculateLocalInertia( mass, inertia );
+        return this;
+    }
 
 /*
 
@@ -304,13 +321,13 @@ public class PhysicalBuilder {
     }
 
 
-/*
+
 
     public btRigidBody getSavedBody() {
         return savedBody;
     }
 
-*/
+
 
 
 

@@ -80,7 +80,7 @@ public final class BulletWorld {
         if ( DEBUG.PHYSICAL_MESH.get() ) {
             debugDrawer = new DebugDrawer();
             dynamicsWorld.setDebugDrawer( debugDrawer );
-            final int mode = btIDebugDraw.DebugDrawModes.DBG_MAX_DEBUG_DRAW_MODE;
+            int mode = btIDebugDraw.DebugDrawModes.DBG_MAX_DEBUG_DRAW_MODE;
             debugDrawer.setDebugMode( mode );
         }
 
@@ -114,7 +114,7 @@ public final class BulletWorld {
     }
 
 
-    static int getNextUserValue () {
+    private static int getNextUserValue () {
         int max = 0;
         for ( int i : actualUserValues ) {
             if ( i > max ) {

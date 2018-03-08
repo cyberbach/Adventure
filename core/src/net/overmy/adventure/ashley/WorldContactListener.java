@@ -3,6 +3,7 @@ package net.overmy.adventure.ashley;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ContactListener;
@@ -17,6 +18,7 @@ import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
 import net.overmy.adventure.logic.DynamicLevels;
+import net.overmy.adventure.resources.IMG;
 
 /*
       Created by Andrey Mikheev on 30.09.2017
@@ -155,8 +157,6 @@ public class WorldContactListener extends ContactListener {
         if ( !outOfCamera ) {
             if ( contact1Player && contact2Collectable ) {
                 MyPlayer.addToBag( MyMapper.COLLECTABLE.get( entity02 ).item );
-                entity02.add( new OutOfCameraComponent() );
-                entity02.add( new RemoveByTimeComponent( 0 ) );
 
                 // Устанавливаем в levelObject флаг, чтобы предмет
                 // не создался снова, при перезагрузке уровня
@@ -170,9 +170,10 @@ public class WorldContactListener extends ContactListener {
                     MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
                                                           .getTranslation( bubblePosition );
                     for ( int i = 0; i < 5; i++ ) {
-                        float bubbleTime = MathUtils.random( 0.05f, 0.25f );
+                        float bubbleTime = MathUtils.random( 0.25f, 0.65f );
                         /*AshleyWorld.getPooledEngine().addEntity(
                                 EntitySubs.LightBubblesEffect( bubblePosition, bubbleTime * 6 ) );*/
+
 
                         Entity entity = AshleyWorld.getPooledEngine().createEntity();
                         entity.add( DecalSubs.BubbleEffect( bubbleTime ) );
@@ -181,6 +182,9 @@ public class WorldContactListener extends ContactListener {
                         AshleyWorld.getPooledEngine().addEntity( entity );
                     }
                 }
+
+                entity02.add( new OutOfCameraComponent() );
+                entity02.add( new RemoveByTimeComponent( 0 ) );
             }
         }
     }

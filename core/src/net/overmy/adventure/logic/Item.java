@@ -12,6 +12,14 @@ import net.overmy.adventure.resources.IMG;
 public enum Item {
     DIALOG( "test", "test2", 0 ),
 
+    YELLOW_STAR("Желтая звезда","Это валюта", 12),
+    BLUE_STAR("Синяя звезда","Это валюта", 11),
+    GREEN_STAR("Зеленая звезда","Это валюта", 10),
+
+    RED_BOTTLE("Красная бутылочка","Восстанавливает жизни", 13),
+
+    COIN("Золотая монета","Это валюта", 14),
+
     GAME_STUFF1( "Первый предмет", "Подробное описание этого первого предмета", 0 ),
     GAME_STUFF2( "Какой-то второй предмет", "Описание второго предмета", 1 ),
     GAME_STUFF3( "Третий", "Очень длинное описание третьего предмета", 2 ),
@@ -23,6 +31,11 @@ public enum Item {
     private String name;
     private String about;
     private int    imageID;
+
+
+    public int getImageID () {
+        return imageID;
+    }
 
 
     Item ( String name, String about, int imageID ) {

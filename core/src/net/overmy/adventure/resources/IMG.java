@@ -33,6 +33,15 @@ public enum IMG {
     BUTTON( "button" ),
     AIM( "aim" ),
 
+    // inventory
+    GSTAR( "gstaricon" ),
+    BSTAR( "bstaricon" ),
+    YSTAR( "ystaricon" ),
+    BOTTLE( "bottle" ),//13
+    COIN( "coin" ),
+
+    // particles
+    STAR_PARTICLE( "starpart" ),
     PARTICLE( "particle" ),
 
     PARTICLE_TRI1( "tri1" ),

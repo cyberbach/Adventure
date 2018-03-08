@@ -34,6 +34,7 @@ import net.overmy.adventure.ashley.systems.InteractSystem;
 import net.overmy.adventure.ashley.systems.RenderSystem;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
+import net.overmy.adventure.logic.ItemInBagg;
 import net.overmy.adventure.logic.TextBlock;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
@@ -230,21 +231,22 @@ public class GameScreen extends Base2DScreen {
         table.setWidth( Core.WIDTH - offset * 2 );
         //table.setHeight( Core.HEIGHT - offset * 4 );
 
-        for ( Item item : MyPlayer.getBag() ) {
-            Image img = item.getImage( offset, offset );
-            Label txt = UIHelper.Label( item.getName(), FontAsset.ACTION_TEXT );
+        for ( ItemInBagg itemInBagg : MyPlayer.getBag() ) {
+            Image img = itemInBagg.item.getImage( offset, offset );
+            Label txt = UIHelper.Label( itemInBagg.item.getName(), FontAsset.ACTION_TEXT );
             txt.setWrap( true );
-            Label fullTxt = UIHelper.Label( item.getAbout(), FontAsset.ACTION_TEXT );
+            String cntString = itemInBagg.count > 1 ? "" + itemInBagg.count : "";
+            Label count = UIHelper.Label( cntString, FontAsset.ACTION_TEXT );
+            Label fullTxt = UIHelper.Label( itemInBagg.item.getAbout(), FontAsset.ACTION_TEXT );
             fullTxt.setWrap( true );
-            Image dropImage = IMG.CONVERSATION.getImageActor( offset, offset );
             Image useImage = IMG.USABLE.getImageActor( offset, offset );
 
             float offset_half = offset / 2;
 
             table.add( img ).pad( 0, 0, 0, offset_half );
+            table.add( count ).width( offset );
             table.add( txt ).width( offset * 2 );
             table.add( fullTxt ).pad( 0, offset_half, 0, 0 ).width( offset * 4 );
-            table.add( dropImage ).pad( 0, offset_half, 0, 0 );
             table.add( useImage ).pad( 0, offset_half, 0, 0 );
 
             //////////////////
