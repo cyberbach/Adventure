@@ -113,7 +113,7 @@ public final class MyPlayer {
         modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
 */
 
-        modelInstance.transform.setToTranslation( new Vector3( 0,3,0 ) );
+        modelInstance.transform.setToTranslation( new Vector3( 0, 3, 0 ) );
 
         final PhysicalBuilder physicalBuilder = new PhysicalBuilder()
                 .setModelInstance( modelInstance )
@@ -128,8 +128,8 @@ public final class MyPlayer {
 
         PhysicalComponent physicalComponent = physicalBuilder.buildPhysicalComponent();
         physicalComponent.body.setFriction( 0.1f );
-                //body.setSpinningFriction( 0.1f );
-                //body.setRollingFriction( 0.1f );
+        //body.setSpinningFriction( 0.1f );
+        //body.setRollingFriction( 0.1f );
 
         playerEntity = AshleyWorld.getPooledEngine().createEntity();
         playerEntity.add( physicalComponent );
@@ -156,9 +156,37 @@ public final class MyPlayer {
     }
 
 
+    private static ArrayList< Vector3 > pushedPositions = new ArrayList< Vector3 >();
+
+
     public static void updateControls ( float deltaTime ) {
+        if ( Gdx.input.isKeyJustPressed( Input.Keys.ENTER ) ) {
+            btRigidBody body = MyMapper.PHYSICAL.get( playerEntity ).body;
+            Matrix4 thisTransform = body.getWorldTransform();
+            Vector3 thisPosition = new Vector3();
+            thisTransform.getTranslation( thisPosition );
+            pushedPositions.add( thisPosition );
+        }
+
         if ( Gdx.input.isKeyJustPressed( Input.Keys.SPACE ) ) {
             startJump();
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for ( Vector3 pushed : pushedPositions ) {
+                //queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2( 15.5f, -3.166f ), 10.0f ) );
+
+
+                stringBuilder.append( "queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(" );
+                stringBuilder.append( pushed.x );
+                stringBuilder.append( "f, " );
+                //stringBuilder.append( pushed.y );
+                //stringBuilder.append( "f, " );
+                stringBuilder.append( pushed.z );
+                stringBuilder.append( "f), 10.0f ) );\n" );
+            }
+
+            Gdx.app.debug( "Pushed positions", "\n" + stringBuilder.toString() );
         }
 
         updateAnimation( deltaTime );
@@ -176,11 +204,11 @@ public final class MyPlayer {
         }
 
         body.setLinearVelocity( velocity );
-            //body.applyCentralImpulse( velocity );
+        //body.applyCentralImpulse( velocity );
 
-            //body.setFriction( 0.1f );
-            //body.setSpinningFriction( 0.1f );
-            //body.setRollingFriction( 0.1f );
+        //body.setFriction( 0.1f );
+        //body.setSpinningFriction( 0.1f );
+        //body.setRollingFriction( 0.1f );
 
         if ( jump ) {
             if ( playerOnGround ) {
@@ -195,7 +223,7 @@ public final class MyPlayer {
             }
             jump = false;
         }
-       body.getWorldTransform( bodyTransform );
+        body.getWorldTransform( bodyTransform );
         bodyTransform.getTranslation( notFilteredPos );
         bodyTransform.idt();
         bodyTransform.setToTranslation( notFilteredPos );
