@@ -1,5 +1,6 @@
 package net.overmy.adventure.ashley;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.MathUtils;
@@ -52,6 +53,33 @@ public final class DecalSubs {
 
         TextureRegion bubbleTextureRegion = IMG.STAR_PARTICLE.getRegion();
         final Decal decal = Decal.newDecal( decalSize, decalSize, bubbleTextureRegion, true );
+
+        final float fromX = MathUtils.random( -0.5f, 0.5f );
+        final float fromY = 0.0f;
+        final float fromZ = MathUtils.random( -0.5f, 0.5f );
+
+        final float toX = MathUtils.random( -1.5f, 1.5f );
+        final float toY = MathUtils.random( 0.5f, 2.0f );
+        final float toZ = MathUtils.random( -1.5f, 1.5f );
+
+        final float myTime = MathUtils.random( 0.8f * time, time );
+
+        final Vector3Animator animator = new Vector3Animator();
+        animator.setFrom( fromX, fromY, fromZ );
+        animator.setTo( toX, toY, toZ );
+        animator.setAnimationTime( myTime );
+
+        return new DecalComponent( decal, animator );
+    }
+
+    static DecalComponent BubbleCoinEffect ( float time ) {
+
+        final float decalSize = 0.18f;
+
+        TextureRegion bubbleTextureRegion = IMG.COIN.getRegion();
+        final Decal decal = Decal.newDecal( decalSize, decalSize, bubbleTextureRegion, true );
+
+        //decal.setColor( new Color( Color.YELLOW ) );
 
         final float fromX = MathUtils.random( -0.5f, 0.5f );
         final float fromY = 0.0f;

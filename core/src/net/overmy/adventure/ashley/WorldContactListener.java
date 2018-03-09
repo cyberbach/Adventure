@@ -18,7 +18,9 @@ import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
 import net.overmy.adventure.logic.DynamicLevels;
+import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.resources.IMG;
+import net.overmy.adventure.resources.SoundAsset;
 
 /*
       Created by Andrey Mikheev on 30.09.2017
@@ -156,7 +158,8 @@ public class WorldContactListener extends ContactListener {
         boolean outOfCamera = MyMapper.OUT_OF_CAMERA.has( entity02 );
         if ( !outOfCamera ) {
             if ( contact1Player && contact2Collectable ) {
-                MyPlayer.addToBag( MyMapper.COLLECTABLE.get( entity02 ).item );
+                Item item = MyMapper.COLLECTABLE.get( entity02 ).item;
+                MyPlayer.addToBag( item );
 
                 // Устанавливаем в levelObject флаг, чтобы предмет
                 // не создался снова, при перезагрузке уровня
@@ -164,22 +167,43 @@ public class WorldContactListener extends ContactListener {
                     MyMapper.LEVEL_OBJECT.get( entity02 ).levelObject.useEntity();
                 }
 
-                // show bubbles
-                if ( MyMapper.PHYSICAL.has( entity02 ) ) {
-                    Vector3 bubblePosition = new Vector3();
-                    MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
-                                                          .getTranslation( bubblePosition );
-                    for ( int i = 0; i < 5; i++ ) {
-                        float bubbleTime = MathUtils.random( 0.25f, 0.65f );
+                if ( item.equals( Item.COIN ) ) {
+                    SoundAsset.Coin.play();
+
+                    if ( MyMapper.PHYSICAL.has( entity02 ) ) {
+                        Vector3 bubblePosition = new Vector3();
+                        MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
+                                                              .getTranslation( bubblePosition );
+                        for ( int i = 0; i < 5; i++ ) {
+                            float bubbleTime = MathUtils.random( 0.25f, 0.65f );
                         /*AshleyWorld.getPooledEngine().addEntity(
                                 EntitySubs.LightBubblesEffect( bubblePosition, bubbleTime * 6 ) );*/
 
+                            Entity entity = AshleyWorld.getPooledEngine().createEntity();
+                            entity.add( DecalSubs.BubbleCoinEffect( bubbleTime ) );
+                            entity.add( new PositionComponent( bubblePosition ) );
+                            entity.add( new RemoveByTimeComponent( bubbleTime ) );
+                            AshleyWorld.getPooledEngine().addEntity( entity );
+                        }
+                    }
+                } else {
+                    SoundAsset.RobotConnect2.play();
+                    // show star-bubbles
+                    if ( MyMapper.PHYSICAL.has( entity02 ) ) {
+                        Vector3 bubblePosition = new Vector3();
+                        MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
+                                                              .getTranslation( bubblePosition );
+                        for ( int i = 0; i < 5; i++ ) {
+                            float bubbleTime = MathUtils.random( 0.25f, 0.65f );
+                        /*AshleyWorld.getPooledEngine().addEntity(
+                                EntitySubs.LightBubblesEffect( bubblePosition, bubbleTime * 6 ) );*/
 
-                        Entity entity = AshleyWorld.getPooledEngine().createEntity();
-                        entity.add( DecalSubs.BubbleEffect( bubbleTime ) );
-                        entity.add( new PositionComponent( bubblePosition ) );
-                        entity.add( new RemoveByTimeComponent( bubbleTime ) );
-                        AshleyWorld.getPooledEngine().addEntity( entity );
+                            Entity entity = AshleyWorld.getPooledEngine().createEntity();
+                            entity.add( DecalSubs.BubbleEffect( bubbleTime ) );
+                            entity.add( new PositionComponent( bubblePosition ) );
+                            entity.add( new RemoveByTimeComponent( bubbleTime ) );
+                            AshleyWorld.getPooledEngine().addEntity( entity );
+                        }
                     }
                 }
 

@@ -72,6 +72,8 @@ public enum ModelAsset {
 
 
     private void updateMaterials ( ModelInstance instance ) {
+        Gdx.app.debug( ""+this.name,"updateMaterials" );
+
         for ( int i = 0; i < instance.materials.size; i++ ) {
             final Material material = instance.materials.get( i );
 
@@ -99,6 +101,7 @@ public enum ModelAsset {
 
     public void load () {
         if ( !manager.isLoaded( name ) ) {
+            Gdx.app.debug( ""+this.name,"load" );
             manager.load( name, Model.class );
         }
     }
@@ -113,6 +116,8 @@ public enum ModelAsset {
 
     public void unload () {
         if ( manager.isLoaded( name ) ) {
+            Gdx.app.debug( ""+this.name,"unload" );
+
             simpleInstance = null;
             instance = null;
             manager.unload( name );
@@ -122,6 +127,8 @@ public enum ModelAsset {
 
 
     public ModelInstance get () {
+        Gdx.app.debug( ""+this.name,"get one more instance" );
+
         if ( copies > 0 ) {
             copies++;
             return instance.copy();
@@ -210,6 +217,8 @@ public enum ModelAsset {
 
 
     public ModelInstance getSimple () {
+        Gdx.app.debug( ""+this.name,"getSimple" );
+
         if ( copies > 0 ) {
             return simpleInstance.copy();
         } else {
@@ -222,12 +231,15 @@ public enum ModelAsset {
         if ( simpleInstance == null ) {
             simpleInstance = getSimpleInstance();
         }
-        if ( instance == null ) {
-            instance = getInstance();
-        }
 
-        updateMaterials( instance );
-        calculateBoundingBox();
+        if ( instance == null ) {
+            Gdx.app.debug( ""+this.name,"build" );
+
+            instance = getInstance();
+            updateMaterials( instance );
+
+            calculateBoundingBox();
+        }
     }
 
 

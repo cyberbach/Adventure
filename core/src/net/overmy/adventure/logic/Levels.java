@@ -25,7 +25,9 @@ public final class Levels {
         Array< Level > levelArray = new Array< Level >();
 
         levelArray.add( new Level( "0, 1", level0objects() ) );
-        levelArray.add( new Level( "1, 0",level1objects() ) );
+        levelArray.add( new Level( "1, 0, 2,3",level1objects() ) );
+        levelArray.add( new Level( "2, 1,3" ) );
+        levelArray.add( new Level( "3, 1,2" ) );
         //levelArray.add( new Level( "1, 0, 2, 3" ) );
         //levelArray.add( new Level( "2, 1" ) );
         //levelArray.add( new Level( "3, 1" ) );

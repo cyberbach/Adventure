@@ -18,6 +18,8 @@ import com.badlogic.gdx.audio.Sound;
 
 public enum SoundAsset {
 
+    Coin( "coin.wav" ),
+
     BackSound( "click3.wav" ),
     Click( "click4.wav" ),
 

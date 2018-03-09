@@ -83,7 +83,9 @@ public final class DynamicLevels {
                     Gdx.app.debug( "Need to remove", "" + level );
                 }
 
-                level.entity.add( new RemoveByTimeComponent( 0 ) );
+                if ( level.entity != null ) {
+                    level.entity.add( new RemoveByTimeComponent( 0 ) );
+                }
                 level.entity = null;
 
                 if ( level.objects != null ) {
