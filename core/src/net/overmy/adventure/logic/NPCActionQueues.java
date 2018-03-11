@@ -25,6 +25,7 @@ public final class NPCActionQueues {
                 queue = new Array< NPCAction >();
 
                 queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 7.0f ) );
+
                 queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(2.8272378f, -169.52051f), 10.0f ) );
                 queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(2.9068472f, -168.82805f), 10.0f ) );
                 queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
@@ -35,12 +36,14 @@ public final class NPCActionQueues {
 
                 queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-12.596195f, -160.69821f), 10.0f ) );
                 queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
+
                 queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-13.577898f, -156.70766f), 10.0f ) );
                 queue.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.Title, 3.0f ) );
                 queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 3.0f ) );
 
                 queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-12.451161f, -161.43076f), 10.0f ) );
                 queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 4.0f ) );
+
                 break;
 
             case 1:

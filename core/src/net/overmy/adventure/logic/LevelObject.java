@@ -1,6 +1,7 @@
 package net.overmy.adventure.logic;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -193,12 +194,16 @@ public class LevelObject {
                     entity.add( new AnimationComponent( modelInstanceHOVER_COLLECTABLE ) );
                 }
 
+                PhysicalComponent component = physicalBuilderHOVER_COLLECTABLE.buildPhysicalComponent();
+
+                Gdx.app.debug( "UValue",""+physicalBuilderHOVER_COLLECTABLE.getSavedBody().getUserValue() );
+
                 entity.add( new ModelComponent( modelInstanceHOVER_COLLECTABLE ) );
                 entity.add( new MyAnimationComponent() );
                 entity.add( new TypeOfComponent( COMP_TYPE.COLLECTABLE ) );
                 entity.add( new CollectableComponent( item ) );
                 entity.add( new LevelObjectComponent( this ) );
-                entity.add( physicalBuilderHOVER_COLLECTABLE.buildPhysicalComponent() );
+                entity.add( component );
                 break;
 
             case NPC:

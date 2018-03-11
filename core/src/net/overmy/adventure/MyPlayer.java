@@ -76,7 +76,7 @@ public final class MyPlayer {
 
 
     public static void addToBag ( Item item ) {
-        Gdx.app.debug( "Добавлено в сумку", "" + item.getName() );
+        //Gdx.app.debug( "Добавлено в сумку", "" + item.getName() );
 
         boolean alreadyPresent = false;
 
@@ -168,15 +168,33 @@ public final class MyPlayer {
             pushedPositions.add( thisPosition );
         }
 
-        if ( Gdx.input.isKeyJustPressed( Input.Keys.SPACE ) ) {
+        if(Gdx.input.isKeyJustPressed( Input.Keys.SPACE )){
             startJump();
+        }
 
+        // GameMaster Mode
+        // add star
+        if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_1 ) ) {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for ( Vector3 pushed : pushedPositions ) {
+                stringBuilder.append( "objects.add( hoverCoin( new Vector3(" );
+                stringBuilder.append( pushed.x );
+                stringBuilder.append( "f, " );
+                stringBuilder.append( pushed.y );
+                stringBuilder.append( "f, " );
+                stringBuilder.append( pushed.z );
+                stringBuilder.append( "f) ) );\n" );
+            }
+
+            Gdx.app.debug( "Pushed positions", "\n" + stringBuilder.toString() );
+        }
+        // add move point
+        if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_3 ) ) {
             StringBuilder stringBuilder = new StringBuilder();
 
             for ( Vector3 pushed : pushedPositions ) {
                 //queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2( 15.5f, -3.166f ), 10.0f ) );
-
-
                 stringBuilder.append( "queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(" );
                 stringBuilder.append( pushed.x );
                 stringBuilder.append( "f, " );
@@ -300,7 +318,7 @@ public final class MyPlayer {
                     animationComponent.play( IDLE, 2.0f );
                 }
             }
-            final float runSpeed = 4.0f;
+            final float runSpeed = 54.0f;
             speed = ( runSpeed + 1 ) * directionLen;
 
             direction.nor();

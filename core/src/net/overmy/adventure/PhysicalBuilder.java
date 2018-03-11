@@ -32,23 +32,23 @@ import java.nio.FloatBuffer;
 
 public class PhysicalBuilder {
 
-    private Vector3                    inertia          = null;
-    private float                      mass             = 0.0f;
-    private ModelInstance              modelInstance    = null;
-    private btMotionState              motionState      = null;
-    private btCollisionShape           bodyShape        = null;
-    private btIndexedMesh              indexedMesh      = null;
-    private btTriangleIndexVertexArray meshInterface    = null;
-    private int                        collisionFlag    = 0;
-    private int                        callbackFlag     = 0;
-    private int                        callbackFilter   = 0;
-    private boolean                    deactivationFlag = false;
-    private boolean                    disableRotationFlag = false;
-    private Vector3                    startImpulse     = null;
+    private Vector3                     inertia             = null;
+    private float                       mass                = 0.0f;
+    private ModelInstance               modelInstance       = null;
+    private btMotionState               motionState         = null;
+    private btCollisionShape            bodyShape           = null;
+    private btIndexedMesh               indexedMesh         = null;
+    private btTriangleIndexVertexArray  meshInterface       = null;
+    private int                         collisionFlag       = 0;
+    private int                         callbackFlag        = 0;
+    private int                         callbackFilter      = 0;
+    private boolean                     deactivationFlag    = false;
+    private boolean                     disableRotationFlag = false;
+    private Vector3                     startImpulse        = null;
     //private float                      scale            = 1.0f;
-    private Vector3                    position         = null;
-    private btRigidBody                savedBody        = null;
-    private btRigidBodyConstructionInfo savedInfo = null;
+    private Vector3                     position            = null;
+    private btRigidBody                 savedBody           = null;
+    private btRigidBodyConstructionInfo savedInfo           = null;
 
 
 /*
@@ -73,29 +73,25 @@ public class PhysicalBuilder {
 */
 
 
-
-    public PhysicalBuilder setCollisionFlag( int collisionFlag ) {
+    public PhysicalBuilder setCollisionFlag ( int collisionFlag ) {
         this.collisionFlag = collisionFlag;
         return this;
     }
 
 
-
-    public PhysicalBuilder setPosition( Vector3 position ) {
+    public PhysicalBuilder setPosition ( Vector3 position ) {
         this.position = new Vector3( position );
         return this;
     }
 
 
-
-    public PhysicalBuilder setCallbackFlag( int callbackFlag ) {
+    public PhysicalBuilder setCallbackFlag ( int callbackFlag ) {
         this.callbackFlag = callbackFlag;
         return this;
     }
 
 
-
-    public PhysicalBuilder setCallbackFilter( int callbackFilter ) {
+    public PhysicalBuilder setCallbackFilter ( int callbackFilter ) {
         this.callbackFilter = callbackFilter;
         return this;
     }
@@ -112,14 +108,15 @@ public class PhysicalBuilder {
     }
 */
 
-    public PhysicalBuilder capsuleShape() {
-        BoundingBox box = new BoundingBox(  );
+
+    public PhysicalBuilder capsuleShape () {
+        BoundingBox box = new BoundingBox();
         modelInstance.calculateBoundingBox( box );
-        Vector3 boxSize = new Vector3(  );
+        Vector3 boxSize = new Vector3();
         box.getMax( boxSize );
 
         float radius = boxSize.x > boxSize.z ? boxSize.x : boxSize.z;
-        float height = boxSize.y > 2*radius ? boxSize.y - 2*radius : 0;
+        float height = boxSize.y > 2 * radius ? boxSize.y - 2 * radius : 0;
 
         bodyShape = new btCapsuleShape( radius, height );
         bodyShape.calculateLocalInertia( mass, inertia );
@@ -127,15 +124,15 @@ public class PhysicalBuilder {
     }
 
 
-    public PhysicalBuilder cylinderShape( float radius, float height ) {
+    public PhysicalBuilder cylinderShape ( float radius, float height ) {
         //Vector3 halfExtents = new Vector3( 0.26f, 0.5f, 0.26f );
         Vector3 halfExtents = new Vector3( radius, height, radius );
         bodyShape = new btCylinderShape( halfExtents );
         bodyShape.calculateLocalInertia( mass, inertia );
         return this;
     }
-
 /*
+
 
     public PhysicalBuilder cylinderShape( float radius, float height ) {
         //Vector3 halfExtents = new Vector3( 0.26f, 0.5f, 0.26f );
@@ -164,10 +161,11 @@ public class PhysicalBuilder {
     }
 */
 
-    public PhysicalBuilder boxShape() {
-        BoundingBox box = new BoundingBox(  );
+
+    public PhysicalBuilder boxShape () {
+        BoundingBox box = new BoundingBox();
         modelInstance.calculateBoundingBox( box );
-        Vector3 boxSize = new Vector3(  );
+        Vector3 boxSize = new Vector3();
         box.getMax( boxSize );
 
         bodyShape = new btBoxShape( boxSize );
@@ -176,8 +174,7 @@ public class PhysicalBuilder {
     }
 
 
-
-    public PhysicalBuilder hullShape() {
+    public PhysicalBuilder hullShape () {
         final Mesh mesh = modelInstance.model.meshes.first();
         final FloatBuffer buffer = mesh.getVerticesBuffer();
         final int numVertices = mesh.getNumVertices();
@@ -189,8 +186,7 @@ public class PhysicalBuilder {
     }
 
 
-
-    public PhysicalBuilder bvhShape() {
+    public PhysicalBuilder bvhShape () {
         indexedMesh = calcIndexedMesh( modelInstance );
         meshInterface = new btTriangleIndexVertexArray();
         meshInterface.addIndexedMesh( indexedMesh, PHY_ScalarType.PHY_SHORT );
@@ -200,30 +196,26 @@ public class PhysicalBuilder {
     }
 
 
-
-    public PhysicalBuilder setModelInstance( ModelInstance instance ) {
+    public PhysicalBuilder setModelInstance ( ModelInstance instance ) {
         modelInstance = instance;
         return this;
     }
 
 
-
-    public PhysicalBuilder defaultMotionState() {
+    public PhysicalBuilder defaultMotionState () {
         motionState = new btDefaultMotionState();
         return this;
     }
 
 
-
-    public PhysicalBuilder zeroMass() {
+    public PhysicalBuilder zeroMass () {
         mass = 0.0f;
         inertia = Vector3.Zero;
         return this;
     }
 
 
-
-    public PhysicalBuilder setMass( float mass ) {
+    public PhysicalBuilder setMass ( float mass ) {
         this.mass = mass;
         inertia = new Vector3();
         return this;
@@ -247,20 +239,19 @@ public class PhysicalBuilder {
 */
 
 
-
-    public PhysicalBuilder disableDeactivation() {
+    public PhysicalBuilder disableDeactivation () {
         disableRotation();
         deactivationFlag = true;
         return this;
     }
+
 
     private void disableRotation () {
         disableRotationFlag = true;
     }
 
 
-
-    public PhysicalBuilder build() {
+    public PhysicalBuilder build () {
         final btRigidBodyConstructionInfo constructionInfo = new btRigidBodyConstructionInfo(
                 mass,
                 motionState,
@@ -288,7 +279,7 @@ public class PhysicalBuilder {
                                      btCollisionObject.AnisotropicFrictionFlags.CF_ANISOTROPIC_ROLLING_FRICTION );
 */
 
-        if(disableRotationFlag){
+        if ( disableRotationFlag ) {
             body.setDamping( 0, 0 );
             body.setAngularFactor( 0 );
         }
@@ -314,30 +305,23 @@ public class PhysicalBuilder {
     }
 
 
-
-    public PhysicalComponent buildPhysicalComponent() {
+    public PhysicalComponent buildPhysicalComponent () {
         build();
         return new PhysicalComponent( savedBody, savedInfo );
     }
 
 
-
-
-    public btRigidBody getSavedBody() {
+    public btRigidBody getSavedBody () {
         return savedBody;
     }
 
 
-
-
-
-    public BVHPhysicalComponent buildBVHPhysicalComponent() {
+    public BVHPhysicalComponent buildBVHPhysicalComponent () {
         return new BVHPhysicalComponent( indexedMesh, meshInterface );
     }
 
 
-
-    private btIndexedMesh calcIndexedMesh( ModelInstance instance ) {
+    private btIndexedMesh calcIndexedMesh ( ModelInstance instance ) {
         final Mesh mesh = instance.model.meshes.first();
 
         final short[] indices = new short[ mesh.getNumIndices() ];

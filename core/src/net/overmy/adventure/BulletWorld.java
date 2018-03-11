@@ -90,7 +90,7 @@ public final class BulletWorld {
 
     public static void addBody ( btRigidBody body ) {
         // Генерируем и задаем идентификатор физического тела
-        body.setUserValue( getNextUserValue() );
+        body.setUserValue( BulletWorld.getNextUserValue() );
 
         dynamicsWorld.addRigidBody( body );
     }
@@ -124,7 +124,7 @@ public final class BulletWorld {
 
         int minEmpty = 0;
         for ( int i = 1; i <= max; i++ ) {
-            if ( !actualUserValues.contains( i, true ) ) {
+            if ( !actualUserValues.contains( i, false ) ) {
                 minEmpty = i;
             }
         }
