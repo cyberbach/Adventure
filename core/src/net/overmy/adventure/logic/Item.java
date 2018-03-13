@@ -12,13 +12,15 @@ import net.overmy.adventure.resources.IMG;
 public enum Item {
     DIALOG( "test", "test2", 0 ),
 
-    YELLOW_STAR("Желтая звезда","Это валюта", 12),
-    BLUE_STAR("Синяя звезда","Это валюта", 11),
-    GREEN_STAR("Зеленая звезда","Это валюта", 10),
+    YELLOW_STAR("Желтая звезда","Это валюта"),
+    BLUE_STAR("Синяя звезда","Это валюта"),
+    GREEN_STAR("Зеленая звезда","Это валюта"),
 
     RED_BOTTLE("Красная бутылочка","Восстанавливает жизни", 13),
 
-    COIN("Золотая монета","Это валюта", 14),
+    COIN("Золотая монета","Это валюта"),
+    CLUB_WEAPON("Дубина","Это оружие", 1),
+    SWORD_WEAPON("Меч","Это оружие", 2),
 
     GAME_STUFF1( "Первый предмет", "Подробное описание этого первого предмета", 0 ),
     GAME_STUFF2( "Какой-то второй предмет", "Описание второго предмета", 1 ),
@@ -32,6 +34,18 @@ public enum Item {
     private String about;
     private int    imageID;
 
+    public static void setImages (){
+        Item.YELLOW_STAR.setID( IMG.YSTAR );
+        Item.BLUE_STAR.setID( IMG.BSTAR );
+        Item.GREEN_STAR.setID( IMG.GSTAR );
+        Item.COIN.setID( IMG.COIN );
+    }
+
+
+    private void setID ( IMG img ) {
+        this.imageID = img.ordinal();
+    }
+
 
     public int getImageID () {
         return imageID;
@@ -42,6 +56,12 @@ public enum Item {
         this.name = name;
         this.about = about;
         this.imageID = imageID;
+    }
+
+    Item ( String name, String about ) {
+        this.name = name;
+        this.about = about;
+        this.imageID = 0;
     }
 
 

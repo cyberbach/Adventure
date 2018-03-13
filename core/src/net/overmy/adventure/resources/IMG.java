@@ -34,6 +34,9 @@ public enum IMG {
     AIM( "aim" ),
     INGAME( "ingame" ),
 
+    JUMP_BUTTON( "jump" ),
+    HIT_BUTTON( "hit" ),
+
     // inventory
     GSTAR( "gstaricon" ),
     BSTAR( "bstaricon" ),

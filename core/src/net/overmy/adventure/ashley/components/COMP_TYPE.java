@@ -10,6 +10,7 @@ public enum COMP_TYPE {
     PICKABLE,
     LADDER,
     GROUND,
+    WEAPON,
     MYPLAYER,
     NPC,
 }

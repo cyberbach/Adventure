@@ -56,6 +56,7 @@ import net.overmy.adventure.utils.UIHelper;
 import java.util.ArrayList;
 
 public class GameScreen extends Base2DScreen {
+    private Image         hitButton     = null;
     private Image         jumpButton     = null;
     private Touchpad      touchpad       = null;
     private LoadIndicator indicatorGroup = null;
@@ -216,13 +217,13 @@ public class GameScreen extends Base2DScreen {
                 StringBuilder stringBuilder = new StringBuilder();
 
                 for ( Vector3 pushed : pushedPositions ) {
-                    stringBuilder.append( "objects.add( hoverCoin( new Vector3(" );
+                    stringBuilder.append( "objects.add( hoverCoin( " );
                     stringBuilder.append( pushed.x );
                     stringBuilder.append( "f, " );
                     stringBuilder.append( pushed.y );
                     stringBuilder.append( "f, " );
                     stringBuilder.append( pushed.z );
-                    stringBuilder.append( "f) ) );\n" );
+                    stringBuilder.append( "f) );\n" );
                 }
 
                 Gdx.app.debug( "Pushed positions", "\n" + stringBuilder.toString() );
@@ -354,7 +355,7 @@ public class GameScreen extends Base2DScreen {
         table.setWidth( Core.WIDTH - offset * 2 );
         //table.setHeight( Core.HEIGHT - offset * 4 );
 
-        for ( ItemInBagg itemInBagg : MyPlayer.getBag() ) {
+        for ( final ItemInBagg itemInBagg : MyPlayer.getBag() ) {
             Image img = itemInBagg.item.getImage( offset, offset );
             Label txt = UIHelper.Label( itemInBagg.item.getName(), FontAsset.ACTION_TEXT );
             txt.setWrap( true );
@@ -362,7 +363,18 @@ public class GameScreen extends Base2DScreen {
             Label count = UIHelper.Label( cntString, FontAsset.ACTION_TEXT );
             Label fullTxt = UIHelper.Label( itemInBagg.item.getAbout(), FontAsset.ACTION_TEXT );
             fullTxt.setWrap( true );
-            Image useImage = IMG.USABLE.getImageActor( offset, offset );
+            final Image useImage = IMG.USABLE.getImageActor( offset, offset );
+
+            useImage.addListener( new ClickListener() {
+                public void clicked ( InputEvent event, float x, float y ) {
+                    SoundAsset.Click.play();
+                    UIHelper.clickAnimation( useImage );
+
+                    MyPlayer.useItemInBag(itemInBagg);
+
+                    showInGameMenu();
+                }
+            } );
 
             float offset_half = offset / 2;
 
@@ -390,6 +402,7 @@ public class GameScreen extends Base2DScreen {
 
         gameGroup.addActor( scrollPane );
     }
+
 
 
     private void showDialogMenu ( TextBlock currentTextBlock ) {
@@ -495,10 +508,10 @@ public class GameScreen extends Base2DScreen {
         gameGroup.addActor( touchPadGroup );
 
         if ( jumpButton == null ) {
-            jumpButton = new Image( IMG.BUTTON.createSprite() );
+            jumpButton = new Image( IMG.JUMP_BUTTON.createSprite() );
             jumpButton.setSize( Core.HEIGHT * 0.24f, Core.HEIGHT * 0.24f );
-            jumpButton.setPosition( Core.WIDTH - jumpButton.getWidth() * 1.8f,
-                                    jumpButton.getHeight() * 0.4f );
+            jumpButton.setPosition( Core.WIDTH - jumpButton.getWidth() * 1.3f,
+                                    jumpButton.getHeight() * 0.9f );
             jumpButton.setOrigin( jumpButton.getWidth() / 2,
                                   jumpButton.getHeight() / 2 );
 
@@ -512,6 +525,26 @@ public class GameScreen extends Base2DScreen {
         }
         UIHelper.scaleIn( jumpButton );
         gameGroup.addActor( jumpButton );
+
+        if ( hitButton == null ) {
+            hitButton = new Image( IMG.HIT_BUTTON.createSprite() );
+            hitButton.setSize( Core.HEIGHT * 0.24f, Core.HEIGHT * 0.24f );
+            hitButton.setPosition( Core.WIDTH - hitButton.getWidth() * 2.5f,
+                                   hitButton.getHeight() * 0.4f );
+            hitButton.setOrigin( hitButton.getWidth() / 2,
+                                 hitButton.getHeight() / 2 );
+
+            hitButton.addListener( new ClickListener() {
+                @Override
+                public void clicked ( InputEvent event, float x, float y ) {
+                    MyPlayer.startAttack ();
+                    SoundAsset.Jump2.play();
+                    UIHelper.clickAnimation( hitButton );
+                }
+            } );
+        }
+        UIHelper.scaleIn( hitButton );
+        gameGroup.addActor( hitButton );
 
         float aimSize = Core.HEIGHT * 0.1f;
         Image aimImage = IMG.AIM.getImageActor( aimSize, aimSize );

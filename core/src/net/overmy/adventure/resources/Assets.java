@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.Logger;
 
+import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.Levels;
 import net.overmy.adventure.logic.TextBlock;
 
@@ -57,6 +58,11 @@ public final class Assets {
         TextureAsset.setManager( manager );
 
         TextureAsset.load();
+
+        Item.setImages();
+
+        ModelAsset.CLUB_WEAPON1.load();
+        ModelAsset.SWORD_WEAPON1.load();
     }
 
 
@@ -66,6 +72,9 @@ public final class Assets {
         SoundAsset.build( manager );
         IMG.build( manager );
         TextureAsset.build();
+
+        ModelAsset.CLUB_WEAPON1.build();
+        ModelAsset.SWORD_WEAPON1.build();
     }
 
 
@@ -76,6 +85,7 @@ public final class Assets {
         MusicAsset.unload( manager );
         SoundAsset.unload( manager );
         IMG.unload( manager );
+
 
         TextureAsset.unload();
 

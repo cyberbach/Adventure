@@ -6,6 +6,7 @@ package net.overmy.adventure.logic;
 */
 
 public enum OBJECT_TYPE {
+    WEAPON,
     LADDER,
     PICKABLE,
     HOVER_COLLECTABLE,

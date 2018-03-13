@@ -102,13 +102,6 @@ public class MyEntityListener implements EntityListener {
             physicalComponent.constructionInfo.dispose();
             physicalComponent.body.dispose();
 
-            if ( DEBUG.ENTITIES.get() ) {
-                int id = physicalComponent.body.getUserValue();
-
-                log.append( "User value = " );
-                log.append( id );
-            }
-
             if ( MyMapper.BVH_PHYSICAL.has( entity ) ) {
                 BVHPhysicalComponent bvhPhysicalComponent = MyMapper.BVH_PHYSICAL.get( entity );
 

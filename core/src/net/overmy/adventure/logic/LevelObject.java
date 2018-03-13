@@ -1,10 +1,8 @@
 package net.overmy.adventure.logic;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
 import com.badlogic.gdx.utils.Array;
@@ -15,14 +13,12 @@ import net.overmy.adventure.PhysicalBuilder;
 import net.overmy.adventure.ashley.components.AnimationComponent;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
 import net.overmy.adventure.ashley.components.CollectableComponent;
-import net.overmy.adventure.ashley.components.GroundedComponent;
 import net.overmy.adventure.ashley.components.InteractComponent;
 import net.overmy.adventure.ashley.components.LevelObjectComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.MyAnimationComponent;
 import net.overmy.adventure.ashley.components.NPCAction;
 import net.overmy.adventure.ashley.components.NPCComponent;
-import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
@@ -194,30 +190,30 @@ public class LevelObject {
                     entity.add( new AnimationComponent( modelInstanceHOVER_COLLECTABLE ) );
                 }
 
-                PhysicalComponent component = physicalBuilderHOVER_COLLECTABLE.buildPhysicalComponent();
-
-                Gdx.app.debug( "UValue",""+physicalBuilderHOVER_COLLECTABLE.getSavedBody().getUserValue() );
-
                 entity.add( new ModelComponent( modelInstanceHOVER_COLLECTABLE ) );
                 entity.add( new MyAnimationComponent() );
                 entity.add( new TypeOfComponent( COMP_TYPE.COLLECTABLE ) );
                 entity.add( new CollectableComponent( item ) );
                 entity.add( new LevelObjectComponent( this ) );
-                entity.add( component );
+                entity.add( physicalBuilderHOVER_COLLECTABLE.buildPhysicalComponent() );
                 break;
 
             case NPC:
                 ModelInstance modelInstanceNPC = modelAsset.get();
                 modelInstanceNPC.transform.setToTranslation( position );
 
-                if(modelAsset.equals( ModelAsset.HOG )){
+                if ( modelAsset.equals( ModelAsset.HOG ) ) {
                     modelInstanceNPC.materials.get( 0 ).clear();
-                    modelInstanceNPC.materials.get( 0 ).set( ColorAttribute.createDiffuse( GameColor.HOG.get() ) );
+                    modelInstanceNPC.materials.get( 0 )
+                                              .set( ColorAttribute.createDiffuse(
+                                                      GameColor.HOG.get() ) );
                 }
 
-                if(modelAsset.equals( ModelAsset.FOX )){
+                if ( modelAsset.equals( ModelAsset.FOX ) ) {
                     modelInstanceNPC.materials.get( 0 ).clear();
-                    modelInstanceNPC.materials.get( 0 ).set( ColorAttribute.createDiffuse( GameColor.FOX.get() ) );
+                    modelInstanceNPC.materials.get( 0 )
+                                              .set( ColorAttribute.createDiffuse(
+                                                      GameColor.FOX.get() ) );
                 }
 
                 PhysicalBuilder physicalBuilderNPC = new PhysicalBuilder()
@@ -261,6 +257,29 @@ public class LevelObject {
                 entity.add( new TypeOfComponent( COMP_TYPE.NPC ) );
                 entity.add( new NPCComponent( actionArray, true ) );
                 entity.add( physicalBuilderENEMY.buildPhysicalComponent() );
+                break;
+
+            case WEAPON:
+                ModelInstance modelInstanceWEAPON = modelAsset.get();
+                modelInstanceWEAPON.transform.setToTranslation( position );
+
+                PhysicalBuilder physicalBuilderWEAPON = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceWEAPON );
+
+                physicalBuilderWEAPON
+                        .defaultMotionState()
+                        .setMass( 3.0f )
+                        .hullShape()
+                        .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
+                        .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
+                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .disableDeactivation();
+
+                entity.add( new ModelComponent( modelInstanceWEAPON ) );
+                entity.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                entity.add( new InteractComponent( TYPE_OF_INTERACT.LOOT, item ) );
+                entity.add( new LevelObjectComponent( this ) );
+                entity.add( physicalBuilderWEAPON.buildPhysicalComponent() );
                 break;
         }
 

@@ -4,8 +4,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ContactListener;
+import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 
 import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.DEBUG;
@@ -133,8 +135,13 @@ public class WorldContactListener extends ContactListener {
         }
 
         boolean contact1Player = type1.equals( COMP_TYPE.MYPLAYER );
-
+        boolean contact2MyWeapon = type2.equals( COMP_TYPE.WEAPON );
         boolean contact2Ground = type2.equals( COMP_TYPE.GROUND );
+        boolean contact2Ladder = type2.equals( COMP_TYPE.LADDER );
+        boolean contact1Ground = type1.equals( COMP_TYPE.GROUND );
+        boolean contact1Ladder = type1.equals( COMP_TYPE.LADDER );
+        boolean contact2Collectable = type2.equals( COMP_TYPE.COLLECTABLE );
+
         if ( contact1Player && contact2Ground ) {
             RemoveByLevelComponent zoneComponent = MyMapper.REMOVE_BY_ZONE.get( entity02 );
 
@@ -147,12 +154,10 @@ public class WorldContactListener extends ContactListener {
             MyMapper.GROUNDED.get( entity01 ).grounded = true;
         }
 
-        boolean contact2Ladder = type2.equals( COMP_TYPE.LADDER );
         if ( contact1Player && contact2Ladder ) {
             MyPlayer.onLadder = true;
         }
 
-        boolean contact2Collectable = type2.equals( COMP_TYPE.COLLECTABLE );
         boolean outOfCamera = MyMapper.OUT_OF_CAMERA.has( entity02 );
         if ( !outOfCamera ) {
             if ( contact1Player && contact2Collectable ) {
@@ -209,6 +214,41 @@ public class WorldContactListener extends ContactListener {
                 entity02.add( new RemoveByTimeComponent( 0 ) );
             }
         }
+
+        if(contact2MyWeapon && !contact1Player){
+            if(!contact1Ladder && !contact1Ground){
+                Vector3 bubblePosition = new Vector3();
+
+                btRigidBody body = MyMapper.PHYSICAL.get( entity01 ).body;
+                body.getWorldTransform().getTranslation( bubblePosition );
+
+                for ( int i = 0; i < 5; i++ ) {
+                    float bubbleTime = MathUtils.random( 0.25f, 0.65f );
+                        /*AshleyWorld.getPooledEngine().addEntity(
+                                EntitySubs.LightBubblesEffect( bubblePosition, bubbleTime * 6 ) );*/
+
+                    Entity entity = AshleyWorld.getPooledEngine().createEntity();
+                    entity.add( DecalSubs.BubbleEffect( bubbleTime ) );
+                    entity.add( new PositionComponent( bubblePosition ) );
+                    entity.add( new RemoveByTimeComponent( bubbleTime ) );
+                    AshleyWorld.getPooledEngine().addEntity( entity );
+
+                    SoundAsset.BackSound.play();
+
+                    Matrix4 weaponTransform = MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform();
+                    Vector3 weaponPosition = new Vector3(  );
+                    weaponTransform.getTranslation( weaponPosition );
+
+                    Vector3 otherPosition = new Vector3(  );
+                    body.getWorldTransform().getTranslation( otherPosition );
+
+                    otherPosition.sub( weaponPosition ).nor().scl( 250 );
+                    body.applyCentralImpulse( otherPosition );
+                }
+            }
+
+        }
+
     }
 
 

@@ -13,6 +13,7 @@ import net.overmy.adventure.ashley.systems.AnimationSystem;
 import net.overmy.adventure.ashley.systems.DecalSystem;
 import net.overmy.adventure.ashley.systems.InteractSystem;
 import net.overmy.adventure.ashley.systems.MyAnimationSystem;
+import net.overmy.adventure.ashley.systems.MyWeaponSystem;
 import net.overmy.adventure.ashley.systems.NPCSystem;
 import net.overmy.adventure.ashley.systems.PhysicalSystem;
 import net.overmy.adventure.ashley.systems.RemoveByTimeSystem;
@@ -41,6 +42,7 @@ public final class AshleyWorld {
         pooledEngine.addSystem( new RemoveByLevelSystem() );
         pooledEngine.addSystem( new RemoveByTimeSystem() );
         pooledEngine.addSystem( new NPCSystem() );
+        pooledEngine.addSystem( new MyWeaponSystem() );
         pooledEngine.addSystem( new AnimationSystem() );
         pooledEngine.addSystem( new MyAnimationSystem() );
         pooledEngine.addSystem( new PhysicalSystem() );
@@ -63,6 +65,7 @@ public final class AshleyWorld {
         pooledEngine.removeSystem( pooledEngine.getSystem( RenderSystem.class ) );
         pooledEngine.removeSystem( pooledEngine.getSystem( DecalSystem.class ) );
         pooledEngine.removeSystem( pooledEngine.getSystem( InteractSystem.class ) );
+        pooledEngine.removeSystem( pooledEngine.getSystem( MyWeaponSystem.class ) );
 
         pooledEngine.removeAllEntities();
         pooledEngine.clearPools();

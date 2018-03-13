@@ -31,6 +31,12 @@ public enum ModelAsset {
     BSTAR( "bstar" ),
     YSTAR( "ystar" ),
 
+    CLUB_WEAPON( "weapon1" ),
+    SWORD_WEAPON( "weapon2" ),
+
+    CLUB_WEAPON1( "weapon1" ),
+    SWORD_WEAPON1( "weapon2" ),
+
     COIN( "coin" ),
     BOTTLE( "bottle" ),
     //LADDER( "ladder" ),

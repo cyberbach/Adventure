@@ -11,6 +11,7 @@ import net.overmy.adventure.ashley.components.GroundedComponent;
 import net.overmy.adventure.ashley.components.InteractComponent;
 import net.overmy.adventure.ashley.components.LevelObjectComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
+import net.overmy.adventure.ashley.components.MyWeaponComponent;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
@@ -38,12 +39,13 @@ public final class MyMapper {
     public static ComponentMapper< TypeOfComponent >        TYPE           = null;
     public static ComponentMapper< RemoveByLevelComponent > REMOVE_BY_ZONE = null;
     public static ComponentMapper< RemoveByTimeComponent >  REMOVE_BY_TIME = null;
-    public static ComponentMapper< DecalComponent >         DECAL          = null;
-    public static ComponentMapper< InteractComponent >      INTERACT       = null;
-    static        ComponentMapper< CollectableComponent >   COLLECTABLE    = null;
-    public static ComponentMapper< NPCComponent >           NPC            = null;
-    public static ComponentMapper< TextDecalComponent >     TEXT_DECAL     = null;
-    public static ComponentMapper< LevelObjectComponent >   LEVEL_OBJECT   = null;
+    public static ComponentMapper< DecalComponent >       DECAL        = null;
+    public static ComponentMapper< InteractComponent >    INTERACT     = null;
+    static        ComponentMapper< CollectableComponent > COLLECTABLE  = null;
+    public static ComponentMapper< NPCComponent >         NPC          = null;
+    public static ComponentMapper< TextDecalComponent >   TEXT_DECAL   = null;
+    public static ComponentMapper< LevelObjectComponent > LEVEL_OBJECT = null;
+    public static ComponentMapper< MyWeaponComponent >    MY_WEAPON    = null;
 
 
     private MyMapper () {
@@ -68,6 +70,7 @@ public final class MyMapper {
         NPC = ComponentMapper.getFor( NPCComponent.class );
         TEXT_DECAL = ComponentMapper.getFor( TextDecalComponent.class );
         LEVEL_OBJECT = ComponentMapper.getFor( LevelObjectComponent.class );
+        MY_WEAPON = ComponentMapper.getFor( MyWeaponComponent.class );
     }
 
 
@@ -89,5 +92,6 @@ public final class MyMapper {
         NPC = null;
         TEXT_DECAL = null;
         LEVEL_OBJECT = null;
+        MY_WEAPON = null;
     }
 }

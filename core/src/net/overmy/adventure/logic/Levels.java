@@ -29,7 +29,7 @@ public final class Levels {
         levelArray.add( new Level( "2, 1, 3", level2objects() ) );
         levelArray.add( new Level( "3, 1, 2, 4", level3objects() ) );
         levelArray.add( new Level( "4, 3, 5", level4objects() ) );
-        levelArray.add( new Level( "5, 4" ) );
+        levelArray.add( new Level( "5, 4", level5objects() ) );
         //levelArray.add( new Level( "1, 0, 2, 3" ) );
         //levelArray.add( new Level( "2, 1" ) );
         //levelArray.add( new Level( "3, 1" ) );
@@ -37,6 +37,39 @@ public final class Levels {
         // лестница повёрнута на -63.787 по Y
 
         array = new ImmutableArray< Level >( levelArray );
+    }
+
+
+    private static Array<LevelObject> level5objects () {
+        Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( hoverCoin( -196.35855f, 0.63509166f, -404.04517f) );
+        objects.add( hoverCoin( -200.1569f, 0.79951113f, -404.2366f) ) ;
+        objects.add( hoverCoin( -202.12108f, 0.8834061f, -404.47586f) ) ;
+        objects.add( hoverCoin( -205.16072f, 1.0139244f, -404.76074f) ) ;
+        objects.add( hoverCoin( -220.7892f, 0.8514296f, -404.15768f) ) ;
+        objects.add( hoverCoin( -222.1618f, 1.3190395f, -402.74313f) ) ;
+        objects.add( hoverCoin( -224.30893f, 1.6019378f, -402.92404f) ) ;
+        objects.add( hoverCoin( -225.74881f, 1.4579816f, -406.06696f) ) ;
+        objects.add( hoverCoin( -222.92104f, 1.2211504f, -407.3873f) ) ;
+        objects.add( hoverCoin( -220.82198f, 1.0568011f, -406.67303f) ) ;
+        objects.add( hoverCoin( -237.05054f, 1.2573936f, -418.9383f) ) ;
+        objects.add( hoverCoin( -236.98131f, 1.3925382f, -417.85236f) ) ;
+        objects.add( hoverCoin( -236.56612f, 1.6427253f, -416.248f) ) ;
+        objects.add( hoverCoin( -236.45978f, 1.7283484f, -415.01315f) ) ;
+        objects.add( hoverCoin( -236.5322f, 1.8263453f, -413.7054f) ) ;
+        objects.add( hoverCoin( -236.52136f, 1.9231768f, -412.4781f) ) ;
+        objects.add( hoverCoin( -253.90889f, 3.9663527f, -421.66592f) ) ;
+        objects.add( hoverCoin( -255.2404f, 4.20833f, -420.43478f) ) ;
+        objects.add( hoverCoin( -257.82523f, 4.4995456f, -417.61618f) ) ;
+        objects.add( hoverCoin( -246.25876f, 1.0632147f, -384.66144f) ) ;
+        objects.add( hoverCoin( -246.90839f, 1.1631004f, -387.29358f) ) ;
+        objects.add( hoverCoin( -239.58675f, 2.8124866f, -384.094f) ) ;
+        objects.add( hoverCoin( -236.86656f, 3.7752507f, -386.75186f) ) ;
+        objects.add( hoverCoin( -220.27519f, 3.9543576f, -392.55505f) ) ;
+        objects.add( hoverCoin( -216.68436f, 3.6974113f, -393.39847f) ) ;
+
+        return objects;
     }
 
 
@@ -228,8 +261,16 @@ public final class Levels {
                                       ModelAsset.HOG,
                                       new Vector3( 6.591744f, 2.3367777f, 5.2940097f ) ) );
 
-        objects.add( hoverCoin( -8.942f, 3.472f, 2.984f ) );
-        objects.add( hoverCoin( -8.942f, 3.366f, 4.579f ) );
+        objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
+                                      Item.CLUB_WEAPON,
+                                      ModelAsset.CLUB_WEAPON,
+                                      new Vector3( -8.942f, 3.472f, 2.984f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
+                                      Item.SWORD_WEAPON,
+                                      ModelAsset.SWORD_WEAPON,
+                                      new Vector3( -8.942f, 3.366f, 4.579f ) ) );
+
         objects.add( hoverCoin( -7.728f, 3.413f, 4.181f ) );
         objects.add( hoverCoin( -0.454f, 2.537f, 6.884f ) );
         objects.add( hoverCoin( -1.239f, 2.632f, 7.613f ) );

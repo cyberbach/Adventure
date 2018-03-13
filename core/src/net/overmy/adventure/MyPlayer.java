@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -24,6 +25,7 @@ import net.overmy.adventure.ashley.components.COMP_TYPE;
 import net.overmy.adventure.ashley.components.GroundedComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.MyPlayerComponent;
+import net.overmy.adventure.ashley.components.MyWeaponComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
@@ -47,8 +49,14 @@ public final class MyPlayer {
     private static       ModelAsset modelAsset     = null;
     private static       Entity     playerEntity   = null;
     private static       boolean    jump           = false;
+    private    static          boolean    attack         =false;
     private static       float      modelAngle     = 0.0f;
     private static       float      dustTime       = 0.1f;
+
+    public static boolean weaponInHand = false;
+
+    private static Node    rightArmNode = null;
+    private        Matrix4 armMatrix    = new Matrix4(  );
 
     private static ArrayList< ItemInBagg > bag = null;
     private static Entity entity;
@@ -66,7 +74,7 @@ public final class MyPlayer {
     public static  boolean    onLadder = false;
     private static SoundAsset walk     = null;
 
-    static btRigidBody playerBody = null;
+    private static btRigidBody playerBody = null;
 
 
     private MyPlayer () {
@@ -114,6 +122,11 @@ public final class MyPlayer {
 
         final ModelInstance modelInstance = modelAsset.get();
 
+        // Здесь достаём нод руки игрока
+        // FIXME
+        //rightArmNode = modelInstance.getNode( "arm_r03", true );
+        rightArmNode = modelInstance.getNode( "rightArm", true );
+
         modelInstance.transform.setToTranslation( new Vector3( 0, 3, 0 ) );
 
         modelInstance.materials.get( 0 ).clear();
@@ -155,6 +168,15 @@ public final class MyPlayer {
         walk.setVolume( 0.0f );
     }
 
+/*
+
+    public Matrix4 getRightArm() {
+        // set transform node of SWORD
+        armMatrix.set( rightArmNode.calculateWorldTransform() );
+        return armMatrix;
+    }
+*/
+
 
     public static void updateControls ( float deltaTime ) {
 
@@ -182,21 +204,31 @@ public final class MyPlayer {
         //body.setSpinningFriction( 0.1f );
         //body.setRollingFriction( 0.1f );
 
-        if ( jump ) {
+        if ( jump && !attack ) {
             if ( playerOnGround ) {
-                final int HIT = 2;
-                final AnimationComponent animationComponent = MyMapper.ANIMATION.get(
-                        playerEntity );
-                animationComponent.play( HIT, 2.6f );
                 final float jumpSpeed = 148.0f;
                 velocity.set( direction.x, jumpSpeed, direction.y );
                 //body.setLinearVelocity( velocity );
                 playerBody.applyCentralImpulse( velocity );
 
                 SoundAsset.Jump1.play();
+
+                final int JUMP = 3;
+                final AnimationComponent animationComponent = MyMapper.ANIMATION.get(
+                        playerEntity );
+                animationComponent.play( JUMP, 2.0f );
             }
             jump = false;
         }
+
+        if(attack){
+            final int HIT = 2;
+            final AnimationComponent animationComponent = MyMapper.ANIMATION.get(
+                    playerEntity );
+            animationComponent.play( HIT, 2.4f );
+            attack=false;
+        }
+
         playerBody.getWorldTransform( bodyTransform );
         bodyTransform.getTranslation( notFilteredPos );
         bodyTransform.idt();
@@ -244,6 +276,7 @@ public final class MyPlayer {
         final AnimationComponent animationComponent = MyMapper.ANIMATION.get( playerEntity );
         final String ID_CURRENT = animationComponent.getID();
         final String ID_ATTACK = "ATTACK";
+//        final String ID_JUMP = "JUMP";
         final String ID_RUN = "RUN";
         final String ID_IDLE = "IDLE";
 
@@ -251,10 +284,11 @@ public final class MyPlayer {
         final boolean playerInIDLE = ID_IDLE.equals( ID_CURRENT );
         final boolean playerIsRunning = ID_RUN.equals( ID_CURRENT );
         final boolean playerHitSomething = ID_ATTACK.equals( ID_CURRENT );
+//        final boolean playerJump = ID_JUMP.equals( ID_CURRENT );
 
         final int IDLE = 0;
         final int RUN = 1;
-        //final int HIT = 2;
+        final int ATTACK = 2;
 
 
         // SET sound of walking steps
@@ -327,15 +361,14 @@ public final class MyPlayer {
             }
             speed = 0.0f;
         }
-
-
-
-
     }
 
 
     public static void startJump () {
         jump = true;
+    }
+    public static void startAttack () {
+        attack = true;
     }
 
     //static Vector2 tmpDirection = new Vector2(  );
@@ -362,6 +395,7 @@ public final class MyPlayer {
         walk = null;
 
         playerBody = null;
+        rightArmNode = null;
     }
 
 
@@ -373,4 +407,84 @@ public final class MyPlayer {
     public static btRigidBody getBody () {
         return playerBody;
     }
+
+    public static void useItemInBag ( ItemInBagg item ) {
+        switch ( item.item ){
+            case CLUB_WEAPON:
+                if(weaponInHand){
+
+                }
+
+                bag.remove( item );
+
+                // create weapon in ashley
+
+                ModelInstance modelInstanceWEAPON = ModelAsset.CLUB_WEAPON1.get();
+
+                // attach only model without physics
+                //
+                //modelInstanceWEAPON.nodes.get( 0 ).attachTo( rightArmNode );
+
+                PhysicalBuilder physicalBuilderWEAPON = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceWEAPON );
+
+                physicalBuilderWEAPON
+                        .defaultMotionState()
+                        .zeroMass()
+                        .hullShape()
+                        .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                        .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
+                        .setCallbackFilter( BulletWorld.ALL_FLAG );
+
+                Entity clubWeaponEntity = AshleyWorld.getPooledEngine().createEntity();
+
+                clubWeaponEntity.add( new ModelComponent( modelInstanceWEAPON ) );
+                clubWeaponEntity.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                clubWeaponEntity.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
+                clubWeaponEntity.add( physicalBuilderWEAPON.buildPhysicalComponent() );
+
+                AshleyWorld.getPooledEngine().addEntity( clubWeaponEntity );
+                weaponInHand = true;
+                break;
+            case SWORD_WEAPON:
+                if(weaponInHand){
+
+                }
+
+                bag.remove( item );
+
+                // create weapon in ashley
+
+                ModelInstance modelInstanceSWORD_WEAPON = ModelAsset.SWORD_WEAPON1.get();
+
+                // attach only model without physics
+                //
+                //modelInstanceWEAPON.nodes.get( 0 ).attachTo( rightArmNode );
+
+                PhysicalBuilder physicalBuilderSWORD_WEAPON = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceSWORD_WEAPON );
+
+                physicalBuilderSWORD_WEAPON
+                        .defaultMotionState()
+                        .zeroMass()
+                        .hullShape()
+                        .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                        .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
+                        .setCallbackFilter( BulletWorld.ALL_FLAG );
+
+                Entity swordWeaponEntity = AshleyWorld.getPooledEngine().createEntity();
+
+                swordWeaponEntity.add( new ModelComponent( modelInstanceSWORD_WEAPON ) );
+                swordWeaponEntity.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                swordWeaponEntity.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
+                swordWeaponEntity.add( physicalBuilderSWORD_WEAPON.buildPhysicalComponent() );
+
+                AshleyWorld.getPooledEngine().addEntity( swordWeaponEntity );
+                weaponInHand = true;
+                break;
+
+        }
+
+    }
+
 }
