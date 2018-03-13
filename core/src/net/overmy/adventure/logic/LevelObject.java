@@ -3,6 +3,7 @@ package net.overmy.adventure.logic;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
@@ -25,6 +26,7 @@ import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
+import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
 
 /**
@@ -146,7 +148,6 @@ public class LevelObject {
                 break;
 
             case COLLECTABLE:
-
                 ModelInstance modelInstanceCOLLECTABLE = modelAsset.get();
                 modelInstanceCOLLECTABLE.transform.setToTranslation( position );
 
@@ -175,7 +176,6 @@ public class LevelObject {
                 break;
 
             case HOVER_COLLECTABLE:
-
                 ModelInstance modelInstanceHOVER_COLLECTABLE = modelAsset.get();
                 modelInstanceHOVER_COLLECTABLE.transform.setToTranslation( position );
 
@@ -207,9 +207,18 @@ public class LevelObject {
                 break;
 
             case NPC:
-
                 ModelInstance modelInstanceNPC = modelAsset.get();
                 modelInstanceNPC.transform.setToTranslation( position );
+
+                if(modelAsset.equals( ModelAsset.HOG )){
+                    modelInstanceNPC.materials.get( 0 ).clear();
+                    modelInstanceNPC.materials.get( 0 ).set( ColorAttribute.createDiffuse( GameColor.HOG.get() ) );
+                }
+
+                if(modelAsset.equals( ModelAsset.FOX )){
+                    modelInstanceNPC.materials.get( 0 ).clear();
+                    modelInstanceNPC.materials.get( 0 ).set( ColorAttribute.createDiffuse( GameColor.FOX.get() ) );
+                }
 
                 PhysicalBuilder physicalBuilderNPC = new PhysicalBuilder()
                         .setModelInstance( modelInstanceNPC );

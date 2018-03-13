@@ -3,7 +3,6 @@ package net.overmy.adventure.ashley;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ContactListener;
@@ -19,7 +18,6 @@ import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
-import net.overmy.adventure.resources.IMG;
 import net.overmy.adventure.resources.SoundAsset;
 
 /*
@@ -187,7 +185,7 @@ public class WorldContactListener extends ContactListener {
                         }
                     }
                 } else {
-                    SoundAsset.RobotConnect2.play();
+                    SoundAsset.PickupStar.play();
                     // show star-bubbles
                     if ( MyMapper.PHYSICAL.has( entity02 ) ) {
                         Vector3 bubblePosition = new Vector3();

@@ -48,11 +48,20 @@ public final class NPCActionQueues {
 
             case 1:
                 queue = new Array< NPCAction >();
+                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 1.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.Title, 2.0f ) );
                 queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2( 15.5f, -3.166f ), 10.0f ) );
 
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 3.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2( 3.133f, -3.166f ), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(6.204556f, 2.757347f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
+
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(6.5746555f, 7.6863904f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
+
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(6.591744f, 5.2940097f ), 10.0f) );
+
+
+
                 break;
 
             default:

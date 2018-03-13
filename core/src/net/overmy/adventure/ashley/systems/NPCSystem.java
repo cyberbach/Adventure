@@ -1,8 +1,10 @@
 package net.overmy.adventure.ashley.systems;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +12,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 
 import net.overmy.adventure.AshleyWorld;
+import net.overmy.adventure.DEBUG;
+import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.ashley.DecalSubs;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.AnimationComponent;
@@ -17,6 +21,7 @@ import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TextDecalComponent;
+import net.overmy.adventure.resources.SoundAsset;
 
 /*
       Created by Andrey Mikheev on 30.09.2017
@@ -33,12 +38,29 @@ public class NPCSystem extends IteratingSystem {
     private static float speed;
 
 
+    private static SoundAsset walk        = null;
+    private        Vector2    npcPosition = new Vector2();
+
+
     @SuppressWarnings( "unchecked" )
     public NPCSystem () {
         super( Family.all( NPCComponent.class ).get() );
     }
 
-    //Vector3 position      = new Vector3();
+
+    public void setWalkSound () {
+        walk = SoundAsset.Step1;
+        walk.playLoop();
+        walk.setVolume( 0.0f );
+    }
+
+
+    public void disableWalkSound () {
+        if ( walk != null ) {
+            walk.stop();
+        }
+        walk = null;
+    }
 
 
     @Override
@@ -54,6 +76,16 @@ public class NPCSystem extends IteratingSystem {
 
             npcComponent.time = npcComponent.actionArray.get( action ).durationTime;
             npcComponent.currentAction = action;
+
+            if ( DEBUG.NPC_ACTIONS.get() ) {
+                Gdx.app.debug( "currentAction", "" +
+                                                npcComponent.actionArray.get( action ).id +
+                                                " time " + npcComponent.time );
+                if ( npcComponent.actionArray.get( action ).targetPosition != null ) {
+                    Gdx.app.debug( "targetPosition",
+                                   "" + npcComponent.actionArray.get( action ).targetPosition );
+                }
+            }
         }
 
         final btRigidBody body = MyMapper.PHYSICAL.get( entity ).body;
@@ -63,29 +95,42 @@ public class NPCSystem extends IteratingSystem {
         switch ( npcComponent.actionArray.get( action ).id ) {
             case WAIT:
                 direction.set( 0, 0 );
+                walk.setVolume( 0.0f );
                 break;
 
             case MOVE:
+                npcPosition.set( notFilteredPos.x, notFilteredPos.z );
                 direction.set( npcComponent.actionArray.get( action ).targetPosition.x,
                                npcComponent.actionArray.get( action ).targetPosition.y );
-                direction.sub( notFilteredPos.x, notFilteredPos.z );
+                direction.sub( npcPosition );
 
                 if ( direction.len() <= 0.1f ) {
                     direction.set( 0, 0 );
                     npcComponent.time = 0;
+                    walk.setVolume( 0.0f );
                 } else {
                     direction.nor();
+
+                    final float MAX_LISTEN_DISTANCE = 20.0f;
+
+                    // Set NPC step-sounds by distance of player
+                    Vector2 playerPosition = MyPlayer.getPosition();
+                    float distance = MAX_LISTEN_DISTANCE - npcPosition.sub( playerPosition ).len();
+                    float walkVolume =
+                            distance < MAX_LISTEN_DISTANCE ? distance / MAX_LISTEN_DISTANCE : 0;
+                    walk.setVolume( walkVolume );
                 }
 
                 break;
 
             case SAY:
+                direction.set( 0, 0 );
+                walk.setVolume( 0.0f );
                 entity.add( new TextDecalComponent( npcComponent.actionArray.get( action ).text,
                                                     npcComponent.actionArray.get(
                                                             action ).durationTime ) );
-                npcComponent.currentAction = action + 1;
+                //npcComponent.currentAction = action + 1;
                 npcComponent.time = 0;
-                direction.set( 0, 0 );
                 break;
         }
 
@@ -175,5 +220,16 @@ public class NPCSystem extends IteratingSystem {
 
     public void move ( float x, float y ) {
         direction.set( x, y );
+    }
+
+
+    @Override
+    public void removedFromEngine ( Engine engine ) {
+        super.removedFromEngine( engine );
+
+        if ( walk != null ) {
+            walk.stop();
+        }
+        walk = null;
     }
 }

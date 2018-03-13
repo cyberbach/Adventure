@@ -18,59 +18,73 @@ import com.badlogic.gdx.audio.Sound;
 
 public enum SoundAsset {
 
-    Coin( "coin.wav" ),
+    Coin( "coin.ogg" ),
 
     BackSound( "click3.wav" ),
     Click( "click4.wav" ),
 
-    BoxDrop( "drop.mp3" ),
-    RobotDrop( "robotdrop.mp3" ),
-    RobotTalk( "talk01.mp3" ),
-    RobotConnect1( "connect01.mp3" ),
-    RobotConnect2( "connect02.mp3" ),
-    RobotConnect3( "connect03.mp3" ),
+    Step1( "step1.ogg" ),
+    Step2( "step2.ogg" ),
+    Step3( "step3.ogg" ),
 
-    Yell1( "yell1.mp3" ),
-    Yell2( "yell2.mp3" ),
-    Yell3( "yell3.mp3" ),
-    Yell4( "yell4.mp3" ),
-    Yell5( "yell5.mp3" ),;
+    Jump1( "jump.ogg" ),
+    Jump2( "jump2.ogg" ),
+
+    PickupStar( "connect02.mp3" ),
+
+    //BoxDrop( "drop.mp3" ),
+    //RobotDrop( "robotdrop.mp3" ),
+    //RobotTalk( "talk01.mp3" ),
+    //RobotConnect1( "connect01.mp3" ),
+    //PickupStar( "connect02.mp3" ),
+    //RobotConnect3( "connect03.mp3" ),
+
+    //Yell1( "yell1.mp3" ),
+    //Yell2( "yell2.mp3" ),
+    //Yell3( "yell3.mp3" ),
+    //Yell4( "yell4.mp3" ),
+    //Yell5( "yell5.mp3" ),
+    ;
 
     private final String path;
     private Sound snd = null;
+    private long  id  = 0;
 
 
+    public void setVolume ( float volume ) {
+        this.snd.setVolume( id, volume );
+    }
 
-    SoundAsset( final String path ) {
+
+    SoundAsset ( final String path ) {
         String DEFAULT_DIR = "sound/";
         this.path = DEFAULT_DIR + path;
     }
 
 
-
-    public static void stopAll() {
-        for ( int i = 0; i < SoundAsset.values().length; i++ )
+    public static void stopAll () {
+        for ( int i = 0; i < SoundAsset.values().length; i++ ) {
             SoundAsset.values()[ i ].snd.stop();
+        }
     }
 
 
-
-    public static void build( final AssetManager manager ) {
-        for ( int i = 0; i < SoundAsset.values().length; i++ )
+    public static void build ( final AssetManager manager ) {
+        for ( int i = 0; i < SoundAsset.values().length; i++ ) {
             SoundAsset.values()[ i ].snd = manager.get( SoundAsset.values()[ i ].path,
                                                         Sound.class );
+        }
     }
 
 
-
-    public static void load( final AssetManager manager ) {
-        for ( int i = 0; i < SoundAsset.values().length; i++ )
+    public static void load ( final AssetManager manager ) {
+        for ( int i = 0; i < SoundAsset.values().length; i++ ) {
             manager.load( SoundAsset.values()[ i ].path, Sound.class );
+        }
     }
 
 
-
-    public static void unload( final AssetManager manager ) {
+    public static void unload ( final AssetManager manager ) {
         for ( int i = 0; i < SoundAsset.values().length; i++ ) {
 
             if ( SoundAsset.values()[ i ].snd != null ) {
@@ -83,32 +97,42 @@ public enum SoundAsset {
     }
 
 
-
-    public void play() {
+    public void playLoop (  ) {
         float soundVolume = (float) Settings.SOUND.getInteger() / 100.0f;
         if ( soundVolume > 0.0f ) {
-            long id = this.snd.play();
-            this.snd.setLooping( id, false );
-            this.snd.setVolume( id, soundVolume );
-        }
-        else {
-            stopAll();
+            id = this.snd.loop(soundVolume, 1, 1);
+            //this.snd.setLooping( id, true );
+            //this.snd.setVolume( id, soundVolume );
         }
     }
 
 
+    public void play () {
+        float soundVolume = (float) Settings.SOUND.getInteger() / 100.0f;
+        if ( soundVolume > 0.0f ) {
+            id = this.snd.play();
+            this.snd.setLooping( id, false );
+            this.snd.setVolume( id, soundVolume );
+        }
+    }
 
-    public void stop() {
-        this.snd.stop();
+
+    public void stop () {
+        if ( id != 0 ) {
+            this.snd.stop();
+        }
     }
 
     // HARDCODE!
     //public Music get() { return Gdx.audio.newMusic( Gdx.files.internal( this.path ) ); }
 
 
-
-    public Sound get() {
+    public Sound get () {
         return this.snd;
     }
 
+
+    public void setPitch ( float pitch ) {
+        this.snd.setPitch( id, pitch );
+    }
 }

@@ -17,6 +17,7 @@ import net.overmy.adventure.MyGdxGame;
 import net.overmy.adventure.MyRender;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.Settings;
+import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextAsset;
 import net.overmy.adventure.utils.UIHelper;
 
@@ -70,6 +71,7 @@ public class MenuScreen extends Base2DScreen {
         startLabel.addListener( new ClickListener() {
             @Override
             public void clicked ( InputEvent event, float x, float y ) {
+                SoundAsset.Click.play();
                 UIHelper.clickAnimation( startLabel );
                 UIHelper.rollOut( startLabel, labelPosX, label1PosY, leftPosX, label1PosY );
                 UIHelper.rollOut( settingsLabel, labelPosX, label2PosY, leftPosX, label2PosY );
@@ -81,6 +83,7 @@ public class MenuScreen extends Base2DScreen {
         settingsLabel.addListener( new ClickListener() {
             @Override
             public void clicked ( InputEvent event, float x, float y ) {
+                SoundAsset.Click.play();
                 UIHelper.rollOut( settingsLabel, labelPosX, label2PosY, leftPosX, label2PosY );
                 UIHelper.rollOut( startLabel, labelPosX, label1PosY, leftPosX, label1PosY );
                 showSettingsGUI();
@@ -147,6 +150,7 @@ public class MenuScreen extends Base2DScreen {
 
     @Override
     public void backButton () {
+        SoundAsset.BackSound.play();
         if ( guiType == GUI_TYPE.OPTIONS ) {
             showIntroGUI();
             UIHelper.rollOut( optionsGroup, 0, 0, -Core.WIDTH, 0 );

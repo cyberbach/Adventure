@@ -47,12 +47,6 @@ public class MyEntityListener implements EntityListener {
         }
         if ( MyMapper.PHYSICAL.has( entity ) ) {
             BulletWorld.addBody( MyMapper.PHYSICAL.get( entity ).body );
-
-            if ( DEBUG.ENTITIES.get() ) {
-                int id = MyMapper.PHYSICAL.get( entity ).body.getUserValue();
-                log.append( "User value = " );
-                log.append( id );
-            }
         }
 
         if ( DEBUG.ENTITIES.get() ) {

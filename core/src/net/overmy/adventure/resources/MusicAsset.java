@@ -18,10 +18,8 @@ import com.badlogic.gdx.math.MathUtils;
  */
 
 public enum MusicAsset {
-
-    TRACK1( "loop1" ),
-    TRACK2( "loop2" ),
-    TRACK3( "loop3" ),;
+    WINDFILTER( "windfilter" ),
+    ;
 
     private static Music currentTrack = null;
     private final String path;

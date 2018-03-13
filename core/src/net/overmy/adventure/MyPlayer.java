@@ -9,6 +9,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -29,12 +30,15 @@ import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
+import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.Settings;
+import net.overmy.adventure.resources.SoundAsset;
 
 import java.util.ArrayList;
 
 public final class MyPlayer {
+    private static final Vector2    v2Position     = new Vector2();
     private static final Vector2    direction      = new Vector2();
     private static final Vector3    velocity       = new Vector3();
     private static       Matrix4    bodyTransform  = new Matrix4();
@@ -47,6 +51,7 @@ public final class MyPlayer {
     private static       float      dustTime       = 0.1f;
 
     private static ArrayList< ItemInBagg > bag = null;
+    private static Entity entity;
 
 
     public static ArrayList< ItemInBagg > getBag () {
@@ -58,7 +63,10 @@ public final class MyPlayer {
 
     private static float speed;
 
-    public static boolean onLadder = false;
+    public static  boolean    onLadder = false;
+    private static SoundAsset walk     = null;
+
+    static btRigidBody playerBody = null;
 
 
     private MyPlayer () {
@@ -106,14 +114,11 @@ public final class MyPlayer {
 
         final ModelInstance modelInstance = modelAsset.get();
 
-/*
-        TextureRegion region = IMG.BUTTON.getRegion();
+        modelInstance.transform.setToTranslation( new Vector3( 0, 3, 0 ) );
 
         modelInstance.materials.get( 0 ).clear();
-        modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
-*/
-
-        modelInstance.transform.setToTranslation( new Vector3( 0, 3, 0 ) );
+        //modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
+        modelInstance.materials.get( 0 ).set( ColorAttribute.createDiffuse( GameColor.SQUIREL.get() ) );
 
         final PhysicalBuilder physicalBuilder = new PhysicalBuilder()
                 .setModelInstance( modelInstance )
@@ -128,6 +133,8 @@ public final class MyPlayer {
 
         PhysicalComponent physicalComponent = physicalBuilder.buildPhysicalComponent();
         physicalComponent.body.setFriction( 0.1f );
+
+        playerBody = physicalComponent.body;
         //body.setSpinningFriction( 0.1f );
         //body.setRollingFriction( 0.1f );
 
@@ -142,69 +149,17 @@ public final class MyPlayer {
         AshleyWorld.getPooledEngine().addEntity( playerEntity );
 
         onLadder = false;
+
+        walk = SoundAsset.Step3;
+        walk.playLoop(  );
+        walk.setVolume( 0.0f );
     }
-
-
-    public static void dispose () {
-        if ( bag != null ) {
-            bag.clear();
-        }
-        bag = null;
-
-        modelAsset = null;
-        playerEntity = null;
-    }
-
-
-    private static ArrayList< Vector3 > pushedPositions = new ArrayList< Vector3 >();
 
 
     public static void updateControls ( float deltaTime ) {
-        if ( Gdx.input.isKeyJustPressed( Input.Keys.ENTER ) ) {
-            btRigidBody body = MyMapper.PHYSICAL.get( playerEntity ).body;
-            Matrix4 thisTransform = body.getWorldTransform();
-            Vector3 thisPosition = new Vector3();
-            thisTransform.getTranslation( thisPosition );
-            pushedPositions.add( thisPosition );
-        }
 
-        if(Gdx.input.isKeyJustPressed( Input.Keys.SPACE )){
+        if ( Gdx.input.isKeyJustPressed( Input.Keys.SPACE ) ) {
             startJump();
-        }
-
-        // GameMaster Mode
-        // add star
-        if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_1 ) ) {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for ( Vector3 pushed : pushedPositions ) {
-                stringBuilder.append( "objects.add( hoverCoin( new Vector3(" );
-                stringBuilder.append( pushed.x );
-                stringBuilder.append( "f, " );
-                stringBuilder.append( pushed.y );
-                stringBuilder.append( "f, " );
-                stringBuilder.append( pushed.z );
-                stringBuilder.append( "f) ) );\n" );
-            }
-
-            Gdx.app.debug( "Pushed positions", "\n" + stringBuilder.toString() );
-        }
-        // add move point
-        if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_3 ) ) {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for ( Vector3 pushed : pushedPositions ) {
-                //queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2( 15.5f, -3.166f ), 10.0f ) );
-                stringBuilder.append( "queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(" );
-                stringBuilder.append( pushed.x );
-                stringBuilder.append( "f, " );
-                //stringBuilder.append( pushed.y );
-                //stringBuilder.append( "f, " );
-                stringBuilder.append( pushed.z );
-                stringBuilder.append( "f), 10.0f ) );\n" );
-            }
-
-            Gdx.app.debug( "Pushed positions", "\n" + stringBuilder.toString() );
         }
 
         updateAnimation( deltaTime );
@@ -212,16 +167,15 @@ public final class MyPlayer {
         final boolean playerOnGround = MyMapper.GROUNDED.get( playerEntity ).grounded;
 
         // Двигаем или останавливаем физическое тело
-        final btRigidBody body = MyMapper.PHYSICAL.get( playerEntity ).body;
         velocity.set( direction.x, 0, direction.y );
         velocity.scl( speed );
         if ( !onLadder ) {
-            velocity.add( 0, body.getLinearVelocity().y, 0 );
+            velocity.add( 0, playerBody.getLinearVelocity().y, 0 );
         } else {
             velocity.add( 0, -moveY * 5, 0 );
         }
 
-        body.setLinearVelocity( velocity );
+        playerBody.setLinearVelocity( velocity );
         //body.applyCentralImpulse( velocity );
 
         //body.setFriction( 0.1f );
@@ -237,16 +191,18 @@ public final class MyPlayer {
                 final float jumpSpeed = 148.0f;
                 velocity.set( direction.x, jumpSpeed, direction.y );
                 //body.setLinearVelocity( velocity );
-                body.applyCentralImpulse( velocity );
+                playerBody.applyCentralImpulse( velocity );
+
+                SoundAsset.Jump1.play();
             }
             jump = false;
         }
-        body.getWorldTransform( bodyTransform );
+        playerBody.getWorldTransform( bodyTransform );
         bodyTransform.getTranslation( notFilteredPos );
         bodyTransform.idt();
         bodyTransform.setToTranslation( notFilteredPos );
         bodyTransform.rotate( Vector3.Y, modelAngle );
-        body.proceedToTransform( bodyTransform );
+        playerBody.proceedToTransform( bodyTransform );
 
 /*        // Применяем физику к рендер-модели
         final float ALPHA = 0.45f;
@@ -278,6 +234,8 @@ public final class MyPlayer {
         //MyMapper.MODEL.get( playerEntity ).modelInstance.transform.set( bodyTransform );
 
         MyCamera.setCameraPosition( notFilteredPos );
+
+        v2Position.set( notFilteredPos.x, notFilteredPos.z );
     }
 
 
@@ -297,6 +255,20 @@ public final class MyPlayer {
         final int IDLE = 0;
         final int RUN = 1;
         //final int HIT = 2;
+
+
+        // SET sound of walking steps
+        if ( !onLadder ) {
+            if ( direction.len() > 0 && playerOnGround ) {
+                float walkSpeed = (2.5f + direction.len() * 0.5f)/4;
+                walk.setVolume( 1.0f );
+                walk.setPitch( walkSpeed );
+            } else {
+                walk.setVolume( 0.0f );
+            }
+        } else {
+            walk.setVolume( 0.0f );
+        }
 
         final float directionLen = direction.len();
         // Мы управляем персонажем джойстиком
@@ -318,7 +290,7 @@ public final class MyPlayer {
                     animationComponent.play( IDLE, 2.0f );
                 }
             }
-            final float runSpeed = 54.0f;
+            final float runSpeed = 4.0f;
             speed = ( runSpeed + 1 ) * directionLen;
 
             direction.nor();
@@ -355,6 +327,10 @@ public final class MyPlayer {
             }
             speed = 0.0f;
         }
+
+
+
+
     }
 
 
@@ -368,5 +344,33 @@ public final class MyPlayer {
     public static void move ( float x, float y ) {
         direction.set( x, y );
         moveY = y;
+    }
+
+
+    public static void dispose () {
+        if ( bag != null ) {
+            bag.clear();
+        }
+        bag = null;
+
+        modelAsset = null;
+        playerEntity = null;
+
+        if ( walk != null ) {
+            walk.stop();
+        }
+        walk = null;
+
+        playerBody = null;
+    }
+
+
+    public static Vector2 getPosition () {
+        return v2Position;
+    }
+
+
+    public static btRigidBody getBody () {
+        return playerBody;
     }
 }

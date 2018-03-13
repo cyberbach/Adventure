@@ -6,9 +6,13 @@ package net.overmy.adventure.screen;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -28,9 +32,11 @@ import net.overmy.adventure.MyCamera;
 import net.overmy.adventure.MyGdxGame;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.MyRender;
+import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.ashley.systems.DecalSystem;
 import net.overmy.adventure.ashley.systems.InteractSystem;
+import net.overmy.adventure.ashley.systems.NPCSystem;
 import net.overmy.adventure.ashley.systems.RenderSystem;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
@@ -39,11 +45,15 @@ import net.overmy.adventure.logic.TextBlock;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.IMG;
+import net.overmy.adventure.resources.MusicAsset;
+import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextDialogAsset;
 import net.overmy.adventure.resources.TextureAsset;
 import net.overmy.adventure.utils.GFXHelper;
 import net.overmy.adventure.utils.LoadIndicator;
 import net.overmy.adventure.utils.UIHelper;
+
+import java.util.ArrayList;
 
 public class GameScreen extends Base2DScreen {
     private Image         jumpButton     = null;
@@ -74,9 +84,14 @@ public class GameScreen extends Base2DScreen {
     private Texture     bg;
 
 
+    private static ArrayList< Vector3 > pushedPositions = new ArrayList< Vector3 >();
+
+
     @Override
     public void show () {
         super.show();
+
+        AshleyWorld.getPooledEngine().getSystem( NPCSystem.class ).setWalkSound();
 
         interactSystem = AshleyWorld.getPooledEngine().getSystem( InteractSystem.class );
 
@@ -90,6 +105,57 @@ public class GameScreen extends Base2DScreen {
         MyRender.getStage().addActor( gameGroup = new Group() );
 
         showGameGUI();
+
+        // Music environment
+        MusicAsset.WINDFILTER.play( true );
+
+        if ( DEBUG.GAME_MASTER_MODE.get() ) {
+           /* float inGameIconSize = Core.HEIGHT * 0.16f;
+
+            final Image showIngameMenuImage2 = IMG.INGAME.getImageActor( inGameIconSize, inGameIconSize );
+            showIngameMenuImage2.setPosition( Core.WIDTH - inGameIconSize*2, Core.HEIGHT - inGameIconSize );
+            MyRender.getStage().addActor( showIngameMenuImage2 );
+
+            showIngameMenuImage2.addListener( new ClickListener() {
+                public void clicked ( InputEvent event, float x, float y ) {
+                    SoundAsset.Step1.get().loop( 1, 1, 1 );
+
+                    UIHelper.clickAnimation( showIngameMenuImage2 );
+                }
+            } );
+
+            final Image showIngameMenuImage3 = IMG.INGAME.getImageActor( inGameIconSize, inGameIconSize );
+            showIngameMenuImage3.setPosition( Core.WIDTH - inGameIconSize*3, Core.HEIGHT - inGameIconSize );
+            MyRender.getStage().addActor( showIngameMenuImage3 );
+
+            showIngameMenuImage3.addListener( new ClickListener() {
+                public void clicked ( InputEvent event, float x, float y ) {
+                    SoundAsset.Step2.get().loop( 1, 1, 1 );
+
+                    UIHelper.clickAnimation( showIngameMenuImage3 );
+                }
+            } );
+
+            final Image showIngameMenuImage4 = IMG.INGAME.getImageActor( inGameIconSize, inGameIconSize );
+            showIngameMenuImage4.setPosition( Core.WIDTH - inGameIconSize*4, Core.HEIGHT - inGameIconSize );
+            MyRender.getStage().addActor( showIngameMenuImage4 );
+
+            showIngameMenuImage4.addListener( new ClickListener() {
+                public void clicked ( InputEvent event, float x, float y ) {
+                    SoundAsset.Step3.get().loop( 1, 1, 1 );
+
+                    UIHelper.clickAnimation( showIngameMenuImage4 );
+                }
+            } );
+*/
+
+            String helpString = "ENTER - push position\n1- show bonus pos\n2-show NPC move pos";
+            Label ingameMenuTitle = UIHelper.Label( helpString, FontAsset.LOCATION_TEXT );
+            float fontOffset = ingameMenuTitle.getHeight() * 1.5f;
+            ingameMenuTitle.setPosition( fontOffset,
+                                         Core.HEIGHT - fontOffset );
+            MyRender.getStage().addActor( ingameMenuTitle );
+        }
     }
 
 
@@ -128,6 +194,58 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void update ( float delta ) {
         super.update( delta );
+
+        if ( DEBUG.GAME_MASTER_MODE.get() ) {
+            if ( Gdx.input.isKeyJustPressed( Input.Keys.ENTER ) ) {
+                Matrix4 thisTransform = MyPlayer.getBody().getWorldTransform();
+                Vector3 thisPosition = new Vector3();
+                thisTransform.getTranslation( thisPosition );
+                pushedPositions.add( thisPosition );
+
+                Gdx.app.debug( "Position " + thisPosition, "pushed" );
+            }
+
+            if ( Gdx.input.isKeyJustPressed( Input.Keys.BACKSPACE ) ) {
+                pushedPositions.clear();
+                Gdx.app.debug( "Positions ", "cleared" );
+            }
+
+            // GameMaster Mode
+            // add star
+            if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_1 ) ) {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                for ( Vector3 pushed : pushedPositions ) {
+                    stringBuilder.append( "objects.add( hoverCoin( new Vector3(" );
+                    stringBuilder.append( pushed.x );
+                    stringBuilder.append( "f, " );
+                    stringBuilder.append( pushed.y );
+                    stringBuilder.append( "f, " );
+                    stringBuilder.append( pushed.z );
+                    stringBuilder.append( "f) ) );\n" );
+                }
+
+                Gdx.app.debug( "Pushed positions", "\n" + stringBuilder.toString() );
+            }
+            // add move point
+            if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_2 ) ) {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                for ( Vector3 pushed : pushedPositions ) {
+                    //queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2( 15.5f, -3.166f ), 10.0f ) );
+                    stringBuilder.append(
+                            "queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(" );
+                    stringBuilder.append( pushed.x );
+                    stringBuilder.append( "f, " );
+                    //stringBuilder.append( pushed.y );
+                    //stringBuilder.append( "f, " );
+                    stringBuilder.append( pushed.z );
+                    stringBuilder.append( "f), 10.0f ) );\n" );
+                }
+
+                Gdx.app.debug( "Pushed positions", "\n" + stringBuilder.toString() );
+            }
+        }
 
         DynamicLevels.update( delta );
         MyPlayer.updateControls( delta );
@@ -204,12 +322,17 @@ public class GameScreen extends Base2DScreen {
 
         gameGroup.clear();
 
-        final Image showIngameMenuImage = IMG.BUTTON.getImageActor( 64, 64 );
-        showIngameMenuImage.setPosition( Core.WIDTH - 64, Core.HEIGHT - 64 );
+        float inGameIconSize = Core.HEIGHT * 0.1f;
+
+        final Image showIngameMenuImage = IMG.INGAME.getImageActor( inGameIconSize,
+                                                                    inGameIconSize );
+        showIngameMenuImage.setPosition( Core.WIDTH - inGameIconSize,
+                                         Core.HEIGHT - inGameIconSize );
         gameGroup.addActor( showIngameMenuImage );
 
         showIngameMenuImage.addListener( new ClickListener() {
             public void clicked ( InputEvent event, float x, float y ) {
+                SoundAsset.BackSound.play();
                 UIHelper.clickAnimation( showIngameMenuImage );
                 showGameGUI();
             }
@@ -408,12 +531,17 @@ public class GameScreen extends Base2DScreen {
 
         gameGroup.addActor( interactGroup );
 
-        final Image showIngameMenuImage = IMG.BUTTON.getImageActor( aimSize, aimSize );
-        showIngameMenuImage.setPosition( Core.WIDTH - aimSize, Core.HEIGHT - aimSize );
+        float inGameIconSize = Core.HEIGHT * 0.16f;
+
+        final Image showIngameMenuImage = IMG.INGAME.getImageActor( inGameIconSize,
+                                                                    inGameIconSize );
+        showIngameMenuImage.setPosition( Core.WIDTH - inGameIconSize,
+                                         Core.HEIGHT - inGameIconSize );
         gameGroup.addActor( showIngameMenuImage );
 
         showIngameMenuImage.addListener( new ClickListener() {
             public void clicked ( InputEvent event, float x, float y ) {
+                SoundAsset.Click.play();
                 UIHelper.clickAnimation( showIngameMenuImage );
                 showInGameMenu();
             }
@@ -442,6 +570,7 @@ public class GameScreen extends Base2DScreen {
 
     @Override
     public void backButton () {
+        SoundAsset.BackSound.play();
         if ( guiType == GUI_TYPE.INGAME_MENU ) {
             showGameGUI();
         } else {
@@ -455,6 +584,10 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void dispose () {
         super.dispose();
+
+        AshleyWorld.getPooledEngine().getSystem( NPCSystem.class ).disableWalkSound();
+
+        MusicAsset.WINDFILTER.stop();
 
         jumpButton = null;
         touchpad = null;

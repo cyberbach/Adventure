@@ -28,7 +28,8 @@ public final class Levels {
         levelArray.add( new Level( "1, 0, 2, 3", level1objects() ) );
         levelArray.add( new Level( "2, 1, 3", level2objects() ) );
         levelArray.add( new Level( "3, 1, 2, 4", level3objects() ) );
-        levelArray.add( new Level( "4, 3", level4objects() ) );
+        levelArray.add( new Level( "4, 3, 5", level4objects() ) );
+        levelArray.add( new Level( "5, 4" ) );
         //levelArray.add( new Level( "1, 0, 2, 3" ) );
         //levelArray.add( new Level( "2, 1" ) );
         //levelArray.add( new Level( "3, 1" ) );
@@ -219,6 +220,13 @@ public final class Levels {
 
     private static Array< LevelObject > level0objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        //new Vector3(6.591744f, 2.3367777f, 5.2940097f)
+        objects.add( new LevelObject( OBJECT_TYPE.NPC,
+                                      TextBlock.DialogNPC1,
+                                      NPCActionQueues.get( 1 ),
+                                      ModelAsset.HOG,
+                                      new Vector3( 6.591744f, 2.3367777f, 5.2940097f ) ) );
 
         objects.add( hoverCoin( -8.942f, 3.472f, 2.984f ) );
         objects.add( hoverCoin( -8.942f, 3.366f, 4.579f ) );
