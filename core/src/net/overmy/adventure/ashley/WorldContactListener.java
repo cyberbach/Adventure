@@ -138,6 +138,7 @@ public class WorldContactListener extends ContactListener {
         boolean contact2MyWeapon = type2.equals( COMP_TYPE.WEAPON );
         boolean contact2Ground = type2.equals( COMP_TYPE.GROUND );
         boolean contact2Ladder = type2.equals( COMP_TYPE.LADDER );
+        boolean contact1DestroyableBox = type1.equals( COMP_TYPE.DESTROYABLE_BOX );
         boolean contact1Ground = type1.equals( COMP_TYPE.GROUND );
         boolean contact1Ladder = type1.equals( COMP_TYPE.LADDER );
         boolean contact2Collectable = type2.equals( COMP_TYPE.COLLECTABLE );
@@ -170,44 +171,37 @@ public class WorldContactListener extends ContactListener {
                     MyMapper.LEVEL_OBJECT.get( entity02 ).levelObject.useEntity();
                 }
 
-                if ( item.equals( Item.COIN ) ) {
-                    SoundAsset.Coin.play();
+                if ( MyMapper.PHYSICAL.has( entity02 ) ) {
+                    Vector3 bubblePosition = new Vector3();
+                    MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
+                                                          .getTranslation( bubblePosition );
+                    for ( int i = 0; i < 5; i++ ) {
+                        float bubbleTime = MathUtils.random( 0.25f, 0.65f );
 
-                    if ( MyMapper.PHYSICAL.has( entity02 ) ) {
-                        Vector3 bubblePosition = new Vector3();
-                        MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
-                                                              .getTranslation( bubblePosition );
-                        for ( int i = 0; i < 5; i++ ) {
-                            float bubbleTime = MathUtils.random( 0.25f, 0.65f );
-                        /*AshleyWorld.getPooledEngine().addEntity(
-                                EntitySubs.LightBubblesEffect( bubblePosition, bubbleTime * 6 ) );*/
-
-                            Entity entity = AshleyWorld.getPooledEngine().createEntity();
-                            entity.add( DecalSubs.BubbleCoinEffect( bubbleTime ) );
-                            entity.add( new PositionComponent( bubblePosition ) );
-                            entity.add( new RemoveByTimeComponent( bubbleTime ) );
-                            AshleyWorld.getPooledEngine().addEntity( entity );
-                        }
+                        Entity entity = AshleyWorld.getPooledEngine().createEntity();
+                        entity.add( DecalSubs.BubbleCoinEffect( bubbleTime ) );
+                        entity.add( new PositionComponent( bubblePosition ) );
+                        entity.add( new RemoveByTimeComponent( bubbleTime ) );
+                        AshleyWorld.getPooledEngine().addEntity( entity );
                     }
-                } else {
-                    SoundAsset.PickupStar.play();
-                    // show star-bubbles
-                    if ( MyMapper.PHYSICAL.has( entity02 ) ) {
-                        Vector3 bubblePosition = new Vector3();
-                        MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
-                                                              .getTranslation( bubblePosition );
-                        for ( int i = 0; i < 5; i++ ) {
-                            float bubbleTime = MathUtils.random( 0.25f, 0.65f );
-                        /*AshleyWorld.getPooledEngine().addEntity(
-                                EntitySubs.LightBubblesEffect( bubblePosition, bubbleTime * 6 ) );*/
+                }
 
-                            Entity entity = AshleyWorld.getPooledEngine().createEntity();
-                            entity.add( DecalSubs.BubbleEffect( bubbleTime ) );
-                            entity.add( new PositionComponent( bubblePosition ) );
-                            entity.add( new RemoveByTimeComponent( bubbleTime ) );
-                            AshleyWorld.getPooledEngine().addEntity( entity );
-                        }
-                    }
+                switch ( item ) {
+                    case COIN:
+                        SoundAsset.Coin.play();
+                        break;
+                    case RED_BOTTLE:
+                        SoundAsset.Collect5.play();
+                        break;
+                    case GREEN_STAR:
+                        SoundAsset.PickupStar.play();
+                        break;
+                    case BLUE_STAR:
+                        SoundAsset.PickupStar.play();
+                        break;
+                    case YELLOW_STAR:
+                        SoundAsset.PickupStar.play();
+                        break;
                 }
 
                 entity02.add( new OutOfCameraComponent() );
@@ -215,12 +209,12 @@ public class WorldContactListener extends ContactListener {
             }
         }
 
-        if(contact2MyWeapon && !contact1Player){
-            if(!contact1Ladder && !contact1Ground){
-                Vector3 bubblePosition = new Vector3();
+        if ( contact2MyWeapon && !contact1Player ) {
+            if ( !contact1Ladder && !contact1Ground ) {
+                Vector3 fxPosition = new Vector3();
 
-                btRigidBody body = MyMapper.PHYSICAL.get( entity01 ).body;
-                body.getWorldTransform().getTranslation( bubblePosition );
+                btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
+                body1.getWorldTransform().getTranslation( fxPosition );
 
                 for ( int i = 0; i < 5; i++ ) {
                     float bubbleTime = MathUtils.random( 0.25f, 0.65f );
@@ -229,26 +223,31 @@ public class WorldContactListener extends ContactListener {
 
                     Entity entity = AshleyWorld.getPooledEngine().createEntity();
                     entity.add( DecalSubs.BubbleEffect( bubbleTime ) );
-                    entity.add( new PositionComponent( bubblePosition ) );
+                    entity.add( new PositionComponent( fxPosition ) );
                     entity.add( new RemoveByTimeComponent( bubbleTime ) );
                     AshleyWorld.getPooledEngine().addEntity( entity );
 
-                    SoundAsset.BackSound.play();
+                    SoundAsset.HIT.play();
 
-                    Matrix4 weaponTransform = MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform();
-                    Vector3 weaponPosition = new Vector3(  );
+                    Matrix4 weaponTransform = MyMapper.PHYSICAL.get(
+                            entity02 ).body.getWorldTransform();
+                    Vector3 weaponPosition = new Vector3();
                     weaponTransform.getTranslation( weaponPosition );
 
-                    Vector3 otherPosition = new Vector3(  );
-                    body.getWorldTransform().getTranslation( otherPosition );
+                    Vector3 otherPosition = new Vector3();
+                    body1.getWorldTransform().getTranslation( otherPosition );
 
-                    otherPosition.sub( weaponPosition ).nor().scl( 250 );
-                    body.applyCentralImpulse( otherPosition );
+                    otherPosition.sub( weaponPosition ).nor().scl( 50 );
+                    body1.applyCentralImpulse( otherPosition );
+
+                    if ( MyMapper.LIFE.has( entity01 ) ) {
+                        if ( contact1DestroyableBox ) {
+                            MyMapper.LIFE.get( entity01 ).life -= 60;
+                        }
+                    }
                 }
             }
-
         }
-
     }
 
 
@@ -268,6 +267,7 @@ public class WorldContactListener extends ContactListener {
         boolean contact2Ground = type2.equals( COMP_TYPE.GROUND );
         if ( contact1Player && contact2Ground ) {
             MyMapper.GROUNDED.get( entity01 ).grounded = false;
+            DynamicLevels.reload();
             DynamicLevels.reload();
             //return;
         }

@@ -254,12 +254,16 @@ public final class Levels {
     private static Array< LevelObject > level0objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
-        //new Vector3(6.591744f, 2.3367777f, 5.2940097f)
         objects.add( new LevelObject( OBJECT_TYPE.NPC,
                                       TextBlock.DialogNPC1,
                                       NPCActionQueues.get( 1 ),
                                       ModelAsset.HOG,
                                       new Vector3( 6.591744f, 2.3367777f, 5.2940097f ) ) );
+        objects.add( new LevelObject( OBJECT_TYPE.NPC,
+                                      null,
+                                      NPCActionQueues.get( 2 ),
+                                      ModelAsset.FOX,
+                                      new Vector3( 3.591744f, 5.3367777f, 7.2940097f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.CLUB_WEAPON,
@@ -278,14 +282,41 @@ public final class Levels {
         objects.add( hoverCoin( -1.313f, 2.415f, 9.890f ) );
 
         objects.add( hoverCoin( 9.7f, 2.198f, 3.923f ) );
-        objects.add( hoverCoin( 9.887f, 1.947f, 7.158f ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.BOX,
+                                      ModelAsset.BOX,
+                                      new Vector3( 9.887f, 1.947f, 7.158f ) ) );
 
         objects.add( hoverCoin( -2.556f, 1.039f, -10.971f ) );
         objects.add( hoverCoin( -2.879f, 1.125f, -9.551f ) );
         objects.add( hoverCoin( -2.66f, 1.01f, -6.196f ) );
         objects.add( hoverCoin( 5.713f, 3.484f, -9.442f ) );
         objects.add( hoverCoin( -13.723f, 0.958f, -4.923f ) );
-        objects.add( hoverCoin( -14.363f, 0.610f, -5.439f ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.BOX,
+                                      Item.RED_BOTTLE,
+                                      ModelAsset.BOX,
+                                      new Vector3( -14.363f, 0.610f, -5.439f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.BOX,
+                                      Item.RED_BOTTLE,
+                                      ModelAsset.BOX,
+                                      new Vector3( -13.363f, 5.610f, -5.439f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.BOX,
+                                      Item.RED_BOTTLE,
+                                      ModelAsset.BOX,
+                                      new Vector3( -12.363f, 6.610f, -5.439f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.BOX,
+                                      Item.RED_BOTTLE,
+                                      ModelAsset.BOX,
+                                      new Vector3( -15.363f, 7.610f, -5.439f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.BOX,
+                                      Item.RED_BOTTLE,
+                                      ModelAsset.BOX,
+                                      new Vector3( -16.363f, 8.610f, -5.439f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.HOVER_COLLECTABLE,
                                       Item.GREEN_STAR,

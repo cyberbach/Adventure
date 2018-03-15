@@ -37,6 +37,8 @@ public enum IMG {
     JUMP_BUTTON( "jump" ),
     HIT_BUTTON( "hit" ),
 
+    BOX_TEXTURE( "box" ),
+
     // inventory
     GSTAR( "gstaricon" ),
     BSTAR( "bstaricon" ),

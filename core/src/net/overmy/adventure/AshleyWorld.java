@@ -12,6 +12,7 @@ import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.systems.AnimationSystem;
 import net.overmy.adventure.ashley.systems.DecalSystem;
 import net.overmy.adventure.ashley.systems.InteractSystem;
+import net.overmy.adventure.ashley.systems.LifeSystem;
 import net.overmy.adventure.ashley.systems.MyAnimationSystem;
 import net.overmy.adventure.ashley.systems.MyWeaponSystem;
 import net.overmy.adventure.ashley.systems.NPCSystem;
@@ -39,6 +40,7 @@ public final class AshleyWorld {
 
         MyMapper.init();
 
+        pooledEngine.addSystem( new LifeSystem() );
         pooledEngine.addSystem( new RemoveByLevelSystem() );
         pooledEngine.addSystem( new RemoveByTimeSystem() );
         pooledEngine.addSystem( new NPCSystem() );
@@ -56,6 +58,7 @@ public final class AshleyWorld {
 
 
     protected static void dispose () {
+        pooledEngine.removeSystem( pooledEngine.getSystem( LifeSystem.class ) );
         pooledEngine.removeSystem( pooledEngine.getSystem( RemoveByLevelSystem.class ) );
         pooledEngine.removeSystem( pooledEngine.getSystem( RemoveByTimeSystem.class ) );
         pooledEngine.removeSystem( pooledEngine.getSystem( NPCSystem.class ) );

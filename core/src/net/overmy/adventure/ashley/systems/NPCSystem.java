@@ -29,17 +29,21 @@ import net.overmy.adventure.resources.SoundAsset;
  */
 
 public class NPCSystem extends IteratingSystem {
+/*
+
     private static final Vector2 direction      = new Vector2();
     private static final Vector3 velocity       = new Vector3();
     private static       Matrix4 bodyTransform  = new Matrix4();
     private static final Vector3 notFilteredPos = new Vector3();
     private static       float   modelAngle     = 0.0f;
     private static       float   dustTime       = 0.1f;
-    private static float speed;
+
+
+    private        Vector2    npcPosition = new Vector2();
+*/
 
 
     private static SoundAsset walk        = null;
-    private        Vector2    npcPosition = new Vector2();
 
 
     @SuppressWarnings( "unchecked" )
@@ -65,8 +69,17 @@ public class NPCSystem extends IteratingSystem {
 
     @Override
     protected void processEntity ( Entity entity, float delta ) {
+        final Vector2 direction      = new Vector2();
+        final Vector3 velocity       = new Vector3();
+        Matrix4 bodyTransform  = new Matrix4();
+        final Vector3 notFilteredPos = new Vector3();
+        float   modelAngle     = 0.0f;
+        float   dustTime       = 0.1f;
+        Vector2    npcPosition = new Vector2();
+
         NPCComponent npcComponent = MyMapper.NPC.get( entity );
         int action = npcComponent.currentAction;
+
         npcComponent.time -= delta;
         if ( npcComponent.time < 0 ) {
             action++;
@@ -129,7 +142,6 @@ public class NPCSystem extends IteratingSystem {
                 entity.add( new TextDecalComponent( npcComponent.actionArray.get( action ).text,
                                                     npcComponent.actionArray.get(
                                                             action ).durationTime ) );
-                //npcComponent.currentAction = action + 1;
                 npcComponent.time = 0;
                 break;
         }
@@ -148,6 +160,7 @@ public class NPCSystem extends IteratingSystem {
 
         final float directionLen = direction.len();
         // Мы управляем персонажем джойстиком
+        float speed;
         if ( directionLen != 0 ) {
             // Персонаж на земле
             final float animationSpeed = 3.0f + 2.0f * directionLen;
@@ -160,8 +173,6 @@ public class NPCSystem extends IteratingSystem {
             final float runSpeed = 6.0f;
             speed = ( runSpeed + 1 ) * directionLen;
 
-            //direction.rotate( -MyCamera.getCameraAngle() );
-
             // Сохраняем угол для поворота модели
             modelAngle = 90 - direction.angle();
 
@@ -170,9 +181,6 @@ public class NPCSystem extends IteratingSystem {
             dustTime -= delta;
             if ( dustTime < 0 ) {
                 dustTime = MathUtils.random( 0.05f, 0.25f );
-                //notFilteredPos.sub( 0, 0.5f, 0 );
-                /*AshleyWorld.getPooledEngine().addEntity(
-                        EntitySubs.LightDustEffect( notFilteredPos, dustTime * 6 ) );*/
 
                 Entity entity2 = AshleyWorld.getPooledEngine().createEntity();
                 entity2.add( DecalSubs.LightDustEffect( dustTime * 6 ) );
@@ -200,26 +208,10 @@ public class NPCSystem extends IteratingSystem {
 
         body.setLinearVelocity( velocity );
 
-        //bodyTransform.getTranslation( notFilteredPos );
         bodyTransform.idt();
         bodyTransform.setToTranslation( notFilteredPos );
         bodyTransform.rotate( Vector3.Y, modelAngle );
         body.setWorldTransform( bodyTransform );
-
-/*
-        // Применяем физику к рендер-модели
-        final float ALPHA = 0.45f;
-        filteredPos.x = filteredPos.x + ALPHA * ( notFilteredPos.x - filteredPos.x );
-        filteredPos.y = filteredPos.y + ALPHA * ( notFilteredPos.y - filteredPos.y );
-        filteredPos.z = filteredPos.z + ALPHA * ( notFilteredPos.z - filteredPos.z );
-        bodyTransform.setToTranslation( filteredPos );
-        bodyTransform.rotate( Vector3.Y, modelAngle );
-*/
-    }
-
-
-    public void move ( float x, float y ) {
-        direction.set( x, y );
     }
 
 

@@ -6,147 +6,154 @@ filter: Nearest,Nearest
 repeat: none
 aim
   rotate: false
-  xy: 200, 120
+  xy: 396, 244
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 autorepair
   rotate: false
-  xy: 326, 312
+  xy: 392, 310
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 bottle
   rotate: false
-  xy: 200, 54
+  xy: 264, 178
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+box
+  rotate: false
+  xy: 2, 120
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 bstaricon
   rotate: false
-  xy: 326, 444
+  xy: 260, 442
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 260, 312
+  xy: 326, 442
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 cog
   rotate: false
-  xy: 134, 120
+  xy: 326, 310
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 coin
   rotate: false
-  xy: 332, 180
+  xy: 134, 118
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 conversation
   rotate: false
-  xy: 260, 444
+  xy: 332, 112
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 files
   rotate: false
-  xy: 392, 444
+  xy: 326, 376
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 fullfolder
   rotate: false
-  xy: 392, 378
+  xy: 68, 54
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 gstaricon
   rotate: false
-  xy: 134, 186
+  xy: 260, 376
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 hit
   rotate: false
-  xy: 260, 378
+  xy: 398, 112
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 horizontalflip
   rotate: false
-  xy: 134, 54
+  xy: 266, 112
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 ingame
   rotate: false
-  xy: 2, 186
+  xy: 200, 112
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 jump
   rotate: false
-  xy: 68, 120
+  xy: 132, 184
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 openbook
   rotate: false
-  xy: 326, 378
+  xy: 260, 310
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 openfolder
   rotate: false
-  xy: 68, 54
+  xy: 392, 442
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 pad
   rotate: false
-  xy: 2, 252
+  xy: 2, 250
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 particle
   rotate: false
-  xy: 2, 20
+  xy: 458, 474
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 shoppingcart
   rotate: false
-  xy: 266, 180
+  xy: 330, 178
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 soundoff
   rotate: false
-  xy: 392, 312
+  xy: 198, 184
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -160,56 +167,56 @@ soundon
   index: -1
 speaker
   rotate: false
-  xy: 332, 246
+  xy: 392, 376
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 speakeroff
   rotate: false
-  xy: 266, 114
+  xy: 396, 178
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 starpart
   rotate: false
-  xy: 458, 476
+  xy: 2, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 talk
   rotate: false
-  xy: 266, 246
+  xy: 264, 244
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 tri1
   rotate: false
-  xy: 398, 294
+  xy: 36, 36
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 tri2
   rotate: false
-  xy: 266, 96
+  xy: 266, 94
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 tri3
   rotate: false
-  xy: 36, 36
+  xy: 458, 456
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 tri4
   rotate: false
-  xy: 332, 162
+  xy: 492, 490
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -223,21 +230,21 @@ tri5
   index: -1
 usable
   rotate: false
-  xy: 200, 186
+  xy: 134, 52
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 verticalflip
   rotate: false
-  xy: 2, 120
+  xy: 200, 46
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 ystaricon
   rotate: false
-  xy: 68, 186
+  xy: 330, 244
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

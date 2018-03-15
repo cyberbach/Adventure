@@ -222,13 +222,13 @@ public class PhysicalBuilder {
     }
 
 
-/*
+
 
     public PhysicalBuilder setStartImpulse( Vector3 impulse ) {
         startImpulse = new Vector3( impulse );
         return this;
     }
-*/
+
 
 
 /*

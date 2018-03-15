@@ -7,8 +7,8 @@ package net.overmy.adventure;
 
 public enum DEBUG {
     SETTINGS( false ),
-    CONTACTS( true ),
-    ENTITIES( false ),
+    CONTACTS( false ),
+    ENTITIES( true ),
     DECAL_ENTITIES( false ),
     PHYSICAL_MESH( false ),
     SHOW_FPS( false ),

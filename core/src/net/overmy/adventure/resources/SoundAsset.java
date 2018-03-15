@@ -27,10 +27,19 @@ public enum SoundAsset {
     Step2( "step2.ogg" ),
     Step3( "step3.ogg" ),
 
+    Collect1( "collect1.ogg" ),
+    Collect3( "collect3.ogg" ),
+    Collect4( "collect4.ogg" ),
+    Collect5( "collect5.ogg" ),
+    PickupStar( "collect6.ogg" ),
+    Collect7( "collect7.ogg" ),
+
+    BoxCrush( "cratesmash.ogg" ),
+
     Jump1( "jump.ogg" ),
     Jump2( "jump2.ogg" ),
 
-    PickupStar( "connect02.mp3" ),
+    HIT( "hit.ogg" ),
 
     //BoxDrop( "drop.mp3" ),
     //RobotDrop( "robotdrop.mp3" ),

@@ -27,11 +27,12 @@ public final class BulletWorld {
     public final static int GROUND_FLAG      = 1 << 9;
     public final static int PLAYER_FLAG      = 1 << 10;
     public final static int MYWEAPON_FLAG      = 1 << 11;
-    //public final static int SHOT_FLAG        = 1 << 11;
     public final static int LADDER_FLAG      = 1 << 12;
     public final static int PICKABLE_FLAG    = 1 << 13;
     public final static int COLLECTABLE_FLAG = 1 << 14;
     public final static int NPC_FLAG         = 1 << 15;
+    public final static int DESTROYABLE_FLAG = 1 << 16;
+    public final static int PART_FLAG = 1 << 17;
 
     public final static int ALL_FLAG = GROUND_FLAG | //SHOT_FLAG |
                                        PLAYER_FLAG | LADDER_FLAG | MYWEAPON_FLAG |

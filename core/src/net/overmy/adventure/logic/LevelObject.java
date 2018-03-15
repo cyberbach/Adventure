@@ -1,20 +1,26 @@
 package net.overmy.adventure.logic;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
 import com.badlogic.gdx.utils.Array;
 
 import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.BulletWorld;
+import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.PhysicalBuilder;
 import net.overmy.adventure.ashley.components.AnimationComponent;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
 import net.overmy.adventure.ashley.components.CollectableComponent;
+import net.overmy.adventure.ashley.components.ContainerComponent;
 import net.overmy.adventure.ashley.components.InteractComponent;
 import net.overmy.adventure.ashley.components.LevelObjectComponent;
+import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.MyAnimationComponent;
 import net.overmy.adventure.ashley.components.NPCAction;
@@ -23,6 +29,7 @@ import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
 import net.overmy.adventure.resources.GameColor;
+import net.overmy.adventure.resources.IMG;
 import net.overmy.adventure.resources.ModelAsset;
 
 /**
@@ -80,6 +87,8 @@ public class LevelObject {
         used = true;
         entity.add( new RemoveByTimeComponent( 0 ) );
         entity = null;
+
+        Gdx.app.debug( "useEntity", "" + item );
     }
 
 
@@ -94,6 +103,10 @@ public class LevelObject {
     void buildEntity () {
         if ( entity != null || used ) {
             return;
+        }
+
+        if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+            Gdx.app.debug( "Need to build OBJECT", "" + this.type );
         }
 
         // Из свича вынесены вверх одинаковые кусочки для всех вариантов сборки
@@ -129,7 +142,7 @@ public class LevelObject {
                         .hullShape()
                         .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                         .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG );
+                        .setCallbackFilter( BulletWorld.GROUND_FLAG | BulletWorld.PLAYER_FLAG );
 
                 if ( modelInstancePICKABLE.animations.size > 0 ) {
                     entity.add( new AnimationComponent( modelInstancePICKABLE ) );
@@ -141,6 +154,39 @@ public class LevelObject {
                 entity.add( new InteractComponent( TYPE_OF_INTERACT.LOOT, item ) );
                 entity.add( new LevelObjectComponent( this ) );
                 entity.add( physicalBuilderPICKABLE.buildPhysicalComponent() );
+                break;
+
+            case BOX:
+                ModelInstance modelInstanceBOX = modelAsset.get();
+                modelInstanceBOX.transform.setToTranslation( position );
+
+                TextureRegion region = IMG.BOX_TEXTURE.getRegion();
+                modelInstanceBOX.materials.get( 0 ).clear();
+                modelInstanceBOX.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
+
+                PhysicalBuilder physicalBuilderBOX = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceBOX );
+
+                physicalBuilderBOX
+                        .defaultMotionState()
+                        .setMass( 20.0f )
+                        .hullShape()
+                        .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
+                        .setCallbackFlag( BulletWorld.DESTROYABLE_FLAG )
+                        .setCallbackFilter( BulletWorld.MYWEAPON_FLAG );
+
+                if ( modelInstanceBOX.animations.size > 0 ) {
+                    entity.add( new AnimationComponent( modelInstanceBOX ) );
+                }
+
+                entity.add( new LifeComponent() );
+                if ( item != null ) {
+                    entity.add( new ContainerComponent( item ) );
+                }
+                entity.add( new ModelComponent( modelInstanceBOX ) );
+                entity.add( new TypeOfComponent( COMP_TYPE.DESTROYABLE_BOX ) );
+                entity.add( new LevelObjectComponent( this ) );
+                entity.add( physicalBuilderBOX.buildPhysicalComponent() );
                 break;
 
             case COLLECTABLE:
@@ -156,7 +202,7 @@ public class LevelObject {
                         .boxShape()
                         .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                         .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG );
+                        .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
                 entity.add( new ModelComponent( modelInstanceCOLLECTABLE ) );
 
@@ -184,7 +230,7 @@ public class LevelObject {
                         .boxShape()
                         .setCollisionFlag( CollisionFlags.CF_KINEMATIC_OBJECT )
                         .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG );
+                        .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
                 if ( modelInstanceHOVER_COLLECTABLE.animations.size > 0 ) {
                     entity.add( new AnimationComponent( modelInstanceHOVER_COLLECTABLE ) );
@@ -225,13 +271,17 @@ public class LevelObject {
                         .capsuleShape()
                         .setCollisionFlag( CollisionFlags.CF_CHARACTER_OBJECT )
                         .setCallbackFlag( BulletWorld.NPC_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .setCallbackFilter(
+                                BulletWorld.GROUND_FLAG | BulletWorld.NPC_FLAG | BulletWorld.PLAYER_FLAG )
                         .disableDeactivation();
 
                 entity.add( new ModelComponent( modelInstanceNPC ) );
                 entity.add( new AnimationComponent( modelInstanceNPC ) );
-                entity.add( new InteractComponent( TYPE_OF_INTERACT.TALK, textBlock ) );
+                if ( textBlock != null ) {
+                    entity.add( new InteractComponent( TYPE_OF_INTERACT.TALK, textBlock ) );
+                }
                 entity.add( new TypeOfComponent( COMP_TYPE.NPC ) );
+                Gdx.app.debug( "", "" + actionArray );
                 entity.add( new NPCComponent( actionArray ) );
                 entity.add( physicalBuilderNPC.buildPhysicalComponent() );
                 break;
@@ -249,7 +299,8 @@ public class LevelObject {
                         .capsuleShape()
                         .setCollisionFlag( CollisionFlags.CF_CHARACTER_OBJECT )
                         .setCallbackFlag( BulletWorld.NPC_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .setCallbackFilter(
+                                BulletWorld.GROUND_FLAG | BulletWorld.NPC_FLAG | BulletWorld.PLAYER_FLAG )
                         .disableDeactivation();
 
                 entity.add( new ModelComponent( modelInstanceENEMY ) );
@@ -272,7 +323,7 @@ public class LevelObject {
                         .hullShape()
                         .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .setCallbackFilter( BulletWorld.NPC_FLAG )
                         .disableDeactivation();
 
                 entity.add( new ModelComponent( modelInstanceWEAPON ) );

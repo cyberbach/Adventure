@@ -37,6 +37,9 @@ public enum ModelAsset {
     CLUB_WEAPON1( "weapon1" ),
     SWORD_WEAPON1( "weapon2" ),
 
+    GIFT( "gift" ),
+    BOX_PART( "boxpart" ),
+    BOX( "box" ),
     COIN( "coin" ),
     BOTTLE( "bottle" ),
     //LADDER( "ladder" ),
@@ -111,6 +114,10 @@ public enum ModelAsset {
 
     public void load () {
         if ( !manager.isLoaded( name ) ) {
+            if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+                Gdx.app.debug( "Need to load", "" + this );
+            }
+
             if ( DEBUG.SHOW_MODEL_INFO.get() ) {
                 Gdx.app.debug( "" + this.name, "load" );
             }

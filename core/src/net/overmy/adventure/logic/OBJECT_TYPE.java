@@ -12,5 +12,6 @@ public enum OBJECT_TYPE {
     HOVER_COLLECTABLE,
     COLLECTABLE,
     NPC,
-    ENEMY
+    ENEMY,
+    BOX
 }

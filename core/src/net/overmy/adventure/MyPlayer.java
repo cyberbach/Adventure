@@ -408,25 +408,33 @@ public final class MyPlayer {
         return playerBody;
     }
 
+    static ModelInstance modelInstanceWeaponInHand = null;
+    static Entity        entityWeaponInHand        = null;
+    static ItemInBagg    itemInHand                = null;
+
     public static void useItemInBag ( ItemInBagg item ) {
         switch ( item.item ){
             case CLUB_WEAPON:
                 if(weaponInHand){
-
+                    modelInstanceWeaponInHand.nodes.get( 0 ).detach();
+                    entityWeaponInHand.add( new RemoveByTimeComponent(0) );
+                    entityWeaponInHand=null;
+                    bag.add( itemInHand );
                 }
 
+                itemInHand = item;
                 bag.remove( item );
 
                 // create weapon in ashley
 
-                ModelInstance modelInstanceWEAPON = ModelAsset.CLUB_WEAPON1.get();
+                modelInstanceWeaponInHand = ModelAsset.CLUB_WEAPON1.get();
 
                 // attach only model without physics
                 //
-                //modelInstanceWEAPON.nodes.get( 0 ).attachTo( rightArmNode );
+                modelInstanceWeaponInHand.nodes.get( 0 ).attachTo( rightArmNode );
 
                 PhysicalBuilder physicalBuilderWEAPON = new PhysicalBuilder()
-                        .setModelInstance( modelInstanceWEAPON );
+                        .setModelInstance( modelInstanceWeaponInHand );
 
                 physicalBuilderWEAPON
                         .defaultMotionState()
@@ -436,35 +444,45 @@ public final class MyPlayer {
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
                         .setCallbackFilter( BulletWorld.ALL_FLAG );
 
-                Entity clubWeaponEntity = AshleyWorld.getPooledEngine().createEntity();
+                entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
 
-                clubWeaponEntity.add( new ModelComponent( modelInstanceWEAPON ) );
-                clubWeaponEntity.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
-                clubWeaponEntity.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
-                clubWeaponEntity.add( physicalBuilderWEAPON.buildPhysicalComponent() );
+                entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
+                entityWeaponInHand.add( physicalBuilderWEAPON.buildPhysicalComponent() );
 
-                AshleyWorld.getPooledEngine().addEntity( clubWeaponEntity );
+                AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
                 weaponInHand = true;
+
+                Gdx.app.debug( "Bag",""+bag );
+                Gdx.app.debug( "item",""+item );
+
                 break;
+
             case SWORD_WEAPON:
                 if(weaponInHand){
+                    modelInstanceWeaponInHand.nodes.get( 0 ).detach();
 
+                    entityWeaponInHand.add( new RemoveByTimeComponent(0) );
+                    entityWeaponInHand=null;
+
+                    bag.add( itemInHand );
                 }
 
+                itemInHand = item;
                 bag.remove( item );
 
                 // create weapon in ashley
 
-                ModelInstance modelInstanceSWORD_WEAPON = ModelAsset.SWORD_WEAPON1.get();
+                modelInstanceWeaponInHand = ModelAsset.SWORD_WEAPON1.get();
 
                 // attach only model without physics
                 //
-                //modelInstanceWEAPON.nodes.get( 0 ).attachTo( rightArmNode );
+                modelInstanceWeaponInHand.nodes.get( 0 ).attachTo( rightArmNode );
 
-                PhysicalBuilder physicalBuilderSWORD_WEAPON = new PhysicalBuilder()
-                        .setModelInstance( modelInstanceSWORD_WEAPON );
+                PhysicalBuilder physicalBuilderSwordWEAPON = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceWeaponInHand );
 
-                physicalBuilderSWORD_WEAPON
+                physicalBuilderSwordWEAPON
                         .defaultMotionState()
                         .zeroMass()
                         .hullShape()
@@ -472,15 +490,17 @@ public final class MyPlayer {
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
                         .setCallbackFilter( BulletWorld.ALL_FLAG );
 
-                Entity swordWeaponEntity = AshleyWorld.getPooledEngine().createEntity();
+                entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
 
-                swordWeaponEntity.add( new ModelComponent( modelInstanceSWORD_WEAPON ) );
-                swordWeaponEntity.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
-                swordWeaponEntity.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
-                swordWeaponEntity.add( physicalBuilderSWORD_WEAPON.buildPhysicalComponent() );
+                entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
+                entityWeaponInHand.add( physicalBuilderSwordWEAPON.buildPhysicalComponent() );
 
-                AshleyWorld.getPooledEngine().addEntity( swordWeaponEntity );
+                AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
                 weaponInHand = true;
+
+                Gdx.app.debug( "Bag",""+bag );
+                Gdx.app.debug( "item",""+item );
                 break;
 
         }

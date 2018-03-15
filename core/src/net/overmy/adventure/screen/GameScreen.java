@@ -370,6 +370,8 @@ public class GameScreen extends Base2DScreen {
                     SoundAsset.Click.play();
                     UIHelper.clickAnimation( useImage );
 
+
+
                     MyPlayer.useItemInBag(itemInBagg);
 
                     showInGameMenu();

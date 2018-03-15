@@ -61,6 +61,8 @@ public final class Assets {
 
         Item.setImages();
 
+        ModelAsset.GIFT.load();
+        ModelAsset.BOX_PART.load();
         ModelAsset.CLUB_WEAPON1.load();
         ModelAsset.SWORD_WEAPON1.load();
     }
@@ -73,6 +75,8 @@ public final class Assets {
         IMG.build( manager );
         TextureAsset.build();
 
+        ModelAsset.GIFT.build();
+        ModelAsset.BOX_PART.build();
         ModelAsset.CLUB_WEAPON1.build();
         ModelAsset.SWORD_WEAPON1.build();
     }

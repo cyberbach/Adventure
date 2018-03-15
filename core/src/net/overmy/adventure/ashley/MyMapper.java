@@ -6,10 +6,12 @@ import net.overmy.adventure.ashley.components.AnimationComponent;
 import net.overmy.adventure.ashley.components.BVHPhysicalComponent;
 import net.overmy.adventure.ashley.components.BoundingComponent;
 import net.overmy.adventure.ashley.components.CollectableComponent;
+import net.overmy.adventure.ashley.components.ContainerComponent;
 import net.overmy.adventure.ashley.components.DecalComponent;
 import net.overmy.adventure.ashley.components.GroundedComponent;
 import net.overmy.adventure.ashley.components.InteractComponent;
 import net.overmy.adventure.ashley.components.LevelObjectComponent;
+import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.MyWeaponComponent;
 import net.overmy.adventure.ashley.components.NPCComponent;
@@ -46,6 +48,8 @@ public final class MyMapper {
     public static ComponentMapper< TextDecalComponent >   TEXT_DECAL   = null;
     public static ComponentMapper< LevelObjectComponent > LEVEL_OBJECT = null;
     public static ComponentMapper< MyWeaponComponent >    MY_WEAPON    = null;
+    public static ComponentMapper< LifeComponent >        LIFE         = null;
+    public static ComponentMapper< ContainerComponent >   CONTAINER    = null;
 
 
     private MyMapper () {
@@ -71,6 +75,8 @@ public final class MyMapper {
         TEXT_DECAL = ComponentMapper.getFor( TextDecalComponent.class );
         LEVEL_OBJECT = ComponentMapper.getFor( LevelObjectComponent.class );
         MY_WEAPON = ComponentMapper.getFor( MyWeaponComponent.class );
+        LIFE = ComponentMapper.getFor( LifeComponent.class );
+        CONTAINER = ComponentMapper.getFor( ContainerComponent.class );
     }
 
 
@@ -93,5 +99,7 @@ public final class MyMapper {
         TEXT_DECAL = null;
         LEVEL_OBJECT = null;
         MY_WEAPON = null;
+        LIFE = null;
+        CONTAINER = null;
     }
 }

@@ -18,11 +18,11 @@ public final class NPCActionQueues {
 
 
     public static Array< NPCAction > get ( int id ) {
-        Array< NPCAction > queue = null;
+        //Array< NPCAction > queue = null;
 
         switch ( id ) {
             case 0:
-                queue = new Array< NPCAction >();
+                Array< NPCAction > queue = new Array< NPCAction >();
 
                 queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 7.0f ) );
 
@@ -44,30 +44,34 @@ public final class NPCActionQueues {
                 queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-12.451161f, -161.43076f), 10.0f ) );
                 queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 4.0f ) );
 
-                break;
+                return queue;
 
             case 1:
-                queue = new Array< NPCAction >();
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 1.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.Title, 2.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
+                Array< NPCAction > queue1 = new Array< NPCAction >();
+                queue1.add( new NPCAction( NPC_ACTION_ID.WAIT, 1.0f ) );
+                queue1.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.Title, 2.0f ) );
+                queue1.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
 
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(6.204556f, 2.757347f), 10.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
+                queue1.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(6.204556f, 2.757347f), 10.0f ) );
+                queue1.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
 
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(6.5746555f, 7.6863904f), 10.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
+                queue1.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(6.5746555f, 7.6863904f), 10.0f ) );
+                queue1.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
 
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(6.591744f, 5.2940097f ), 10.0f) );
+                queue1.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(6.591744f, 5.2940097f ), 10.0f) );
+                return queue1;
+
+            case 2:
+                Array< NPCAction > queue2 = new Array< NPCAction >();
+                queue2.add( new NPCAction( NPC_ACTION_ID.WAIT, 1.0f ) );
 
 
 
-                break;
+                return queue2;
 
             default:
                 return null;
         }
 
-        return queue;
     }
 }

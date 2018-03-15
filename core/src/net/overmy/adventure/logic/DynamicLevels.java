@@ -27,6 +27,7 @@ import net.overmy.adventure.resources.ModelAsset;
 public final class DynamicLevels {
 
     private static RemoveByLevelSystem removeByLevelSystem = null;
+    private static boolean unloaded = true;
 
     private static Array< Integer > currentConnections  = null;
     private static Array< Integer > previousConnections = null;
@@ -105,7 +106,9 @@ public final class DynamicLevels {
 
 
     private static void removeNotMatchModels () {
+        //Gdx.app.debug( "############ removeNotMatchModels","" );
         for ( int p : previousConnections ) {
+            //Gdx.app.debug( "try",""+p );
             if ( !isZoneInCurrentConnections( p ) ) {
                 if ( DEBUG.DYNAMIC_LEVELS.get() ) {
                     Gdx.app.debug( "Need to unload", "" + ModelAsset.values()[ p ] );
@@ -127,6 +130,7 @@ public final class DynamicLevels {
                 }
             }
         }
+        unloaded = true;
     }
 
 
@@ -147,7 +151,7 @@ public final class DynamicLevels {
                 for ( LevelObject object : level.objects ) {
                     if ( object.modelAsset == models ) {
                         if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                            Gdx.app.debug( "" + models, "in current set" );
+                            //Gdx.app.debug( "" + models, "in current set" );
                         }
                         return true;
                     }
@@ -156,23 +160,26 @@ public final class DynamicLevels {
         }
 
         if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-            Gdx.app.debug( "" + models, "NOT in current set" );
+            //Gdx.app.debug( "" + models, "NOT in current set" );
         }
         return false;
     }
 
 
     private static void updateCurrentConnections () {
-        currentConnections.clear();
+        if(unloaded) {
+            unloaded = false;
+            currentConnections.clear();
 
-        Level level = Levels.get( current );
-        assert level.connections != null;
-        for ( int i : level.connections ) {
-            currentConnections.add( i );
-        }
+            Level level = Levels.get( current );
+            assert level.connections != null;
+            for ( int i : level.connections ) {
+                currentConnections.add( i );
+            }
 
-        if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-            Gdx.app.debug( "Current connections updated", "" + currentConnections );
+            if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+                Gdx.app.debug( "Current connections updated", "" + currentConnections );
+            }
         }
     }
 
@@ -188,19 +195,11 @@ public final class DynamicLevels {
             // Загружаем текущий уровень
             ModelAsset.values()[ i ].load();
 
-            if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                Gdx.app.debug( "Need to load", "" + ModelAsset.values()[ i ] );
-            }
-
             Level level = Levels.get( i );
             if ( level.objects != null ) {
                 // Загружаем объекты на уровне
                 for ( LevelObject object : level.objects ) {
                     object.modelAsset.load();
-
-                    if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                        Gdx.app.debug( "Need to load", "" + object.modelAsset );
-                    }
                 }
             }
         }
@@ -214,21 +213,16 @@ public final class DynamicLevels {
             ModelAsset thisLevel = ModelAsset.values()[ i ];
             thisLevel.build();
 
-            if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                Gdx.app.debug( "Need to build LEVEL", "" + thisLevel );
-            }
-
             if ( level.entity == null ) {
+                if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+                    Gdx.app.debug( "Need to build LEVEL", "" + thisLevel );
+                }
                 level.entity = createGroundEntity( thisLevel );
                 AshleyWorld.getPooledEngine().addEntity( level.entity );
             }
 
             if ( level.objects != null ) {
                 for ( LevelObject object : level.objects ) {
-
-                    if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                        Gdx.app.debug( "Need to build OBJECT", "" + object );
-                    }
                     object.buildModel();
                     object.buildEntity();
                 }
@@ -244,7 +238,7 @@ public final class DynamicLevels {
                 if ( needToBuild ) {
 
                     if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                        Gdx.app.debug( "Dynamic levels update", "needToBuild" );
+                        //Gdx.app.debug( "Dynamic levels update", "needToBuild" );
                     }
 
                     // Добавляем нужные Entity, т.к. они уже загружены
@@ -268,6 +262,8 @@ public final class DynamicLevels {
                 // Здесь ненужные модели добавляются в стэк удаления менеджера Assets
                 removeNotMatchModels();
                 needToUpdate = true;
+
+                //DynamicLevels.reload();
             }
         }
     }

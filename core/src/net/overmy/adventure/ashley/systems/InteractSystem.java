@@ -18,6 +18,7 @@ import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.TextBlock;
+import net.overmy.adventure.resources.SoundAsset;
 
 
 /**
@@ -81,6 +82,8 @@ public class InteractSystem extends IteratingSystem {
                         if ( MyMapper.LEVEL_OBJECT.has( entity ) ) {
                             MyMapper.LEVEL_OBJECT.get( entity ).levelObject.useEntity();
                         }
+
+                        SoundAsset.Collect3.play();
 
                         getEngine().removeEntity( entity );
                         break;

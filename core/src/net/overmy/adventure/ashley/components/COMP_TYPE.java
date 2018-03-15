@@ -13,4 +13,5 @@ public enum COMP_TYPE {
     WEAPON,
     MYPLAYER,
     NPC,
+    DESTROYABLE_BOX,
 }
