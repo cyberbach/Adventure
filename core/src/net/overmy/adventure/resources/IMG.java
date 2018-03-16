@@ -37,7 +37,11 @@ public enum IMG {
     JUMP_BUTTON( "jump" ),
     HIT_BUTTON( "hit" ),
 
-    BOX_TEXTURE( "box" ),
+    WEAPON1( "weapon1" ),
+    WEAPON2( "weapon2" ),
+    WEAPON3( "weapon3" ),
+    WEAPON4( "weapon4" ),
+
 
     // inventory
     GSTAR( "gstaricon" ),

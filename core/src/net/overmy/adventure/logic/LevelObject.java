@@ -47,12 +47,20 @@ public class LevelObject {
     private   Array< NPCAction > actionArray = null;
     protected Entity             entity      = null;
     private   boolean            used        = false;
+    float height = 0.0f;
 
 
     LevelObject ( OBJECT_TYPE type, ModelAsset models, Vector3 position ) {
         this.type = type;
         this.modelAsset = models;
         this.position = position;
+    }
+
+    LevelObject ( OBJECT_TYPE type, ModelAsset models, Vector3 position, float height ) {
+        this.type = type;
+        this.modelAsset = models;
+        this.position = position;
+        this.height = height;
     }
 
 
@@ -119,7 +127,7 @@ public class LevelObject {
                 physicalBuilderLADDER
                         .defaultMotionState()
                         .zeroMass()
-                        .cylinderShape( 0.5f, 4.0f )
+                        .cylinderShape( 0.5f, height )
                         .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.LADDER_FLAG )
                         .setCallbackFilter( BulletWorld.PLAYER_FLAG )
@@ -159,10 +167,12 @@ public class LevelObject {
             case BOX:
                 ModelInstance modelInstanceBOX = modelAsset.get();
                 modelInstanceBOX.transform.setToTranslation( position );
+/*
 
                 TextureRegion region = IMG.BOX_TEXTURE.getRegion();
                 modelInstanceBOX.materials.get( 0 ).clear();
                 modelInstanceBOX.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
+*/
 
                 PhysicalBuilder physicalBuilderBOX = new PhysicalBuilder()
                         .setModelInstance( modelInstanceBOX );
@@ -193,6 +203,9 @@ public class LevelObject {
                 ModelInstance modelInstanceCOLLECTABLE = modelAsset.get();
                 modelInstanceCOLLECTABLE.transform.setToTranslation( position );
 
+
+
+
                 PhysicalBuilder physicalBuilderCOLLECTABLE = new PhysicalBuilder()
                         .setModelInstance( modelInstanceCOLLECTABLE );
 
@@ -220,6 +233,14 @@ public class LevelObject {
             case HOVER_COLLECTABLE:
                 ModelInstance modelInstanceHOVER_COLLECTABLE = modelAsset.get();
                 modelInstanceHOVER_COLLECTABLE.transform.setToTranslation( position );
+
+/*
+
+                TextureRegion region3 = IMG.BOX_TEXTURE.getRegion();
+                modelInstanceHOVER_COLLECTABLE.materials.get( 0 ).clear();
+                modelInstanceHOVER_COLLECTABLE.materials.get( 0 ).set( TextureAttribute.createDiffuse( region3 ) );
+*/
+
 
                 PhysicalBuilder physicalBuilderHOVER_COLLECTABLE = new PhysicalBuilder()
                         .setModelInstance( modelInstanceHOVER_COLLECTABLE );

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.StringBuilder;
 
 import net.overmy.adventure.BulletWorld;
 import net.overmy.adventure.DEBUG;
+import net.overmy.adventure.MyRender;
 import net.overmy.adventure.ashley.components.BVHPhysicalComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
@@ -37,6 +38,10 @@ public class MyEntityListener implements EntityListener {
         /*if(true *//*add cut-scene*//*){
             game.player.getPlayerBodyEntity().remove( InputComponent.class );
         }*/
+
+        if ( MyMapper.ACTOR.has( entity ) ) {
+            MyRender.getStage().addActor( MyMapper.ACTOR.get( entity ).group );
+        }
 
         if ( DEBUG.ENTITIES.get() ) {
             log.setLength( 0 );
@@ -76,6 +81,10 @@ public class MyEntityListener implements EntityListener {
 
     @Override
     public void entityRemoved ( Entity entity ) {
+
+        if ( MyMapper.ACTOR.has( entity ) ) {
+            MyMapper.ACTOR.get( entity ).group.remove();
+        }
 
         if ( DEBUG.ENTITIES.get() ) {
             log.setLength( 0 );

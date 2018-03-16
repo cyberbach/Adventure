@@ -23,8 +23,8 @@ public class Level {
 
 
     Level ( String connectionString, Array< LevelObject > objects ) {
-        this.objects = new ImmutableArray< LevelObject >( objects );
         this.connections = toInts( connectionString );
+        this.objects = new ImmutableArray< LevelObject >( objects );
     }
 
 

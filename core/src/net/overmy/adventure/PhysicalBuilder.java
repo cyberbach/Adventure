@@ -2,6 +2,7 @@ package net.overmy.adventure;
 
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
@@ -71,6 +72,19 @@ public class PhysicalBuilder {
         return this;
     }
 */
+
+boolean rotated = false;
+
+    public PhysicalBuilder setRotation( float a, float b, float c ) {
+            for ( Node node : modelInstance.nodes ) {
+                node.rotation.set( Vector3.X, a );
+                node.rotation.set( Vector3.Y, b );
+                node.rotation.set( Vector3.Z, c );
+            }
+
+        rotated = true;
+        return this;
+    }
 
 
     public PhysicalBuilder setCollisionFlag ( int collisionFlag ) {

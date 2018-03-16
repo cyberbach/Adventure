@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
-import com.badlogic.gdx.utils.Logger;
 
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.Levels;
@@ -63,8 +62,10 @@ public final class Assets {
 
         ModelAsset.GIFT.load();
         ModelAsset.BOX_PART.load();
-        ModelAsset.CLUB_WEAPON1.load();
-        ModelAsset.SWORD_WEAPON1.load();
+        ModelAsset.KALASH_WEAPON1.load();
+        ModelAsset.RAKE_WEAPON1.load();
+        ModelAsset.BROOM_WEAPON1.load();
+        ModelAsset.BORDER_WEAPON1.load();
     }
 
 
@@ -77,8 +78,10 @@ public final class Assets {
 
         ModelAsset.GIFT.build();
         ModelAsset.BOX_PART.build();
-        ModelAsset.CLUB_WEAPON1.build();
-        ModelAsset.SWORD_WEAPON1.build();
+        ModelAsset.KALASH_WEAPON1.build();
+        ModelAsset.RAKE_WEAPON1.build();
+        ModelAsset.BROOM_WEAPON1.build();
+        ModelAsset.BORDER_WEAPON1.build();
     }
 
 

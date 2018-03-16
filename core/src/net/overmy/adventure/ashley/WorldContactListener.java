@@ -32,6 +32,8 @@ public class WorldContactListener extends ContactListener {
     private ImmutableArray< Entity > entities = null;
 
     private StringBuilder stringBuilder = null;
+    private Vector3       tempPosition1 = new Vector3();
+    private Vector3       tempPosition2 = new Vector3();
 
 
     public WorldContactListener () {
@@ -139,11 +141,13 @@ public class WorldContactListener extends ContactListener {
         boolean contact2Ground = type2.equals( COMP_TYPE.GROUND );
         boolean contact2Ladder = type2.equals( COMP_TYPE.LADDER );
         boolean contact1DestroyableBox = type1.equals( COMP_TYPE.DESTROYABLE_BOX );
+        boolean contact2DestroyableBox = type2.equals( COMP_TYPE.DESTROYABLE_BOX );
         boolean contact1Ground = type1.equals( COMP_TYPE.GROUND );
         boolean contact1Ladder = type1.equals( COMP_TYPE.LADDER );
         boolean contact2Collectable = type2.equals( COMP_TYPE.COLLECTABLE );
 
-        if ( contact1Player && contact2Ground ) {
+        if ( contact1Player && contact2Ground ||
+             contact1Player && contact2DestroyableBox ) {
             RemoveByLevelComponent zoneComponent = MyMapper.REMOVE_BY_ZONE.get( entity02 );
 
             int lastID = DynamicLevels.getCurrent();
@@ -172,15 +176,14 @@ public class WorldContactListener extends ContactListener {
                 }
 
                 if ( MyMapper.PHYSICAL.has( entity02 ) ) {
-                    Vector3 bubblePosition = new Vector3();
                     MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
-                                                          .getTranslation( bubblePosition );
+                                                          .getTranslation( tempPosition1 );
                     for ( int i = 0; i < 5; i++ ) {
                         float bubbleTime = MathUtils.random( 0.25f, 0.65f );
 
                         Entity entity = AshleyWorld.getPooledEngine().createEntity();
                         entity.add( DecalSubs.BubbleCoinEffect( bubbleTime ) );
-                        entity.add( new PositionComponent( bubblePosition ) );
+                        entity.add( new PositionComponent( tempPosition1 ) );
                         entity.add( new RemoveByTimeComponent( bubbleTime ) );
                         AshleyWorld.getPooledEngine().addEntity( entity );
                     }
@@ -209,12 +212,11 @@ public class WorldContactListener extends ContactListener {
             }
         }
 
-        if ( contact2MyWeapon && !contact1Player ) {
-            if ( !contact1Ladder && !contact1Ground ) {
-                Vector3 fxPosition = new Vector3();
 
+        if ( contact2MyWeapon && !contact1Player && MyPlayer.isAttacking ) {
+            if ( !contact1Ladder && !contact1Ground ) {
                 btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
-                body1.getWorldTransform().getTranslation( fxPosition );
+                body1.getWorldTransform().getTranslation( tempPosition1 );
 
                 for ( int i = 0; i < 5; i++ ) {
                     float bubbleTime = MathUtils.random( 0.25f, 0.65f );
@@ -223,7 +225,7 @@ public class WorldContactListener extends ContactListener {
 
                     Entity entity = AshleyWorld.getPooledEngine().createEntity();
                     entity.add( DecalSubs.BubbleEffect( bubbleTime ) );
-                    entity.add( new PositionComponent( fxPosition ) );
+                    entity.add( new PositionComponent( tempPosition1 ) );
                     entity.add( new RemoveByTimeComponent( bubbleTime ) );
                     AshleyWorld.getPooledEngine().addEntity( entity );
 
@@ -231,14 +233,12 @@ public class WorldContactListener extends ContactListener {
 
                     Matrix4 weaponTransform = MyMapper.PHYSICAL.get(
                             entity02 ).body.getWorldTransform();
-                    Vector3 weaponPosition = new Vector3();
-                    weaponTransform.getTranslation( weaponPosition );
+                    weaponTransform.getTranslation( tempPosition1 );
 
-                    Vector3 otherPosition = new Vector3();
-                    body1.getWorldTransform().getTranslation( otherPosition );
+                    body1.getWorldTransform().getTranslation( tempPosition2 );
 
-                    otherPosition.sub( weaponPosition ).nor().scl( 50 );
-                    body1.applyCentralImpulse( otherPosition );
+                    tempPosition2.sub( tempPosition1 ).nor().scl( 50 );
+                    body1.applyCentralImpulse( tempPosition2 );
 
                     if ( MyMapper.LIFE.has( entity01 ) ) {
                         if ( contact1DestroyableBox ) {

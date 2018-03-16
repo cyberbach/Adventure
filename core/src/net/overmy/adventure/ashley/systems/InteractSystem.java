@@ -65,7 +65,7 @@ public class InteractSystem extends IteratingSystem {
 
         final float distance = ray.origin.dst2( position );
         final boolean onMyWay = Intersector.intersectRaySphere( ray, position, 1, null );
-        if ( distance < 200.0f && onMyWay ) {
+        if ( distance < 50.0f && onMyWay ) {
             final InteractComponent interactComponent = MyMapper.INTERACT.get( entity );
 
             type = interactComponent.getType();

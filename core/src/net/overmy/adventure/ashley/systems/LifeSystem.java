@@ -79,20 +79,28 @@ public class LifeSystem extends IteratingSystem {
                 partPosition.add( randomPosition );
 
                 ModelInstance modelInstance = ModelAsset.BOX_PART.get();
+/*
 
                 TextureRegion region = IMG.BOX_TEXTURE.getRegion();
                 modelInstance.materials.get( 0 ).clear();
                 modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
+*/
 
                 PhysicalBuilder physicalBuilderPICKABLE = new PhysicalBuilder()
                         .setModelInstance( modelInstance );
 
                 randomPosition.scl( 0.6f );
 
+                // rotations by vectors
+                float a = MathUtils.random( 360.0f );
+                float b = MathUtils.random( 360.0f );
+                float c = MathUtils.random( 360.0f );
+
                 physicalBuilderPICKABLE
                         .defaultMotionState()
                         .setMass( 0.1f )
                         .setPosition( partPosition )
+                        .setRotation(a,b,c)
                         .boxShape()
                         .setCollisionFlag(
                                 btCollisionObject.CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
@@ -113,8 +121,6 @@ public class LifeSystem extends IteratingSystem {
 
             if(MyMapper.CONTAINER.has( entity )){
                 /////////////////////////
-                // TODO
-                //position.add( 0,5,0 );
 
                 ModelInstance modelInstanceFromBox = ModelAsset.GIFT.get();
                 //modelInstanceFromBox.transform.setToTranslation( position );
@@ -141,7 +147,11 @@ public class LifeSystem extends IteratingSystem {
                 //////////////////////////
             }
 
-            entity.add( new RemoveByTimeComponent( 0 ) );
+            if ( MyMapper.LEVEL_OBJECT.has( entity ) ) {
+                MyMapper.LEVEL_OBJECT.get( entity ).levelObject.useEntity();
+            }else {
+                entity.add( new RemoveByTimeComponent( 0 ) );
+            }
         }
     }
 }

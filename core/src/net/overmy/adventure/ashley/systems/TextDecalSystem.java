@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
@@ -74,18 +73,11 @@ public class TextDecalSystem extends IteratingSystem {
 
         String text = MyMapper.TEXT_DECAL.get( entity ).text.toString();
 
-
         batch.setProjectionMatrix( tmpMat4 );
         batch.begin();
         FontAsset.LOCATION_TITLE.get().draw( batch, text, 0, 0 );
         batch.end();
 
         batch.setProjectionMatrix( MyRender.getCamera().combined );
-    }
-
-
-    @Override
-    public void update ( float delta ) {
-        super.update( delta );
     }
 }

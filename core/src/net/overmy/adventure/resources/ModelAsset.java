@@ -31,11 +31,15 @@ public enum ModelAsset {
     BSTAR( "bstar" ),
     YSTAR( "ystar" ),
 
-    CLUB_WEAPON( "weapon1" ),
-    SWORD_WEAPON( "weapon2" ),
+    BORDER_WEAPON( "weapon4border" ),
+    KALASH_WEAPON( "weapon1kalash" ),
+    RAKE_WEAPON( "weapon2rake" ),
+    BROOM_WEAPON( "weapon3broom" ),
 
-    CLUB_WEAPON1( "weapon1" ),
-    SWORD_WEAPON1( "weapon2" ),
+    BORDER_WEAPON1( "weapon4border" ),
+    KALASH_WEAPON1( "weapon1kalash" ),
+    RAKE_WEAPON1( "weapon2rake" ),
+    BROOM_WEAPON1( "weapon3broom" ),
 
     GIFT( "gift" ),
     BOX_PART( "boxpart" ),

@@ -18,7 +18,6 @@ public final class NPCActionQueues {
 
 
     public static Array< NPCAction > get ( int id ) {
-        //Array< NPCAction > queue = null;
 
         switch ( id ) {
             case 0:

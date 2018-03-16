@@ -2,6 +2,9 @@ package net.overmy.adventure.logic;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
 import com.badlogic.gdx.utils.Array;
 
@@ -17,6 +20,7 @@ import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
 import net.overmy.adventure.ashley.systems.RemoveByLevelSystem;
 import net.overmy.adventure.resources.Assets;
+import net.overmy.adventure.resources.IMG;
 import net.overmy.adventure.resources.ModelAsset;
 
 /**
@@ -288,6 +292,15 @@ public final class DynamicLevels {
                 .setCollisionFlag( CollisionFlags.CF_STATIC_OBJECT )
                 .setCallbackFlag( BulletWorld.GROUND_FLAG )
                 .setCallbackFilter( BulletWorld.ALL_FLAG );
+/*
+
+        if(zoneModel.equals( ModelAsset.Level0 )){
+            TextureRegion region = IMG.ISLAND.getRegion();
+            ModelInstance modelInstance = zoneModel.get();
+            modelInstance.materials.get( 0 ).clear();
+            modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
+        }
+*/
 
         final Entity entity = AshleyWorld.getPooledEngine().createEntity();
         entity.add( new RemoveByLevelComponent( zoneModel.ordinal() ) );

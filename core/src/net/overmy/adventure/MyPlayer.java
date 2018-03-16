@@ -8,6 +8,7 @@ package net.overmy.adventure;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.model.Node;
@@ -17,9 +18,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import net.overmy.adventure.ashley.DecalSubs;
 import net.overmy.adventure.ashley.MyMapper;
+import net.overmy.adventure.ashley.components.ActorComponent;
 import net.overmy.adventure.ashley.components.AnimationComponent;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
 import net.overmy.adventure.ashley.components.GroundedComponent;
@@ -32,10 +37,13 @@ import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
+import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.Settings;
 import net.overmy.adventure.resources.SoundAsset;
+import net.overmy.adventure.resources.TextureAsset;
+import net.overmy.adventure.utils.UIHelper;
 
 import java.util.ArrayList;
 
@@ -49,17 +57,15 @@ public final class MyPlayer {
     private static       ModelAsset modelAsset     = null;
     private static       Entity     playerEntity   = null;
     private static       boolean    jump           = false;
-    private    static          boolean    attack         =false;
+    private static       boolean    attack         = false;
     private static       float      modelAngle     = 0.0f;
     private static       float      dustTime       = 0.1f;
 
-    public static boolean weaponInHand = false;
+    private static boolean weaponInHand = false;
 
-    private static Node    rightArmNode = null;
-    private        Matrix4 armMatrix    = new Matrix4(  );
+    private static Node rightArmNode = null;
 
     private static ArrayList< ItemInBagg > bag = null;
-    private static Entity entity;
 
 
     public static ArrayList< ItemInBagg > getBag () {
@@ -75,6 +81,13 @@ public final class MyPlayer {
     private static SoundAsset walk     = null;
 
     private static btRigidBody playerBody = null;
+
+
+    private static ModelInstance modelInstanceWeaponInHand = null;
+    private static Entity        entityWeaponInHand        = null;
+    private static ItemInBagg    itemInHand                = null;
+
+    public static boolean isAttacking = false;
 
 
     private MyPlayer () {
@@ -131,7 +144,8 @@ public final class MyPlayer {
 
         modelInstance.materials.get( 0 ).clear();
         //modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
-        modelInstance.materials.get( 0 ).set( ColorAttribute.createDiffuse( GameColor.SQUIREL.get() ) );
+        modelInstance.materials.get( 0 )
+                               .set( ColorAttribute.createDiffuse( GameColor.SQUIREL.get() ) );
 
         final PhysicalBuilder physicalBuilder = new PhysicalBuilder()
                 .setModelInstance( modelInstance )
@@ -164,7 +178,7 @@ public final class MyPlayer {
         onLadder = false;
 
         walk = SoundAsset.Step3;
-        walk.playLoop(  );
+        walk.playLoop();
         walk.setVolume( 0.0f );
     }
 
@@ -217,16 +231,20 @@ public final class MyPlayer {
                 final AnimationComponent animationComponent = MyMapper.ANIMATION.get(
                         playerEntity );
                 animationComponent.play( JUMP, 2.0f );
+
+                isAttacking = false;
             }
             jump = false;
         }
 
-        if(attack){
+        if ( attack ) {
             final int HIT = 2;
             final AnimationComponent animationComponent = MyMapper.ANIMATION.get(
                     playerEntity );
             animationComponent.play( HIT, 2.4f );
-            attack=false;
+            attack = false;
+
+            isAttacking = true;
         }
 
         playerBody.getWorldTransform( bodyTransform );
@@ -276,7 +294,6 @@ public final class MyPlayer {
         final AnimationComponent animationComponent = MyMapper.ANIMATION.get( playerEntity );
         final String ID_CURRENT = animationComponent.getID();
         final String ID_ATTACK = "ATTACK";
-//        final String ID_JUMP = "JUMP";
         final String ID_RUN = "RUN";
         final String ID_IDLE = "IDLE";
 
@@ -290,11 +307,10 @@ public final class MyPlayer {
         final int RUN = 1;
         final int ATTACK = 2;
 
-
         // SET sound of walking steps
         if ( !onLadder ) {
             if ( direction.len() > 0 && playerOnGround ) {
-                float walkSpeed = (2.5f + direction.len() * 0.5f)/4;
+                float walkSpeed = ( 2.5f + direction.len() * 0.5f ) / 4;
                 walk.setVolume( 1.0f );
                 walk.setPitch( walkSpeed );
             } else {
@@ -304,28 +320,43 @@ public final class MyPlayer {
             walk.setVolume( 0.0f );
         }
 
+        speedUpTime -= deltaTime;
+        float extraSpeed = 0.0f;
+        if ( speedUpTime > 0 ) {
+            int textSpeed = (int) speedUpTime + 1;
+            speedUpTimerLabel.setText( "" + textSpeed );
+            GlyphLayout layout = speedUpTimerLabel.getGlyphLayout();
+            int iconSize = (int) ( Core.HEIGHT * 0.1f );
+            speedUpTimerLabel.setPosition(
+                    Core.WIDTH - iconSize * 2.5f - layout.width / 2,
+                    Core.HEIGHT - iconSize * 1.5f - layout.height );
+            extraSpeed = 5.0f;
+        }
+
         final float directionLen = direction.len();
         // Мы управляем персонажем джойстиком
         if ( directionLen != 0 ) {
             // Персонаж на земле
             if ( playerOnGround ) {
                 final float animationSpeed = 3.0f + 2.0f * directionLen;
-                if ( playerIsRunning ) {
+                if ( playerIsRunning && !playerHitSomething ) {
                     animationComponent.queue( RUN, animationSpeed );
                 } else {
                     animationComponent.play( RUN, animationSpeed );
+                    isAttacking = false;
                 }
             }
             // Персонаж в воздухе
             else {
-                if ( playerInIDLE ) {
+                if ( playerInIDLE && !playerHitSomething ) {
                     animationComponent.queue( IDLE, 2.0f );
                 } else {
                     animationComponent.play( IDLE, 2.0f );
+                    isAttacking = false;
                 }
             }
-            final float runSpeed = 4.0f;
-            speed = ( runSpeed + 1 ) * directionLen;
+            final float runSpeed = 5.0f;
+            speed = ( runSpeed + extraSpeed ) * directionLen;
 
             direction.nor();
             direction.rotate( -MyCamera.getCameraAngle() );
@@ -367,6 +398,8 @@ public final class MyPlayer {
     public static void startJump () {
         jump = true;
     }
+
+
     public static void startAttack () {
         attack = true;
     }
@@ -408,29 +441,83 @@ public final class MyPlayer {
         return playerBody;
     }
 
-    static ModelInstance modelInstanceWeaponInHand = null;
-    static Entity        entityWeaponInHand        = null;
-    static ItemInBagg    itemInHand                = null;
+
+    private static float speedUpTime = 0.0f;
+
+    private static Label speedUpTimerLabel = null;
+
 
     public static void useItemInBag ( ItemInBagg item ) {
-        switch ( item.item ){
-            case CLUB_WEAPON:
-                if(weaponInHand){
-                    modelInstanceWeaponInHand.nodes.get( 0 ).detach();
-                    entityWeaponInHand.add( new RemoveByTimeComponent(0) );
-                    entityWeaponInHand=null;
-                    bag.add( itemInHand );
+
+        boolean broomIsItem = item.item.equals( Item.BROOM_WEAPON );
+        boolean kalashIsItem = item.item.equals( Item.KALASH_WEAPON );
+        boolean rakeIsItem = item.item.equals( Item.RAKE_WEAPON );
+        boolean borderIsItem = item.item.equals( Item.BORDER_WEAPON );
+
+        if ( broomIsItem || kalashIsItem || rakeIsItem || borderIsItem ) {
+            if ( weaponInHand ) {
+                modelInstanceWeaponInHand.nodes.get( 0 ).detach();
+                entityWeaponInHand.add( new RemoveByTimeComponent( 0 ) );
+                entityWeaponInHand = null;
+                bag.add( itemInHand );
+            }
+
+            itemInHand = item;
+            bag.remove( item );
+        } else {
+            if ( item.count < 2 ) {
+                bag.remove( item );
+            } else {
+                item.count -= 1;
+            }
+        }
+
+        switch ( item.item ) {
+            case RED_BOTTLE:
+                speedUpTime = 10.0f;
+
+                if ( speedUpTimerLabel != null ) {
+                    speedUpTimerLabel = null;
                 }
 
-                itemInHand = item;
-                bag.remove( item );
+                int iconSize = (int) ( Core.HEIGHT * 0.1f );
+                Image iconImage2 = new Image( TextureAsset.CD.getSprite() );
+                iconImage2.setSize( iconSize, iconSize );
+                iconImage2.setOrigin( iconSize / 2, iconSize / 2 );
+                iconImage2.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
+                iconImage2.addAction( Actions.forever(
+                        Actions.sequence(
+                                Actions.rotateTo( 0, 0 ),
+                                Actions.rotateTo( 360.0f, 2.0f )
+                                        )
+                                                     ) );
 
+                Image iconImage = item.item.getImage( iconSize, iconSize );
+                iconImage.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
+
+                ActorComponent actorComponent = new ActorComponent();
+                actorComponent.group.addActor( iconImage2 );
+                actorComponent.group.addActor( iconImage );
+
+                int textSpeed = (int) speedUpTime + 1;
+                speedUpTimerLabel = UIHelper.Label( "" + textSpeed, FontAsset.ACTION_TEXT );
+                GlyphLayout layout = speedUpTimerLabel.getGlyphLayout();
+                speedUpTimerLabel.setPosition(
+                        Core.WIDTH - iconSize * 2.5f - layout.width / 2,
+                        Core.HEIGHT - iconSize * 1.5f - layout.height );
+                actorComponent.group.addActor( speedUpTimerLabel );
+
+                Entity timerEntity = AshleyWorld.getPooledEngine().createEntity();
+                timerEntity.add( actorComponent );
+                timerEntity.add( new RemoveByTimeComponent( speedUpTime ) );
+                AshleyWorld.getPooledEngine().addEntity( timerEntity );
+
+                break;
+
+            case KALASH_WEAPON:
                 // create weapon in ashley
-
-                modelInstanceWeaponInHand = ModelAsset.CLUB_WEAPON1.get();
-
+                modelInstanceWeaponInHand = ModelAsset.KALASH_WEAPON1.get();
                 // attach only model without physics
-                //
                 modelInstanceWeaponInHand.nodes.get( 0 ).attachTo( rightArmNode );
 
                 PhysicalBuilder physicalBuilderWEAPON = new PhysicalBuilder()
@@ -442,41 +529,79 @@ public final class MyPlayer {
                         .hullShape()
                         .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG );
+                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
-
                 entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderWEAPON.buildPhysicalComponent() );
-
                 AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
-                weaponInHand = true;
 
-                Gdx.app.debug( "Bag",""+bag );
-                Gdx.app.debug( "item",""+item );
+                weaponInHand = true;
 
                 break;
 
-            case SWORD_WEAPON:
-                if(weaponInHand){
-                    modelInstanceWeaponInHand.nodes.get( 0 ).detach();
-
-                    entityWeaponInHand.add( new RemoveByTimeComponent(0) );
-                    entityWeaponInHand=null;
-
-                    bag.add( itemInHand );
-                }
-
-                itemInHand = item;
-                bag.remove( item );
-
+            case BORDER_WEAPON:
                 // create weapon in ashley
-
-                modelInstanceWeaponInHand = ModelAsset.SWORD_WEAPON1.get();
-
+                modelInstanceWeaponInHand = ModelAsset.BORDER_WEAPON1.get();
                 // attach only model without physics
-                //
+                modelInstanceWeaponInHand.nodes.get( 0 ).attachTo( rightArmNode );
+
+                PhysicalBuilder physicalBuilderBORDER_WEAPON = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceWeaponInHand );
+
+                physicalBuilderBORDER_WEAPON
+                        .defaultMotionState()
+                        .zeroMass()
+                        .hullShape()
+                        .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                        .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
+                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .disableDeactivation();
+
+                entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
+                entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
+                entityWeaponInHand.add( physicalBuilderBORDER_WEAPON.buildPhysicalComponent() );
+                AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+
+                weaponInHand = true;
+
+                break;
+
+            case BROOM_WEAPON:
+                // create weapon in ashley
+                modelInstanceWeaponInHand = ModelAsset.BROOM_WEAPON1.get();
+                // attach only model without physics
+                modelInstanceWeaponInHand.nodes.get( 0 ).attachTo( rightArmNode );
+
+                PhysicalBuilder physicalBuilderBROOM_WEAPON = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceWeaponInHand );
+
+                physicalBuilderBROOM_WEAPON
+                        .defaultMotionState()
+                        .zeroMass()
+                        .hullShape()
+                        .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                        .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
+                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .disableDeactivation();
+
+                entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
+                entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
+                entityWeaponInHand.add( physicalBuilderBROOM_WEAPON.buildPhysicalComponent() );
+                AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+
+                weaponInHand = true;
+
+                break;
+
+            case RAKE_WEAPON:
+                // create weapon in ashley
+                modelInstanceWeaponInHand = ModelAsset.RAKE_WEAPON1.get();
+                // attach only model without physics
                 modelInstanceWeaponInHand.nodes.get( 0 ).attachTo( rightArmNode );
 
                 PhysicalBuilder physicalBuilderSwordWEAPON = new PhysicalBuilder()
@@ -488,23 +613,18 @@ public final class MyPlayer {
                         .hullShape()
                         .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG );
+                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
-
                 entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderSwordWEAPON.buildPhysicalComponent() );
-
                 AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+
                 weaponInHand = true;
 
-                Gdx.app.debug( "Bag",""+bag );
-                Gdx.app.debug( "item",""+item );
                 break;
-
         }
-
     }
-
 }

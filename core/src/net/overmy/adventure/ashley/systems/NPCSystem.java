@@ -29,18 +29,17 @@ import net.overmy.adventure.resources.SoundAsset;
  */
 
 public class NPCSystem extends IteratingSystem {
-/*
+
 
     private static final Vector2 direction      = new Vector2();
     private static final Vector3 velocity       = new Vector3();
     private static       Matrix4 bodyTransform  = new Matrix4();
     private static final Vector3 notFilteredPos = new Vector3();
-    private static       float   modelAngle     = 0.0f;
     private static       float   dustTime       = 0.1f;
 
 
     private        Vector2    npcPosition = new Vector2();
-*/
+
 
 
     private static SoundAsset walk        = null;
@@ -69,13 +68,7 @@ public class NPCSystem extends IteratingSystem {
 
     @Override
     protected void processEntity ( Entity entity, float delta ) {
-        final Vector2 direction      = new Vector2();
-        final Vector3 velocity       = new Vector3();
-        Matrix4 bodyTransform  = new Matrix4();
-        final Vector3 notFilteredPos = new Vector3();
-        float   modelAngle     = 0.0f;
-        float   dustTime       = 0.1f;
-        Vector2    npcPosition = new Vector2();
+        float modelAngle = 0.0f;
 
         NPCComponent npcComponent = MyMapper.NPC.get( entity );
         int action = npcComponent.currentAction;

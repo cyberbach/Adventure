@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import net.overmy.adventure.BulletWorld;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.WorldContactListener;
-import net.overmy.adventure.ashley.components.ModelComponent;
+import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
 
 /*
@@ -23,27 +23,25 @@ public class PhysicalSystem extends IteratingSystem {
     private final WorldContactListener contacts;
 
 
-
     @SuppressWarnings( "unchecked" )
-    public PhysicalSystem() {
-        super( Family.all( PhysicalComponent.class ).get() );
+    public PhysicalSystem () {
+        super( Family.all( PhysicalComponent.class ).
+                exclude( OutOfCameraComponent.class ).get() );
 
         contacts = new WorldContactListener();
     }
 
 
-
     @Override
-    public void removedFromEngine( Engine engine ) {
+    public void removedFromEngine ( Engine engine ) {
         super.removedFromEngine( engine );
 
         contacts.dispose();
     }
 
 
-
     @Override
-    public void update( float delta ) {
+    public void update ( float delta ) {
         contacts.setEntities( getEntities() );
 
         BulletWorld.step( delta );
@@ -52,11 +50,12 @@ public class PhysicalSystem extends IteratingSystem {
     }
 
 
-
     @Override
-    protected void processEntity( Entity entity, float delta ) {
+    protected void processEntity ( Entity entity, float delta ) {
 
-        if(!MyMapper.MODEL.has( entity ))return;
+        if ( !MyMapper.MODEL.has( entity ) ) {
+            return;
+        }
 
         final btRigidBody btRigidBody = MyMapper.PHYSICAL.get( entity ).body;
         final Matrix4 transform = btRigidBody.getWorldTransform();

@@ -150,7 +150,9 @@ public class GameScreen extends Base2DScreen {
             } );
 */
 
-            String helpString = "ENTER - push position\n1- show bonus pos\n2-show NPC move pos";
+            String helpString = "ENTER - push position\n1- show bonus pos\n" +
+                                "2-show box pos\n3-show NPC move pos\n" +
+                                "\nBackSpace-clear positions";
             Label ingameMenuTitle = UIHelper.Label( helpString, FontAsset.LOCATION_TEXT );
             float fontOffset = ingameMenuTitle.getHeight() * 1.5f;
             ingameMenuTitle.setPosition( fontOffset,
@@ -212,7 +214,7 @@ public class GameScreen extends Base2DScreen {
             }
 
             // GameMaster Mode
-            // add star
+            // add hover coin
             if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_1 ) ) {
                 StringBuilder stringBuilder = new StringBuilder();
 
@@ -228,8 +230,24 @@ public class GameScreen extends Base2DScreen {
 
                 Gdx.app.debug( "Pushed positions", "\n" + stringBuilder.toString() );
             }
-            // add move point
+            // add box
             if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_2 ) ) {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                for ( Vector3 pushed : pushedPositions ) {
+                    stringBuilder.append( "objects.add( box( " );
+                    stringBuilder.append( pushed.x );
+                    stringBuilder.append( "f, " );
+                    stringBuilder.append( pushed.y );
+                    stringBuilder.append( "f, " );
+                    stringBuilder.append( pushed.z );
+                    stringBuilder.append( "f) );\n" );
+                }
+
+                Gdx.app.debug( "Pushed positions", "\n" + stringBuilder.toString() );
+            }
+            // add move point
+            if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_3 ) ) {
                 StringBuilder stringBuilder = new StringBuilder();
 
                 for ( Vector3 pushed : pushedPositions ) {

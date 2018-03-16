@@ -21,7 +21,7 @@ public class RemoveByTimeSystem extends IteratingSystem {
 
     @Override
     protected void processEntity( Entity entity, float delta ) {
-        final RemoveByTimeComponent removeByTimeComponent = MyMapper.REMOVE_BY_TIME.get( entity );
+        RemoveByTimeComponent removeByTimeComponent = MyMapper.REMOVE_BY_TIME.get( entity );
         removeByTimeComponent.time -= delta;
         if ( removeByTimeComponent.time < 0.0f ) {
             getEngine().removeEntity( entity );

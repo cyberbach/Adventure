@@ -10,6 +10,7 @@ import net.overmy.adventure.MyRender;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.DecalComponent;
 import net.overmy.adventure.MyCamera;
+import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.utils.Vector3Animator;
 
 /**
@@ -24,7 +25,8 @@ public class DecalSystem extends IteratingSystem {
 
     @SuppressWarnings ( "unchecked" )
     public DecalSystem(  ) {
-        super( Family.all( DecalComponent.class ).get() );
+        super( Family.all( DecalComponent.class )
+                     .exclude( OutOfCameraComponent.class ).get() );
     }
 
     @Override

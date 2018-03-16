@@ -2,6 +2,7 @@ package net.overmy.adventure.ashley;
 
 import com.badlogic.ashley.core.ComponentMapper;
 
+import net.overmy.adventure.ashley.components.ActorComponent;
 import net.overmy.adventure.ashley.components.AnimationComponent;
 import net.overmy.adventure.ashley.components.BVHPhysicalComponent;
 import net.overmy.adventure.ashley.components.BoundingComponent;
@@ -50,6 +51,7 @@ public final class MyMapper {
     public static ComponentMapper< MyWeaponComponent >    MY_WEAPON    = null;
     public static ComponentMapper< LifeComponent >        LIFE         = null;
     public static ComponentMapper< ContainerComponent >   CONTAINER    = null;
+    public static ComponentMapper< ActorComponent >       ACTOR    = null;
 
 
     private MyMapper () {
@@ -77,6 +79,7 @@ public final class MyMapper {
         MY_WEAPON = ComponentMapper.getFor( MyWeaponComponent.class );
         LIFE = ComponentMapper.getFor( LifeComponent.class );
         CONTAINER = ComponentMapper.getFor( ContainerComponent.class );
+        ACTOR = ComponentMapper.getFor( ActorComponent.class );
     }
 
 
@@ -101,5 +104,6 @@ public final class MyMapper {
         MY_WEAPON = null;
         LIFE = null;
         CONTAINER = null;
+        ACTOR = null;
     }
 }

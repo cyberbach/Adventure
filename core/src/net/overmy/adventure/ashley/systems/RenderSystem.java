@@ -41,8 +41,7 @@ public class RenderSystem extends SortedIteratingSystem {
 
     @SuppressWarnings( "unchecked" )
     public RenderSystem () {
-        super( Family.all( ModelComponent.class ).
-                exclude( MyWeaponComponent.class).get(), new BlendComparator() );
+        super( Family.all( ModelComponent.class ).get(), new BlendComparator() );
 
         environment = MyRender.getEnvironment();
         batch = MyRender.getModelBatch();
