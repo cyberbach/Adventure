@@ -16,6 +16,10 @@ public enum TextAsset {
     END( "конец игры" ),
     VERT( "вертикально" ),
     HORIZ( "горизонтально" ),
+    INVENTORY( "Инвентарь" ),
+    LOOT( "Подобрать : " ),
+    TALK( "Начать диалог : " ),
+    USE( "Использовать : " ),
     ;
 
     public static boolean russianLocale = true;

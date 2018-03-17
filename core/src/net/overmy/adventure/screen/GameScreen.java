@@ -8,11 +8,11 @@ package net.overmy.adventure.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -32,7 +32,6 @@ import net.overmy.adventure.MyCamera;
 import net.overmy.adventure.MyGdxGame;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.MyRender;
-import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.ashley.systems.DecalSystem;
 import net.overmy.adventure.ashley.systems.InteractSystem;
@@ -47,6 +46,7 @@ import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.IMG;
 import net.overmy.adventure.resources.MusicAsset;
 import net.overmy.adventure.resources.SoundAsset;
+import net.overmy.adventure.resources.TextAsset;
 import net.overmy.adventure.resources.TextDialogAsset;
 import net.overmy.adventure.resources.TextureAsset;
 import net.overmy.adventure.utils.GFXHelper;
@@ -56,7 +56,7 @@ import net.overmy.adventure.utils.UIHelper;
 import java.util.ArrayList;
 
 public class GameScreen extends Base2DScreen {
-    private Image         hitButton     = null;
+    private Image         hitButton      = null;
     private Image         jumpButton     = null;
     private Touchpad      touchpad       = null;
     private LoadIndicator indicatorGroup = null;
@@ -111,45 +111,6 @@ public class GameScreen extends Base2DScreen {
         MusicAsset.WINDFILTER.play( true );
 
         if ( DEBUG.GAME_MASTER_MODE.get() ) {
-           /* float inGameIconSize = Core.HEIGHT * 0.16f;
-
-            final Image showIngameMenuImage2 = IMG.INGAME.getImageActor( inGameIconSize, inGameIconSize );
-            showIngameMenuImage2.setPosition( Core.WIDTH - inGameIconSize*2, Core.HEIGHT - inGameIconSize );
-            MyRender.getStage().addActor( showIngameMenuImage2 );
-
-            showIngameMenuImage2.addListener( new ClickListener() {
-                public void clicked ( InputEvent event, float x, float y ) {
-                    SoundAsset.Step1.get().loop( 1, 1, 1 );
-
-                    UIHelper.clickAnimation( showIngameMenuImage2 );
-                }
-            } );
-
-            final Image showIngameMenuImage3 = IMG.INGAME.getImageActor( inGameIconSize, inGameIconSize );
-            showIngameMenuImage3.setPosition( Core.WIDTH - inGameIconSize*3, Core.HEIGHT - inGameIconSize );
-            MyRender.getStage().addActor( showIngameMenuImage3 );
-
-            showIngameMenuImage3.addListener( new ClickListener() {
-                public void clicked ( InputEvent event, float x, float y ) {
-                    SoundAsset.Step2.get().loop( 1, 1, 1 );
-
-                    UIHelper.clickAnimation( showIngameMenuImage3 );
-                }
-            } );
-
-            final Image showIngameMenuImage4 = IMG.INGAME.getImageActor( inGameIconSize, inGameIconSize );
-            showIngameMenuImage4.setPosition( Core.WIDTH - inGameIconSize*4, Core.HEIGHT - inGameIconSize );
-            MyRender.getStage().addActor( showIngameMenuImage4 );
-
-            showIngameMenuImage4.addListener( new ClickListener() {
-                public void clicked ( InputEvent event, float x, float y ) {
-                    SoundAsset.Step3.get().loop( 1, 1, 1 );
-
-                    UIHelper.clickAnimation( showIngameMenuImage4 );
-                }
-            } );
-*/
-
             String helpString = "ENTER - push position\n1- show bonus pos\n" +
                                 "2-show box pos\n3-show NPC move pos\n" +
                                 "\nBackSpace-clear positions";
@@ -307,16 +268,40 @@ public class GameScreen extends Base2DScreen {
         if ( !typeOfInteract.equals( TYPE_OF_INTERACT.EMPTY ) ) {
             if ( !readyToPick ) {
                 readyToPick = true;
+
                 log.setLength( 0 );
-                log.append( typeOfInteract );
-                log.append( " " );
+                switch ( typeOfInteract ){
+                    case EMPTY:
+                        break;
+                    case LOOT:
+                        log.append( TextAsset.LOOT.get() );
+                        break;
+                    case TALK:
+                        log.append( TextAsset.TALK.get() );
+                        break;
+                    case USE:
+                        log.append( TextAsset.USE.get() );
+                        break;
+                }
                 if ( interactSystem.getCurrentItem() != null ) {
-                    log.append( interactSystem.getCurrentItem() );
+                    log.append( interactSystem.getCurrentItem().getName() );
                 } else {
                     log.append( interactSystem.getCurrentTextBlock() );
                 }
-                Label pickText = UIHelper.Label( log.toString(),
-                                                 FontAsset.LOCATION_TITLE );
+                Label pickText = UIHelper.Label( log.toString(), FontAsset.IVENTORY_ITEM );
+                float w = pickText.getWidth();
+                float h = pickText.getHeight();
+                //GlyphLayout glyphLayout = pickText.getGlyphLayout();
+                Gdx.app.debug( "GL ========="+w,""+ h);
+
+                Sprite lineSprite = GFXHelper.createSpriteRGB888(
+                        w + h * 0.5f,
+                        h * 1.5f );
+                Image lineImage = new Image( lineSprite );
+                lineImage.setColor( GameColor.BLACKGL.get() );
+                lineImage.setPosition( -lineImage.getWidth()/2,-lineImage.getHeight()/2 );
+
+                interactGroup.addActor( lineImage );
                 interactGroup.addActor( pickText );
                 interactGroup.addListener( new ClickListener() {
                     public void clicked ( InputEvent event, float x, float y ) {
@@ -362,55 +347,60 @@ public class GameScreen extends Base2DScreen {
         int offset = (int) ( Core.HEIGHT * 0.1f );
         gameGroup.addActor( UIHelper.BlackBG() );
 
-        Label ingameMenuTitle = UIHelper.Label( "Рюкзак", FontAsset.MONEY );
+        Label ingameMenuTitle = UIHelper.Label( TextAsset.INVENTORY.get(), FontAsset.MENU_TITLE );
         float fontOffset = ingameMenuTitle.getHeight() * 1.5f;
         ingameMenuTitle.setPosition( offset + fontOffset,
                                      Core.HEIGHT - offset - fontOffset );
         gameGroup.addActor( ingameMenuTitle );
 
         Table table = new Table();
-        //table.setPosition( Core.WIDTH_HALF, Core.HEIGHT_HALF );
         table.setWidth( Core.WIDTH - offset * 2 );
-        //table.setHeight( Core.HEIGHT - offset * 4 );
 
         for ( final ItemInBagg itemInBagg : MyPlayer.getBag() ) {
             Image img = itemInBagg.item.getImage( offset, offset );
-            Label txt = UIHelper.Label( itemInBagg.item.getName(), FontAsset.ACTION_TEXT );
+            Label txt = UIHelper.Label( itemInBagg.item.getName(), FontAsset.IVENTORY_ITEM );
             txt.setWrap( true );
             String cntString = itemInBagg.count > 1 ? "" + itemInBagg.count : "";
-            Label count = UIHelper.Label( cntString, FontAsset.ACTION_TEXT );
-            Label fullTxt = UIHelper.Label( itemInBagg.item.getAbout(), FontAsset.ACTION_TEXT );
+            Label count = UIHelper.Label( cntString, FontAsset.IVENTORY_ITEM );
+            Label fullTxt = UIHelper.Label( itemInBagg.item.getAbout(),
+                                            FontAsset.IVENTORY_ITEM_TEXT );
             fullTxt.setWrap( true );
+
+            boolean itemIsMoney = itemInBagg.item.equals( Item.COIN ) ||
+                                  itemInBagg.item.equals( Item.BLUE_STAR ) ||
+                                  itemInBagg.item.equals( Item.YELLOW_STAR ) ||
+                                  itemInBagg.item.equals( Item.GREEN_STAR );
+
             final Image useImage = IMG.USABLE.getImageActor( offset, offset );
+            if ( !itemIsMoney ) {
+                useImage.addListener( new ClickListener() {
+                    public void clicked ( InputEvent event, float x, float y ) {
+                        SoundAsset.Click.play();
+                        UIHelper.clickAnimation( useImage );
 
-            useImage.addListener( new ClickListener() {
-                public void clicked ( InputEvent event, float x, float y ) {
-                    SoundAsset.Click.play();
-                    UIHelper.clickAnimation( useImage );
+                        MyPlayer.useItemInBag( itemInBagg );
 
-
-
-                    MyPlayer.useItemInBag(itemInBagg);
-
-                    showInGameMenu();
-                }
-            } );
+                        showInGameMenu();
+                    }
+                } );
+            }
 
             float offset_half = offset / 2;
 
             table.add( img ).pad( 0, 0, 0, offset_half );
-            table.add( count ).width( offset );
-            table.add( txt ).width( offset * 2 );
-            table.add( fullTxt ).pad( 0, offset_half, 0, 0 ).width( offset * 4 );
-            table.add( useImage ).pad( 0, offset_half, 0, 0 );
+            table.add( count ).width( offset_half );
+            table.add( txt ).width( offset * 3 );
+            table.add( fullTxt ).pad( 0, offset_half, 0, 0 ).width( offset * 5 );
+            if ( !itemIsMoney ) {
+                table.add( useImage ).pad( 0, offset_half, 0, 0 );
+            }
 
-            //////////////////
             table.row();
 
-            Sprite lineSprite = GFXHelper.createSpriteRGB888( Core.WIDTH - offset * 2,
+            Sprite lineSprite = GFXHelper.createSpriteRGB888( Core.WIDTH - offset * 2.5f,
                                                               offset / 5 );
             Image lineImage = new Image( lineSprite );
-            lineImage.setColor( GameColor.WHITEGL.get() );
+            lineImage.setColor( GameColor.BLACKGL.get() );
             table.add( lineImage ).colspan( 5 ).row();
         }
 
@@ -422,7 +412,6 @@ public class GameScreen extends Base2DScreen {
 
         gameGroup.addActor( scrollPane );
     }
-
 
 
     private void showDialogMenu ( TextBlock currentTextBlock ) {
@@ -452,7 +441,7 @@ public class GameScreen extends Base2DScreen {
         bgImage.setPosition( offset, offset );
         gameGroup.addActor( bgImage );
 
-        Label dialogTitle = UIHelper.Label( currentTextBlock.getTitle(), FontAsset.MONEY );
+        Label dialogTitle = UIHelper.Label( currentTextBlock.getTitle(), FontAsset.MENU_TITLE );
         float fontOffset = dialogTitle.getHeight() * 1.5f;
         dialogTitle.setPosition( offset + fontOffset,
                                  Core.HEIGHT - offset - fontOffset );
@@ -557,7 +546,7 @@ public class GameScreen extends Base2DScreen {
             hitButton.addListener( new ClickListener() {
                 @Override
                 public void clicked ( InputEvent event, float x, float y ) {
-                    MyPlayer.startAttack ();
+                    MyPlayer.startAttack();
                     SoundAsset.Jump2.play();
                     UIHelper.clickAnimation( hitButton );
                 }

@@ -73,16 +73,14 @@ public class PhysicalBuilder {
     }
 */
 
-boolean rotated = false;
 
-    public PhysicalBuilder setRotation( float a, float b, float c ) {
-            for ( Node node : modelInstance.nodes ) {
-                node.rotation.set( Vector3.X, a );
-                node.rotation.set( Vector3.Y, b );
-                node.rotation.set( Vector3.Z, c );
-            }
+    public PhysicalBuilder setRotation ( float p, float r, float y ) {
+        for ( Node node : modelInstance.nodes ) {
+            node.rotation.set( Vector3.X, p );
+            node.rotation.set( Vector3.Y, r );
+            node.rotation.set( Vector3.Z, y );
+        }
 
-        rotated = true;
         return this;
     }
 
@@ -139,41 +137,11 @@ boolean rotated = false;
 
 
     public PhysicalBuilder cylinderShape ( float radius, float height ) {
-        //Vector3 halfExtents = new Vector3( 0.26f, 0.5f, 0.26f );
         Vector3 halfExtents = new Vector3( radius, height, radius );
         bodyShape = new btCylinderShape( halfExtents );
         bodyShape.calculateLocalInertia( mass, inertia );
         return this;
     }
-/*
-
-
-    public PhysicalBuilder cylinderShape( float radius, float height ) {
-        //Vector3 halfExtents = new Vector3( 0.26f, 0.5f, 0.26f );
-        Vector3 halfExtents = new Vector3( radius, height, radius );
-        bodyShape = new btCylinderShape( halfExtents );
-        bodyShape.calculateLocalInertia( mass, inertia );
-        return this;
-    }
-
-
-
-    public PhysicalBuilder capsuleShapeEnemy() {
-        // 1.1 = 0.5 + 0.2 + 0.5
-        // 1.1 = 0.15 + 0.8 + 0.15
-        bodyShape = new btCapsuleShape( 0.5f, 0.2f );
-        bodyShape.calculateLocalInertia( mass, inertia );
-        return this;
-    }
-
-
-
-    public PhysicalBuilder boxShape( float dx, float dy, float dz ) {
-        bodyShape = new btBoxShape( new Vector3( dx, dy, dz ) );
-        bodyShape.calculateLocalInertia( mass, inertia );
-        return this;
-    }
-*/
 
 
     public PhysicalBuilder boxShape () {
@@ -236,9 +204,7 @@ boolean rotated = false;
     }
 
 
-
-
-    public PhysicalBuilder setStartImpulse( Vector3 impulse ) {
+    public PhysicalBuilder setStartImpulse ( Vector3 impulse ) {
         startImpulse = new Vector3( impulse );
         return this;
     }

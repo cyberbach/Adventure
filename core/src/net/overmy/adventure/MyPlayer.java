@@ -10,7 +10,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
@@ -27,18 +26,13 @@ import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.ActorComponent;
 import net.overmy.adventure.ashley.components.AnimationComponent;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
-import net.overmy.adventure.ashley.components.GroundedComponent;
-import net.overmy.adventure.ashley.components.ModelComponent;
-import net.overmy.adventure.ashley.components.MyPlayerComponent;
 import net.overmy.adventure.ashley.components.MyWeaponComponent;
-import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
 import net.overmy.adventure.resources.FontAsset;
-import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.Settings;
 import net.overmy.adventure.resources.SoundAsset;
@@ -125,55 +119,23 @@ public final class MyPlayer {
 
 
     public static void init () {
-        bag = new ArrayList< ItemInBagg >();
 
         if ( playerEntity != null ) {
             return;
         }
+        bag = new ArrayList< ItemInBagg >();
 
         modelAsset.build();
 
-        final ModelInstance modelInstance = modelAsset.get();
+        ModelInstance modelInstance = modelAsset.get();
 
         // Здесь достаём нод руки игрока
-        // FIXME
-        //rightArmNode = modelInstance.getNode( "arm_r03", true );
         rightArmNode = modelInstance.getNode( "rightArm", true );
 
-        modelInstance.transform.setToTranslation( new Vector3( 0, 3, 0 ) );
-
-        modelInstance.materials.get( 0 ).clear();
-        //modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
-        modelInstance.materials.get( 0 )
-                               .set( ColorAttribute.createDiffuse( GameColor.SQUIREL.get() ) );
-
-        final PhysicalBuilder physicalBuilder = new PhysicalBuilder()
-                .setModelInstance( modelInstance )
-                .defaultMotionState()
-                .setMass( 20.0f )
-                //.capsuleShape( 0.5f, 0.2f )
-                .capsuleShape()
-                .setCollisionFlag( btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT )
-                .setCallbackFlag( BulletWorld.PLAYER_FLAG )
-                .setCallbackFilter( BulletWorld.ALL_FLAG )
-                .disableDeactivation();
-
-        PhysicalComponent physicalComponent = physicalBuilder.buildPhysicalComponent();
-        physicalComponent.body.setFriction( 0.1f );
-
-        playerBody = physicalComponent.body;
+        playerEntity = AshleySubs.createPlayer( modelInstance );
+        playerBody = MyMapper.PHYSICAL.get( playerEntity ).body;
         //body.setSpinningFriction( 0.1f );
         //body.setRollingFriction( 0.1f );
-
-        playerEntity = AshleyWorld.getPooledEngine().createEntity();
-        playerEntity.add( physicalComponent );
-        playerEntity.add( new ModelComponent( modelInstance ) );
-        playerEntity.add( new AnimationComponent( modelInstance ) );
-        playerEntity.add( new GroundedComponent() );
-        playerEntity.add( new TypeOfComponent( COMP_TYPE.MYPLAYER ) );
-        playerEntity.add( new MyPlayerComponent() );
-
-        AshleyWorld.getPooledEngine().addEntity( playerEntity );
 
         onLadder = false;
 
@@ -181,15 +143,6 @@ public final class MyPlayer {
         walk.playLoop();
         walk.setVolume( 0.0f );
     }
-
-/*
-
-    public Matrix4 getRightArm() {
-        // set transform node of SWORD
-        armMatrix.set( rightArmNode.calculateWorldTransform() );
-        return armMatrix;
-    }
-*/
 
 
     public static void updateControls ( float deltaTime ) {
@@ -212,11 +165,6 @@ public final class MyPlayer {
         }
 
         playerBody.setLinearVelocity( velocity );
-        //body.applyCentralImpulse( velocity );
-
-        //body.setFriction( 0.1f );
-        //body.setSpinningFriction( 0.1f );
-        //body.setRollingFriction( 0.1f );
 
         if ( jump && !attack ) {
             if ( playerOnGround ) {
@@ -254,35 +202,6 @@ public final class MyPlayer {
         bodyTransform.rotate( Vector3.Y, modelAngle );
         playerBody.proceedToTransform( bodyTransform );
 
-/*        // Применяем физику к рендер-модели
-        final float ALPHA = 0.45f;
-        filteredPos.x = filteredPos.x + ALPHA * ( notFilteredPos.x - filteredPos.x );
-        filteredPos.y = filteredPos.y + ALPHA * ( notFilteredPos.y - filteredPos.y );
-        filteredPos.z = filteredPos.z + ALPHA * ( notFilteredPos.z - filteredPos.z );
-        bodyTransform.setToTranslation( filteredPos );
-        bodyTransform.rotate( Vector3.Y, modelAngle );*/
-/*
-
-        // Поворачиваем модель контроллером на экране
-        // после работы PhysicalSystem
-        body.getWorldTransform( bodyTransform );
-        bodyTransform.getTranslation( notFilteredPos );
-        bodyTransform.idt();
-        bodyTransform.setToTranslation( notFilteredPos );
-        bodyTransform.rotate( Vector3.Y, modelAngle );
-        body.proceedToTransform( bodyTransform );
-
-        // Применяем физику к рендер-модели
-        final float ALPHA = 0.45f;
-        filteredPos.x = filteredPos.x + ALPHA * ( notFilteredPos.x - filteredPos.x );
-        filteredPos.y = filteredPos.y + ALPHA * ( notFilteredPos.y - filteredPos.y );
-        filteredPos.z = filteredPos.z + ALPHA * ( notFilteredPos.z - filteredPos.z );
-        bodyTransform.setToTranslation( filteredPos );
-        bodyTransform.rotate( Vector3.Y, modelAngle );
-*/
-
-        //MyMapper.MODEL.get( playerEntity ).modelInstance.transform.set( bodyTransform );
-
         MyCamera.setCameraPosition( notFilteredPos );
 
         v2Position.set( notFilteredPos.x, notFilteredPos.z );
@@ -305,7 +224,6 @@ public final class MyPlayer {
 
         final int IDLE = 0;
         final int RUN = 1;
-        final int ATTACK = 2;
 
         // SET sound of walking steps
         if ( !onLadder ) {
@@ -371,11 +289,7 @@ public final class MyPlayer {
                 dustTime = MathUtils.random( 0.05f, 0.25f );
                 //notFilteredPos.sub( 0, 0.5f, 0 );
 
-                Entity entity = AshleyWorld.getPooledEngine().createEntity();
-                entity.add( DecalSubs.LightDustEffect( dustTime * 6 ) );
-                entity.add( new PositionComponent( notFilteredPos ) );
-                entity.add( new RemoveByTimeComponent( dustTime * 6 ) );
-                AshleyWorld.getPooledEngine().addEntity( entity );
+                AshleySubs.createDustFX( notFilteredPos, dustTime );
             }
         }
         // Мы не управляем персонажем джойстиком
@@ -474,49 +388,20 @@ public final class MyPlayer {
 
         switch ( item.item ) {
             case RED_BOTTLE:
-                speedUpTime = 10.0f;
+                speedUpTime = 15.0f;
 
                 if ( speedUpTimerLabel != null ) {
+                    speedUpTimerLabel.clear();
                     speedUpTimerLabel = null;
                 }
 
-                int iconSize = (int) ( Core.HEIGHT * 0.1f );
-                Image iconImage2 = new Image( TextureAsset.CD.getSprite() );
-                iconImage2.setSize( iconSize, iconSize );
-                iconImage2.setOrigin( iconSize / 2, iconSize / 2 );
-                iconImage2.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
-                iconImage2.addAction( Actions.forever(
-                        Actions.sequence(
-                                Actions.rotateTo( 0, 0 ),
-                                Actions.rotateTo( 360.0f, 2.0f )
-                                        )
-                                                     ) );
-
-                Image iconImage = item.item.getImage( iconSize, iconSize );
-                iconImage.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
-
-                ActorComponent actorComponent = new ActorComponent();
-                actorComponent.group.addActor( iconImage2 );
-                actorComponent.group.addActor( iconImage );
-
-                int textSpeed = (int) speedUpTime + 1;
-                speedUpTimerLabel = UIHelper.Label( "" + textSpeed, FontAsset.ACTION_TEXT );
-                GlyphLayout layout = speedUpTimerLabel.getGlyphLayout();
-                speedUpTimerLabel.setPosition(
-                        Core.WIDTH - iconSize * 2.5f - layout.width / 2,
-                        Core.HEIGHT - iconSize * 1.5f - layout.height );
-                actorComponent.group.addActor( speedUpTimerLabel );
-
-                Entity timerEntity = AshleyWorld.getPooledEngine().createEntity();
-                timerEntity.add( actorComponent );
-                timerEntity.add( new RemoveByTimeComponent( speedUpTime ) );
-                AshleyWorld.getPooledEngine().addEntity( timerEntity );
+                speedUpTimerLabel = AshleySubs.createSpeedUpTimer( item.item );
 
                 break;
 
             case KALASH_WEAPON:
                 // create weapon in ashley
-                modelInstanceWeaponInHand = ModelAsset.KALASH_WEAPON1.get();
+                modelInstanceWeaponInHand = ModelAsset.KALASH_WEAPON3.get();
                 // attach only model without physics
                 modelInstanceWeaponInHand.nodes.get( 0 ).attachTo( rightArmNode );
 
@@ -544,7 +429,7 @@ public final class MyPlayer {
 
             case BORDER_WEAPON:
                 // create weapon in ashley
-                modelInstanceWeaponInHand = ModelAsset.BORDER_WEAPON1.get();
+                modelInstanceWeaponInHand = ModelAsset.FENCE_WEAPON4.get();
                 // attach only model without physics
                 modelInstanceWeaponInHand.nodes.get( 0 ).attachTo( rightArmNode );
 
@@ -600,7 +485,7 @@ public final class MyPlayer {
 
             case RAKE_WEAPON:
                 // create weapon in ashley
-                modelInstanceWeaponInHand = ModelAsset.RAKE_WEAPON1.get();
+                modelInstanceWeaponInHand = ModelAsset.RAKE_WEAPON2.get();
                 // attach only model without physics
                 modelInstanceWeaponInHand.nodes.get( 0 ).attachTo( rightArmNode );
 

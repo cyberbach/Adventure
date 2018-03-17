@@ -3,19 +3,17 @@ package net.overmy.adventure.ashley;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ContactListener;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 
-import net.overmy.adventure.AshleyWorld;
+import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
-import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
 import net.overmy.adventure.logic.DynamicLevels;
@@ -178,15 +176,7 @@ public class WorldContactListener extends ContactListener {
                 if ( MyMapper.PHYSICAL.has( entity02 ) ) {
                     MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
                                                           .getTranslation( tempPosition1 );
-                    for ( int i = 0; i < 5; i++ ) {
-                        float bubbleTime = MathUtils.random( 0.25f, 0.65f );
-
-                        Entity entity = AshleyWorld.getPooledEngine().createEntity();
-                        entity.add( DecalSubs.BubbleCoinEffect( bubbleTime ) );
-                        entity.add( new PositionComponent( tempPosition1 ) );
-                        entity.add( new RemoveByTimeComponent( bubbleTime ) );
-                        AshleyWorld.getPooledEngine().addEntity( entity );
-                    }
+                    AshleySubs.create5BubblesFX( tempPosition1 );
                 }
 
                 switch ( item ) {
@@ -212,38 +202,27 @@ public class WorldContactListener extends ContactListener {
             }
         }
 
-
         if ( contact2MyWeapon && !contact1Player && MyPlayer.isAttacking ) {
             if ( !contact1Ladder && !contact1Ground ) {
                 btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
                 body1.getWorldTransform().getTranslation( tempPosition1 );
 
-                for ( int i = 0; i < 5; i++ ) {
-                    float bubbleTime = MathUtils.random( 0.25f, 0.65f );
-                        /*AshleyWorld.getPooledEngine().addEntity(
-                                EntitySubs.LightBubblesEffect( bubblePosition, bubbleTime * 6 ) );*/
+                AshleySubs.create5BubblesFX( tempPosition1 );
 
-                    Entity entity = AshleyWorld.getPooledEngine().createEntity();
-                    entity.add( DecalSubs.BubbleEffect( bubbleTime ) );
-                    entity.add( new PositionComponent( tempPosition1 ) );
-                    entity.add( new RemoveByTimeComponent( bubbleTime ) );
-                    AshleyWorld.getPooledEngine().addEntity( entity );
+                SoundAsset.HIT.play();
 
-                    SoundAsset.HIT.play();
+                Matrix4 weaponTransform = MyMapper.PHYSICAL.get(
+                        entity02 ).body.getWorldTransform();
+                weaponTransform.getTranslation( tempPosition1 );
 
-                    Matrix4 weaponTransform = MyMapper.PHYSICAL.get(
-                            entity02 ).body.getWorldTransform();
-                    weaponTransform.getTranslation( tempPosition1 );
+                body1.getWorldTransform().getTranslation( tempPosition2 );
 
-                    body1.getWorldTransform().getTranslation( tempPosition2 );
+                tempPosition2.sub( tempPosition1 ).nor().scl( 50 );
+                body1.applyCentralImpulse( tempPosition2 );
 
-                    tempPosition2.sub( tempPosition1 ).nor().scl( 50 );
-                    body1.applyCentralImpulse( tempPosition2 );
-
-                    if ( MyMapper.LIFE.has( entity01 ) ) {
-                        if ( contact1DestroyableBox ) {
-                            MyMapper.LIFE.get( entity01 ).life -= 60;
-                        }
+                if ( MyMapper.LIFE.has( entity01 ) ) {
+                    if ( contact1DestroyableBox ) {
+                        MyMapper.LIFE.get( entity01 ).life -= 60;
                     }
                 }
             }

@@ -40,7 +40,7 @@ public final class Levels {
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.BROOM_WEAPON,
-                                      ModelAsset.BROOM_WEAPON,
+                                      ModelAsset.BROOM_WEAPON1,
                                       new Vector3( -2.566254f, 0.907035f, -4.6540112f ) ) );
 
         objects.add( hoverCoin( 3.8215625f, 2.909436f, -7.290692f ) );
@@ -121,7 +121,7 @@ public final class Levels {
         //-29.12711,1.3195913,-82.997826
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.KALASH_WEAPON,
-                                      ModelAsset.KALASH_WEAPON,
+                                      ModelAsset.KALASH_WEAPON3,
                                       new Vector3( -29.12711f, 1.3195913f, -82.997826f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.LADDER,
@@ -170,7 +170,7 @@ public final class Levels {
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.RAKE_WEAPON,
-                                      ModelAsset.RAKE_WEAPON,
+                                      ModelAsset.RAKE_WEAPON2,
                                       new Vector3( -1.1865791f, 2.7401257f, -153.47026f ) ) );
 
         objects.add( hoverCoin( 23.473248f, 3.3257918f, -149.59673f ) );
@@ -238,7 +238,7 @@ public final class Levels {
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.BORDER_WEAPON,
-                                      ModelAsset.BORDER_WEAPON,
+                                      ModelAsset.FENCE_WEAPON4,
                                       new Vector3( -244.39001f,1.686245f,-420.27023f ) ) );
 
         objects.add( hoverCoin( -218.1792f, 1.2710103f, -408.69302f ) );
@@ -264,14 +264,14 @@ public final class Levels {
     private static LevelObject box ( float x, float y, float z, Item itemInBox ) {
         return new LevelObject( OBJECT_TYPE.BOX,
                                 itemInBox,
-                                ModelAsset.BOX,
+                                ModelAsset.CRATE,
                                 new Vector3( x, y, z ) );
     }
 
 
     private static LevelObject box ( float x, float y, float z ) {
         return new LevelObject( OBJECT_TYPE.BOX,
-                                ModelAsset.BOX,
+                                ModelAsset.CRATE,
                                 new Vector3( x, y, z ) );
     }
 

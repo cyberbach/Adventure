@@ -34,7 +34,8 @@ public class InteractComponent implements Component {
         this.textBlock = null;
     }
 
-    public InteractComponent ( TYPE_OF_INTERACT type, TextBlock        textBlock ) {
+
+    public InteractComponent ( TYPE_OF_INTERACT type, TextBlock textBlock ) {
         this.type = type;
         this.item = null;
         this.textBlock = textBlock;

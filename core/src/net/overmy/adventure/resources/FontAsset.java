@@ -17,8 +17,11 @@ import com.badlogic.gdx.utils.StringBuilder;
 
 public enum FontAsset {
 
-    TITLE( "bb.otf", 36, 1 ),
-    MONEY( "bb.otf", 32, 1 ),
+    //TITLE( "bb.otf", 36, 1 ),
+    MENU_TITLE( "bb.otf", 32, 1 ),
+    IVENTORY_ITEM( "bb.otf", 26, 1 ),
+    IVENTORY_ITEM_TEXT( "bb.otf", 20, 0 ),
+
     LOCATION_TITLE( "bb.otf", 24, 1 ),
     LOCATION_TEXT( "nsk.ttf", 16 ),
     ACTION_TEXT( "nsk.ttf", 17 ),

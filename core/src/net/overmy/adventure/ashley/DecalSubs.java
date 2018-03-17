@@ -47,7 +47,7 @@ public final class DecalSubs {
     }
 
 
-    static DecalComponent BubbleEffect ( float time ) {
+    public static DecalComponent BubbleEffect ( float time ) {
 
         final float decalSize = 0.18f;
 

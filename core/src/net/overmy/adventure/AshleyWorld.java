@@ -38,6 +38,7 @@ public final class AshleyWorld {
     public static void init () {
         pooledEngine = new PooledEngine();
 
+        AshleySubs.init( pooledEngine );
         MyMapper.init();
 
         pooledEngine.addSystem( new LifeSystem() );
@@ -74,6 +75,7 @@ public final class AshleyWorld {
         pooledEngine.clearPools();
         pooledEngine = null;
 
+        AshleySubs.dispose();
         MyMapper.dispose();
     }
 

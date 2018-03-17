@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 
+import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.BulletWorld;
 import net.overmy.adventure.MyCamera;
@@ -45,111 +46,33 @@ import net.overmy.adventure.resources.SoundAsset;
 
 public class LifeSystem extends IteratingSystem {
 
+    private final Vector3 position = new Vector3();
+
 
     @SuppressWarnings( "unchecked" )
     public LifeSystem () {
         super( Family.all( LifeComponent.class ).get() );
-
-   }
-
+    }
 
 
     @Override
     protected void processEntity ( Entity entity, float deltaTime ) {
         LifeComponent component = MyMapper.LIFE.get( entity );
         // entity is dead
-        if(component.life<=0){
-            Matrix4 entityTransform = MyMapper.PHYSICAL.get( entity ).body.getWorldTransform();
-            Vector3 position = new Vector3(  );
-            entityTransform.getTranslation( position );
+        if ( component.life <= 0 ) {
+            Matrix4 transform = MyMapper.PHYSICAL.get( entity ).body.getWorldTransform();
+            transform.getTranslation( position );
 
+            AshleySubs.createCrateParts( position );
 
-            ///////////////////
-
-            int parts = MathUtils.random( 3, 7 );
-            for(int i=0;i<parts;i++) {
-                float timeOfLife = MathUtils.random( 1.0f, 2.0f );
-
-                Vector3 randomPosition = new Vector3();
-                randomPosition.x = MathUtils.random( -1.0f, 1.0f );
-                randomPosition.y = MathUtils.random( -1.0f, 1.0f );
-                randomPosition.z = MathUtils.random( -1.0f, 1.0f );
-
-                Vector3 partPosition = new Vector3( position );
-                partPosition.add( randomPosition );
-
-                ModelInstance modelInstance = ModelAsset.BOX_PART.get();
-/*
-
-                TextureRegion region = IMG.BOX_TEXTURE.getRegion();
-                modelInstance.materials.get( 0 ).clear();
-                modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
-*/
-
-                PhysicalBuilder physicalBuilderPICKABLE = new PhysicalBuilder()
-                        .setModelInstance( modelInstance );
-
-                randomPosition.scl( 0.6f );
-
-                // rotations by vectors
-                float a = MathUtils.random( 360.0f );
-                float b = MathUtils.random( 360.0f );
-                float c = MathUtils.random( 360.0f );
-
-                physicalBuilderPICKABLE
-                        .defaultMotionState()
-                        .setMass( 0.1f )
-                        .setPosition( partPosition )
-                        .setRotation(a,b,c)
-                        .boxShape()
-                        .setCollisionFlag(
-                                btCollisionObject.CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
-                        .setCallbackFlag( BulletWorld.PART_FLAG )
-                        .setStartImpulse( randomPosition )
-                        .setCallbackFilter( 0 );
-
-                Entity partEntity = AshleyWorld.getPooledEngine().createEntity();
-                partEntity.add( new ModelComponent( modelInstance ) );
-                partEntity.add( new RemoveByTimeComponent( timeOfLife ) );
-                partEntity.add( physicalBuilderPICKABLE.buildPhysicalComponent() );
-                AshleyWorld.getPooledEngine().addEntity( partEntity );
-
-                SoundAsset.BoxCrush.play();
+            if ( MyMapper.CONTAINER.has( entity ) ) {
+                AshleySubs.createGift( position, MyMapper.CONTAINER.get( entity ).item );
             }
 
-            ///////////////////
-
-            if(MyMapper.CONTAINER.has( entity )){
-                /////////////////////////
-
-                ModelInstance modelInstanceFromBox = ModelAsset.GIFT.get();
-                //modelInstanceFromBox.transform.setToTranslation( position );
-
-                PhysicalBuilder physicalBuilderFromBox = new PhysicalBuilder()
-                        .setModelInstance( modelInstanceFromBox );
-
-                physicalBuilderFromBox
-                        .defaultMotionState()
-                        .setPosition( position )
-                        .setMass( 5.0f )
-                        .boxShape()
-                        .setCollisionFlag( btCollisionObject.CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
-                        .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
-                        .setCallbackFilter( BulletWorld.PLAYER_FLAG );
-
-                Entity entityFromBox = AshleyWorld.getPooledEngine().createEntity();
-                entityFromBox.add( new ModelComponent( modelInstanceFromBox ) );
-                entityFromBox.add( new MyAnimationComponent() );
-                entityFromBox.add( new TypeOfComponent( COMP_TYPE.COLLECTABLE ) );
-                entityFromBox.add( new CollectableComponent( MyMapper.CONTAINER.get( entity ).item ) );
-                entityFromBox.add( physicalBuilderFromBox.buildPhysicalComponent() );
-                AshleyWorld.getPooledEngine().addEntity( entityFromBox );
-                //////////////////////////
-            }
-
+            // Это чтобы компонент не пересоздавался при смене локаций
             if ( MyMapper.LEVEL_OBJECT.has( entity ) ) {
                 MyMapper.LEVEL_OBJECT.get( entity ).levelObject.useEntity();
-            }else {
+            } else {
                 entity.add( new RemoveByTimeComponent( 0 ) );
             }
         }

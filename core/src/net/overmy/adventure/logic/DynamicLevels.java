@@ -1,26 +1,14 @@
 package net.overmy.adventure.logic;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
-import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
 import com.badlogic.gdx.utils.Array;
 
+import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.AshleyWorld;
-import net.overmy.adventure.BulletWorld;
 import net.overmy.adventure.DEBUG;
-import net.overmy.adventure.PhysicalBuilder;
-import net.overmy.adventure.ashley.components.BoundingComponent;
-import net.overmy.adventure.ashley.components.COMP_TYPE;
-import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
-import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
-import net.overmy.adventure.ashley.components.TypeOfComponent;
 import net.overmy.adventure.ashley.systems.RemoveByLevelSystem;
 import net.overmy.adventure.resources.Assets;
-import net.overmy.adventure.resources.IMG;
 import net.overmy.adventure.resources.ModelAsset;
 
 /**
@@ -31,7 +19,7 @@ import net.overmy.adventure.resources.ModelAsset;
 public final class DynamicLevels {
 
     private static RemoveByLevelSystem removeByLevelSystem = null;
-    private static boolean unloaded = true;
+    private static boolean             unloaded            = true;
 
     private static Array< Integer > currentConnections  = null;
     private static Array< Integer > previousConnections = null;
@@ -110,25 +98,24 @@ public final class DynamicLevels {
 
 
     private static void removeNotMatchModels () {
-        //Gdx.app.debug( "############ removeNotMatchModels","" );
         for ( int p : previousConnections ) {
             //Gdx.app.debug( "try",""+p );
             if ( !isZoneInCurrentConnections( p ) ) {
                 if ( DEBUG.DYNAMIC_LEVELS.get() ) {
                     Gdx.app.debug( "Need to unload", "" + ModelAsset.values()[ p ] );
                 }
-
                 ModelAsset.values()[ p ].unload();
 
                 Level level = Levels.get( p );
                 if ( level.objects != null ) {
                     for ( LevelObject object : level.objects ) {
                         if ( !isModelInAnyCurrentConnections( object.modelAsset ) ) {
-                            if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                                Gdx.app.debug( "Need to unload", "" + object.modelAsset );
+                            if ( !isWeapon( object.modelAsset ) ) {
+                                if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+                                    Gdx.app.debug( "Need to unload", "" + object.modelAsset );
+                                }
+                                object.modelAsset.unload();
                             }
-
-                            object.modelAsset.unload();
                         }
                     }
                 }
@@ -155,7 +142,7 @@ public final class DynamicLevels {
                 for ( LevelObject object : level.objects ) {
                     if ( object.modelAsset == models ) {
                         if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                            //Gdx.app.debug( "" + models, "in current set" );
+                            Gdx.app.debug( "" + models, "in current set" );
                         }
                         return true;
                     }
@@ -164,14 +151,14 @@ public final class DynamicLevels {
         }
 
         if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-            //Gdx.app.debug( "" + models, "NOT in current set" );
+            Gdx.app.debug( "" + models, "NOT in current set" );
         }
         return false;
     }
 
 
     private static void updateCurrentConnections () {
-        if(unloaded) {
+        if ( unloaded ) {
             unloaded = false;
             currentConnections.clear();
 
@@ -203,7 +190,9 @@ public final class DynamicLevels {
             if ( level.objects != null ) {
                 // Загружаем объекты на уровне
                 for ( LevelObject object : level.objects ) {
-                    object.modelAsset.load();
+                    if ( !isWeapon( object.modelAsset ) ) {
+                        object.modelAsset.load();
+                    }
                 }
             }
         }
@@ -221,17 +210,27 @@ public final class DynamicLevels {
                 if ( DEBUG.DYNAMIC_LEVELS.get() ) {
                     Gdx.app.debug( "Need to build LEVEL", "" + thisLevel );
                 }
-                level.entity = createGroundEntity( thisLevel );
-                AshleyWorld.getPooledEngine().addEntity( level.entity );
+                level.entity = AshleySubs.createGround( thisLevel );
             }
 
             if ( level.objects != null ) {
                 for ( LevelObject object : level.objects ) {
-                    object.buildModel();
+                    if ( !isWeapon( object.modelAsset ) ) {
+                        object.buildModel();
+                    }
                     object.buildEntity();
                 }
             }
         }
+    }
+
+
+    private static boolean isWeapon ( ModelAsset modelAsset ) {
+        return modelAsset.equals( ModelAsset.BROOM_WEAPON1 ) ||
+               modelAsset.equals( ModelAsset.RAKE_WEAPON2 ) ||
+               modelAsset.equals( ModelAsset.KALASH_WEAPON3 ) ||
+               modelAsset.equals( ModelAsset.FENCE_WEAPON4 )
+                ;
     }
 
 
@@ -242,7 +241,7 @@ public final class DynamicLevels {
                 if ( needToBuild ) {
 
                     if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                        //Gdx.app.debug( "Dynamic levels update", "needToBuild" );
+                        Gdx.app.debug( "Dynamic levels update", "needToBuild" );
                     }
 
                     // Добавляем нужные Entity, т.к. они уже загружены
@@ -266,8 +265,6 @@ public final class DynamicLevels {
                 // Здесь ненужные модели добавляются в стэк удаления менеджера Assets
                 removeNotMatchModels();
                 needToUpdate = true;
-
-                //DynamicLevels.reload();
             }
         }
     }
@@ -280,36 +277,6 @@ public final class DynamicLevels {
 
     public static void setCurrent ( int id ) {
         current = id;
-    }
-
-
-    private static Entity createGroundEntity ( ModelAsset zoneModel ) {
-        final PhysicalBuilder physicalBuilder = new PhysicalBuilder()
-                .setModelInstance( zoneModel.getSimple() )
-                .defaultMotionState()
-                .zeroMass()
-                .bvhShape()
-                .setCollisionFlag( CollisionFlags.CF_STATIC_OBJECT )
-                .setCallbackFlag( BulletWorld.GROUND_FLAG )
-                .setCallbackFilter( BulletWorld.ALL_FLAG );
-/*
-
-        if(zoneModel.equals( ModelAsset.Level0 )){
-            TextureRegion region = IMG.ISLAND.getRegion();
-            ModelInstance modelInstance = zoneModel.get();
-            modelInstance.materials.get( 0 ).clear();
-            modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
-        }
-*/
-
-        final Entity entity = AshleyWorld.getPooledEngine().createEntity();
-        entity.add( new RemoveByLevelComponent( zoneModel.ordinal() ) );
-        entity.add( new ModelComponent( zoneModel.get() ) );
-        entity.add( new TypeOfComponent( COMP_TYPE.GROUND ) );
-        entity.add( physicalBuilder.buildPhysicalComponent() );
-        entity.add( physicalBuilder.buildBVHPhysicalComponent() );
-        entity.add( new BoundingComponent( zoneModel.getBoundingBox() ) );
-        return entity;
     }
 
 
