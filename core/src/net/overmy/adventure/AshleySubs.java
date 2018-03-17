@@ -93,7 +93,7 @@ public final class AshleySubs {
         actorComponent.group.addActor( iconImage2 );
         actorComponent.group.addActor( iconImage );
 
-        Label speedUpTimerLabel = UIHelper.Label( "16", FontAsset.ACTION_TEXT );
+        Label speedUpTimerLabel = UIHelper.Label( "16", FontAsset.DIALOG_VARIANT );
         GlyphLayout layout = speedUpTimerLabel.getGlyphLayout();
         speedUpTimerLabel.setPosition(
                 Core.WIDTH - iconSize * 2.5f - layout.width / 2,
@@ -382,8 +382,7 @@ public final class AshleySubs {
                 .hullShape()
                 .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                 .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
-                .setCallbackFilter( BulletWorld.NPC_FLAG )
-                .disableDeactivation();
+                .setCallbackFilter( BulletWorld.NPC_FLAG );
 
         Entity entity = pooledEngine.createEntity();
         entity.add( new ModelComponent( modelInstanceWEAPON ) );
@@ -438,7 +437,7 @@ public final class AshleySubs {
                 .defaultMotionState()
                 .setPosition( position )
                 .setMass( 20.0f )
-                .hullShape()
+                .boxShape()
                 .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                 .setCallbackFlag( BulletWorld.DESTROYABLE_FLAG )
                 .setCallbackFilter( BulletWorld.MYWEAPON_FLAG );

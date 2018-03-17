@@ -22,26 +22,19 @@ public final class NPCActionQueues {
         switch ( id ) {
             case 0:
                 Array< NPCAction > queue = new Array< NPCAction >();
-
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 7.0f ) );
-
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(2.8272378f, -169.52051f), 10.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(2.9068472f, -168.82805f), 10.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
-
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-6.144423f, -163.0476f), 10.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-4.8653455f, -162.5076f), 10.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 6.0f ) );
-
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-12.596195f, -160.69821f), 10.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 2.0f ) );
-
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-13.577898f, -156.70766f), 10.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.Title, 3.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 3.0f ) );
-
-                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-12.451161f, -161.43076f), 10.0f ) );
-                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 4.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 15.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-25.33078f, -66.74849f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-18.664494f, -65.147026f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-14.296296f, -65.65968f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-10.035321f, -78.6422f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-20.728638f, -86.38529f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-27.775835f, -88.418846f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-28.209415f, -85.8856f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.WAIT, 5.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-21.665394f, -84.70191f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-13.180926f, -78.91112f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-14.756912f, -65.820145f), 10.0f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(-26.207544f, -68.05383f), 10.0f ) );
 
                 return queue;
 

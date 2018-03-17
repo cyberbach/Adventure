@@ -7,8 +7,8 @@ package net.overmy.adventure.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
@@ -114,7 +114,7 @@ public class GameScreen extends Base2DScreen {
             String helpString = "ENTER - push position\n1- show bonus pos\n" +
                                 "2-show box pos\n3-show NPC move pos\n" +
                                 "\nBackSpace-clear positions";
-            Label ingameMenuTitle = UIHelper.Label( helpString, FontAsset.LOCATION_TEXT );
+            Label ingameMenuTitle = UIHelper.Label( helpString, FontAsset.IVENTORY_ITEM );
             float fontOffset = ingameMenuTitle.getHeight() * 1.5f;
             ingameMenuTitle.setPosition( fontOffset,
                                          Core.HEIGHT - fontOffset );
@@ -270,7 +270,7 @@ public class GameScreen extends Base2DScreen {
                 readyToPick = true;
 
                 log.setLength( 0 );
-                switch ( typeOfInteract ){
+                switch ( typeOfInteract ) {
                     case EMPTY:
                         break;
                     case LOOT:
@@ -286,23 +286,22 @@ public class GameScreen extends Base2DScreen {
                 if ( interactSystem.getCurrentItem() != null ) {
                     log.append( interactSystem.getCurrentItem().getName() );
                 } else {
-                    log.append( interactSystem.getCurrentTextBlock() );
+                    log.append( interactSystem.getCurrentTextBlock().getTitle() );
                 }
-                Label pickText = UIHelper.Label( log.toString(), FontAsset.IVENTORY_ITEM );
-                float w = pickText.getWidth();
-                float h = pickText.getHeight();
+                Label interactText = UIHelper.Label( log.toString(), FontAsset.IVENTORY_ITEM );
+                float w = interactText.getWidth();
+                float h = interactText.getHeight();
                 //GlyphLayout glyphLayout = pickText.getGlyphLayout();
-                Gdx.app.debug( "GL ========="+w,""+ h);
 
                 Sprite lineSprite = GFXHelper.createSpriteRGB888(
                         w + h * 0.5f,
                         h * 1.5f );
                 Image lineImage = new Image( lineSprite );
                 lineImage.setColor( GameColor.BLACKGL.get() );
-                lineImage.setPosition( -lineImage.getWidth()/2,-lineImage.getHeight()/2 );
+                lineImage.setPosition( -lineImage.getWidth() / 2, -lineImage.getHeight() / 2 );
 
                 interactGroup.addActor( lineImage );
-                interactGroup.addActor( pickText );
+                interactGroup.addActor( interactText );
                 interactGroup.addListener( new ClickListener() {
                     public void clicked ( InputEvent event, float x, float y ) {
                         UIHelper.clickAnimation( interactGroup );
@@ -380,7 +379,7 @@ public class GameScreen extends Base2DScreen {
 
                         MyPlayer.useItemInBag( itemInBagg );
 
-                        showInGameMenu();
+                        showGameGUI();
                     }
                 } );
             }
@@ -437,7 +436,7 @@ public class GameScreen extends Base2DScreen {
         int h = Core.HEIGHT - offset * 2;
         Sprite bgSprite = GFXHelper.createSpriteRGB888( w, h );
         Image bgImage = new Image( bgSprite );
-        bgImage.setColor( 1, 1, 1, 0.3f );
+        bgImage.setColor( GameColor.BLACKGL.get() );
         bgImage.setPosition( offset, offset );
         gameGroup.addActor( bgImage );
 
@@ -447,7 +446,8 @@ public class GameScreen extends Base2DScreen {
                                  Core.HEIGHT - offset - fontOffset );
         gameGroup.addActor( dialogTitle );
 
-        Label dialogBody = UIHelper.Label( currentTextBlock.getAbout(), FontAsset.ACTION_TEXT );
+        Label dialogBody = UIHelper.Label( currentTextBlock.getAbout(), FontAsset.DIALOG_VARIANT );
+        dialogBody.setColor( Color.YELLOW );
         dialogBody.setPosition( offset + fontOffset,
                                 Core.HEIGHT - 2 * offset - fontOffset );
         dialogBody.setWrap( true );
@@ -460,7 +460,7 @@ public class GameScreen extends Base2DScreen {
             final TextBlock connection = currentTextBlock.getConnections().get( i );
 
             Label dialogVariant = UIHelper.Label( connection.getAction(),
-                                                  FontAsset.LOCATION_TITLE );
+                                                  FontAsset.DIALOG_VARIANT );
             dialogVariant.setPosition( offset + fontOffset,
                                        Core.HEIGHT_HALF - offset / 2 - i * offset );
             dialogVariant.addListener( new ClickListener() {
@@ -474,7 +474,7 @@ public class GameScreen extends Base2DScreen {
         }
 
         Label dialogVariant = UIHelper.Label( TextDialogAsset.CloseDialog.get(),
-                                              FontAsset.LOCATION_TITLE );
+                                              FontAsset.DIALOG_VARIANT );
         dialogVariant.setPosition( offset + fontOffset,
                                    Core.HEIGHT_HALF - offset / 2 - j * offset );
         dialogVariant.addListener( new ClickListener() {

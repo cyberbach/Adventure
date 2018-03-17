@@ -75,7 +75,7 @@ public class TextDecalSystem extends IteratingSystem {
 
         batch.setProjectionMatrix( tmpMat4 );
         batch.begin();
-        FontAsset.LOCATION_TITLE.get().draw( batch, text, 0, 0 );
+        FontAsset.MENU_TITLE.get().draw( batch, text, 0, 0 );
         batch.end();
 
         batch.setProjectionMatrix( MyRender.getCamera().combined );

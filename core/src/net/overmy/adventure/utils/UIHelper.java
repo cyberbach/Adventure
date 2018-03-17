@@ -233,12 +233,12 @@ public final class UIHelper {
         sliderStyle.background.setMinWidth( Core.WIDTH * 0.55f );
         sliderStyle.background.setMinHeight( Core.HEIGHT * 0.05f );
 
-        return new Slider( 0, 100, 1, false, sliderStyle );
+        return new Slider( 0, 100, 5, false, sliderStyle );
     }
 
 
     public static Actor MenuLabel ( String text, float height ) {
-        Label label = new Label( text, FontAsset.LOCATION_TITLE.getStyle() );
+        Label label = new Label( text, FontAsset.MENU_TITLE.getStyle() );
         label.setPosition( Core.HEIGHT * 0.15f, height );
         return label;
     }

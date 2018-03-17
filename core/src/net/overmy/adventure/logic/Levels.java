@@ -118,7 +118,13 @@ public final class Levels {
 
     private static Array< LevelObject > level1objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
-        //-29.12711,1.3195913,-82.997826
+
+        objects.add( new LevelObject( OBJECT_TYPE.NPC,
+                                      TextBlock.DialogNPC1,
+                                      NPCActionQueues.get( 0 ),
+                                      ModelAsset.HOG,
+                                      new Vector3( -25.33078f, 5,-66.74849f ) ) );
+
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.KALASH_WEAPON,
                                       ModelAsset.KALASH_WEAPON3,

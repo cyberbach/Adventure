@@ -101,7 +101,7 @@ public class MenuScreen extends Base2DScreen {
         optionsGroup.addAction( Actions.alpha( 1, Core.FADE ) );
 
         Label optionsTitleLabel = new Label( TextAsset.OPTIONS.get(),
-                                             FontAsset.LOCATION_TITLE.getStyle() );
+                                             FontAsset.MENU_TITLE.getStyle() );
         optionsTitleLabel.setPosition( Core.WIDTH_HALF - optionsTitleLabel.getWidth() / 2,
                                        Core.HEIGHT * 0.75f );
         optionsGroup.addActor( optionsTitleLabel );
