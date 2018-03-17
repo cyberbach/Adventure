@@ -147,21 +147,27 @@ public final class AshleySubs {
 
 
     public static Entity createGround ( ModelAsset zoneModel ) {
-        PhysicalBuilder physicalBuilder = new PhysicalBuilder()
-                .setModelInstance( zoneModel.getSimple() )
-                .defaultMotionState()
-                .zeroMass()
-                .bvhShape()
-                .setCollisionFlag( CollisionFlags.CF_STATIC_OBJECT )
-                .setCallbackFlag( BulletWorld.GROUND_FLAG )
-                .setCallbackFilter( BulletWorld.ALL_FLAG );
+        ModelInstance physics = zoneModel.getSimple();
+        PhysicalBuilder physicalBuilder = null;
+        if ( physics != null ) {
+            physicalBuilder = new PhysicalBuilder()
+                    .setModelInstance( physics )
+                    .defaultMotionState()
+                    .zeroMass()
+                    .bvhShape()
+                    .setCollisionFlag( CollisionFlags.CF_STATIC_OBJECT )
+                    .setCallbackFlag( BulletWorld.GROUND_FLAG )
+                    .setCallbackFilter( BulletWorld.ALL_FLAG );
+        }
 
         Entity entity = pooledEngine.createEntity();
         entity.add( new RemoveByLevelComponent( zoneModel.ordinal() ) );
         entity.add( new ModelComponent( zoneModel.get() ) );
         entity.add( new TypeOfComponent( COMP_TYPE.GROUND ) );
-        entity.add( physicalBuilder.buildPhysicalComponent() );
-        entity.add( physicalBuilder.buildBVHPhysicalComponent() );
+        if ( physics != null ) {
+            entity.add( physicalBuilder.buildPhysicalComponent() );
+            entity.add( physicalBuilder.buildBVHPhysicalComponent() );
+        }
         entity.add( new BoundingComponent( zoneModel.getBoundingBox() ) );
         pooledEngine.addEntity( entity );
 

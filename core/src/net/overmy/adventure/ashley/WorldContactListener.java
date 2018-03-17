@@ -226,7 +226,7 @@ public class WorldContactListener extends ContactListener {
 
                 if ( MyMapper.LIFE.has( entity01 ) ) {
                     if ( contact1DestroyableBox ) {
-                        MyMapper.LIFE.get( entity01 ).life -= 60;
+                        MyMapper.LIFE.get( entity01 ).life -= MyPlayer.damage;
                     }
                 }
             }
@@ -253,7 +253,7 @@ public class WorldContactListener extends ContactListener {
 
                 if ( MyMapper.LIFE.has( entity02 ) ) {
                     if ( contact2DestroyableBox ) {
-                        MyMapper.LIFE.get( entity02 ).life -= 60;
+                        MyMapper.LIFE.get( entity02 ).life -= MyPlayer.damage;
                     }
                 }
             }

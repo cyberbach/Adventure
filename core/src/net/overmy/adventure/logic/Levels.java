@@ -243,7 +243,7 @@ public final class Levels {
         Array< LevelObject > objects = new Array< LevelObject >();
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
-                                      Item.BORDER_WEAPON,
+                                      Item.FENCE_WEAPON,
                                       ModelAsset.FENCE_WEAPON4,
                                       new Vector3( -244.39001f,1.686245f,-420.27023f ) ) );
 

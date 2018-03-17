@@ -17,27 +17,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import net.overmy.adventure.ashley.DecalSubs;
 import net.overmy.adventure.ashley.MyMapper;
-import net.overmy.adventure.ashley.components.ActorComponent;
 import net.overmy.adventure.ashley.components.AnimationComponent;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
 import net.overmy.adventure.ashley.components.MyWeaponComponent;
-import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
-import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.Settings;
 import net.overmy.adventure.resources.SoundAsset;
-import net.overmy.adventure.resources.TextureAsset;
-import net.overmy.adventure.utils.UIHelper;
 
 import java.util.ArrayList;
 
@@ -59,7 +51,8 @@ public final class MyPlayer {
 
     private static Node rightArmNode = null;
 
-    private static ArrayList< ItemInBagg > bag = null;
+    private static ArrayList< ItemInBagg > bag    = null;
+    public static  int                     damage = 0;
 
 
     public static ArrayList< ItemInBagg > getBag () {
@@ -370,7 +363,7 @@ public final class MyPlayer {
         boolean broomIsItem = item.item.equals( Item.BROOM_WEAPON );
         boolean kalashIsItem = item.item.equals( Item.KALASH_WEAPON );
         boolean rakeIsItem = item.item.equals( Item.RAKE_WEAPON );
-        boolean borderIsItem = item.item.equals( Item.BORDER_WEAPON );
+        boolean borderIsItem = item.item.equals( Item.FENCE_WEAPON );
 
         if ( broomIsItem || kalashIsItem || rakeIsItem || borderIsItem ) {
             if ( weaponInHand ) {
@@ -428,10 +421,11 @@ public final class MyPlayer {
                 AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
 
                 weaponInHand = true;
+                damage = 110;
 
                 break;
 
-            case BORDER_WEAPON:
+            case FENCE_WEAPON:
                 // create weapon in ashley
                 modelInstanceWeaponInHand = ModelAsset.FENCE_WEAPON4.get();
                 // attach only model without physics
@@ -456,6 +450,7 @@ public final class MyPlayer {
                 AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
 
                 weaponInHand = true;
+                damage = 150;
 
                 break;
 
@@ -484,6 +479,7 @@ public final class MyPlayer {
                 AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
 
                 weaponInHand = true;
+                damage = 35;
 
                 break;
 
@@ -512,6 +508,7 @@ public final class MyPlayer {
                 AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
 
                 weaponInHand = true;
+                damage = 60;
 
                 break;
         }
