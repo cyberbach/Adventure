@@ -166,14 +166,10 @@ public class WorldContactListener extends ContactListener {
         boolean outOfCamera = MyMapper.OUT_OF_CAMERA.has( entity02 );
         if ( !outOfCamera ) {
             if ( contact1Player && contact2Collectable ) {
+                entity02.add( new OutOfCameraComponent() );
+
                 Item item = MyMapper.COLLECTABLE.get( entity02 ).item;
                 MyPlayer.addToBag( item );
-
-                // Устанавливаем в levelObject флаг, чтобы предмет
-                // не создался снова, при перезагрузке уровня
-                if ( MyMapper.LEVEL_OBJECT.has( entity02 ) ) {
-                    MyMapper.LEVEL_OBJECT.get( entity02 ).levelObject.useEntity();
-                }
 
                 if ( MyMapper.PHYSICAL.has( entity02 ) ) {
                     MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
@@ -199,13 +195,19 @@ public class WorldContactListener extends ContactListener {
                         break;
                 }
 
-                entity02.add( new OutOfCameraComponent() );
-                entity02.add( new RemoveByTimeComponent( 0 ) );
+                // Устанавливаем в levelObject флаг, чтобы предмет
+                // не создался снова, при перезагрузке уровня
+                if ( MyMapper.LEVEL_OBJECT.has( entity02 ) ) {
+                    MyMapper.LEVEL_OBJECT.get( entity02 ).levelObject.useEntity();
+                }else{
+                    entity02.add( new RemoveByTimeComponent( 0 ) );
+                }
             }
         }
 
         if ( contact2MyWeapon && !contact1Player && MyPlayer.isAttacking ) {
             if ( !contact1Ladder && !contact1Ground ) {
+                MyPlayer.isAttacking = false;
                 btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
                 body1.getWorldTransform().getTranslation( tempPosition1 );
 
@@ -232,6 +234,7 @@ public class WorldContactListener extends ContactListener {
 
         if ( contact1MyWeapon && !contact2Player && MyPlayer.isAttacking ) {
             if ( !contact2Ladder && !contact2Ground ) {
+                MyPlayer.isAttacking = false;
                 btRigidBody body2 = MyMapper.PHYSICAL.get( entity02 ).body;
                 body2.getWorldTransform().getTranslation( tempPosition1 );
 

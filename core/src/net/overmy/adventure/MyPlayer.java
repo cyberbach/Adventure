@@ -257,20 +257,24 @@ public final class MyPlayer {
             // Персонаж на земле
             if ( playerOnGround ) {
                 final float animationSpeed = 3.0f + 2.0f * directionLen;
-                if ( playerIsRunning && !playerHitSomething ) {
-                    animationComponent.queue( RUN, animationSpeed );
-                } else {
-                    animationComponent.play( RUN, animationSpeed );
-                    isAttacking = false;
+                if ( !playerHitSomething ) {
+                    if ( playerIsRunning ) {
+                        animationComponent.queue( RUN, animationSpeed );
+                    } else {
+                        animationComponent.play( RUN, animationSpeed );
+                        isAttacking = false;
+                    }
                 }
             }
             // Персонаж в воздухе
             else {
-                if ( playerInIDLE && !playerHitSomething ) {
-                    animationComponent.queue( IDLE, 2.0f );
-                } else {
-                    animationComponent.play( IDLE, 2.0f );
-                    isAttacking = false;
+                if ( !playerHitSomething ) {
+                    if ( playerInIDLE ) {
+                        animationComponent.queue( IDLE, 2.0f );
+                    } else {
+                        animationComponent.play( IDLE, 2.0f );
+                        isAttacking = false;
+                    }
                 }
             }
             final float runSpeed = 5.0f;
