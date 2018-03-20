@@ -11,6 +11,7 @@ import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
+import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
@@ -51,7 +52,9 @@ public class WorldContactListener extends ContactListener {
             Gdx.app.debug( "onContactProcessed", stringBuilder.toString() );
         }
 
-        if(!(m1 && m2))return;
+        if ( !( m1 && m2 ) ) {
+            return;
+        }
 
         // Начинаем поиск тех двух Entity, у которых userValue физических тела
         // совпадают с теми, что пришли в onContactProcessed
@@ -139,6 +142,8 @@ public class WorldContactListener extends ContactListener {
         boolean contact2Player = type2.equals( COMP_TYPE.MYPLAYER );
         boolean contact2MyWeapon = type2.equals( COMP_TYPE.WEAPON );
         boolean contact1MyWeapon = type1.equals( COMP_TYPE.WEAPON );
+        boolean contact2NPC = type2.equals( COMP_TYPE.NPC );
+        boolean contact1NPC = type1.equals( COMP_TYPE.NPC );
         boolean contact2Ground = type2.equals( COMP_TYPE.GROUND );
         boolean contact2Ladder = type2.equals( COMP_TYPE.LADDER );
         boolean contact1DestroyableBox = type1.equals( COMP_TYPE.DESTROYABLE_BOX );
@@ -240,24 +245,52 @@ public class WorldContactListener extends ContactListener {
                 }
             }
         }
-/*
 
-        if(contact1MyWeapon && contact2DestroyableRock){
-            Gdx.app.debug( "=1 contact1MyWeapon==============","============" );
-        }
+        if ( contact1NPC && contact2Player || contact2NPC && contact1Player ) {
+            // мы получаем урон от Enemy
+            if ( MyMapper.NPC.has( entity01 ) ) {
+                NPCComponent component = MyMapper.NPC.get( entity01 );
+                component.time = 0.0f;
+                if ( component.attacking ) {
+                    Gdx.app.debug( "1", "1 вариант" );
+                    btRigidBody body2 = MyMapper.PHYSICAL.get( entity02 ).body;
+                    body2.getWorldTransform().getTranslation( tempPosition2 );
 
-        if(contact2MyWeapon && contact1DestroyableRock){
-            Gdx.app.debug( "=contact2MyWeapon==============","============" );
-        }
+                    Gdx.app.debug( "2", "1 вариант" );
+                    AshleySubs.create5StarsFX( tempPosition2 );
 
-        if(contact1Player && contact2DestroyableRock){
-            Gdx.app.debug( "=1 player==============","============" );
-        }
+                    SoundAsset.HIT.play();
 
-        if(contact2Player && contact1DestroyableRock){
-            Gdx.app.debug( "=2 player==============","============" );
+                    Gdx.app.debug( "3", "1 вариант" );
+                    if ( MyMapper.LIFE.has( entity02 ) ) {
+                        Gdx.app.debug( "5", "1 вариант" );
+                        MyMapper.LIFE.get( entity02 ).decLife( component.damage );
+                    }
+                    component.attacking = false;
+                    Gdx.app.debug( "4", "1 вариант" );
+                }
+            }
+            if ( MyMapper.NPC.has( entity02 ) ) {
+                NPCComponent component = MyMapper.NPC.get( entity02 );
+                component.time = 0.0f;
+                if ( component.attacking ) {
+                    Gdx.app.debug( "1", "2 вариант" );
+                    btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
+                    body1.getWorldTransform().getTranslation( tempPosition1 );
+                    Gdx.app.debug( "2", "2 вариант" );
+                    AshleySubs.create5StarsFX( tempPosition1 );
+                    SoundAsset.HIT.play();
+
+                    Gdx.app.debug( "3", "2 вариант" );
+                    component.attacking = false;
+                    if ( MyMapper.LIFE.has( entity01 ) ) {
+                        Gdx.app.debug( "5", "2 вариант" );
+                        MyMapper.LIFE.get( entity01 ).decLife( component.damage );
+                    }
+                    Gdx.app.debug( "4", "2 вариант" );
+                }
+            }
         }
-*/
 
         if ( contact2MyWeapon && !contact1Player && MyPlayer.isAttacking ) {
             if ( !contact1Ladder && !contact1Ground ) {
@@ -276,7 +309,7 @@ public class WorldContactListener extends ContactListener {
                 body1.applyCentralImpulse( tempPosition1 );
 
                 if ( MyMapper.LIFE.has( entity01 ) ) {
-                    if ( contact1DestroyableBox || contact1DestroyableRock ) {
+                    if ( contact1DestroyableBox || contact1DestroyableRock || contact1NPC ) {
                         MyMapper.LIFE.get( entity01 ).decLife( MyPlayer.damage );
                     }
                 }
@@ -300,7 +333,7 @@ public class WorldContactListener extends ContactListener {
                 body2.applyCentralImpulse( tempPosition2 );
 
                 if ( MyMapper.LIFE.has( entity02 ) ) {
-                    if ( contact2DestroyableBox || contact2DestroyableRock) {
+                    if ( contact2DestroyableBox || contact2DestroyableRock || contact2NPC ) {
                         MyMapper.LIFE.get( entity02 ).decLife( MyPlayer.damage );
                     }
                 }

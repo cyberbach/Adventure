@@ -47,6 +47,8 @@ public enum ModelAsset {
     RED_BOTTLE( "redbottle" ),
     STUFF( "stuff" ),
 
+    CRAB( "crab" ),
+    STAR( "star" ),
     FOX( "fox" ),
     HOG( "hog" ),
     PLAYER01( "squirrel" ),

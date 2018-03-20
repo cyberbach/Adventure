@@ -10,6 +10,7 @@ import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.systems.RemoveByLevelSystem;
 import net.overmy.adventure.resources.Assets;
 import net.overmy.adventure.resources.ModelAsset;
+import net.overmy.adventure.resources.Settings;
 
 /**
  * Created by Andrey (cb) Mikheev
@@ -36,8 +37,7 @@ public final class DynamicLevels {
         removeByLevelSystem = AshleyWorld.getPooledEngine().getSystem( RemoveByLevelSystem.class );
 
         // Это стартовая локация
-        //current = Settings.START_LOCATION.getInteger() - 1;
-        current = 0;
+        current = Settings.START_LOCATION.getInteger();
 
         //if ( current < 0 ) { current = 3; }
 
@@ -281,6 +281,8 @@ public final class DynamicLevels {
 
 
     public static void dispose () {
+        Settings.START_LOCATION.setInteger( current );
+
         currentConnections = null;
         previousConnections = null;
     }

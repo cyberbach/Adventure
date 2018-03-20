@@ -19,7 +19,8 @@ public class NPCAction {
     public enum NPC_ACTION_ID {
         WAIT,
         MOVE,
-        SAY
+        SAY,
+        HUNT
     }
 
 

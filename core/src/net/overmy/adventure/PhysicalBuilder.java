@@ -114,7 +114,7 @@ public class PhysicalBuilder {
     }
 
 
-/*
+
 
     public PhysicalBuilder capsuleShape( float radius, float height ) {
         // 1.1 = 0.5 + 0.2 + 0.5
@@ -123,7 +123,7 @@ public class PhysicalBuilder {
         bodyShape.calculateLocalInertia( mass, inertia );
         return this;
     }
-*/
+
 
 
     public PhysicalBuilder capsuleShape () {

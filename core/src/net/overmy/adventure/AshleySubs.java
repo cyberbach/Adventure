@@ -124,10 +124,10 @@ public final class AshleySubs {
                                              ) );*/
 
         Image iconImage = item.getImage( iconSize, iconSize );
-        iconImage.setSize( iconSize,iconSize );
+        iconImage.setSize( iconSize, iconSize );
         //iconImage.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
         UIHelper.roller( iconImage,
-                         Core.WIDTH_HALF - iconSize/2, Core.HEIGHT_HALF - iconSize/2,
+                         Core.WIDTH_HALF - iconSize / 2, Core.HEIGHT_HALF - iconSize / 2,
                          Core.WIDTH - iconSize * 1.5f, Core.HEIGHT - iconSize * 1.5f );
         //iconImage.addAction( Actions.rotateTo( 360,Core.FADE ) );
 
@@ -137,7 +137,7 @@ public final class AshleySubs {
 
         Entity timerEntity = AshleyWorld.getPooledEngine().createEntity();
         timerEntity.add( actorComponent );
-        timerEntity.add( new RemoveByTimeComponent( Core.FADE*2.0f ) );
+        timerEntity.add( new RemoveByTimeComponent( Core.FADE * 2.0f ) );
         AshleyWorld.getPooledEngine().addEntity( timerEntity );
     }
 
@@ -171,6 +171,7 @@ public final class AshleySubs {
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( new AnimationComponent( modelInstance ) );
         entity.add( new GroundedComponent() );
+        entity.add( new LifeComponent( 100,1,2 ) );
         entity.add( new TypeOfComponent( COMP_TYPE.MYPLAYER ) );
         entity.add( new MyPlayerComponent() );
 
@@ -392,15 +393,31 @@ public final class AshleySubs {
                 .setCollisionFlag( CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.NPC_FLAG )
                 .setCallbackFilter(
-                        BulletWorld.GROUND_FLAG | BulletWorld.NPC_FLAG | BulletWorld.PLAYER_FLAG )
+                        BulletWorld.GROUND_FLAG | BulletWorld.NPC_FLAG | BulletWorld.PLAYER_FLAG | BulletWorld.MYWEAPON_FLAG )
                 .disableDeactivation();
+
+        float damage = 1.0f;
+        switch ( modelAsset ) {
+            case CRAB:
+                physicalBuilderENEMY.capsuleShape( 0.5f, 0.15f );
+                damage = 20.0f;
+                break;
+            case STAR:
+                physicalBuilderENEMY.capsuleShape();
+                damage = 10.0f;
+                break;
+            default:
+                physicalBuilderENEMY.capsuleShape();
+                break;
+        }
 
         Entity entity = pooledEngine.createEntity();
         entity.add( new ModelComponent( modelInstanceENEMY ) );
         entity.add( new AnimationComponent( modelInstanceENEMY ) );
         entity.add( new TypeOfComponent( COMP_TYPE.NPC ) );
-        entity.add( new NPCComponent( actionArray, true ) );
+        entity.add( new NPCComponent( actionArray, damage ) );
         entity.add( physicalBuilderENEMY.buildPhysicalComponent() );
+        entity.add( new LifeComponent( 100, 1.5f, 2.0f ) );
         pooledEngine.addEntity( entity );
 
         return entity;

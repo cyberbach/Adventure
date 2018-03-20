@@ -31,6 +31,8 @@ public final class Levels {
         levelArray.add( new Level( "4, 3, 5", level4objects() ) );
         levelArray.add( new Level( "5, 4", level5objects() ) );
 
+
+
         array = new ImmutableArray< Level >( levelArray );
     }
 
@@ -42,6 +44,18 @@ public final class Levels {
                                       Item.BROOM_WEAPON,
                                       ModelAsset.BROOM_WEAPON1,
                                       new Vector3( -2.566254f, 0.0907035f, -4.6540112f ) ) );
+// weapon user value = 4
+//user value 5
+        objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
+                                      NPCActionQueues.get( 1 ),
+                                      ModelAsset.CRAB,
+                                      new Vector3( 5.8699236f,0.9654312f,10.142155f ) ) );
+//user value 6
+        objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
+                                      NPCActionQueues.get( 2 ),
+                                      ModelAsset.STAR,
+                                      new Vector3( 8.697725f,1.1986834f,-2.0947685f ) ) );
+
 
         //objects.add( rock( 3.8215625f, 2.909436f, -7.290692f ) );
 

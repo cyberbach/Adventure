@@ -17,6 +17,7 @@ import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.ashley.DecalSubs;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.AnimationComponent;
+import net.overmy.adventure.ashley.components.NPCAction;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
@@ -38,11 +39,10 @@ public class NPCSystem extends IteratingSystem {
     private static       float   dustTime       = 0.1f;
 
 
-    private        Vector2    npcPosition = new Vector2();
+    private Vector2 npcPosition = new Vector2();
 
 
-
-    private static SoundAsset walk        = null;
+    private static SoundAsset walk = null;
 
 
     @SuppressWarnings( "unchecked" )
@@ -66,17 +66,23 @@ public class NPCSystem extends IteratingSystem {
     }
 
 
+    float modelAngle = 0.0f;
+
+    Vector2 tmp = new Vector2();
+
+
     @Override
     protected void processEntity ( Entity entity, float delta ) {
-        float modelAngle = 0.0f;
 
         NPCComponent npcComponent = MyMapper.NPC.get( entity );
         int action = npcComponent.currentAction;
 
         npcComponent.time -= delta;
         if ( npcComponent.time < 0 ) {
+
             action++;
             if ( action > npcComponent.actionArray.size - 1 ) {
+
                 action = 0;
             }
 
@@ -100,11 +106,13 @@ public class NPCSystem extends IteratingSystem {
 
         switch ( npcComponent.actionArray.get( action ).id ) {
             case WAIT:
+                npcComponent.attacking=false;
                 direction.set( 0, 0 );
                 walk.setVolume( 0.0f );
                 break;
 
             case MOVE:
+                npcComponent.attacking=false;
                 npcPosition.set( notFilteredPos.x, notFilteredPos.z );
                 direction.set( npcComponent.actionArray.get( action ).targetPosition.x,
                                npcComponent.actionArray.get( action ).targetPosition.y );
@@ -129,7 +137,44 @@ public class NPCSystem extends IteratingSystem {
 
                 break;
 
+            case HUNT:
+                /*npcPosition.set( notFilteredPos.x, notFilteredPos.z );
+                direction.set( npcComponent.actionArray.get( action ).targetPosition.x,
+                               npcComponent.actionArray.get( action ).targetPosition.y );
+                direction.sub( npcPosition );
+
+                if ( direction.len() <= 0.1f ) {
+                    direction.set( 0, 0 );
+                    npcComponent.time = 0;
+                    walk.setVolume( 0.0f );
+                } else {
+                    direction.nor();
+
+                    final float MAX_LISTEN_DISTANCE = 20.0f;
+
+                    // Set NPC step-sounds by distance of player
+                    Vector2 playerPosition = MyPlayer.getPosition();
+                    float distance = MAX_LISTEN_DISTANCE - npcPosition.sub( playerPosition ).len();
+                    float walkVolume =
+                            distance < MAX_LISTEN_DISTANCE ? distance / MAX_LISTEN_DISTANCE : 0;
+                    walk.setVolume( walkVolume );*/
+                npcPosition.set( notFilteredPos.x, notFilteredPos.z );
+                tmp.set( MyPlayer.getPosition() ).sub( npcPosition );
+                if ( tmp.len() > 4.0f ) {
+                    npcComponent.time = 0;
+                    Gdx.app.debug( "", "не хочет охотится" );
+                    npcComponent.attacking=false;
+                } else {
+                    tmp.nor();
+                    direction.set( tmp );
+                    Gdx.app.debug( "охота", "идёт "+tmp.len() );
+                    npcComponent.attacking=true;
+                }
+
+                break;
+
             case SAY:
+                npcComponent.attacking=false;
                 direction.set( 0, 0 );
                 walk.setVolume( 0.0f );
                 entity.add( new TextDecalComponent( npcComponent.actionArray.get( action ).text,
@@ -149,7 +194,8 @@ public class NPCSystem extends IteratingSystem {
 
         final int IDLE = 0;
         final int RUN = 1;
-        //final int HIT = 2;
+        final int ATTACK = 2;
+        final int DIE = 3;
 
         final float directionLen = direction.len();
         // Мы управляем персонажем джойстиком

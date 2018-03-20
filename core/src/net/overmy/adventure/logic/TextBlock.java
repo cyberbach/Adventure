@@ -21,7 +21,7 @@ public enum TextBlock {
 
     private TextDialogAsset action = null;
     private TextDialogAsset title  = null;
-    private TextDialogAsset about  = null;
+    private TextDialogAsset body   = null;
 
 
     public static void init () {
@@ -61,7 +61,7 @@ public enum TextBlock {
                                TextDialogAsset bodyOfTextBlock,
                                TextDialogAsset actionText ) {
         this.title = titleOfTextBlock;
-        this.about = bodyOfTextBlock;
+        this.body = bodyOfTextBlock;
         this.action = actionText;
         return this;
     }
@@ -72,8 +72,8 @@ public enum TextBlock {
     }
 
 
-    public String getAbout () {
-        return about.get();
+    public String getBody () {
+        return body.get();
     }
 
 

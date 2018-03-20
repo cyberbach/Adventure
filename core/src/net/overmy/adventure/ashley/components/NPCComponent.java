@@ -1,6 +1,5 @@
 package net.overmy.adventure.ashley.components;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Array;
 
 /*
@@ -11,20 +10,19 @@ import com.badlogic.gdx.utils.Array;
 public class NPCComponent extends TimeComponent {
     public Array< NPCAction > actionArray = new Array< NPCAction >();
 
-    public int currentAction = 0;
-    public boolean agressive;
+    public int     currentAction = 0;
+    public boolean attacking     = false;
+    public float damage     = 0.0f;
 
 
     public NPCComponent ( Array< NPCAction > actionArray ) {
         this.actionArray = actionArray;
         this.time = actionArray.get( 0 ).durationTime;
-        this.agressive = false;
     }
 
-
-    public NPCComponent ( Array< NPCAction > actionArray, boolean agressive ) {
+    public NPCComponent ( Array< NPCAction > actionArray, float newDamage ) {
         this.actionArray = actionArray;
         this.time = actionArray.get( 0 ).durationTime;
-        this.agressive = agressive;
+        this.damage=newDamage;
     }
 }

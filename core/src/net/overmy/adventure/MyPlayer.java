@@ -26,6 +26,7 @@ import net.overmy.adventure.ashley.components.COMP_TYPE;
 import net.overmy.adventure.ashley.components.MyWeaponComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
+import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
 import net.overmy.adventure.resources.ModelAsset;
@@ -157,13 +158,33 @@ public final class MyPlayer {
         entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
         entityWeaponInHand.add( physicalBuilder.buildPhysicalComponent() );
         AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+
+        // set position by loaded dynamic level n
+
+        Matrix4 loadedPosition = new Matrix4();
+        loadedPosition.setToTranslation( startPositions[ DynamicLevels.getCurrent() ] );
+        playerBody.setWorldTransform( loadedPosition );
     }
+
+
+    private final static Vector3[] startPositions = new Vector3[] {
+            new Vector3( -8.883699f, 3.3939111f, 5.062443f ),
+            new Vector3( -46.313328f, 3.857123f, -54.17792f ),
+            new Vector3( 0.59057057f, 2.7008367f, -149.63187f ),
+            new Vector3( -85.78828f, 0.69114524f, -168.87808f ),
+            new Vector3( -136.69661f, 2.7439363f, -362.21973f ),
+            new Vector3( -245.94257f, 1.0721123f, -401.8604f ),
+            };
 
 
     public static void updateControls ( float deltaTime ) {
 
         if ( Gdx.input.isKeyJustPressed( Input.Keys.SPACE ) ) {
             startJump();
+        }
+
+        if ( playerEntity == null ) {
+            return;
         }
 
         updateAnimation( deltaTime );
@@ -367,6 +388,9 @@ public final class MyPlayer {
 
 
     public static Vector2 getPosition () {
+        if ( playerEntity == null ) {
+            v2Position.set( 0, 0 );
+        }
         return v2Position;
     }
 
@@ -399,7 +423,7 @@ public final class MyPlayer {
                 }
             }
 
-            if(entityWeaponInHand!=null){
+            if ( entityWeaponInHand != null ) {
                 entityWeaponInHand.add( new RemoveByTimeComponent( 0 ) );
                 entityWeaponInHand = null;
             }

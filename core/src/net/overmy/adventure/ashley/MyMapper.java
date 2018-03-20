@@ -15,6 +15,7 @@ import net.overmy.adventure.ashley.components.LevelObjectComponent;
 import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.MyWeaponComponent;
+import net.overmy.adventure.ashley.components.NPCAction;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
@@ -51,7 +52,7 @@ public final class MyMapper {
     public static ComponentMapper< MyWeaponComponent >    MY_WEAPON    = null;
     public static ComponentMapper< LifeComponent >        LIFE         = null;
     public static ComponentMapper< ContainerComponent >   CONTAINER    = null;
-    public static ComponentMapper< ActorComponent >       ACTOR    = null;
+    public static ComponentMapper< ActorComponent >       ACTOR        = null;
 
 
     private MyMapper () {

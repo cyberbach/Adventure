@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
+import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.Levels;
 import net.overmy.adventure.logic.TextBlock;
@@ -103,6 +104,7 @@ public final class Assets {
         manager.finishLoading();
         manager.dispose();
 
+        DynamicLevels.dispose();
         Settings.save();
     }
 

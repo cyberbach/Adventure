@@ -471,7 +471,7 @@ public class GameScreen extends Base2DScreen {
                                  Core.HEIGHT - offset - fontOffset );
         gameGroup.addActor( dialogTitle );
 
-        Label dialogBody = UIHelper.Label( currentTextBlock.getAbout(), FontAsset.DIALOG_VARIANT );
+        Label dialogBody = UIHelper.Label( currentTextBlock.getBody(), FontAsset.DIALOG_VARIANT );
         dialogBody.setColor( Color.YELLOW );
         dialogBody.setPosition( offset + fontOffset,
                                 Core.HEIGHT - 2 * offset - fontOffset );
