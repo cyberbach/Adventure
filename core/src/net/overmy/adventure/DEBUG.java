@@ -11,7 +11,7 @@ public enum DEBUG {
     ENTITIES( false ),
     DECAL_ENTITIES( false ),
     PHYSICAL_MESH( false ),
-    SHOW_FPS( true ),
+    SHOW_FPS( false ),
     SHOW_MODEL_INFO( false ),
     STAGE( false ),
     DYNAMIC_LEVELS( false ),

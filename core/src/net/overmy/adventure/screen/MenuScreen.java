@@ -61,8 +61,8 @@ public class MenuScreen extends Base2DScreen {
         final float leftPosX = -Core.WIDTH_HALF; // over screen position
         final float rightPosX = Core.WIDTH; // over screen position
 
-        final Label startLabel = new Label( "start", FontAsset.MENU_TITLE.getStyle() );
-        final Label settingsLabel = new Label( "settings", FontAsset.MENU_TITLE.getStyle() );
+        final Label startLabel = new Label( TextAsset.START_GAME.get(), FontAsset.MENU_TITLE.getStyle() );
+        final Label settingsLabel = new Label( TextAsset.OPTIONS.get(), FontAsset.MENU_TITLE.getStyle() );
 
         introGroup.addActor( startLabel );
         introGroup.addActor( settingsLabel );

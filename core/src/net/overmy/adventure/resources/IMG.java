@@ -37,6 +37,10 @@ public enum IMG {
     JUMP_BUTTON( "jump" ),
     HIT_BUTTON( "hit" ),
 
+    CLOUD1( "cloud1" ),
+    CLOUD2( "cloud2" ),
+    CLOUD3( "cloud3" ),
+
     WEAPON1( "weapon1" ),
     WEAPON2( "weapon2" ),
     WEAPON3( "weapon3" ),
@@ -47,7 +51,9 @@ public enum IMG {
     GSTAR( "gstaricon" ),
     BSTAR( "bstaricon" ),
     YSTAR( "ystaricon" ),
-    BOTTLE( "bottle" ),//13
+
+    RED_BOTTLE( "redbottle" ),
+    GREEN_BOTTLE( "greenbottle" ),
     COIN( "coin" ),
 
     // particles

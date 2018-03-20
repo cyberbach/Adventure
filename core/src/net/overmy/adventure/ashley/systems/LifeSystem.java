@@ -3,48 +3,31 @@ package net.overmy.adventure.ashley.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.ashley.systems.SortedIteratingSystem;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 
 import net.overmy.adventure.AshleySubs;
-import net.overmy.adventure.AshleyWorld;
-import net.overmy.adventure.BulletWorld;
 import net.overmy.adventure.MyCamera;
 import net.overmy.adventure.MyRender;
-import net.overmy.adventure.PhysicalBuilder;
 import net.overmy.adventure.ashley.MyMapper;
-import net.overmy.adventure.ashley.components.AnimationComponent;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
-import net.overmy.adventure.ashley.components.CollectableComponent;
-import net.overmy.adventure.ashley.components.InteractComponent;
-import net.overmy.adventure.ashley.components.LevelObjectComponent;
 import net.overmy.adventure.ashley.components.LifeComponent;
-import net.overmy.adventure.ashley.components.ModelComponent;
-import net.overmy.adventure.ashley.components.MyAnimationComponent;
-import net.overmy.adventure.ashley.components.MyWeaponComponent;
-import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
-import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
-import net.overmy.adventure.ashley.components.TypeOfComponent;
-import net.overmy.adventure.resources.IMG;
-import net.overmy.adventure.resources.ModelAsset;
-import net.overmy.adventure.resources.SoundAsset;
 
-/*
-      Created by Andrey Mikheev on 15.03.2018
-      Contact me → http://vk.com/id17317
+
+/**
+ * Created by Andrey (cb) Mikheev
+ * 20.12.2016
  */
 
 public class LifeSystem extends IteratingSystem {
+
+    private final DecalBatch        decalBatch;
+    private final PerspectiveCamera camera;
 
     private final Vector3 position = new Vector3();
 
@@ -52,21 +35,49 @@ public class LifeSystem extends IteratingSystem {
     @SuppressWarnings( "unchecked" )
     public LifeSystem () {
         super( Family.all( LifeComponent.class ).get() );
+
+        this.decalBatch = MyRender.getDecalBatch();
+        this.camera = MyCamera.get();
     }
 
 
     @Override
-    protected void processEntity ( Entity entity, float deltaTime ) {
-        LifeComponent component = MyMapper.LIFE.get( entity );
-        // entity is dead
-        if ( component.life <= 0 ) {
+    protected void processEntity ( Entity entity, float delta ) {
+        LifeComponent lifeComponent = MyMapper.LIFE.get( entity );
+        float hideTime = lifeComponent.time;
+        if ( hideTime < 0 ) {
+            return;
+        }
+
+        Gdx.app.debug( "life",""+lifeComponent.life );
+
+        lifeComponent.time = hideTime - delta;
+
+        MyMapper.MODEL.get( entity ).modelInstance.transform.getTranslation( position );
+        position.add( 0, lifeComponent.heightOffset, 0 );
+
+        Decal decal = lifeComponent.decal;
+
+        if ( lifeComponent.life > 0.0f ) {
+            float width = lifeComponent.width * lifeComponent.getLifePercent();
+            decal.setWidth( width );
+            decal.setPosition( position );
+            decal.lookAt( camera.position, camera.up );
+            decalBatch.add( decal );
+        } else {
             Matrix4 transform = MyMapper.PHYSICAL.get( entity ).body.getWorldTransform();
             transform.getTranslation( position );
 
-            AshleySubs.createCrateParts( position );
+            if ( MyMapper.TYPE.get( entity ).type.equals( COMP_TYPE.DESTROYABLE_BOX ) ) {
+                AshleySubs.createCrateParts( position );
 
-            if ( MyMapper.CONTAINER.has( entity ) ) {
-                AshleySubs.createGift( position, MyMapper.CONTAINER.get( entity ).item );
+                if ( MyMapper.CONTAINER.has( entity ) ) {
+                    AshleySubs.createGift( position, MyMapper.CONTAINER.get( entity ).item );
+                }
+            }
+
+            if ( MyMapper.TYPE.get( entity ).type.equals( COMP_TYPE.DESTROYABLE_ROCK ) ) {
+                AshleySubs.createRockParts( position );
             }
 
             // Это чтобы компонент не пересоздавался при смене локаций

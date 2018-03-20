@@ -60,5 +60,6 @@ public class PhysicalSystem extends IteratingSystem {
         final btRigidBody btRigidBody = MyMapper.PHYSICAL.get( entity ).body;
         final Matrix4 transform = btRigidBody.getWorldTransform();
         MyMapper.MODEL.get( entity ).modelInstance.transform.set( transform );
+        MyMapper.MODEL.get( entity ).modelInstance.calculateTransforms();
     }
 }

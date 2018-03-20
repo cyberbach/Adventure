@@ -19,7 +19,7 @@ public enum FontAsset {
 
     MENU_TITLE( "bb.otf", 32, 1 ),
 
-    IVENTORY_ITEM( "bb.otf", 26, 1 ),
+    IVENTORY_ITEM( "bb.otf", 26, 0 ),
     IVENTORY_ITEM_TEXT( "bb.otf", 20, 0 ),
 
     DIALOG_VARIANT( "nsk.ttf", 20 ),

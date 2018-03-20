@@ -13,5 +13,6 @@ public enum OBJECT_TYPE {
     COLLECTABLE,
     NPC,
     ENEMY,
-    BOX
+    BOX,
+    ROCK,
 }

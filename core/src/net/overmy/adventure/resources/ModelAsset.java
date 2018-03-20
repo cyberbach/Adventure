@@ -36,11 +36,15 @@ public enum ModelAsset {
     BROOM_WEAPON1( "weapon1broom" ),
     RAKE_WEAPON2( "weapon2rake" ),
 
+    ROCK_PART( "rockpart" ),
+    ROCK( "rock" ),
+    CHEST( "chest" ),
     GIFT( "gift" ),
     CRATE_PART( "boxpart" ),
     CRATE( "crate" ),
     COIN( "coin" ),
-    BOTTLE( "bottle" ),
+    GREEN_BOTTLE( "greenbottle" ),
+    RED_BOTTLE( "redbottle" ),
     STUFF( "stuff" ),
 
     FOX( "fox" ),

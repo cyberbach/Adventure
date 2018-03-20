@@ -36,7 +36,7 @@ public class MyCamera {
 
 
     public static void init () {
-        float backCullingDistance = 300.0f;// Задняя плоскость отсечения (дальность тумана)
+        float backCullingDistance = 400.0f;// Задняя плоскость отсечения (дальность тумана)
         float defaultFOV = 58.0f; // Угол обзора (67 - стандартный)
         float cullingFOV = 70.0f;
 

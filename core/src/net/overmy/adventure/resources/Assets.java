@@ -58,7 +58,7 @@ public final class Assets {
 
         TextureAsset.load();
 
-        Item.setImages();
+        Item.init();
 
         ModelAsset.GIFT.load();
         ModelAsset.CRATE_PART.load();
@@ -66,6 +66,7 @@ public final class Assets {
         ModelAsset.RAKE_WEAPON2.load();
         ModelAsset.BROOM_WEAPON1.load();
         ModelAsset.FENCE_WEAPON4.load();
+        ModelAsset.ROCK_PART.load();
     }
 
 
@@ -82,6 +83,7 @@ public final class Assets {
         ModelAsset.RAKE_WEAPON2.build();
         ModelAsset.BROOM_WEAPON1.build();
         ModelAsset.FENCE_WEAPON4.build();
+        ModelAsset.ROCK_PART.build();
     }
 
 

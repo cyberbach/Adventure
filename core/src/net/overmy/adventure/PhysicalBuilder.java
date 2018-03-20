@@ -46,7 +46,7 @@ public class PhysicalBuilder {
     private boolean                     deactivationFlag    = false;
     private boolean                     disableRotationFlag = false;
     private Vector3                     startImpulse        = null;
-    //private float                      scale            = 1.0f;
+    private float                       scale               = 1.0f;
     private Vector3                     position            = null;
     private btRigidBody                 savedBody           = null;
     private btRigidBodyConstructionInfo savedInfo           = null;
@@ -60,9 +60,9 @@ public class PhysicalBuilder {
 
         return this;
     }*/
-/*
 
-    PhysicalBuilder setScale( float scale ) {
+
+    PhysicalBuilder setScale ( float scale ) {
         this.scale = scale;
         if ( scale != 1.0f ) {
             for ( Node node : modelInstance.nodes ) {
@@ -71,14 +71,19 @@ public class PhysicalBuilder {
         }
         return this;
     }
-*/
 
 
     public PhysicalBuilder setRotation ( float p, float r, float y ) {
         for ( Node node : modelInstance.nodes ) {
-            node.rotation.set( Vector3.X, p );
-            node.rotation.set( Vector3.Y, r );
-            node.rotation.set( Vector3.Z, y );
+            if ( p != 0.0f ) {
+                node.rotation.set( Vector3.X, p );
+            }
+            if ( r != 0.0f ) {
+                node.rotation.set( Vector3.Y, r );
+            }
+            if ( y != 0.0f ) {
+                node.rotation.set( Vector3.Z, y );
+            }
         }
 
         return this;
@@ -149,6 +154,16 @@ public class PhysicalBuilder {
         modelInstance.calculateBoundingBox( box );
         Vector3 boxSize = new Vector3();
         box.getMax( boxSize );
+
+        bodyShape = new btBoxShape( boxSize );
+        bodyShape.calculateLocalInertia( mass, inertia );
+        return this;
+    }
+
+
+    public PhysicalBuilder boxShape ( float size ) {
+        Vector3 boxSize = new Vector3();
+        boxSize.set( 1, 1, 1 ).scl( size );
 
         bodyShape = new btBoxShape( boxSize );
         bodyShape.calculateLocalInertia( mass, inertia );
@@ -240,12 +255,14 @@ public class PhysicalBuilder {
 
         savedInfo = constructionInfo;
 
+
         // Создание физического тела
         final btRigidBody body = new btRigidBody( constructionInfo );
 
         // Размещаем физическое тело
         if ( modelInstance != null ) {
             body.proceedToTransform( modelInstance.transform );
+            modelInstance.transform.scl( scale,scale,scale );
         }
         if ( position != null ) {
             body.proceedToTransform( new Matrix4().translate( position ) );
@@ -268,12 +285,10 @@ public class PhysicalBuilder {
             body.setActivationState( Collision.DISABLE_DEACTIVATION );
             //body.forceActivationState( Collision.ACTIVE_TAG );
         }
-/*
 
         if ( scale != 1.0f ) {
             body.getCollisionShape().setLocalScaling( new Vector3( scale, scale, scale ) );
         }
-*/
 
         if ( startImpulse != null ) {
             body.applyCentralImpulse( startImpulse );

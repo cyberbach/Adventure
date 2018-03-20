@@ -113,6 +113,10 @@ public class LevelObject {
                 entity = AshleySubs.createCrate( position, modelAsset, item, this );
                 break;
 
+            case ROCK:
+                entity = AshleySubs.createRock( position, modelAsset, this );
+                break;
+
             case COLLECTABLE:
                 entity = AshleySubs.createCollectable( position, modelAsset, item, this );
                 break;

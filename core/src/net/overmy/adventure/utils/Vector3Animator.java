@@ -79,7 +79,7 @@ public class Vector3Animator {
 
 
 
-    private Vector3Animator setInterpolation( final Interpolation interp ) {
+    public Vector3Animator setInterpolation( final Interpolation interp ) {
         this.interp = interp;
         return this;
     }

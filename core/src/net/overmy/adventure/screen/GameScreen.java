@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -24,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.BulletWorld;
 import net.overmy.adventure.Core;
@@ -113,11 +115,13 @@ public class GameScreen extends Base2DScreen {
         if ( DEBUG.GAME_MASTER_MODE.get() ) {
             String helpString = "ENTER - push position\n1- show bonus pos\n" +
                                 "2-show box pos\n3-show NPC move pos\n" +
-                                "\nBackSpace-clear positions";
+                                "\nBackSpace-clear positions\n\n" +
+                                "9 speed up\n" +
+                                "0 speed normal\n" +
+                                "insert - big jump";
             Label ingameMenuTitle = UIHelper.Label( helpString, FontAsset.IVENTORY_ITEM );
-            float fontOffset = ingameMenuTitle.getHeight() * 1.5f;
-            ingameMenuTitle.setPosition( fontOffset,
-                                         Core.HEIGHT - fontOffset );
+            ingameMenuTitle.setPosition( 0, Core.HEIGHT_HALF );
+
             MyRender.getStage().addActor( ingameMenuTitle );
         }
     }
@@ -154,12 +158,26 @@ public class GameScreen extends Base2DScreen {
         MyRender.getDecalBatch().flush();
     }
 
+    private final float MAX_CLOUD_TIMER = 2.0f;
+    private       float cloudTimer      = MAX_CLOUD_TIMER;
 
     @Override
     public void update ( float delta ) {
         super.update( delta );
 
         if ( DEBUG.GAME_MASTER_MODE.get() ) {
+            if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_9 ) ) {
+                MyPlayer.extraSpeed2 = 15.0f;
+            }
+
+            if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_0 ) ) {
+                MyPlayer.extraSpeed2 = 0.0f;
+            }
+
+            if ( Gdx.input.isKeyJustPressed( Input.Keys.INSERT ) ) {
+                MyPlayer.extraJump = 1.0f;
+            }
+
             if ( Gdx.input.isKeyJustPressed( Input.Keys.ENTER ) ) {
                 Matrix4 thisTransform = MyPlayer.getBody().getWorldTransform();
                 Vector3 thisPosition = new Vector3();
@@ -316,6 +334,13 @@ public class GameScreen extends Base2DScreen {
             readyToPick = false;
             interactGroup.clear();
             interactGroup.addAction( Actions.scaleTo( 1, 1, 0 ) );
+        }
+
+        // Create clouds
+        cloudTimer-=delta;
+        if(cloudTimer<0){
+            cloudTimer= MathUtils.random( MAX_CLOUD_TIMER*0.5f,MAX_CLOUD_TIMER );
+            AshleySubs.createCloudFX();
         }
     }
 

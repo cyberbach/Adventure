@@ -52,6 +52,9 @@ public class MyEntityListener implements EntityListener {
         }
         if ( MyMapper.PHYSICAL.has( entity ) ) {
             BulletWorld.addBody( MyMapper.PHYSICAL.get( entity ).body );
+            log.append( " UV=" );
+            log.append( +MyMapper.PHYSICAL.get( entity ).body.getUserValue() );
+            log.append( " " );
         }
 
         if ( DEBUG.ENTITIES.get() ) {

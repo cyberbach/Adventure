@@ -3,7 +3,6 @@ package net.overmy.adventure.ashley;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ContactListener;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
@@ -14,8 +13,8 @@ import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
-import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
+import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.resources.SoundAsset;
@@ -51,6 +50,8 @@ public class WorldContactListener extends ContactListener {
             stringBuilder.append( m2 ? " (match) " : " (not match)" );
             Gdx.app.debug( "onContactProcessed", stringBuilder.toString() );
         }
+
+        if(!(m1 && m2))return;
 
         // Начинаем поиск тех двух Entity, у которых userValue физических тела
         // совпадают с теми, что пришли в onContactProcessed
@@ -142,6 +143,8 @@ public class WorldContactListener extends ContactListener {
         boolean contact2Ladder = type2.equals( COMP_TYPE.LADDER );
         boolean contact1DestroyableBox = type1.equals( COMP_TYPE.DESTROYABLE_BOX );
         boolean contact2DestroyableBox = type2.equals( COMP_TYPE.DESTROYABLE_BOX );
+        boolean contact1DestroyableRock = type1.equals( COMP_TYPE.DESTROYABLE_ROCK );
+        boolean contact2DestroyableRock = type2.equals( COMP_TYPE.DESTROYABLE_ROCK );
         boolean contact1Ground = type1.equals( COMP_TYPE.GROUND );
         boolean contact1Ladder = type1.equals( COMP_TYPE.LADDER );
         boolean contact2Collectable = type2.equals( COMP_TYPE.COLLECTABLE );
@@ -171,27 +174,60 @@ public class WorldContactListener extends ContactListener {
                 Item item = MyMapper.COLLECTABLE.get( entity02 ).item;
                 MyPlayer.addToBag( item );
 
-                if ( MyMapper.PHYSICAL.has( entity02 ) ) {
-                    MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
-                                                          .getTranslation( tempPosition1 );
-                    AshleySubs.create5BubblesFX( tempPosition1 );
-                }
-
                 switch ( item ) {
                     case COIN:
                         SoundAsset.Coin.play();
+
+                        if ( MyMapper.PHYSICAL.has( entity02 ) ) {
+                            MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
+                                                                  .getTranslation( tempPosition1 );
+                            AshleySubs.create5coinsFX( tempPosition1 );
+                        }
+                        break;
+                    case GREEN_BOTTLE:
+                        SoundAsset.Collect5.play();
+
+                        if ( MyMapper.PHYSICAL.has( entity02 ) ) {
+                            MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
+                                                                  .getTranslation( tempPosition1 );
+                            AshleySubs.create5greenBubblesFX( tempPosition1 );
+                        }
                         break;
                     case RED_BOTTLE:
                         SoundAsset.Collect5.play();
+
+                        if ( MyMapper.PHYSICAL.has( entity02 ) ) {
+                            MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
+                                                                  .getTranslation( tempPosition1 );
+                            AshleySubs.create5redBubblesFX( tempPosition1 );
+                        }
                         break;
                     case GREEN_STAR:
                         SoundAsset.PickupStar.play();
+
+                        if ( MyMapper.PHYSICAL.has( entity02 ) ) {
+                            MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
+                                                                  .getTranslation( tempPosition1 );
+                            AshleySubs.create5StarsFX( tempPosition1 );
+                        }
                         break;
                     case BLUE_STAR:
                         SoundAsset.PickupStar.play();
+
+                        if ( MyMapper.PHYSICAL.has( entity02 ) ) {
+                            MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
+                                                                  .getTranslation( tempPosition1 );
+                            AshleySubs.create5StarsFX( tempPosition1 );
+                        }
                         break;
                     case YELLOW_STAR:
                         SoundAsset.PickupStar.play();
+
+                        if ( MyMapper.PHYSICAL.has( entity02 ) ) {
+                            MyMapper.PHYSICAL.get( entity02 ).body.getWorldTransform()
+                                                                  .getTranslation( tempPosition1 );
+                            AshleySubs.create5StarsFX( tempPosition1 );
+                        }
                         break;
                 }
 
@@ -199,34 +235,49 @@ public class WorldContactListener extends ContactListener {
                 // не создался снова, при перезагрузке уровня
                 if ( MyMapper.LEVEL_OBJECT.has( entity02 ) ) {
                     MyMapper.LEVEL_OBJECT.get( entity02 ).levelObject.useEntity();
-                }else{
+                } else {
                     entity02.add( new RemoveByTimeComponent( 0 ) );
                 }
             }
         }
+/*
+
+        if(contact1MyWeapon && contact2DestroyableRock){
+            Gdx.app.debug( "=1 contact1MyWeapon==============","============" );
+        }
+
+        if(contact2MyWeapon && contact1DestroyableRock){
+            Gdx.app.debug( "=contact2MyWeapon==============","============" );
+        }
+
+        if(contact1Player && contact2DestroyableRock){
+            Gdx.app.debug( "=1 player==============","============" );
+        }
+
+        if(contact2Player && contact1DestroyableRock){
+            Gdx.app.debug( "=2 player==============","============" );
+        }
+*/
 
         if ( contact2MyWeapon && !contact1Player && MyPlayer.isAttacking ) {
             if ( !contact1Ladder && !contact1Ground ) {
                 MyPlayer.isAttacking = false;
                 btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
-                body1.getWorldTransform().getTranslation( tempPosition1 );
+                btRigidBody body2 = MyMapper.PHYSICAL.get( entity02 ).body;
 
-                AshleySubs.create5BubblesFX( tempPosition1 );
+                body1.getWorldTransform().getTranslation( tempPosition1 );
+                body2.getWorldTransform().getTranslation( tempPosition2 );
+
+                AshleySubs.create5StarsFX( tempPosition1 );
 
                 SoundAsset.HIT.play();
 
-                Matrix4 weaponTransform = MyMapper.PHYSICAL.get(
-                        entity02 ).body.getWorldTransform();
-                weaponTransform.getTranslation( tempPosition1 );
-
-                body1.getWorldTransform().getTranslation( tempPosition2 );
-
-                tempPosition2.sub( tempPosition1 ).nor().scl( 50 );
-                body1.applyCentralImpulse( tempPosition2 );
+                tempPosition1.sub( tempPosition2 ).nor().scl( 50 );
+                body1.applyCentralImpulse( tempPosition1 );
 
                 if ( MyMapper.LIFE.has( entity01 ) ) {
-                    if ( contact1DestroyableBox ) {
-                        MyMapper.LIFE.get( entity01 ).life -= MyPlayer.damage;
+                    if ( contact1DestroyableBox || contact1DestroyableRock ) {
+                        MyMapper.LIFE.get( entity01 ).decLife( MyPlayer.damage );
                     }
                 }
             }
@@ -235,25 +286,22 @@ public class WorldContactListener extends ContactListener {
         if ( contact1MyWeapon && !contact2Player && MyPlayer.isAttacking ) {
             if ( !contact2Ladder && !contact2Ground ) {
                 MyPlayer.isAttacking = false;
+                btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
                 btRigidBody body2 = MyMapper.PHYSICAL.get( entity02 ).body;
-                body2.getWorldTransform().getTranslation( tempPosition1 );
 
-                AshleySubs.create5BubblesFX( tempPosition1 );
+                body1.getWorldTransform().getTranslation( tempPosition1 );
+                body2.getWorldTransform().getTranslation( tempPosition2 );
+
+                AshleySubs.create5StarsFX( tempPosition2 );
 
                 SoundAsset.HIT.play();
-
-                Matrix4 weaponTransform = MyMapper.PHYSICAL.get(
-                        entity02 ).body.getWorldTransform();
-                weaponTransform.getTranslation( tempPosition1 );
-
-                body2.getWorldTransform().getTranslation( tempPosition2 );
 
                 tempPosition2.sub( tempPosition1 ).nor().scl( 50 );
                 body2.applyCentralImpulse( tempPosition2 );
 
                 if ( MyMapper.LIFE.has( entity02 ) ) {
-                    if ( contact2DestroyableBox ) {
-                        MyMapper.LIFE.get( entity02 ).life -= MyPlayer.damage;
+                    if ( contact2DestroyableBox || contact2DestroyableRock) {
+                        MyMapper.LIFE.get( entity02 ).decLife( MyPlayer.damage );
                     }
                 }
             }

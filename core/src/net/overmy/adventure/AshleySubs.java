@@ -7,6 +7,7 @@ package net.overmy.adventure;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -106,6 +107,38 @@ public final class AshleySubs {
         AshleyWorld.getPooledEngine().addEntity( timerEntity );
 
         return speedUpTimerLabel;
+    }
+
+
+    static void addItemToBad ( Item item ) {
+        int iconSize = (int) ( Core.HEIGHT * 0.1f );
+        /*
+        iconImage2.setSize( iconSize, iconSize );
+        iconImage2.setOrigin( iconSize / 2, iconSize / 2 );
+        iconImage2.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
+        iconImage2.addAction( Actions.forever(
+                Actions.sequence(
+                        Actions.rotateTo( 0, 0 ),
+                        Actions.rotateTo( 360.0f, 2.0f )
+                                )
+                                             ) );*/
+
+        Image iconImage = item.getImage( iconSize, iconSize );
+        iconImage.setSize( iconSize,iconSize );
+        //iconImage.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
+        UIHelper.roller( iconImage,
+                         Core.WIDTH_HALF - iconSize/2, Core.HEIGHT_HALF - iconSize/2,
+                         Core.WIDTH - iconSize * 1.5f, Core.HEIGHT - iconSize * 1.5f );
+        //iconImage.addAction( Actions.rotateTo( 360,Core.FADE ) );
+
+        ActorComponent actorComponent = new ActorComponent();
+        actorComponent.group.addActor( iconImage );
+        actorComponent.group.setPosition( 0, 0 );
+
+        Entity timerEntity = AshleyWorld.getPooledEngine().createEntity();
+        timerEntity.add( actorComponent );
+        timerEntity.add( new RemoveByTimeComponent( Core.FADE*2.0f ) );
+        AshleyWorld.getPooledEngine().addEntity( timerEntity );
     }
 
     // Game Entities
@@ -452,7 +485,7 @@ public final class AshleySubs {
         if ( modelInstance.animations.size > 0 ) {
             entity.add( new AnimationComponent( modelInstance ) );
         }
-        entity.add( new LifeComponent() );
+        entity.add( new LifeComponent( 20.0f, 0.8f, 1.0f ) );
         if ( item != null ) {
             entity.add( new ContainerComponent( item ) );
         }
@@ -460,6 +493,37 @@ public final class AshleySubs {
         entity.add( new TypeOfComponent( COMP_TYPE.DESTROYABLE_BOX ) );
         entity.add( new LevelObjectComponent( object ) );
         entity.add( physicalBuilderBOX.buildPhysicalComponent() );
+        pooledEngine.addEntity( entity );
+
+        return entity;
+    }
+
+
+    public static Entity createRock ( Vector3 position, ModelAsset modelAsset,
+                                      LevelObject object ) {
+        ModelInstance modelInstance = modelAsset.get();
+
+        PhysicalBuilder physicalBuilderBOX = new PhysicalBuilder()
+                .setModelInstance( modelInstance )
+                .defaultMotionState()
+                .setPosition( position )
+                //.setMass(1500)
+                .zeroMass()
+                .hullShape()
+                .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                .setCallbackFlag( BulletWorld.DESTROYABLE_FLAG )
+                .setCallbackFilter( BulletWorld.MYWEAPON_FLAG )
+                .disableDeactivation();
+
+        PhysicalComponent physicalComponent = physicalBuilderBOX.buildPhysicalComponent();
+        //physicalComponent.body.setFriction( 100.0f );
+
+        Entity entity = pooledEngine.createEntity();
+        entity.add( new LifeComponent( 300.0f, 1.5f, 1.0f ) );
+        entity.add( new ModelComponent( modelInstance ) );
+        entity.add( new TypeOfComponent( COMP_TYPE.DESTROYABLE_ROCK ) );
+        entity.add( new LevelObjectComponent( object ) );
+        entity.add( physicalComponent );
         pooledEngine.addEntity( entity );
 
         return entity;
@@ -481,23 +545,23 @@ public final class AshleySubs {
             randomPosition.z = MathUtils.random( -1.0f, 1.0f );
 
             partPosition.set( position );
-            partPosition.add( randomPosition );
+            partPosition.add( randomPosition ).add( 0, 0.5f, 0 );
 
             ModelInstance modelInstance = ModelAsset.CRATE_PART.get();
+            float scale = MathUtils.random( 0.3f, 1.0f );
+            modelInstance.transform.scl( scale, scale, scale );
 
             randomPosition.scl( 0.6f );
 
-            // rotations by vectors
-            float p = MathUtils.random( 360.0f );
-            float r = MathUtils.random( 360.0f );
-            float y = MathUtils.random( 360.0f );
-
-            PhysicalBuilder physicalBuilderPICKABLE = new PhysicalBuilder()
+            PhysicalBuilder physicalBuilder = new PhysicalBuilder()
                     .setModelInstance( modelInstance )
                     .defaultMotionState()
                     .setMass( 0.1f )
+                    .setRotation( MathUtils.random( 360.0f ),
+                                  MathUtils.random( 360.0f ),
+                                  MathUtils.random( 360.0f ) )
                     .setPosition( partPosition )
-                    .setRotation( p, r, y )
+                    .setScale( MathUtils.random( 0.4f, 1.0f ) )
                     .boxShape()
                     .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                     .setCallbackFlag( BulletWorld.PART_FLAG )
@@ -507,7 +571,7 @@ public final class AshleySubs {
             Entity partEntity = pooledEngine.createEntity();
             partEntity.add( new ModelComponent( modelInstance ) );
             partEntity.add( new RemoveByTimeComponent( timeOfLife ) );
-            partEntity.add( physicalBuilderPICKABLE.buildPhysicalComponent() );
+            partEntity.add( physicalBuilder.buildPhysicalComponent() );
             pooledEngine.addEntity( partEntity );
 
             SoundAsset.BoxCrush.play();
@@ -524,14 +588,108 @@ public final class AshleySubs {
     }
 
 
-    public static void create5BubblesFX ( Vector3 position ) {
+    public static void create5StarsFX ( Vector3 position ) {
         for ( int i = 0; i < 5; i++ ) {
             float bubbleTime = MathUtils.random( 0.25f, 0.65f );
             Entity entity = pooledEngine.createEntity();
-            entity.add( DecalSubs.BubbleEffect( bubbleTime ) );
+            entity.add( DecalSubs.StarsEffect( bubbleTime ) );
             entity.add( new PositionComponent( position ) );
             entity.add( new RemoveByTimeComponent( bubbleTime ) );
             pooledEngine.addEntity( entity );
+        }
+    }
+
+
+    public static void create5coinsFX ( Vector3 position ) {
+        for ( int i = 0; i < 5; i++ ) {
+            float bubbleTime = MathUtils.random( 0.25f, 0.65f );
+            Entity entity = pooledEngine.createEntity();
+            entity.add( DecalSubs.CoinEffect( bubbleTime ) );
+            entity.add( new PositionComponent( position ) );
+            entity.add( new RemoveByTimeComponent( bubbleTime ) );
+            pooledEngine.addEntity( entity );
+        }
+    }
+
+
+    public static void create5greenBubblesFX ( Vector3 position ) {
+        for ( int i = 0; i < 5; i++ ) {
+            float bubbleTime = MathUtils.random( 0.25f, 0.65f );
+            Entity entity = pooledEngine.createEntity();
+            entity.add( DecalSubs.GreenBubbleEffect( bubbleTime ) );
+            entity.add( new PositionComponent( position ) );
+            entity.add( new RemoveByTimeComponent( bubbleTime ) );
+            pooledEngine.addEntity( entity );
+        }
+    }
+
+
+    public static void create5redBubblesFX ( Vector3 position ) {
+        for ( int i = 0; i < 5; i++ ) {
+            float bubbleTime = MathUtils.random( 0.25f, 0.65f );
+            Entity entity = pooledEngine.createEntity();
+            entity.add( DecalSubs.RedBubbleEffect( bubbleTime ) );
+            entity.add( new PositionComponent( position ) );
+            entity.add( new RemoveByTimeComponent( bubbleTime ) );
+            pooledEngine.addEntity( entity );
+        }
+    }
+
+
+    public static void createCloudFX () {
+        float bubbleTime = MathUtils.random( 25.25f, 35.65f );
+
+        Entity entity = pooledEngine.createEntity();
+        entity.add( DecalSubs.CloudEffect( MyPlayer.getPosition().x,
+                                           MyPlayer.getPosition().y,
+                                           bubbleTime ) );
+        entity.add( new PositionComponent( new Vector3() ) );
+        entity.add( new RemoveByTimeComponent( bubbleTime ) );
+        pooledEngine.addEntity( entity );
+    }
+
+
+    public static void createRockParts ( Vector3 position ) {
+        int parts = MathUtils.random( 4, 10 );
+        for ( int i = 0; i < parts; i++ ) {
+            float timeOfLife = MathUtils.random( 1.0f, 2.0f );
+
+            randomPosition.x = MathUtils.random( -1.0f, 1.0f );
+            randomPosition.y = MathUtils.random( -1.0f, 1.0f );
+            randomPosition.z = MathUtils.random( -1.0f, 1.0f );
+
+            partPosition.set( position );
+            partPosition.add( randomPosition ).add( 0, 0.5f, 0 );
+
+            float scale = MathUtils.random( 0.3f, 1.0f );
+
+            ModelInstance modelInstance = ModelAsset.ROCK_PART.get();
+            modelInstance.transform.scl( scale, scale, scale );
+
+            randomPosition.scl( 0.6f );
+
+            PhysicalBuilder physicalBuilder = new PhysicalBuilder()
+                    .setModelInstance( modelInstance )
+                    .defaultMotionState()
+                    .setMass( 0.1f )
+                    .setRotation( MathUtils.random( 360.0f ),
+                                  MathUtils.random( 360.0f ),
+                                  MathUtils.random( 360.0f ) )
+                    .setScale( scale )
+                    .setPosition( partPosition )
+                    .hullShape()
+                    .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
+                    .setCallbackFlag( BulletWorld.PART_FLAG )
+                    .setStartImpulse( randomPosition )
+                    .setCallbackFilter( 0 );
+
+            Entity partEntity = pooledEngine.createEntity();
+            partEntity.add( new ModelComponent( modelInstance ) );
+            partEntity.add( new RemoveByTimeComponent( timeOfLife ) );
+            partEntity.add( physicalBuilder.buildPhysicalComponent() );
+            pooledEngine.addEntity( partEntity );
+
+            SoundAsset.BoxCrush.play();
         }
     }
 }

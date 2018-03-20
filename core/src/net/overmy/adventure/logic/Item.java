@@ -8,85 +8,77 @@ package net.overmy.adventure.logic;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import net.overmy.adventure.resources.IMG;
+import net.overmy.adventure.resources.TextAsset;
 
 public enum Item {
-    DIALOG( "test", "test2", 0 ),
+    //DIALOG(),
 
-    YELLOW_STAR("Желтая звезда","Это валюта"),
-    BLUE_STAR("Синяя звезда","Это валюта"),
-    GREEN_STAR("Зеленая звезда","Это валюта"),
+    YELLOW_STAR,
+    BLUE_STAR,
+    GREEN_STAR,
 
-    RED_BOTTLE("Красная бутылочка","Ускоряет передвижение на 15 секунд"),
-    BLUE_BOTTLE("Синяя бутылочка","Ускоряет передвижение на 15 секунд"),
+    GREEN_BOTTLE,
+    RED_BOTTLE,
 
-    COIN("Золотая монета","Это валюта"),
+    COIN,
 
-    BROOM_WEAPON( "Метла", "Это оружие. Подробное описание этого первого предмета\nУрон:35"),
-    RAKE_WEAPON( "Грабли", "Это оружие. Описание второго предмета, Описание второго предмета.\nУрон:60"),
-    KALASH_WEAPON( "AK-74", "Это оружие. Очень Очень Очень Очень Очень длинное Очень длинное Очень длинное описание третьего предмета\nУрон:110"),
-    FENCE_WEAPON( "Забор", "Это оружие\nУрон:150"),
+    BROOM_WEAPON,
+    RAKE_WEAPON,
+    KALASH_WEAPON,
+    FENCE_WEAPON,
 
-    GAME_STUFF1( "Первый предмет", "Подробное описание этого первого предмета", 0 ),
+    /*GAME_STUFF1( "Первый предмет", "Подробное описание этого первого предмета", 0 ),
     GAME_STUFF2( "Какой-то второй предмет", "Описание второго предмета", 1 ),
     GAME_STUFF3( "Третий", "Очень длинное описание третьего предмета", 2 ),
     GAME_STUFF4( "Четвертый предмет", "Описание четвертого", 3 ),
     GAME_STUFF5( "предмет 5", "Описание пятое", 4 ),
-    GAME_STUFF6( "6 предмет", "Описание шестое", 5 ),
-    ;
+    GAME_STUFF6( "6 предмет", "Описание шестое", 5 ),*/;
 
-    private String name;
-    private String about;
-    private int    imageID;
+    private TextAsset name;
+    private TextAsset about;
+    private IMG       imageID;
 
-    public static void setImages (){
-        Item.YELLOW_STAR.setID( IMG.YSTAR );
-        Item.BLUE_STAR.setID( IMG.BSTAR );
-        Item.GREEN_STAR.setID( IMG.GSTAR );
-        Item.COIN.setID( IMG.COIN );
-        Item.RED_BOTTLE.setID( IMG.BOTTLE );
 
-        Item.BROOM_WEAPON.setID( IMG.WEAPON1 );
-        Item.RAKE_WEAPON.setID( IMG.WEAPON2 );
-        Item.KALASH_WEAPON.setID( IMG.WEAPON3 );
-        Item.FENCE_WEAPON.setID( IMG.WEAPON4 );
+    public static void init () {
+        // connect Item enum to IMG enum
+        // connect Item enum to TextAsset enum
+        Item.YELLOW_STAR.setData( IMG.YSTAR, TextAsset.YELLOW_STAR, TextAsset.MONEY_ABOUT );
+        Item.BLUE_STAR.setData( IMG.BSTAR, TextAsset.BLUE_STAR, TextAsset.MONEY_ABOUT );
+        Item.GREEN_STAR.setData( IMG.GSTAR, TextAsset.GREEN_STAR, TextAsset.MONEY_ABOUT );
+        Item.COIN.setData( IMG.COIN, TextAsset.COIN, TextAsset.MONEY_ABOUT );
 
+        Item.GREEN_BOTTLE.setData( IMG.GREEN_BOTTLE, TextAsset.GREEN_BOTTLE,
+                                   TextAsset.GREEN_BOTTLE_ABOUT );
+        Item.RED_BOTTLE.setData( IMG.RED_BOTTLE, TextAsset.RED_BOTTLE, TextAsset.RED_BOTTLE_ABOUT );
+
+        Item.BROOM_WEAPON.setData( IMG.WEAPON1, TextAsset.BROOM_WEAPON,
+                                   TextAsset.BROOM_WEAPON_ABOUT );
+        Item.RAKE_WEAPON.setData( IMG.WEAPON2, TextAsset.RAKE_WEAPON, TextAsset.RAKE_WEAPON_ABOUT );
+        Item.KALASH_WEAPON.setData( IMG.WEAPON3, TextAsset.KALASH_WEAPON,
+                                    TextAsset.KALASH_WEAPON_ABOUT );
+        Item.FENCE_WEAPON.setData( IMG.WEAPON4, TextAsset.FENCE_WEAPON,
+                                   TextAsset.FENCE_WEAPON_ABOUT );
     }
 
 
-    private void setID ( IMG img ) {
-        this.imageID = img.ordinal();
-    }
-
-
-    public int getImageID () {
-        return imageID;
-    }
-
-
-    Item ( String name, String about, int imageID ) {
-        this.name = name;
-        this.about = about;
-        this.imageID = imageID;
-    }
-
-    Item ( String name, String about ) {
-        this.name = name;
-        this.about = about;
-        this.imageID = 0;
+    private void setData ( IMG i, TextAsset n, TextAsset a ) {
+        this.imageID = i;
+        this.name = n;
+        this.about = a;
     }
 
 
     public String getName () {
-        return name;
+        return name.get();
     }
 
 
     public String getAbout () {
-        return about;
+        return about.get();
     }
 
 
     public Image getImage ( final float width, final float height ) {
-        return IMG.values()[ imageID ].getImageActor( width, height );
+        return imageID.getImageActor( width, height );
     }
 }

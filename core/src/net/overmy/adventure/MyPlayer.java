@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
@@ -51,8 +52,10 @@ public final class MyPlayer {
 
     private static Node rightArmNode = null;
 
-    private static ArrayList< ItemInBagg > bag    = null;
-    public static  int                     damage = 0;
+    private static ArrayList< ItemInBagg > bag         = null;
+    public static  float                   damage      = 5.0f;
+    public static  float                   extraJump   = 0.0f;
+    public static  float                   extraSpeed2 = 0.0f;
 
 
     public static ArrayList< ItemInBagg > getBag () {
@@ -108,6 +111,8 @@ public final class MyPlayer {
         if ( !alreadyPresent ) {
             bag.add( new ItemInBagg( item ) );
         }
+
+        AshleySubs.addItemToBad( item );
     }
 
 
@@ -135,6 +140,23 @@ public final class MyPlayer {
         walk = SoundAsset.Step3;
         walk.playLoop();
         walk.setVolume( 0.0f );
+
+        /////// create empty weapon
+
+        PhysicalBuilder physicalBuilder = new PhysicalBuilder()
+                .defaultMotionState()
+                .zeroMass()
+                .boxShape( 0.2f )
+                .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
+                .setCallbackFilter( BulletWorld.ALL_FLAG )
+                .disableDeactivation();
+
+        entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
+        entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+        entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
+        entityWeaponInHand.add( physicalBuilder.buildPhysicalComponent() );
+        AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
     }
 
 
@@ -149,7 +171,8 @@ public final class MyPlayer {
         final boolean playerOnGround = MyMapper.GROUNDED.get( playerEntity ).grounded;
 
         // Двигаем или останавливаем физическое тело
-        velocity.set( direction.x, 0, direction.y );
+        velocity.set( direction.x, 0 + extraJump, direction.y );
+        extraJump = 0.0f;
         velocity.scl( speed );
         if ( !onLadder ) {
             velocity.add( 0, playerBody.getLinearVelocity().y, 0 );
@@ -270,7 +293,7 @@ public final class MyPlayer {
                     }
                 }
             }
-            final float runSpeed = 5.0f;
+            final float runSpeed = 5.0f + extraSpeed2;
             speed = ( runSpeed + extraSpeed ) * directionLen;
 
             direction.nor();
@@ -363,14 +386,22 @@ public final class MyPlayer {
         boolean broomIsItem = item.item.equals( Item.BROOM_WEAPON );
         boolean kalashIsItem = item.item.equals( Item.KALASH_WEAPON );
         boolean rakeIsItem = item.item.equals( Item.RAKE_WEAPON );
-        boolean borderIsItem = item.item.equals( Item.FENCE_WEAPON );
+        boolean fenceIsItem = item.item.equals( Item.FENCE_WEAPON );
 
-        if ( broomIsItem || kalashIsItem || rakeIsItem || borderIsItem ) {
+        if ( broomIsItem || kalashIsItem || rakeIsItem || fenceIsItem ) {
             if ( weaponInHand ) {
-                modelInstanceWeaponInHand.nodes.get( 0 ).detach();
+                if ( modelInstanceWeaponInHand != null ) {
+                    modelInstanceWeaponInHand.nodes.get( 0 ).detach();
+                }
+
+                if ( itemInHand != null ) {
+                    bag.add( itemInHand );
+                }
+            }
+
+            if(entityWeaponInHand!=null){
                 entityWeaponInHand.add( new RemoveByTimeComponent( 0 ) );
                 entityWeaponInHand = null;
-                bag.add( itemInHand );
             }
 
             itemInHand = item;
@@ -384,7 +415,7 @@ public final class MyPlayer {
         }
 
         switch ( item.item ) {
-            case RED_BOTTLE:
+            case GREEN_BOTTLE:
                 speedUpTime = 15.0f;
 
                 if ( speedUpTimerLabel != null ) {
@@ -409,7 +440,7 @@ public final class MyPlayer {
                         .defaultMotionState()
                         .zeroMass()
                         .hullShape()
-                        .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                        .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
                         .setCallbackFilter( BulletWorld.ALL_FLAG )
                         .disableDeactivation();
@@ -438,7 +469,7 @@ public final class MyPlayer {
                         .defaultMotionState()
                         .zeroMass()
                         .hullShape()
-                        .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                        .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
                         .setCallbackFilter( BulletWorld.ALL_FLAG )
                         .disableDeactivation();
@@ -467,7 +498,7 @@ public final class MyPlayer {
                         .defaultMotionState()
                         .zeroMass()
                         .hullShape()
-                        .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                        .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
                         .setCallbackFilter( BulletWorld.ALL_FLAG )
                         .disableDeactivation();
@@ -496,7 +527,7 @@ public final class MyPlayer {
                         .defaultMotionState()
                         .zeroMass()
                         .hullShape()
-                        .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                        .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
                         .setCallbackFilter( BulletWorld.ALL_FLAG )
                         .disableDeactivation();

@@ -41,18 +41,21 @@ public final class Levels {
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.BROOM_WEAPON,
                                       ModelAsset.BROOM_WEAPON1,
-                                      new Vector3( -2.566254f, 0.907035f, -4.6540112f ) ) );
+                                      new Vector3( -2.566254f, 0.0907035f, -4.6540112f ) ) );
+
+        //objects.add( rock( 3.8215625f, 2.909436f, -7.290692f ) );
 
         objects.add( hoverCoin( 3.8215625f, 2.909436f, -7.290692f ) );
         objects.add( hoverCoin( 2.0027287f, 2.5295668f, -7.6992803f ) );
         objects.add( hoverCoin( 1.7778516f, 2.652409f, -9.85341f ) );
         objects.add( hoverCoin( -8.499469f, 2.4801855f, -5.338491f ) );
         objects.add( hoverCoin( -8.047337f, 3.4476857f, 2.0262415f ) );
-        objects.add( hoverBottle( 7.4293437f, 2.3498673f, 3.1990445f ) );
+        objects.add( hoverGreenBottle( 9.4293437f, 2.3498673f, 5.1990445f ) );
+        objects.add( hoverRedBottle( 7.4293437f, 2.3498673f, 3.1990445f ) );
         objects.add( hoverCoin( 8.339297f, 2.2162886f, 5.705835f ) );
 
         objects.add( box( 7.102702f, 3.5108666f, 16.62674f, Item.BLUE_STAR ) );
-        objects.add( box( -2.1007736f, 2.50011f, 10.098732f ) );
+        objects.add( chest( -2.1007736f, 2.50011f, 10.098732f, Item.COIN ) );
         objects.add( box( -8.834456f, 1.6002967f, -1.8023157f ) );
         objects.add( box( 5.86802f, 1.1149557f, -0.5165689f ) );
 
@@ -65,8 +68,8 @@ public final class Levels {
                                      new Vector3( 14.994f, -0.995f, 2.719f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.PICKABLE,
-                                      Item.RED_BOTTLE,
-                                      ModelAsset.BOTTLE,
+                                      Item.GREEN_BOTTLE,
+                                      ModelAsset.GREEN_BOTTLE,
                                       new Vector3( -1.0f, 4, -3.5f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.COLLECTABLE,
@@ -95,8 +98,8 @@ public final class Levels {
                                       new Vector3( 17.195f, 4.707f, -6.442f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.COLLECTABLE,
-                                      Item.RED_BOTTLE,
-                                      ModelAsset.BOTTLE,
+                                      Item.GREEN_BOTTLE,
+                                      ModelAsset.GREEN_BOTTLE,
                                       new Vector3( 15.195f, 3.262f, -12.414f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.NPC,
@@ -123,7 +126,7 @@ public final class Levels {
                                       TextBlock.DialogNPC1,
                                       NPCActionQueues.get( 0 ),
                                       ModelAsset.HOG,
-                                      new Vector3( -25.33078f, 5,-66.74849f ) ) );
+                                      new Vector3( -25.33078f, 5, -66.74849f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.KALASH_WEAPON,
@@ -179,9 +182,13 @@ public final class Levels {
                                       ModelAsset.RAKE_WEAPON2,
                                       new Vector3( -1.1865791f, 2.7401257f, -153.47026f ) ) );
 
+        objects.add( hoverGreenBottle( -5.3636923f, 1.8259449f, -155.13283f ) );
+        objects.add( hoverCoin( -4.838867f, 1.8350161f, -157.48666f ) );
+        //objects.add( rock( -4.409675f,1.8589246f,-157.52556f ) );
+
         objects.add( hoverCoin( 23.473248f, 3.3257918f, -149.59673f ) );
         objects.add( hoverCoin( 26.19768f, 3.3371155f, -149.85556f ) );
-        objects.add( hoverBottle( 26.942774f, 3.3635728f, -151.56834f ) );
+        objects.add( hoverGreenBottle( 26.942774f, 3.3635728f, -151.56834f ) );
         objects.add( hoverCoin( 16.20091f, 2.1369853f, -156.37874f ) );
         objects.add( hoverCoin( 2.8433032f, 1.9630667f, -156.65167f ) );
         objects.add( hoverCoin( -0.08271152f, 2.3794906f, -155.92131f ) );
@@ -200,7 +207,7 @@ public final class Levels {
         Array< LevelObject > objects = new Array< LevelObject >();
 
         objects.add( hoverCoin( -75.930626f, 4.587798f, -189.51195f ) );
-        objects.add( hoverBottle( -79.52511f, 4.0374074f, -189.01859f ) );
+        objects.add( hoverGreenBottle( -79.52511f, 4.0374074f, -189.01859f ) );
         objects.add( hoverCoin( -78.972694f, 4.2645297f, -192.8407f ) );
         objects.add( hoverCoin( -62.12069f, 1.772642f, -216.14336f ) );
         objects.add( hoverCoin( -66.58269f, 1.1613581f, -250.24501f ) );
@@ -221,7 +228,7 @@ public final class Levels {
     private static Array< LevelObject > level4objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
-        objects.add( hoverBottle( -134.07967f, 3.0370257f, -367.3695f ) );
+        objects.add( hoverGreenBottle( -134.07967f, 3.0370257f, -367.3695f ) );
         objects.add( hoverCoin( -131.90904f, 3.248974f, -364.48978f ) );
         objects.add( hoverCoin( -127.98646f, 2.9535644f, -367.3582f ) );
         objects.add( hoverCoin( -130.32939f, 3.0170774f, -371.31467f ) );
@@ -245,7 +252,7 @@ public final class Levels {
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.FENCE_WEAPON,
                                       ModelAsset.FENCE_WEAPON4,
-                                      new Vector3( -244.39001f,1.686245f,-420.27023f ) ) );
+                                      new Vector3( -244.39001f, 1.686245f, -420.27023f ) ) );
 
         objects.add( hoverCoin( -218.1792f, 1.2710103f, -408.69302f ) );
         objects.add( hoverCoin( -218.30159f, 1.1370168f, -404.0892f ) );
@@ -282,14 +289,44 @@ public final class Levels {
     }
 
 
+    private static LevelObject chest ( float x, float y, float z, Item itemInBox ) {
+        return new LevelObject( OBJECT_TYPE.BOX,
+                                itemInBox,
+                                ModelAsset.CHEST,
+                                new Vector3( x, y, z ) );
+    }
+
+
+    private static LevelObject chest ( float x, float y, float z ) {
+        return new LevelObject( OBJECT_TYPE.BOX,
+                                ModelAsset.CHEST,
+                                new Vector3( x, y, z ) );
+    }
+
+
+    private static LevelObject rock ( float x, float y, float z ) {
+        return new LevelObject( OBJECT_TYPE.ROCK,
+                                ModelAsset.ROCK,
+                                new Vector3( x, y, z ) );
+    }
+
+
     private static LevelObject hoverCoin ( float x, float y, float z ) {
         return new LevelObject( OBJECT_TYPE.HOVER_COLLECTABLE, Item.COIN, ModelAsset.COIN,
                                 new Vector3( x, y, z ) );
     }
 
 
-    private static LevelObject hoverBottle ( float x, float y, float z ) {
-        return new LevelObject( OBJECT_TYPE.HOVER_COLLECTABLE, Item.RED_BOTTLE, ModelAsset.BOTTLE,
+    private static LevelObject hoverGreenBottle ( float x, float y, float z ) {
+        return new LevelObject( OBJECT_TYPE.HOVER_COLLECTABLE, Item.GREEN_BOTTLE,
+                                ModelAsset.GREEN_BOTTLE,
+                                new Vector3( x, y, z ) );
+    }
+
+
+    private static LevelObject hoverRedBottle ( float x, float y, float z ) {
+        return new LevelObject( OBJECT_TYPE.HOVER_COLLECTABLE, Item.RED_BOTTLE,
+                                ModelAsset.RED_BOTTLE,
                                 new Vector3( x, y, z ) );
     }
 

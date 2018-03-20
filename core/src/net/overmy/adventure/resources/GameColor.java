@@ -29,9 +29,10 @@ public enum GameColor {
 
     BUTTON( 0xE3CDA4 ),
 
-    BLACKGL( new Color( 0,0,0, 0.2f ) ),
+    BLACKGL( new Color( 0,0,0, 0.5f ) ),
     WHITEGL( new Color( 1,1,1, 0.4f ) ),
-    ;
+    RED(  0xFF5A4A ),
+    GREEN( 0xCEFF88 );
 
     private final Color color;
 

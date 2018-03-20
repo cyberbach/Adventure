@@ -34,9 +34,9 @@ public final class BulletWorld {
     public final static int DESTROYABLE_FLAG = 1 << 16;
     public final static int PART_FLAG = 1 << 17;
 
-    public final static int ALL_FLAG = GROUND_FLAG | //SHOT_FLAG |
+    public final static int ALL_FLAG = GROUND_FLAG |
                                        PLAYER_FLAG | LADDER_FLAG | MYWEAPON_FLAG |
-                                       PICKABLE_FLAG | COLLECTABLE_FLAG | NPC_FLAG;
+                                       PICKABLE_FLAG | COLLECTABLE_FLAG | NPC_FLAG | DESTROYABLE_FLAG;
 
     private static btDynamicsWorld dynamicsWorld = null;
     private static int             userValue     = -1;

@@ -78,7 +78,7 @@ public final class MyRender {
         final Attribute defaultEnvLight;
         defaultEnvLight = new ColorAttribute( ColorAttribute.AmbientLight, ambientColor );
         environment.set( defaultEnvLight );
-/*
+
 
         float r = GameColor.BG.get().r;
         float g = GameColor.BG.get().g;
@@ -86,7 +86,7 @@ public final class MyRender {
 
         final Attribute fog = new ColorAttribute( ColorAttribute.Fog, r, g, b, 1f );
         environment.set( fog );
-*/
+
 
         environment.add( MyCamera.getLight() );
     }

@@ -108,6 +108,23 @@ public final class UIHelper {
     }
 
 
+    public static void roller ( Actor actor, float x, float y, float x2, float y2 ) {
+        float time = MathUtils.random( Core.FADE * 0.6f, Core.FADE );
+        float xc = ( x2 - x ) * 0.5f + x;
+        float yc = ( y2 - y ) * 0.5f + y;
+        actor.addAction(
+                Actions.parallel(
+                        Actions.sequence( Actions.alpha( 0, 0 ),
+                                          Actions.alpha( 1, time),
+                                          Actions.alpha( 0, time ) ),
+                        Actions.sequence( Actions.moveTo( x, y, 0 ),
+                                          Actions.moveTo( xc, yc, time, Interpolation.circleOut ),
+                                          Actions.moveTo( x2, y2, time, Interpolation.circleIn ) )
+                                )
+                       );
+    }
+
+
     public static void rollInAndRun ( Actor actor, float x, float y, float x2, float y2,
                                       Runnable someRun ) {
         final float time = MathUtils.random( Core.FADE * 0.8f, Core.FADE );
