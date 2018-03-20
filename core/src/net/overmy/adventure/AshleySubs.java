@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -171,7 +172,7 @@ public final class AshleySubs {
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( new AnimationComponent( modelInstance ) );
         entity.add( new GroundedComponent() );
-        entity.add( new LifeComponent( 100,1,2 ) );
+        entity.add( new LifeComponent( 100.0f,1,2 ) );
         entity.add( new TypeOfComponent( COMP_TYPE.MYPLAYER ) );
         entity.add( new MyPlayerComponent() );
 

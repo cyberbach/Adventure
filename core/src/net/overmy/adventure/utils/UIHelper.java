@@ -79,7 +79,6 @@ public final class UIHelper {
                                            Actions.scaleTo( 1, 1, time ) ) );
     }
 
-
     public static void fall ( Actor actor ) {
         final float time = MathUtils.random( Core.FADE * 0.2f, Core.FADE );
         actor.addAction( Actions.sequence( Actions.scaleTo( 2.0f, 2.0f, 0 ),

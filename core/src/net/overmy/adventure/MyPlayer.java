@@ -48,6 +48,7 @@ public final class MyPlayer {
     private static       boolean    attack         = false;
     private static       float      modelAngle     = 0.0f;
     private static       float      dustTime       = 0.1f;
+    public static        boolean    live           = true;
 
     private static boolean weaponInHand = false;
 
@@ -179,12 +180,12 @@ public final class MyPlayer {
 
     public static void updateControls ( float deltaTime ) {
 
-        if ( Gdx.input.isKeyJustPressed( Input.Keys.SPACE ) ) {
-            startJump();
+        if ( !live ) {
+            return;
         }
 
-        if ( playerEntity == null ) {
-            return;
+        if ( Gdx.input.isKeyJustPressed( Input.Keys.SPACE ) ) {
+            startJump();
         }
 
         updateAnimation( deltaTime );
@@ -246,6 +247,10 @@ public final class MyPlayer {
 
 
     private static void updateAnimation ( float deltaTime ) {
+
+        if ( !live ) {
+            return;
+        }
 
         final AnimationComponent animationComponent = MyMapper.ANIMATION.get( playerEntity );
         final String ID_CURRENT = animationComponent.getID();
@@ -359,8 +364,6 @@ public final class MyPlayer {
         attack = true;
     }
 
-    //static Vector2 tmpDirection = new Vector2(  );
-
 
     public static void move ( float x, float y ) {
         direction.set( x, y );
@@ -384,13 +387,43 @@ public final class MyPlayer {
 
         playerBody = null;
         rightArmNode = null;
+        entityWeaponInHand = null;
+        itemInHand = null;
+        modelInstanceWeaponInHand = null;
+    }
+
+
+    public static void clearAll () {
+        if ( bag != null ) {
+            bag.clear();
+        }
+        bag = null;
+
+        entityWeaponInHand = null;
+        itemInHand = null;
+
+        if ( modelInstanceWeaponInHand != null ) {
+            modelInstanceWeaponInHand.nodes.get( 0 ).detach();
+        }
+        modelInstanceWeaponInHand = null;
+
+        playerEntity = null;
+
+        if ( walk != null ) {
+            walk.stop();
+        }
+        walk = null;
+
+        playerBody = null;
+        rightArmNode = null;
+
+        v2Position.set( 0, 0 );
+
+        live = true;
     }
 
 
     public static Vector2 getPosition () {
-        if ( playerEntity == null ) {
-            v2Position.set( 0, 0 );
-        }
         return v2Position;
     }
 
@@ -448,6 +481,10 @@ public final class MyPlayer {
                 }
 
                 speedUpTimerLabel = AshleySubs.createSpeedUpTimer( item.item );
+
+                break;
+            case RED_BOTTLE:
+                MyMapper.LIFE.get( playerEntity ).life = 100;
 
                 break;
 

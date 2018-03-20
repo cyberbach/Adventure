@@ -58,14 +58,18 @@ import net.overmy.adventure.utils.UIHelper;
 import java.util.ArrayList;
 
 public class GameScreen extends Base2DScreen {
-    private Image         hitButton      = null;
+    Image showIngameMenuImage = null;
+    Image aimImage            = null;
+    private Image         attackButton   = null;
     private Image         jumpButton     = null;
     private Touchpad      touchpad       = null;
     private LoadIndicator indicatorGroup = null;
     private Group         interactGroup  = null;
     private Group         touchPadGroup  = null;
+    private Group         bagButtonGroup = null;
 
     private InteractSystem interactSystem = null;
+
 
     private GUI_TYPE guiType;
 
@@ -101,6 +105,7 @@ public class GameScreen extends Base2DScreen {
         bg = TextureAsset.BG_GRADIENT.get();
         spriteBatch = MyRender.getSpriteBatch();
 
+        MyCamera.setCameraPosition( new Vector3( 0, 300, 0 ) );
         MyPlayer.init();
 
         touchPadGroup = new Group();
@@ -158,8 +163,10 @@ public class GameScreen extends Base2DScreen {
         MyRender.getDecalBatch().flush();
     }
 
+
     private final float MAX_CLOUD_TIMER = 2.0f;
     private       float cloudTimer      = MAX_CLOUD_TIMER;
+
 
     @Override
     public void update ( float delta ) {
@@ -337,12 +344,46 @@ public class GameScreen extends Base2DScreen {
         }
 
         // Create clouds
-        cloudTimer-=delta;
-        if(cloudTimer<0){
-            cloudTimer= MathUtils.random( MAX_CLOUD_TIMER*0.5f,MAX_CLOUD_TIMER );
+        cloudTimer -= delta;
+        if ( cloudTimer < 0 ) {
+            cloudTimer = MathUtils.random( MAX_CLOUD_TIMER * 0.5f, MAX_CLOUD_TIMER );
             AshleySubs.createCloudFX();
         }
+
+        if ( !MyPlayer.live && !showGameOver ) {
+            showGameOver = true;
+
+            // FIXME game over sound
+            SoundAsset.Click.play();
+
+            Label gameOverLabel = UIHelper.Label( TextAsset.END_GAME.get(), FontAsset.MENU_TITLE );
+            final Group gameOverGroup = UIHelper.convertActorToGroup( gameOverLabel );
+            gameOverGroup.setPosition( -Core.WIDTH, Core.HEIGHT_HALF );
+            gameOverGroup.addAction( Actions.sequence(
+                    Actions.scaleTo( 0, 0, 0 ),
+                    Actions.moveTo( Core.WIDTH_HALF, Core.HEIGHT_HALF, 0 ),
+                    Actions.scaleTo( 1, 1, Core.FADE * 10.0f ) ) );
+
+            gameOverGroup.addListener( new ClickListener() {
+                public void clicked ( InputEvent event, float x, float y ) {
+                    SoundAsset.BackSound.play();
+                    UIHelper.scaleOut( gameOverGroup );
+                    transitionTo( MyGdxGame.SCREEN_TYPE.MENU );
+                }
+            } );
+
+            MyRender.getStage().addActor( gameOverGroup );
+
+            UIHelper.scaleOut( aimImage );
+            UIHelper.scaleOut( attackButton );
+            UIHelper.scaleOut( touchPadGroup );
+            UIHelper.scaleOut( jumpButton );
+            UIHelper.scaleOut( showIngameMenuImage );
+        }
     }
+
+
+    private boolean showGameOver = false;
 
 
     private void showInGameMenu () {
@@ -560,34 +601,30 @@ public class GameScreen extends Base2DScreen {
         UIHelper.scaleIn( jumpButton );
         gameGroup.addActor( jumpButton );
 
-        if ( hitButton == null ) {
-            hitButton = new Image( IMG.HIT_BUTTON.createSprite() );
-            hitButton.setSize( Core.HEIGHT * 0.24f, Core.HEIGHT * 0.24f );
-            hitButton.setPosition( Core.WIDTH - hitButton.getWidth() * 2.5f,
-                                   hitButton.getHeight() * 0.4f );
-            hitButton.setOrigin( hitButton.getWidth() / 2,
-                                 hitButton.getHeight() / 2 );
+        if ( attackButton == null ) {
+            attackButton = new Image( IMG.HIT_BUTTON.createSprite() );
+            attackButton.setSize( Core.HEIGHT * 0.24f, Core.HEIGHT * 0.24f );
+            attackButton.setPosition( Core.WIDTH - attackButton.getWidth() * 2.5f,
+                                      attackButton.getHeight() * 0.4f );
+            attackButton.setOrigin( attackButton.getWidth() / 2,
+                                    attackButton.getHeight() / 2 );
 
-            hitButton.addListener( new ClickListener() {
+            attackButton.addListener( new ClickListener() {
                 @Override
                 public void clicked ( InputEvent event, float x, float y ) {
                     MyPlayer.startAttack();
                     SoundAsset.Jump2.play();
-                    UIHelper.clickAnimation( hitButton );
+                    UIHelper.clickAnimation( attackButton );
                 }
             } );
         }
-        UIHelper.scaleIn( hitButton );
-        gameGroup.addActor( hitButton );
+        UIHelper.scaleIn( attackButton );
+        gameGroup.addActor( attackButton );
 
         float aimSize = Core.HEIGHT * 0.1f;
-        Image aimImage = IMG.AIM.getImageActor( aimSize, aimSize );
+        aimImage = IMG.AIM.getImageActor( aimSize, aimSize );
         aimImage.setPosition( Core.WIDTH_HALF - aimSize / 2, Core.HEIGHT_HALF - aimSize / 2 );
         gameGroup.addActor( aimImage );
-
-        // TODO if dead
-        //player.setManagerLogLevel(); // сброс состояний, параметров и прочей фигни
-        //DynamicZone.reload naxer
 
         if ( interactGroup != null ) {
             interactGroup.clear();
@@ -600,8 +637,10 @@ public class GameScreen extends Base2DScreen {
 
         float inGameIconSize = Core.HEIGHT * 0.16f;
 
-        final Image showIngameMenuImage = IMG.INGAME.getImageActor( inGameIconSize,
-                                                                    inGameIconSize );
+        if ( showIngameMenuImage == null ) {
+            showIngameMenuImage = IMG.INGAME.getImageActor( inGameIconSize,
+                                                            inGameIconSize );
+        }
         showIngameMenuImage.setPosition( Core.WIDTH - inGameIconSize,
                                          Core.HEIGHT - inGameIconSize );
         gameGroup.addActor( showIngameMenuImage );

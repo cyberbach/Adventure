@@ -106,13 +106,13 @@ public class NPCSystem extends IteratingSystem {
 
         switch ( npcComponent.actionArray.get( action ).id ) {
             case WAIT:
-                npcComponent.attacking=false;
+                npcComponent.attacking = false;
                 direction.set( 0, 0 );
                 walk.setVolume( 0.0f );
                 break;
 
             case MOVE:
-                npcComponent.attacking=false;
+                npcComponent.attacking = false;
                 npcPosition.set( notFilteredPos.x, notFilteredPos.z );
                 direction.set( npcComponent.actionArray.get( action ).targetPosition.x,
                                npcComponent.actionArray.get( action ).targetPosition.y );
@@ -138,6 +138,7 @@ public class NPCSystem extends IteratingSystem {
                 break;
 
             case HUNT:
+                // FIXME
                 /*npcPosition.set( notFilteredPos.x, notFilteredPos.z );
                 direction.set( npcComponent.actionArray.get( action ).targetPosition.x,
                                npcComponent.actionArray.get( action ).targetPosition.y );
@@ -158,23 +159,22 @@ public class NPCSystem extends IteratingSystem {
                     float walkVolume =
                             distance < MAX_LISTEN_DISTANCE ? distance / MAX_LISTEN_DISTANCE : 0;
                     walk.setVolume( walkVolume );*/
+
                 npcPosition.set( notFilteredPos.x, notFilteredPos.z );
                 tmp.set( MyPlayer.getPosition() ).sub( npcPosition );
-                if ( tmp.len() > 4.0f ) {
+                if ( tmp.len() > 4.0f || !MyPlayer.live ) {
                     npcComponent.time = 0;
-                    Gdx.app.debug( "", "не хочет охотится" );
-                    npcComponent.attacking=false;
+                    npcComponent.attacking = false;
                 } else {
                     tmp.nor();
                     direction.set( tmp );
-                    Gdx.app.debug( "охота", "идёт "+tmp.len() );
-                    npcComponent.attacking=true;
+                    npcComponent.attacking = true;
                 }
 
                 break;
 
             case SAY:
-                npcComponent.attacking=false;
+                npcComponent.attacking = false;
                 direction.set( 0, 0 );
                 walk.setVolume( 0.0f );
                 entity.add( new TextDecalComponent( npcComponent.actionArray.get( action ).text,

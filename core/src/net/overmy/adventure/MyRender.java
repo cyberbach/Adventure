@@ -58,7 +58,7 @@ public final class MyRender {
         final GroupStrategy groupStrategy = new CameraGroupStrategy( MyCamera.get() );
         decalBatch = new DecalBatch( groupStrategy );
 
-        blackFullScreen = GFXHelper.createSpriteRGB888( Core.WIDTH, Core.HEIGHT, Color.BLACK );
+        blackFullScreen = GFXHelper.createSpriteRGB888( Core.WIDTH, Core.HEIGHT, GameColor.BG.get() );
         transition = new FloatAnimator( 0, 1, Core.FADE );
 
         stage = new Stage();
@@ -123,12 +123,12 @@ public final class MyRender {
 
 
     public static void TransitionIN () {
-        transition.fromCurrent().setTo( 1 ).resetTime();
+        transition.setFrom(0).setTo( 1 ).resetTime();
     }
 
 
     public static void TransitionOUT () {
-        transition.fromCurrent().setTo( 0 ).resetTime();
+        transition.setFrom(1).setTo( 0 ).resetTime();
     }
 
 

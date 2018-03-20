@@ -19,7 +19,7 @@ public class MyCamera {
 
     private static Vector3           cameraOffset        = new Vector3( 0, 1.4f, 4 );
     private static Vector3           cameraDirection     = new Vector3( 0, 0, -1 );
-    private static Vector3           cameraPosition      = new Vector3( 0, 0, 0 );
+    private static Vector3           cameraPosition      = new Vector3( 0, 0.0f, 0 );
     private static Vector3           frustumOffset       = new Vector3( 0, 0, 2 );
     private static Vector3           camPosition         = new Vector3();
     private static Vector3Animator   camMotion           = new Vector3Animator();
@@ -131,7 +131,7 @@ public class MyCamera {
     }
 
 
-    static void setCameraPosition ( Vector3 v3 ) {
+    public static void setCameraPosition ( Vector3 v3 ) {
         float ALPHA = 0.25f;
         filteredPosition.x = filteredPosition.x + ALPHA * ( v3.x - filteredPosition.x );
         filteredPosition.y = filteredPosition.y + ALPHA * ( v3.y - filteredPosition.y );

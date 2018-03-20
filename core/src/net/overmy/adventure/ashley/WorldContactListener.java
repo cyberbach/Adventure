@@ -252,42 +252,30 @@ public class WorldContactListener extends ContactListener {
                 NPCComponent component = MyMapper.NPC.get( entity01 );
                 component.time = 0.0f;
                 if ( component.attacking ) {
-                    Gdx.app.debug( "1", "1 вариант" );
                     btRigidBody body2 = MyMapper.PHYSICAL.get( entity02 ).body;
                     body2.getWorldTransform().getTranslation( tempPosition2 );
-
-                    Gdx.app.debug( "2", "1 вариант" );
                     AshleySubs.create5StarsFX( tempPosition2 );
-
                     SoundAsset.HIT.play();
 
-                    Gdx.app.debug( "3", "1 вариант" );
                     if ( MyMapper.LIFE.has( entity02 ) ) {
-                        Gdx.app.debug( "5", "1 вариант" );
                         MyMapper.LIFE.get( entity02 ).decLife( component.damage );
                     }
                     component.attacking = false;
-                    Gdx.app.debug( "4", "1 вариант" );
                 }
             }
             if ( MyMapper.NPC.has( entity02 ) ) {
                 NPCComponent component = MyMapper.NPC.get( entity02 );
                 component.time = 0.0f;
                 if ( component.attacking ) {
-                    Gdx.app.debug( "1", "2 вариант" );
                     btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
                     body1.getWorldTransform().getTranslation( tempPosition1 );
-                    Gdx.app.debug( "2", "2 вариант" );
                     AshleySubs.create5StarsFX( tempPosition1 );
                     SoundAsset.HIT.play();
 
-                    Gdx.app.debug( "3", "2 вариант" );
                     component.attacking = false;
                     if ( MyMapper.LIFE.has( entity01 ) ) {
-                        Gdx.app.debug( "5", "2 вариант" );
                         MyMapper.LIFE.get( entity01 ).decLife( component.damage );
                     }
-                    Gdx.app.debug( "4", "2 вариант" );
                 }
             }
         }

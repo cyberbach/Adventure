@@ -41,13 +41,16 @@ public final class NPCActionQueues {
                 Array< NPCAction > queue1 = new Array< NPCAction >();
                 queue1.add( wait( 2.0f ) );
                 queue1.add( move( 11.0029545f, 11.008482f ) );
+                queue1.add( hunt() );
                 queue1.add( wait( 3.0f ) );
                 queue1.add( move( 5.406862f, 10.36782f ) );
                 queue1.add( hunt() );
                 queue1.add( wait( 2.0f ) );
                 queue1.add( move( 3.7875729f, 6.9466367f ) );
+                queue1.add( hunt() );
                 queue1.add( wait( 3.0f ) );
                 queue1.add( move( 4.887175f, 10.677381f ) );
+                queue1.add( hunt() );
 
                 return queue1;
 
@@ -56,11 +59,15 @@ public final class NPCActionQueues {
                 queue2.add( wait( 3.0f ) );
                 queue2.add( hunt() );
                 queue2.add( move( 8.697725f, -2.0947685f ) );
+                queue2.add( hunt() );
                 queue2.add( move( 7.6969233f, 0.8624459f ) );
+                queue2.add( hunt() );
                 queue2.add( move( 3.2691898f, 0.110698976f ) );
+                queue2.add( hunt() );
                 queue2.add( move( 5.371343f, -2.410922f ) );
                 queue2.add( hunt() );
                 queue2.add( move( 9.87872f, -0.9013393f ) );
+                queue2.add( hunt() );
                 queue2.add( move( 9.266123f, -0.8731335f ) );
 
                 return queue2;

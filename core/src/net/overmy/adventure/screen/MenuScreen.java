@@ -12,9 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.Core;
 import net.overmy.adventure.MyGdxGame;
+import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.MyRender;
+import net.overmy.adventure.logic.DynamicLevels;
+import net.overmy.adventure.logic.Levels;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.Settings;
 import net.overmy.adventure.resources.SoundAsset;
@@ -55,17 +59,27 @@ public class MenuScreen extends Base2DScreen {
         guiType = GUI_TYPE.MAIN_MENU;
         introGroup.clear(); // disable clearGroup Runnable
 
+        boolean canResume = ( MyPlayer.getBody() != null && MyPlayer.live ) || DynamicLevels.getCurrent() != 0;
+
         final float labelPosX = Core.WIDTH * 0.6f;
         final float label1PosY = Core.HEIGHT * 0.4f;
         final float label2PosY = Core.HEIGHT * 0.25f;
+        final float label3PosY = Core.HEIGHT * 0.55f;
         final float leftPosX = -Core.WIDTH_HALF; // over screen position
-        final float rightPosX = Core.WIDTH; // over screen position
+        float rightPosX = Core.WIDTH; // over screen position
 
-        final Label startLabel = new Label( TextAsset.START_GAME.get(), FontAsset.MENU_TITLE.getStyle() );
-        final Label settingsLabel = new Label( TextAsset.OPTIONS.get(), FontAsset.MENU_TITLE.getStyle() );
+        final Label startLabel = new Label( TextAsset.START_GAME.get(),
+                                            FontAsset.MENU_TITLE.getStyle() );
+        final Label resumeLabel = new Label( TextAsset.RESUME_GAME.get(),
+                                             FontAsset.MENU_TITLE.getStyle() );
+        final Label settingsLabel = new Label( TextAsset.OPTIONS.get(),
+                                               FontAsset.MENU_TITLE.getStyle() );
 
         introGroup.addActor( startLabel );
         introGroup.addActor( settingsLabel );
+        if ( canResume ) {
+            introGroup.addActor( resumeLabel );
+        }
 
         UIHelper.rollIn( startLabel, rightPosX, label1PosY, labelPosX, label1PosY );
         startLabel.addListener( new ClickListener() {
@@ -75,6 +89,15 @@ public class MenuScreen extends Base2DScreen {
                 UIHelper.clickAnimation( startLabel );
                 UIHelper.rollOut( startLabel, labelPosX, label1PosY, leftPosX, label1PosY );
                 UIHelper.rollOut( settingsLabel, labelPosX, label2PosY, leftPosX, label2PosY );
+                UIHelper.rollOut( resumeLabel, labelPosX, label3PosY, leftPosX, label3PosY );
+
+                Levels.init();
+                DynamicLevels.setCurrent( 0 );
+                AshleyWorld.dispose();
+                AshleyWorld.init();
+
+                MyPlayer.clearAll();
+
                 transitionTo( MyGdxGame.SCREEN_TYPE.LOADING_GAME );
             }
         } );
@@ -86,9 +109,25 @@ public class MenuScreen extends Base2DScreen {
                 SoundAsset.Click.play();
                 UIHelper.rollOut( settingsLabel, labelPosX, label2PosY, leftPosX, label2PosY );
                 UIHelper.rollOut( startLabel, labelPosX, label1PosY, leftPosX, label1PosY );
+                UIHelper.rollOut( resumeLabel, labelPosX, label3PosY, leftPosX, label3PosY );
                 showSettingsGUI();
             }
         } );
+
+        if ( canResume ) {
+            UIHelper.rollIn( resumeLabel, rightPosX, label3PosY, labelPosX, label3PosY );
+            resumeLabel.addListener( new ClickListener() {
+                @Override
+                public void clicked ( InputEvent event, float x, float y ) {
+                    SoundAsset.Click.play();
+                    UIHelper.clickAnimation( startLabel );
+                    UIHelper.rollOut( startLabel, labelPosX, label1PosY, leftPosX, label1PosY );
+                    UIHelper.rollOut( settingsLabel, labelPosX, label2PosY, leftPosX, label2PosY );
+                    UIHelper.rollOut( resumeLabel, labelPosX, label3PosY, leftPosX, label3PosY );
+                    transitionTo( MyGdxGame.SCREEN_TYPE.LOADING_GAME );
+                }
+            } );
+        }
     }
 
 

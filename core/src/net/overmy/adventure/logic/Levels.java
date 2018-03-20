@@ -21,7 +21,7 @@ public final class Levels {
     }
 
 
-    static void init () {
+    public static void init () {
         Array< Level > levelArray = new Array< Level >();
 
         levelArray.add( new Level( "0, 1", level0objects() ) );

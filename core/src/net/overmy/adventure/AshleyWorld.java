@@ -58,7 +58,7 @@ public final class AshleyWorld {
     }
 
 
-    protected static void dispose () {
+    public static void dispose () {
         pooledEngine.removeSystem( pooledEngine.getSystem( LifeSystem.class ) );
         pooledEngine.removeSystem( pooledEngine.getSystem( RemoveByLevelSystem.class ) );
         pooledEngine.removeSystem( pooledEngine.getSystem( RemoveByTimeSystem.class ) );

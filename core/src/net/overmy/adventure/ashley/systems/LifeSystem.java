@@ -12,11 +12,13 @@ import com.badlogic.gdx.math.Vector3;
 
 import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.MyCamera;
+import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.MyRender;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
 import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
+import net.overmy.adventure.ashley.components.TypeOfComponent;
 
 
 /**
@@ -49,7 +51,7 @@ public class LifeSystem extends IteratingSystem {
             return;
         }
 
-        Gdx.app.debug( "life",""+lifeComponent.life );
+        Gdx.app.debug( "life", "" + lifeComponent.life );
 
         lifeComponent.time = hideTime - delta;
 
@@ -80,11 +82,17 @@ public class LifeSystem extends IteratingSystem {
                 AshleySubs.createRockParts( position );
             }
 
+            // === Здесь ENTITY умирает ===
             // Это чтобы компонент не пересоздавался при смене локаций
             if ( MyMapper.LEVEL_OBJECT.has( entity ) ) {
                 MyMapper.LEVEL_OBJECT.get( entity ).levelObject.useEntity();
             } else {
                 entity.add( new RemoveByTimeComponent( 0 ) );
+                if ( MyMapper.TYPE.has( entity ) ) {
+                    if ( MyMapper.TYPE.get( entity ).type.equals( COMP_TYPE.MYPLAYER ) ) {
+                        MyPlayer.live = false;
+                    }
+                }
             }
         }
     }

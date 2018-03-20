@@ -7,10 +7,14 @@ package net.overmy.adventure.resources;
 
 import com.badlogic.gdx.Gdx;
 
+import net.overmy.adventure.DEBUG;
+
 public enum TextAsset {
     Title( "Приключения зверят", "EnimalKids Adventures" ),
     // buttons
+    END_GAME( "Приключения закончились", "Adventures are finished" ),
     START_GAME( "Начать игру", "Start game" ),
+    RESUME_GAME( "Продолжить", "Resume" ),
     OPTIONS( "Настройки", "Options" ),
     MUSIC( "Музыка", "Music" ),
     SOUND( "Звуки", "Sound" ),
@@ -70,8 +74,7 @@ public enum TextAsset {
     public static void init () {
         String defaultLocale = java.util.Locale.getDefault().toString();
         Gdx.app.debug( "Default locale", "" + defaultLocale );
-        //russianLocale = "ru_RU".equals( defaultLocale );
-        russianLocale=false;
+        russianLocale = !DEBUG.ENABLE_ENGLISH_TEXT.get() && "ru_RU".equals( defaultLocale );
     }
 
 
