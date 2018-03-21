@@ -7,7 +7,6 @@ package net.overmy.adventure;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -30,6 +28,7 @@ import net.overmy.adventure.ashley.components.CollectableComponent;
 import net.overmy.adventure.ashley.components.ContainerComponent;
 import net.overmy.adventure.ashley.components.GroundedComponent;
 import net.overmy.adventure.ashley.components.InteractComponent;
+import net.overmy.adventure.ashley.components.LevelIDComponent;
 import net.overmy.adventure.ashley.components.LevelObjectComponent;
 import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
@@ -39,7 +38,6 @@ import net.overmy.adventure.ashley.components.NPCAction;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.PositionComponent;
-import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
@@ -196,7 +194,7 @@ public final class AshleySubs {
         }
 
         Entity entity = pooledEngine.createEntity();
-        entity.add( new RemoveByLevelComponent( zoneModel.ordinal() ) );
+        entity.add( new LevelIDComponent( zoneModel.ordinal() ) );
         entity.add( new ModelComponent( zoneModel.get() ) );
         entity.add( new TypeOfComponent( COMP_TYPE.GROUND ) );
         if ( physics != null ) {
@@ -599,20 +597,20 @@ public final class AshleySubs {
 
     public static void createDustFX ( Vector3 position, float timeToRemove ) {
         Entity entity = pooledEngine.createEntity();
-        entity.add( DecalSubs.LightDustEffect( timeToRemove * 6 ) );
+        entity.add( DecalSubs.LightDustEffect( timeToRemove ) );
         entity.add( new PositionComponent( position ) );
-        entity.add( new RemoveByTimeComponent( timeToRemove * 6 ) );
+        entity.add( new RemoveByTimeComponent( timeToRemove ) );
         pooledEngine.addEntity( entity );
     }
 
 
     public static void create5StarsFX ( Vector3 position ) {
         for ( int i = 0; i < 4; i++ ) {
-            float bubbleTime = MathUtils.random( 0.25f, 0.65f );
+            float fxTime = MathUtils.random( 0.25f, 0.65f );
             Entity entity = pooledEngine.createEntity();
-            entity.add( DecalSubs.StarsEffect( bubbleTime ) );
+            entity.add( DecalSubs.StarsEffect( fxTime ) );
             entity.add( new PositionComponent( position ) );
-            entity.add( new RemoveByTimeComponent( bubbleTime ) );
+            entity.add( new RemoveByTimeComponent( fxTime ) );
             pooledEngine.addEntity( entity );
         }
     }
@@ -620,11 +618,11 @@ public final class AshleySubs {
 
     public static void create5coinsFX ( Vector3 position ) {
         for ( int i = 0; i < 5; i++ ) {
-            float bubbleTime = MathUtils.random( 0.25f, 0.65f );
+            float fxTime = MathUtils.random( 0.25f, 0.65f );
             Entity entity = pooledEngine.createEntity();
-            entity.add( DecalSubs.CoinEffect( bubbleTime ) );
+            entity.add( DecalSubs.CoinEffect( fxTime ) );
             entity.add( new PositionComponent( position ) );
-            entity.add( new RemoveByTimeComponent( bubbleTime ) );
+            entity.add( new RemoveByTimeComponent( fxTime ) );
             pooledEngine.addEntity( entity );
         }
     }
@@ -655,14 +653,14 @@ public final class AshleySubs {
 
 
     public static void createCloudFX () {
-        float bubbleTime = MathUtils.random( 25.25f, 35.65f );
+        float fxTime = MathUtils.random( 25.25f, 35.65f );
 
         Entity entity = pooledEngine.createEntity();
         entity.add( DecalSubs.CloudEffect( MyPlayer.getPosition().x,
                                            MyPlayer.getPosition().y,
-                                           bubbleTime ) );
+                                           fxTime ) );
         entity.add( new PositionComponent( new Vector3() ) );
-        entity.add( new RemoveByTimeComponent( bubbleTime ) );
+        entity.add( new RemoveByTimeComponent( fxTime ) );
         pooledEngine.addEntity( entity );
     }
 

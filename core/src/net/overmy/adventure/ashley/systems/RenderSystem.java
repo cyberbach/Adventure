@@ -12,7 +12,6 @@ import net.overmy.adventure.MyCamera;
 import net.overmy.adventure.MyRender;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.ModelComponent;
-import net.overmy.adventure.ashley.components.MyWeaponComponent;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 
 /*
@@ -45,7 +44,7 @@ public class RenderSystem extends SortedIteratingSystem {
 
         environment = MyRender.getEnvironment();
         batch = MyRender.getModelBatch();
-   }
+    }
 
 
     @Override
@@ -75,15 +74,18 @@ public class RenderSystem extends SortedIteratingSystem {
                 entity.add( new OutOfCameraComponent() );
             }
         } else {
+            // TODO может быть нужна проверка
             final ModelInstance modelInstance = MyMapper.MODEL.get( entity ).modelInstance;
-            if ( MyCamera.isVisible( modelInstance.transform ) ) {
-                if ( MyMapper.OUT_OF_CAMERA.has( entity ) ) {
-                    entity.remove( OutOfCameraComponent.class );
+            if ( modelInstance != null ) {
+                if ( MyCamera.isVisible( modelInstance.transform ) ) {
+                    if ( MyMapper.OUT_OF_CAMERA.has( entity ) ) {
+                        entity.remove( OutOfCameraComponent.class );
+                    }
+                    batch.render( modelInstance, environment );
+                    modelsCount++;
+                } else {
+                    entity.add( new OutOfCameraComponent() );
                 }
-                batch.render( modelInstance, environment );
-                modelsCount++;
-            } else {
-                entity.add( new OutOfCameraComponent() );
             }
         }
     }

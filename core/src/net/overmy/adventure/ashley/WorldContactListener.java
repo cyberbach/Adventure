@@ -12,10 +12,10 @@ import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.ashley.components.COMP_TYPE;
+import net.overmy.adventure.ashley.components.LevelIDComponent;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
-import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
@@ -157,15 +157,28 @@ public class WorldContactListener extends ContactListener {
 
         if ( contact1Player && contact2Ground ||
              contact1Player && contact2DestroyableBox ) {
-            RemoveByLevelComponent zoneComponent = MyMapper.REMOVE_BY_ZONE.get( entity02 );
+            LevelIDComponent levelComponent = MyMapper.REMOVE_BY_ZONE.get( entity02 );
 
             int lastID = DynamicLevels.getCurrent();
-            int newID = zoneComponent.id;
+            int newID = levelComponent.id;
             DynamicLevels.setCurrent( newID );
             if ( !MyMapper.GROUNDED.get( entity01 ).grounded && lastID != newID ) {
                 DynamicLevels.reload();
             }
             MyMapper.GROUNDED.get( entity01 ).grounded = true;
+        }
+
+        if ( contact2Player && contact1Ground ||
+             contact2Player && contact1DestroyableBox ) {
+            LevelIDComponent levelComponent = MyMapper.REMOVE_BY_ZONE.get( entity01 );
+
+            int lastID = DynamicLevels.getCurrent();
+            int newID = levelComponent.id;
+            DynamicLevels.setCurrent( newID );
+            if ( !MyMapper.GROUNDED.get( entity02 ).grounded && lastID != newID ) {
+                DynamicLevels.reload();
+            }
+            MyMapper.GROUNDED.get( entity02 ).grounded = true;
         }
 
         if ( contact1Player && contact2Ladder ) {
@@ -370,10 +383,18 @@ public class WorldContactListener extends ContactListener {
         }
 
         boolean contact1Player = type1.equals( COMP_TYPE.MYPLAYER );
+        boolean contact2Player = type2.equals( COMP_TYPE.MYPLAYER );
+        boolean contact1Ground = type1.equals( COMP_TYPE.GROUND );
         boolean contact2Ground = type2.equals( COMP_TYPE.GROUND );
+
         if ( contact1Player && contact2Ground ) {
             MyMapper.GROUNDED.get( entity01 ).grounded = false;
             DynamicLevels.reload();
+            //return;
+        }
+
+        if ( contact2Player && contact1Ground ) {
+            MyMapper.GROUNDED.get( entity02 ).grounded = false;
             DynamicLevels.reload();
             //return;
         }

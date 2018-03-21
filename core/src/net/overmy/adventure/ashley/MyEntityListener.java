@@ -97,12 +97,17 @@ public class MyEntityListener implements EntityListener {
             log.setLength( 0 );
             if ( MyMapper.TYPE.has( entity ) ) {
                 log.append( MyMapper.TYPE.get( entity ).type.toString() );
-                log.append( " " );
             }
         }
 
         if ( MyMapper.PHYSICAL.has( entity ) ) {
+
             PhysicalComponent physicalComponent = MyMapper.PHYSICAL.get( entity );
+            if ( DEBUG.ENTITIES.get() ) {
+                log.append( " UV=" );
+                log.append( physicalComponent.body.getUserValue() );
+                log.append( " " );
+            }
             BulletWorld.removeBody( physicalComponent.body );
 
             btMotionState motionState = physicalComponent.body.getMotionState();

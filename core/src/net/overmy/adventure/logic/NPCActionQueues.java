@@ -125,6 +125,36 @@ public final class NPCActionQueues {
                 queue7.add( hunt() );
                 return queue7;
 
+            case 8:
+                Array< NPCAction > queue8 = new Array< NPCAction >();
+                queue8.add( move(-50.272156f, -406.55072f) );
+                queue8.add( wait( 1.0f ) );
+                queue8.add( hunt() );
+                queue8.add( move(-46.51943f, -410.3056f) );
+                queue8.add( wait( 2.0f ) );
+                queue8.add( hunt() );
+                queue8.add( move(-53.51205f, -433.28705f) );
+                queue8.add( move(-60.112892f, -425.14523f) );
+                queue8.add( wait( 3.0f ) );
+                queue8.add( hunt() );
+                queue8.add( move(-59.306446f, -416.003f) );
+                queue8.add( move(-61.259388f, -414.6232f) );
+                queue8.add( wait( 1.0f ) );
+                queue8.add( hunt() );
+                return queue8;
+
+            case 9: // лисичка на зелёной локации
+                Array< NPCAction > queue9 = new Array< NPCAction >();
+                queue9.add( move(-64.75381f, -441.43292f) );
+                queue9.add( wait( 2.0f ) );
+                queue9.add( move(-69.77547f, -443.40207f) );
+                queue9.add( move(-66.5813f, -443.6809f) );
+                queue9.add( wait( 3.0f ) );
+                queue9.add( move(-79.34961f, -442.19833f) );
+                queue9.add( move(-80.47613f, -443.1133f) );
+                queue9.add( wait( 5.0f ) );
+                return queue9;
+
             default:
                 return null;
         }

@@ -18,7 +18,7 @@ class LevelSubs {
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.BROOM_WEAPON,
-                                      ModelAsset.BROOM_WEAPON1,
+                                      ModelAsset.BROOM_WEAPON,
                                       new Vector3( -2.566254f, 0.0907035f, -4.6540112f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
@@ -118,7 +118,7 @@ class LevelSubs {
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.KALASH_WEAPON,
-                                      ModelAsset.KALASH_WEAPON3,
+                                      ModelAsset.KALASH_WEAPON,
                                       new Vector3( -29.12711f, 1.3195913f, -82.997826f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.LADDER,
@@ -187,7 +187,7 @@ class LevelSubs {
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.RAKE_WEAPON,
-                                      ModelAsset.RAKE_WEAPON2,
+                                      ModelAsset.RAKE_WEAPON,
                                       new Vector3( -1.1865791f, 2.7401257f, -153.47026f ) ) );
 
         objects.add( hoverGreenBottle( -5.3636923f, 1.8259449f, -155.13283f ) );
@@ -264,7 +264,7 @@ class LevelSubs {
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.FENCE_WEAPON,
-                                      ModelAsset.FENCE_WEAPON4,
+                                      ModelAsset.FENCE_WEAPON,
                                       new Vector3( -244.39001f, 1.686245f, -420.27023f ) ) );
 
         objects.add( hoverCoin( -218.1792f, 1.2710103f, -408.69302f ) );
@@ -282,6 +282,28 @@ class LevelSubs {
         objects.add( box( -251.01166f, 1.698267f, -429.71417f, Item.BLUE_STAR ) );
         objects.add( box( -239.39738f, 2.5849354f, -433.67297f, Item.COIN ) );
         objects.add( box( -215.69734f, 4.1981606f, -432.03983f ) );
+
+        return objects;
+    }
+
+    Array< LevelObject > level6objects () {
+        Array< LevelObject > objects = new Array< LevelObject >();
+
+
+        objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
+                                      NPCActionQueues.get( 8 ),
+                                      ModelAsset.CRAB,
+                                      new Vector3( -46.878883f,2.9280591f,-410.01724f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.NPC,
+                                      NPCActionQueues.get( 9 ),
+                                      ModelAsset.FOX,
+                                      new Vector3( -63.024685f,0.6048689f,-442.56873f ) ) );
+
+        objects.add( chest( -49.353012f, 1.195226f, -423.57303f, Item.GREEN_STAR) );
+        objects.add( chest( -49.944202f, 1.5459726f, -419.02133f,Item.BLUE_STAR) );
+        objects.add( chest( -49.78418f, 1.7487116f, -411.50516f, Item.RED_BOTTLE) );
+        objects.add( chest( -35.611767f, 1.8290501f, -413.95877f,Item.BROOM_WEAPON ));
 
         return objects;
     }

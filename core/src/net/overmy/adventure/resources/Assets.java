@@ -62,10 +62,10 @@ public final class Assets {
 
         ModelAsset.GIFT.load();
         ModelAsset.CRATE_PART.load();
-        ModelAsset.KALASH_WEAPON3.load();
-        ModelAsset.RAKE_WEAPON2.load();
-        ModelAsset.BROOM_WEAPON1.load();
-        ModelAsset.FENCE_WEAPON4.load();
+        ModelAsset.KALASH_WEAPON.load();
+        ModelAsset.RAKE_WEAPON.load();
+        ModelAsset.BROOM_WEAPON.load();
+        ModelAsset.FENCE_WEAPON.load();
         ModelAsset.ROCK_PART.load();
     }
 
@@ -79,10 +79,10 @@ public final class Assets {
 
         ModelAsset.GIFT.build();
         ModelAsset.CRATE_PART.build();
-        ModelAsset.KALASH_WEAPON3.build();
-        ModelAsset.RAKE_WEAPON2.build();
-        ModelAsset.BROOM_WEAPON1.build();
-        ModelAsset.FENCE_WEAPON4.build();
+        ModelAsset.KALASH_WEAPON.build();
+        ModelAsset.RAKE_WEAPON.build();
+        ModelAsset.BROOM_WEAPON.build();
+        ModelAsset.FENCE_WEAPON.build();
         ModelAsset.ROCK_PART.build();
     }
 

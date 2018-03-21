@@ -7,13 +7,13 @@ import com.badlogic.ashley.core.Component;
       Contact me → http://vk.com/id17317
  */
 
-public class RemoveByLevelComponent implements Component {
+public class LevelIDComponent implements Component {
 
     public final int id;
 
 
 
-    public RemoveByLevelComponent ( int id ) {
+    public LevelIDComponent ( int id ) {
         this.id = id;
     }
 }

@@ -1,5 +1,6 @@
 package net.overmy.adventure.utils;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
@@ -232,11 +233,11 @@ public final class UIHelper {
     }
 
 
-    public static Slider Bar () {
-        Texture myTexture = GFXHelper.createTexture( 4, 4 );
+    public static Slider Bar (Color color) {
+        Texture myTexture = GFXHelper.createTexture( 4, 4, color );
         Drawable myDrawable = new TextureRegionDrawable( new TextureRegion( myTexture ) );
 
-        Texture myTexture2 = GFXHelper.createTexture( 4, 4 );
+        Texture myTexture2 = GFXHelper.createTexture( 4, 4, Color.WHITE);
         Drawable myDrawable2 = new TextureRegionDrawable( new TextureRegion( myTexture2 ) );
 
         final Slider.SliderStyle sliderStyle = new Slider.SliderStyle();

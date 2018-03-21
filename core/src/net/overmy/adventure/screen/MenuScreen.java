@@ -5,12 +5,14 @@ package net.overmy.adventure.screen;
       Contact me → http://vk.com/id17317
  */
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -118,27 +120,30 @@ public class MenuScreen extends Base2DScreen {
         titleGroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT*0.8f );
         titleGroup.addAction( Actions.forever(
                 Actions.sequence(
-                        Actions.scaleTo( 1.2f,1.2f,3 ),
-                        Actions.scaleTo( 1.0f,1.0f,3 )
+                        Actions.scaleTo( 1.2f, 1.2f, 1, Interpolation.exp5Out ),
+                        Actions.scaleTo( 1.0f,1.0f,1, Interpolation.exp5In )
                                 )
                                              ) );
         introGroup.addActor( titleGroup );
 
         final boolean canResume = ( MyPlayer.getBody() != null && MyPlayer.live ) || DynamicLevels.getCurrent() != 0;
 
-        final float labelPosX = Core.WIDTH * 0.7f;
+        final float labelPosX = Core.WIDTH * 0.75f;
+        final float label2PosY = Core.HEIGHT * 0.23f;
         final float label1PosY = Core.HEIGHT * 0.35f;
-        final float label2PosY = Core.HEIGHT * 0.25f;
-        final float label3PosY = Core.HEIGHT * 0.45f;
+        final float label3PosY = Core.HEIGHT * 0.47f;
         final float leftPosX = -Core.WIDTH_HALF; // over screen position
         final float rightPosX = Core.WIDTH; // over screen position
 
         final Label startLabel = new Label( TextAsset.START_GAME.get(),
                                             FontAsset.MENU_TITLE.getStyle() );
+        startLabel.setColor( GameColor.SQUIREL.get() );
         final Label resumeLabel = new Label( TextAsset.RESUME_GAME.get(),
                                              FontAsset.MENU_TITLE.getStyle() );
+        resumeLabel.setColor( GameColor.SQUIREL.get() );
         final Label settingsLabel = new Label( TextAsset.OPTIONS.get(),
                                                FontAsset.MENU_TITLE.getStyle() );
+        settingsLabel.setColor( GameColor.FOX.get() );
 
         introGroup.addActor( startLabel );
         introGroup.addActor( settingsLabel );
@@ -216,7 +221,7 @@ public class MenuScreen extends Base2DScreen {
 
         optionsGroup.addActor( UIHelper.MenuLabel( TextAsset.SOUND.get(), Core.HEIGHT * 0.6f ) );
         if ( soundBar == null ) {
-            soundBar = UIHelper.Bar();
+            soundBar = UIHelper.Bar(GameColor.SQUIREL.get());
             soundBar.setWidth( Core.WIDTH * 0.55f );
             soundBar.invalidate();
             soundBar.setValue( Settings.SOUND.getInteger() );
@@ -226,7 +231,7 @@ public class MenuScreen extends Base2DScreen {
 
         optionsGroup.addActor( UIHelper.MenuLabel( TextAsset.MUSIC.get(), Core.HEIGHT * 0.45f ) );
         if ( musicBar == null ) {
-            musicBar = UIHelper.Bar();
+            musicBar = UIHelper.Bar(GameColor.SQUIREL.get());
             musicBar.setWidth( Core.WIDTH * 0.55f );
             musicBar.invalidate();
             musicBar.setValue( Settings.MUSIC.getInteger() );
@@ -236,7 +241,7 @@ public class MenuScreen extends Base2DScreen {
 
         optionsGroup.addActor( UIHelper.MenuLabel( TextAsset.HORIZ.get(), Core.HEIGHT * 0.3f ) );
         if ( horizontalSensBar == null ) {
-            horizontalSensBar = UIHelper.Bar();
+            horizontalSensBar = UIHelper.Bar(GameColor.FOX.get());
             horizontalSensBar.setWidth( Core.WIDTH * 0.55f );
             horizontalSensBar.invalidate();
             horizontalSensBar.setValue( Settings.HORIZ_SENS.getInteger() );
@@ -246,7 +251,7 @@ public class MenuScreen extends Base2DScreen {
 
         optionsGroup.addActor( UIHelper.MenuLabel( TextAsset.VERT.get(), Core.HEIGHT * 0.15f ) );
         if ( verticalSensBar == null ) {
-            verticalSensBar = UIHelper.Bar();
+            verticalSensBar = UIHelper.Bar(GameColor.FOX.get());
             verticalSensBar.setWidth( Core.WIDTH * 0.55f );
             verticalSensBar.invalidate();
             verticalSensBar.setValue( Settings.VERT_SENS.getInteger() );

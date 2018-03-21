@@ -5,10 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
 import net.overmy.adventure.AshleySubs;
-import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
-import net.overmy.adventure.ashley.systems.RemoveByLevelSystem;
 import net.overmy.adventure.resources.Assets;
 import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.Settings;
@@ -20,7 +18,6 @@ import net.overmy.adventure.resources.Settings;
 
 public final class DynamicLevels {
 
-    private static RemoveByLevelSystem removeByLevelSystem = null;
     private static boolean             unloaded            = true;
 
     private static Array< Integer > currentConnections  = null;
@@ -38,8 +35,11 @@ public final class DynamicLevels {
         levelArray.add( new Level( "1, 0, 2, 3", ls.level1objects() ) );
         levelArray.add( new Level( "2, 1, 3", ls.level2objects() ) );
         levelArray.add( new Level( "3, 1, 2, 4", ls.level3objects() ) );
-        levelArray.add( new Level( "4, 3, 5", ls.level4objects() ) );
-        levelArray.add( new Level( "5, 4", ls.level5objects() ) );
+        levelArray.add( new Level( "4, 3, 5, 6", ls.level4objects() ) );
+        levelArray.add( new Level( "5, 4", ls.level5objects() ) ); // левая глючная
+        levelArray.add( new Level( "6, 4, 7", ls.level6objects() ) );
+        levelArray.add( new Level( "7, 6, 8" ) ); // переход на секретную локу
+        levelArray.add( new Level( "8, 7" ) ); // секретная лока зима
 
         levels = new ImmutableArray< Level >( levelArray );
     }
@@ -53,8 +53,6 @@ public final class DynamicLevels {
 
 
     public static void init () {
-        removeByLevelSystem = AshleyWorld.getPooledEngine().getSystem( RemoveByLevelSystem.class );
-
         current = Settings.START_LOCATION.getInteger();
 
         currentConnections = null;
@@ -89,23 +87,29 @@ public final class DynamicLevels {
                 Level level = levels.get( p );
 
                 if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                    Gdx.app.debug( "Need to remove", "" + level );
+                    Gdx.app.debug( "remove level", "" + level );
                 }
 
                 if ( level.entity != null ) {
                     level.entity.add( new RemoveByTimeComponent( 0 ) );
+                    if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+                        Gdx.app.debug( "уровень удалён через", "DynamicLevel" );
+                    }
                 }
                 level.entity = null;
 
                 if ( level.objects != null ) {
+                    if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+                        Gdx.app.debug( "objects in "+p, "" + level.objects.size() );
+                    }
                     for ( LevelObject object : level.objects ) {
-                        if ( !isModelInAnyCurrentConnections( object.modelAsset ) ) {
+                        //if ( !isModelInAnyCurrentConnections( object.modelAsset ) ) {
                             if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                                Gdx.app.debug( "Need to remove", "" + object );
+                                Gdx.app.debug( "remove entity", "" + object );
                             }
 
                             object.removeEntity();
-                        }
+                        //}
                     }
                 }
             }
@@ -118,7 +122,7 @@ public final class DynamicLevels {
             //Gdx.app.debug( "try",""+p );
             if ( !isZoneInCurrentConnections( p ) ) {
                 if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                    Gdx.app.debug( "Need to unload", "" + ModelAsset.values()[ p ] );
+                    Gdx.app.debug( "unload level", "" + ModelAsset.values()[ p ] );
                 }
                 ModelAsset.values()[ p ].unload();
 
@@ -128,7 +132,7 @@ public final class DynamicLevels {
                         if ( !isModelInAnyCurrentConnections( object.modelAsset ) ) {
                             if ( !isWeapon( object.modelAsset ) ) {
                                 if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                                    Gdx.app.debug( "Need to unload", "" + object.modelAsset );
+                                    Gdx.app.debug( "unload object", "" + object.modelAsset );
                                 }
                                 object.modelAsset.unload();
                             }
@@ -242,10 +246,10 @@ public final class DynamicLevels {
 
 
     private static boolean isWeapon ( ModelAsset modelAsset ) {
-        return modelAsset.equals( ModelAsset.BROOM_WEAPON1 ) ||
-               modelAsset.equals( ModelAsset.RAKE_WEAPON2 ) ||
-               modelAsset.equals( ModelAsset.KALASH_WEAPON3 ) ||
-               modelAsset.equals( ModelAsset.FENCE_WEAPON4 )
+        return modelAsset.equals( ModelAsset.BROOM_WEAPON ) ||
+               modelAsset.equals( ModelAsset.RAKE_WEAPON ) ||
+               modelAsset.equals( ModelAsset.KALASH_WEAPON ) ||
+               modelAsset.equals( ModelAsset.FENCE_WEAPON )
                 ;
     }
 
@@ -263,9 +267,6 @@ public final class DynamicLevels {
                     // Добавляем нужные Entity, т.к. они уже загружены
                     buildEntities();
                     needToBuild = false;
-                    // Удаляем ненужные Entity, которые создавались не здесь
-                    // т.е. те Entity у которых RemoveByLevelComponent.id != current
-                    removeByLevelSystem.process();
                 }
             }
         }

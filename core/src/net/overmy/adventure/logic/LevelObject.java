@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 import net.overmy.adventure.AshleySubs;
+import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.ashley.components.NPCAction;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
@@ -73,18 +74,17 @@ public class LevelObject {
 
     public void useEntity () {
         used = true;
-        entity.add( new RemoveByTimeComponent( 0 ) );
-        entity = null;
-
-        if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-            Gdx.app.debug( "useEntity", "" + item );
-        }
+        removeEntity ();
     }
 
 
     void removeEntity () {
         if ( entity != null ) {
-            entity.add( new RemoveByTimeComponent( 0 ) );
+            AshleyWorld.getPooledEngine().removeEntity( entity );
+        }
+
+        if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+            Gdx.app.debug( "removeEntity", "item=" + item + " model="+modelAsset );
         }
         entity = null;
     }

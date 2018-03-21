@@ -31,11 +31,11 @@ public class LifeComponent extends TimeComponent {
         this.heightOffset = heightOffset;
         this.width = width;
 
-        final TextureRegion textureRegion = new TextureRegion( GFXHelper.createTexture( 16, 16 ) );
+        final TextureRegion textureRegion = new TextureRegion( GFXHelper.createTexture( 16, 16,GameColor.RED.get() ) );
         final float decalSize = 0.12f;
 
         decal = Decal.newDecal( decalSize, decalSize, textureRegion, false );
-        decal.setColor( GameColor.RED.get() );
+        //decal.setColor( GameColor.RED.get() );
     }
 
 

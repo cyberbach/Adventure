@@ -228,7 +228,7 @@ public class NPCSystem extends IteratingSystem {
             if ( dustTime < 0 ) {
                 dustTime = 0.16f;
 
-                AshleySubs.createDustFX( notFilteredPos, dustTime );
+                AshleySubs.createDustFX( notFilteredPos, 1.0f );
             }
         }
         // Мы не управляем персонажем джойстиком

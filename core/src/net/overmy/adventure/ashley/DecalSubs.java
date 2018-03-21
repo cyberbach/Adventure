@@ -1,6 +1,5 @@
 package net.overmy.adventure.ashley;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Interpolation;
@@ -25,40 +24,38 @@ public class DecalSubs {
 
 
     public static DecalComponent LightDustEffect ( float time ) {
-
         float decalSize = 0.1f;
 
         Decal decal = Decal.newDecal( decalSize, decalSize, randomTriangle(), true );
 
         float fromX = MathUtils.random( -0.5f, 0.5f );
-        float fromY = 0.0f;
+        float fromY = -0.1f;
         float fromZ = MathUtils.random( -0.5f, 0.5f );
 
         float toX = MathUtils.random( -0.5f, 0.5f );
         float toY = MathUtils.random( 0.5f, 1.5f );
         float toZ = MathUtils.random( -0.5f, 0.5f );
 
-        float myTime = MathUtils.random( 0.8f * time, time );
+        //float myTime = MathUtils.random( 0.8f * time, time );
 
         Vector3Animator animator = new Vector3Animator();
         animator.setFrom( fromX, fromY, fromZ );
         animator.setTo( toX, toY, toZ );
-        animator.setAnimationTime( myTime );
+        animator.setAnimationTime( time );
 
         return new DecalComponent( decal, animator );
     }
 
 
     public static DecalComponent StarsEffect ( float time ) {
-
         float decalSize = 0.12f;
 
         TextureRegion bubbleTextureRegion = IMG.STAR_PARTICLE.getRegion();
         Decal decal = Decal.newDecal( decalSize, decalSize, bubbleTextureRegion, true );
 
-        float fromX = MathUtils.random( -0.5f, 0.5f );
+        float fromX = 0.0f;
         float fromY = 0.0f;
-        float fromZ = MathUtils.random( -0.5f, 0.5f );
+        float fromZ = 0.0f;
 
         float toX = MathUtils.random( -1.5f, 1.5f );
         float toY = MathUtils.random( 0.5f, 2.0f );
@@ -79,7 +76,12 @@ public class DecalSubs {
 
         float decalSize = 5.0f + MathUtils.random( -1.0f, 7.0f );
 
-        int nRandomCloud = IMG.CLOUD1.ordinal() + MathUtils.random( 0, 2 );
+        randomNumber++;
+        if ( randomNumber > 2 ) {
+            randomNumber = 0;
+        }
+
+        int nRandomCloud = IMG.CLOUD1.ordinal() + randomNumber;
         TextureRegion bubbleTextureRegion = IMG.values()[ nRandomCloud ].getRegion();
         Decal decal = Decal.newDecal( decalSize, decalSize, bubbleTextureRegion, true );
 
@@ -106,8 +108,6 @@ public class DecalSubs {
 
 
     public static DecalComponent CoinEffect ( float time ) {
-
-        //float decalSize = MathUtils.random( 0.1f,0.3f );
         float decalSize = 0.08f;
 
         TextureRegion bubbleTextureRegion = IMG.COIN.getRegion();
@@ -131,9 +131,8 @@ public class DecalSubs {
         return new DecalComponent( decal, animator );
     }
 
-    public static DecalComponent GreenBubbleEffect ( float time ) {
 
-        //float decalSize = MathUtils.random( 0.2f,0.4f );
+    public static DecalComponent GreenBubbleEffect ( float time ) {
         float decalSize = 0.1f;
 
         TextureRegion bubbleTextureRegion = IMG.COIN.getRegion();
@@ -159,9 +158,8 @@ public class DecalSubs {
         return new DecalComponent( decal, animator );
     }
 
-    public static DecalComponent RedBubbleEffect ( float time ) {
 
-        //float decalSize = MathUtils.random( 0.2f,0.4f );
+    public static DecalComponent RedBubbleEffect ( float time ) {
         float decalSize = 0.1f;
 
         TextureRegion bubbleTextureRegion = IMG.COIN.getRegion();
@@ -188,9 +186,16 @@ public class DecalSubs {
     }
 
 
+    private static int randomNumber = 0;
+
+
     private static TextureRegion randomTriangle () {
-        int imageOffset = IMG.PARTICLE_TRI1.ordinal();
-        int randomOffset = imageOffset + MathUtils.random( 0, 4 );
-        return IMG.values()[ randomOffset ].getRegion();
+        randomNumber++;
+        if ( randomNumber > 4 ) {
+            randomNumber = 0;
+        }
+        int imageOffset = IMG.PARTICLE_TRI1.ordinal() + randomNumber;
+
+        return IMG.values()[ imageOffset ].getRegion();
     }
 }

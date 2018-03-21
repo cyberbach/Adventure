@@ -16,7 +16,7 @@ public enum DEBUG {
     STAGE( false ),
     DYNAMIC_LEVELS( false ),
     NPC_ACTIONS( false ),
-    GAME_MASTER_MODE( false ),
+    GAME_MASTER_MODE( true ),
     ENABLE_ENGLISH_TEXT( false ),
     ;
 
