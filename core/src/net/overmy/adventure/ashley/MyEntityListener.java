@@ -38,6 +38,10 @@ public class MyEntityListener implements EntityListener {
         /*if(true *//*add cut-scene*//*){
             game.player.getPlayerBodyEntity().remove( InputComponent.class );
         }*/
+        if ( MyMapper.MODEL.has( entity ) ) {
+            ModelComponent modelComponent = MyMapper.MODEL.get( entity );
+            modelComponent.modelInstance.transform.setToRotation( Vector3.Y, 0 );
+        }
 
         if ( MyMapper.ACTOR.has( entity ) ) {
             MyRender.getStage().addActor( MyMapper.ACTOR.get( entity ).group );
@@ -125,10 +129,10 @@ public class MyEntityListener implements EntityListener {
             }
         }
 
-        if ( MyMapper.MODEL.has( entity ) ) {
+        /*if ( MyMapper.MODEL.has( entity ) ) {
             ModelComponent modelComponent = MyMapper.MODEL.get( entity );
             modelComponent.modelInstance.transform.setToRotation( Vector3.Y, 0 );
-        }
+        }*/
 
         if ( DEBUG.ENTITIES.get() ) {
             if ( "DecalComponent".equals(

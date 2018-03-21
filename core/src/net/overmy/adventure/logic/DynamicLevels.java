@@ -1,5 +1,6 @@
 package net.overmy.adventure.logic;
 
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
@@ -25,6 +26,24 @@ public final class DynamicLevels {
     private static Array< Integer > currentConnections  = null;
     private static Array< Integer > previousConnections = null;
 
+    private static ImmutableArray< Level > levels = null;
+
+
+    public static void initLevels () {
+        Array< Level > levelArray = new Array< Level >();
+
+        LevelSubs ls = new LevelSubs();
+
+        levelArray.add( new Level( "0, 1", ls.level0objects() ) );
+        levelArray.add( new Level( "1, 0, 2, 3", ls.level1objects() ) );
+        levelArray.add( new Level( "2, 1, 3", ls.level2objects() ) );
+        levelArray.add( new Level( "3, 1, 2, 4", ls.level3objects() ) );
+        levelArray.add( new Level( "4, 3, 5", ls.level4objects() ) );
+        levelArray.add( new Level( "5, 4", ls.level5objects() ) );
+
+        levels = new ImmutableArray< Level >( levelArray );
+    }
+
 
     private DynamicLevels () {
     }
@@ -36,10 +55,7 @@ public final class DynamicLevels {
     public static void init () {
         removeByLevelSystem = AshleyWorld.getPooledEngine().getSystem( RemoveByLevelSystem.class );
 
-        // Это стартовая локация
         current = Settings.START_LOCATION.getInteger();
-
-        //if ( current < 0 ) { current = 3; }
 
         currentConnections = null;
         previousConnections = null;
@@ -47,7 +63,7 @@ public final class DynamicLevels {
         currentConnections = new Array< Integer >();
         previousConnections = new Array< Integer >();
 
-        Levels.init();
+        initLevels();
     }
 
 
@@ -70,7 +86,7 @@ public final class DynamicLevels {
     private static void removeNotMatchEntities () {
         for ( int p : previousConnections ) {
             if ( !isZoneInCurrentConnections( p ) ) {
-                Level level = Levels.get( p );
+                Level level = levels.get( p );
 
                 if ( DEBUG.DYNAMIC_LEVELS.get() ) {
                     Gdx.app.debug( "Need to remove", "" + level );
@@ -106,7 +122,7 @@ public final class DynamicLevels {
                 }
                 ModelAsset.values()[ p ].unload();
 
-                Level level = Levels.get( p );
+                Level level = levels.get( p );
                 if ( level.objects != null ) {
                     for ( LevelObject object : level.objects ) {
                         if ( !isModelInAnyCurrentConnections( object.modelAsset ) ) {
@@ -137,7 +153,7 @@ public final class DynamicLevels {
 
     private static boolean isModelInAnyCurrentConnections ( ModelAsset models ) {
         for ( int i : currentConnections ) {
-            Level level = Levels.get( i );
+            Level level = levels.get( i );
             if ( level.objects != null ) {
                 for ( LevelObject object : level.objects ) {
                     if ( object.modelAsset == models ) {
@@ -162,7 +178,7 @@ public final class DynamicLevels {
             unloaded = false;
             currentConnections.clear();
 
-            Level level = Levels.get( current );
+            Level level = levels.get( current );
             assert level.connections != null;
             for ( int i : level.connections ) {
                 currentConnections.add( i );
@@ -186,7 +202,7 @@ public final class DynamicLevels {
             // Загружаем текущий уровень
             ModelAsset.values()[ i ].load();
 
-            Level level = Levels.get( i );
+            Level level = levels.get( i );
             if ( level.objects != null ) {
                 // Загружаем объекты на уровне
                 for ( LevelObject object : level.objects ) {
@@ -201,7 +217,7 @@ public final class DynamicLevels {
 
     private static void buildEntities () {
         for ( int i : currentConnections ) {
-            Level level = Levels.get( i );
+            Level level = levels.get( i );
 
             ModelAsset thisLevel = ModelAsset.values()[ i ];
             thisLevel.build();
@@ -285,5 +301,6 @@ public final class DynamicLevels {
 
         currentConnections = null;
         previousConnections = null;
+        levels = null;
     }
 }

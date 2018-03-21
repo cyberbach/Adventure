@@ -17,8 +17,8 @@ import net.overmy.adventure.ashley.systems.MyAnimationSystem;
 import net.overmy.adventure.ashley.systems.MyWeaponSystem;
 import net.overmy.adventure.ashley.systems.NPCSystem;
 import net.overmy.adventure.ashley.systems.PhysicalSystem;
-import net.overmy.adventure.ashley.systems.RemoveByTimeSystem;
 import net.overmy.adventure.ashley.systems.RemoveByLevelSystem;
+import net.overmy.adventure.ashley.systems.RemoveByTimeSystem;
 import net.overmy.adventure.ashley.systems.RenderSystem;
 import net.overmy.adventure.ashley.systems.TextDecalSystem;
 

@@ -1,61 +1,35 @@
 package net.overmy.adventure.logic;
 
-import com.badlogic.ashley.utils.ImmutableArray;
+/*
+        Created by Andrey Mikheev on 21.03.2018
+        Contact me → http://vk.com/id17317
+*/
+
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 import net.overmy.adventure.resources.ModelAsset;
 
-/**
- * Created by Andrey (cb) Mikheev
- * 01.03.2017
- */
-
-public final class Levels {
-
-    private static ImmutableArray< Level > array = null;
+class LevelSubs {
 
 
-    static Level get ( int n ) {
-        return array.get( n );
-    }
-
-
-    public static void init () {
-        Array< Level > levelArray = new Array< Level >();
-
-        levelArray.add( new Level( "0, 1", level0objects() ) );
-        levelArray.add( new Level( "1, 0, 2, 3", level1objects() ) );
-        levelArray.add( new Level( "2, 1, 3", level2objects() ) );
-        levelArray.add( new Level( "3, 1, 2, 4", level3objects() ) );
-        levelArray.add( new Level( "4, 3, 5", level4objects() ) );
-        levelArray.add( new Level( "5, 4", level5objects() ) );
-
-
-
-        array = new ImmutableArray< Level >( levelArray );
-    }
-
-
-    private static Array< LevelObject > level0objects () {
+    Array< LevelObject > level0objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.BROOM_WEAPON,
                                       ModelAsset.BROOM_WEAPON1,
                                       new Vector3( -2.566254f, 0.0907035f, -4.6540112f ) ) );
-// weapon user value = 4
-//user value 5
+
         objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
                                       NPCActionQueues.get( 1 ),
-                                      ModelAsset.CRAB,
-                                      new Vector3( 5.8699236f,0.9654312f,10.142155f ) ) );
-//user value 6
+                                      ModelAsset.STAR,
+                                      new Vector3( 5.8699236f, 0.9654312f, 10.142155f ) ) );
+
         objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
                                       NPCActionQueues.get( 2 ),
                                       ModelAsset.STAR,
-                                      new Vector3( 8.697725f,1.1986834f,-2.0947685f ) ) );
-
+                                      new Vector3( 8.697725f, 1.1986834f, -2.0947685f ) ) );
 
         //objects.add( rock( 3.8215625f, 2.909436f, -7.290692f ) );
 
@@ -133,7 +107,7 @@ public final class Levels {
     }
 
 
-    private static Array< LevelObject > level1objects () {
+    Array< LevelObject > level1objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
         objects.add( new LevelObject( OBJECT_TYPE.NPC,
@@ -151,6 +125,16 @@ public final class Levels {
                                       ModelAsset.COIN,
                                       new Vector3( -33.666f, 12.0f, -79.593f ),
                                       10 ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
+                                      NPCActionQueues.get( 3 ),
+                                      ModelAsset.STAR,
+                                      new Vector3( -30.599691f, 3, -52.38856f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
+                                      NPCActionQueues.get( 4 ),
+                                      ModelAsset.STAR,
+                                      new Vector3( -7.1824327f, 5, -60.462067f ) ) );
 
         objects.add( hoverCoin( -59.468754f, 0.54161084f, -63.818703f ) );
 
@@ -188,8 +172,18 @@ public final class Levels {
     }
 
 
-    private static Array< LevelObject > level2objects () {
+    Array< LevelObject > level2objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
+                                      NPCActionQueues.get( 5 ),
+                                      ModelAsset.CRAB,
+                                      new Vector3( -7.1824327f, 5, -60.462067f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
+                                      NPCActionQueues.get( 6 ),
+                                      ModelAsset.CRAB,
+                                      new Vector3( -0.387003f, 5, -162.39476f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.RAKE_WEAPON,
@@ -217,8 +211,13 @@ public final class Levels {
     }
 
 
-    private static Array< LevelObject > level3objects () {
+    Array< LevelObject > level3objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
+                                      NPCActionQueues.get( 7 ),
+                                      ModelAsset.STAR,
+                                      new Vector3( -58.313896f, 3, -179.10666f ) ) );
 
         objects.add( hoverCoin( -75.930626f, 4.587798f, -189.51195f ) );
         objects.add( hoverGreenBottle( -79.52511f, 4.0374074f, -189.01859f ) );
@@ -239,7 +238,7 @@ public final class Levels {
     }
 
 
-    private static Array< LevelObject > level4objects () {
+    Array< LevelObject > level4objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
         objects.add( hoverGreenBottle( -134.07967f, 3.0370257f, -367.3695f ) );
@@ -260,7 +259,7 @@ public final class Levels {
     }
 
 
-    private static Array< LevelObject > level5objects () {
+    Array< LevelObject > level5objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
@@ -288,7 +287,7 @@ public final class Levels {
     }
 
 
-    private static LevelObject box ( float x, float y, float z, Item itemInBox ) {
+    private LevelObject box ( float x, float y, float z, Item itemInBox ) {
         return new LevelObject( OBJECT_TYPE.BOX,
                                 itemInBox,
                                 ModelAsset.CRATE,
@@ -296,14 +295,14 @@ public final class Levels {
     }
 
 
-    private static LevelObject box ( float x, float y, float z ) {
+    private LevelObject box ( float x, float y, float z ) {
         return new LevelObject( OBJECT_TYPE.BOX,
                                 ModelAsset.CRATE,
                                 new Vector3( x, y, z ) );
     }
 
 
-    private static LevelObject chest ( float x, float y, float z, Item itemInBox ) {
+    private LevelObject chest ( float x, float y, float z, Item itemInBox ) {
         return new LevelObject( OBJECT_TYPE.BOX,
                                 itemInBox,
                                 ModelAsset.CHEST,
@@ -311,46 +310,41 @@ public final class Levels {
     }
 
 
-    private static LevelObject chest ( float x, float y, float z ) {
+    private LevelObject chest ( float x, float y, float z ) {
         return new LevelObject( OBJECT_TYPE.BOX,
                                 ModelAsset.CHEST,
                                 new Vector3( x, y, z ) );
     }
 
 
-    private static LevelObject rock ( float x, float y, float z ) {
+    private LevelObject rock ( float x, float y, float z ) {
         return new LevelObject( OBJECT_TYPE.ROCK,
                                 ModelAsset.ROCK,
                                 new Vector3( x, y, z ) );
     }
 
 
-    private static LevelObject hoverCoin ( float x, float y, float z ) {
+    private LevelObject hoverCoin ( float x, float y, float z ) {
         return new LevelObject( OBJECT_TYPE.HOVER_COLLECTABLE, Item.COIN, ModelAsset.COIN,
                                 new Vector3( x, y, z ) );
     }
 
 
-    private static LevelObject hoverGreenBottle ( float x, float y, float z ) {
+    private LevelObject hoverGreenBottle ( float x, float y, float z ) {
         return new LevelObject( OBJECT_TYPE.HOVER_COLLECTABLE, Item.GREEN_BOTTLE,
                                 ModelAsset.GREEN_BOTTLE,
                                 new Vector3( x, y, z ) );
     }
 
 
-    private static LevelObject hoverRedBottle ( float x, float y, float z ) {
+    private LevelObject hoverRedBottle ( float x, float y, float z ) {
         return new LevelObject( OBJECT_TYPE.HOVER_COLLECTABLE, Item.RED_BOTTLE,
                                 ModelAsset.RED_BOTTLE,
                                 new Vector3( x, y, z ) );
     }
 
 
-    private static LevelObject ladder ( Vector3 pos ) {
+    private LevelObject ladder ( Vector3 pos ) {
         return new LevelObject( OBJECT_TYPE.LADDER, ModelAsset.COIN, pos );
-    }
-
-
-    public static void dispose () {
-        array = null;
     }
 }

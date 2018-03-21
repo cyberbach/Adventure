@@ -117,7 +117,7 @@ public final class MyPlayer {
         AshleySubs.addItemToBad( item );
     }
 
-
+    public static ModelInstance modelInstance =null;
     public static void init () {
 
         if ( playerEntity != null ) {
@@ -125,9 +125,7 @@ public final class MyPlayer {
         }
         bag = new ArrayList< ItemInBagg >();
 
-        modelAsset.build();
-
-        ModelInstance modelInstance = modelAsset.get();
+         modelInstance = modelAsset.get();
 
         // Здесь достаём нод руки игрока
         rightArmNode = modelInstance.getNode( "rightArm", true );
@@ -332,8 +330,9 @@ public final class MyPlayer {
 
             dustTime -= deltaTime;
             if ( dustTime < 0 ) {
-                dustTime = MathUtils.random( 0.05f, 0.25f );
-                //notFilteredPos.sub( 0, 0.5f, 0 );
+                //dustTime = MathUtils.random( 0.05f, 0.25f );
+                dustTime = 0.12f;
+                notFilteredPos.sub( 0, 0.5f, 0 );
 
                 AshleySubs.createDustFX( notFilteredPos, dustTime );
             }
@@ -376,6 +375,7 @@ public final class MyPlayer {
             bag.clear();
         }
         bag = null;
+        modelInstance =null;
 
         modelAsset = null;
         playerEntity = null;
@@ -409,10 +409,7 @@ public final class MyPlayer {
 
         playerEntity = null;
 
-        if ( walk != null ) {
-            walk.stop();
-        }
-        walk = null;
+        stopSound();
 
         playerBody = null;
         rightArmNode = null;
@@ -603,6 +600,14 @@ public final class MyPlayer {
                 damage = 60;
 
                 break;
+        }
+    }
+
+
+    public static void stopSound () {
+        if ( walk != null ) {
+            walk.setVolume( 0.0f );
+            walk.stop();
         }
     }
 }

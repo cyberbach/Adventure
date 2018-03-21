@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 
+import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.MyPlayer;
@@ -32,11 +33,15 @@ import net.overmy.adventure.resources.SoundAsset;
 public class NPCSystem extends IteratingSystem {
 
 
-    private static final Vector2 direction      = new Vector2();
-    private static final Vector3 velocity       = new Vector3();
-    private static       Matrix4 bodyTransform  = new Matrix4();
-    private static final Vector3 notFilteredPos = new Vector3();
-    private static       float   dustTime       = 0.1f;
+    private static Vector2 direction      = new Vector2();
+    private static Vector3 velocity       = new Vector3();
+    private static Matrix4 bodyTransform  = new Matrix4();
+    private static Vector3 notFilteredPos = new Vector3();
+    private static float   dustTime       = 0.1f;
+
+    private float modelAngle = 0.0f;
+
+    private Vector2 tmp = new Vector2();
 
 
     private Vector2 npcPosition = new Vector2();
@@ -66,79 +71,82 @@ public class NPCSystem extends IteratingSystem {
     }
 
 
-    float modelAngle = 0.0f;
-
-    Vector2 tmp = new Vector2();
-
-
     @Override
     protected void processEntity ( Entity entity, float delta ) {
-
         NPCComponent npcComponent = MyMapper.NPC.get( entity );
         int action = npcComponent.currentAction;
 
-        npcComponent.time -= delta;
+        boolean needToSkip = MyMapper.SKIP.has( entity );
+
+        if ( !needToSkip ) {
+            npcComponent.time -= delta;
+        }
+
+        NPCAction npcAction;
+
         if ( npcComponent.time < 0 ) {
 
             action++;
             if ( action > npcComponent.actionArray.size - 1 ) {
-
                 action = 0;
             }
 
-            npcComponent.time = npcComponent.actionArray.get( action ).durationTime;
+            npcAction = npcComponent.actionArray.get( action );
+            npcComponent.time = npcAction.durationTime;
             npcComponent.currentAction = action;
 
             if ( DEBUG.NPC_ACTIONS.get() ) {
-                Gdx.app.debug( "currentAction", "" +
-                                                npcComponent.actionArray.get( action ).id +
-                                                " time " + npcComponent.time );
+                Gdx.app.debug( "action " + npcAction.id, "time " + npcComponent.time );
                 if ( npcComponent.actionArray.get( action ).targetPosition != null ) {
-                    Gdx.app.debug( "targetPosition",
-                                   "" + npcComponent.actionArray.get( action ).targetPosition );
+                    Gdx.app.debug( "targetPosition", "" + npcAction.targetPosition );
                 }
             }
+        } else {
+            npcAction = npcComponent.actionArray.get( action );
         }
 
-        final btRigidBody body = MyMapper.PHYSICAL.get( entity ).body;
+        btRigidBody body = MyMapper.PHYSICAL.get( entity ).body;
         body.getWorldTransform( bodyTransform );
         bodyTransform.getTranslation( notFilteredPos );
 
-        switch ( npcComponent.actionArray.get( action ).id ) {
-            case WAIT:
-                npcComponent.attacking = false;
-                direction.set( 0, 0 );
-                walk.setVolume( 0.0f );
-                break;
-
-            case MOVE:
-                npcComponent.attacking = false;
-                npcPosition.set( notFilteredPos.x, notFilteredPos.z );
-                direction.set( npcComponent.actionArray.get( action ).targetPosition.x,
-                               npcComponent.actionArray.get( action ).targetPosition.y );
-                direction.sub( npcPosition );
-
-                if ( direction.len() <= 0.1f ) {
+        if ( needToSkip ) {
+            direction.set( 0, 0 );
+        } else {
+            switch ( npcAction.id ) {
+                case WAIT:
+                    npcComponent.attacking = false;
                     direction.set( 0, 0 );
-                    npcComponent.time = 0;
                     walk.setVolume( 0.0f );
-                } else {
-                    direction.nor();
+                    break;
 
-                    final float MAX_LISTEN_DISTANCE = 20.0f;
+                case MOVE:
+                    npcComponent.attacking = false;
+                    npcPosition.set( notFilteredPos.x, notFilteredPos.z );
+                    direction.set( npcAction.targetPosition.x, npcAction.targetPosition.y );
+                    direction.sub( npcPosition );
 
-                    // Set NPC step-sounds by distance of player
-                    Vector2 playerPosition = MyPlayer.getPosition();
-                    float distance = MAX_LISTEN_DISTANCE - npcPosition.sub( playerPosition ).len();
-                    float walkVolume =
-                            distance < MAX_LISTEN_DISTANCE ? distance / MAX_LISTEN_DISTANCE : 0;
-                    walk.setVolume( walkVolume );
-                }
+                    if ( direction.len() <= 0.1f ) {
+                        direction.set( 0, 0 );
+                        npcComponent.time = 0;
+                        walk.setVolume( 0.0f );
+                    } else {
+                        direction.nor();
 
-                break;
+                        float MAX_LISTEN_DISTANCE = 20.0f;
 
-            case HUNT:
-                // FIXME
+                        // Set NPC step-sounds by distance of player
+                        Vector2 playerPosition = MyPlayer.getPosition();
+                        float distance = MAX_LISTEN_DISTANCE - npcPosition.sub( playerPosition )
+                                                                          .len();
+                        float walkVolume =
+                                distance < MAX_LISTEN_DISTANCE ? distance / MAX_LISTEN_DISTANCE : 0;
+                        walk.setVolume( walkVolume );
+                    }
+
+                    break;
+
+                case HUNT:
+                    // FIXME
                 /*npcPosition.set( notFilteredPos.x, notFilteredPos.z );
                 direction.set( npcComponent.actionArray.get( action ).targetPosition.x,
                                npcComponent.actionArray.get( action ).targetPosition.y );
@@ -151,7 +159,7 @@ public class NPCSystem extends IteratingSystem {
                 } else {
                     direction.nor();
 
-                    final float MAX_LISTEN_DISTANCE = 20.0f;
+                    float MAX_LISTEN_DISTANCE = 20.0f;
 
                     // Set NPC step-sounds by distance of player
                     Vector2 playerPosition = MyPlayer.getPosition();
@@ -160,56 +168,55 @@ public class NPCSystem extends IteratingSystem {
                             distance < MAX_LISTEN_DISTANCE ? distance / MAX_LISTEN_DISTANCE : 0;
                     walk.setVolume( walkVolume );*/
 
-                npcPosition.set( notFilteredPos.x, notFilteredPos.z );
-                tmp.set( MyPlayer.getPosition() ).sub( npcPosition );
-                if ( tmp.len() > 4.0f || !MyPlayer.live ) {
-                    npcComponent.time = 0;
+                    npcPosition.set( notFilteredPos.x, notFilteredPos.z );
+                    tmp.set( MyPlayer.getPosition() ).sub( npcPosition );
+                    if ( tmp.len() > 8.0f || !MyPlayer.live ) {
+                        npcComponent.time = 0;
+                        npcComponent.attacking = false;
+                    } else {
+                        tmp.nor();
+                        direction.set( tmp );
+                        npcComponent.attacking = true;
+                    }
+
+                    break;
+
+                case SAY:
                     npcComponent.attacking = false;
-                } else {
-                    tmp.nor();
-                    direction.set( tmp );
-                    npcComponent.attacking = true;
-                }
-
-                break;
-
-            case SAY:
-                npcComponent.attacking = false;
-                direction.set( 0, 0 );
-                walk.setVolume( 0.0f );
-                entity.add( new TextDecalComponent( npcComponent.actionArray.get( action ).text,
-                                                    npcComponent.actionArray.get(
-                                                            action ).durationTime ) );
-                npcComponent.time = 0;
-                break;
+                    direction.set( 0, 0 );
+                    walk.setVolume( 0.0f );
+                    entity.add( new TextDecalComponent( npcAction.text, npcAction.durationTime ) );
+                    npcComponent.time = 0;
+                    break;
+            }
         }
 
-        final AnimationComponent animationComponent = MyMapper.ANIMATION.get( entity );
-        final String ID_CURRENT = animationComponent.getID();
-        final String ID_RUN = "RUN";
-        final String ID_IDLE = "IDLE";
+        AnimationComponent animationComponent = MyMapper.ANIMATION.get( entity );
+        String ID_CURRENT = animationComponent.getID();
+        String ID_RUN = "RUN";
+        String ID_IDLE = "IDLE";
 
-        final boolean playerInIDLE = ID_IDLE.equals( ID_CURRENT );
-        final boolean playerIsRunning = ID_RUN.equals( ID_CURRENT );
+        boolean playerInIDLE = ID_IDLE.equals( ID_CURRENT );
+        boolean playerIsRunning = ID_RUN.equals( ID_CURRENT );
 
-        final int IDLE = 0;
-        final int RUN = 1;
-        final int ATTACK = 2;
-        final int DIE = 3;
+        int IDLE = 0;
+        int RUN = 1;
+        //int ATTACK = 2;
+        //int DIE = 3;
 
-        final float directionLen = direction.len();
+        float directionLen = direction.len();
         // Мы управляем персонажем джойстиком
         float speed;
         if ( directionLen != 0 ) {
             // Персонаж на земле
-            final float animationSpeed = 3.0f + 2.0f * directionLen;
+            float animationSpeed = 3.0f + 2.0f * directionLen;
             if ( playerIsRunning ) {
                 animationComponent.queue( RUN, animationSpeed );
             } else {
                 animationComponent.play( RUN, animationSpeed );
             }
 
-            final float runSpeed = 6.0f;
+            float runSpeed = 4.0f;
             speed = ( runSpeed + 1 ) * directionLen;
 
             // Сохраняем угол для поворота модели
@@ -219,13 +226,9 @@ public class NPCSystem extends IteratingSystem {
 
             dustTime -= delta;
             if ( dustTime < 0 ) {
-                dustTime = MathUtils.random( 0.05f, 0.25f );
+                dustTime = 0.16f;
 
-                Entity entity2 = AshleyWorld.getPooledEngine().createEntity();
-                entity2.add( DecalSubs.LightDustEffect( dustTime * 6 ) );
-                entity2.add( new PositionComponent( notFilteredPos ) );
-                entity2.add( new RemoveByTimeComponent( dustTime * 6 ) );
-                AshleyWorld.getPooledEngine().addEntity( entity2 );
+                AshleySubs.createDustFX( notFilteredPos, dustTime );
             }
         }
         // Мы не управляем персонажем джойстиком
@@ -258,9 +261,6 @@ public class NPCSystem extends IteratingSystem {
     public void removedFromEngine ( Engine engine ) {
         super.removedFromEngine( engine );
 
-        if ( walk != null ) {
-            walk.stop();
-        }
-        walk = null;
+        disableWalkSound();
     }
 }

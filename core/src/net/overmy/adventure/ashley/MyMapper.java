@@ -22,6 +22,7 @@ import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByLevelComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
+import net.overmy.adventure.ashley.components.SkipActionComponent;
 import net.overmy.adventure.ashley.components.TextDecalComponent;
 import net.overmy.adventure.ashley.components.TypeOfComponent;
 
@@ -32,9 +33,9 @@ import net.overmy.adventure.ashley.components.TypeOfComponent;
 
 public final class MyMapper {
 
-    public static ComponentMapper< PositionComponent >      POSITION       = null;
-    public static ComponentMapper< AnimationComponent >     ANIMATION      = null;
-    public static ComponentMapper< PhysicalComponent >      PHYSICAL       = null;
+    public static ComponentMapper< PositionComponent >    POSITION     = null;
+    public static ComponentMapper< AnimationComponent >   ANIMATION    = null;
+    public static ComponentMapper< PhysicalComponent >    PHYSICAL     = null;
     static        ComponentMapper< BVHPhysicalComponent >   BVH_PHYSICAL   = null;
     public static ComponentMapper< ModelComponent >         MODEL          = null;
     public static ComponentMapper< GroundedComponent >      GROUNDED       = null;
@@ -53,6 +54,7 @@ public final class MyMapper {
     public static ComponentMapper< LifeComponent >        LIFE         = null;
     public static ComponentMapper< ContainerComponent >   CONTAINER    = null;
     public static ComponentMapper< ActorComponent >       ACTOR        = null;
+    public static ComponentMapper< SkipActionComponent >  SKIP         = null;
 
 
     private MyMapper () {
@@ -81,6 +83,7 @@ public final class MyMapper {
         LIFE = ComponentMapper.getFor( LifeComponent.class );
         CONTAINER = ComponentMapper.getFor( ContainerComponent.class );
         ACTOR = ComponentMapper.getFor( ActorComponent.class );
+        SKIP = ComponentMapper.getFor( SkipActionComponent.class );
     }
 
 
@@ -106,5 +109,6 @@ public final class MyMapper {
         LIFE = null;
         CONTAINER = null;
         ACTOR = null;
+        SKIP = null;
     }
 }

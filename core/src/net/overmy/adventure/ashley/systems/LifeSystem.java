@@ -51,8 +51,6 @@ public class LifeSystem extends IteratingSystem {
             return;
         }
 
-        Gdx.app.debug( "life", "" + lifeComponent.life );
-
         lifeComponent.time = hideTime - delta;
 
         MyMapper.MODEL.get( entity ).modelInstance.transform.getTranslation( position );
@@ -70,7 +68,9 @@ public class LifeSystem extends IteratingSystem {
             Matrix4 transform = MyMapper.PHYSICAL.get( entity ).body.getWorldTransform();
             transform.getTranslation( position );
 
-            if ( MyMapper.TYPE.get( entity ).type.equals( COMP_TYPE.DESTROYABLE_BOX ) ) {
+            COMP_TYPE typeOfEntity = MyMapper.TYPE.get( entity ).type;
+
+            if ( COMP_TYPE.DESTROYABLE_BOX.equals( typeOfEntity ) ) {
                 AshleySubs.createCrateParts( position );
 
                 if ( MyMapper.CONTAINER.has( entity ) ) {
@@ -78,7 +78,7 @@ public class LifeSystem extends IteratingSystem {
                 }
             }
 
-            if ( MyMapper.TYPE.get( entity ).type.equals( COMP_TYPE.DESTROYABLE_ROCK ) ) {
+            if ( COMP_TYPE.DESTROYABLE_ROCK.equals( typeOfEntity ) ) {
                 AshleySubs.createRockParts( position );
             }
 
@@ -88,10 +88,8 @@ public class LifeSystem extends IteratingSystem {
                 MyMapper.LEVEL_OBJECT.get( entity ).levelObject.useEntity();
             } else {
                 entity.add( new RemoveByTimeComponent( 0 ) );
-                if ( MyMapper.TYPE.has( entity ) ) {
-                    if ( MyMapper.TYPE.get( entity ).type.equals( COMP_TYPE.MYPLAYER ) ) {
-                        MyPlayer.live = false;
-                    }
+                if ( COMP_TYPE.MYPLAYER.equals( typeOfEntity ) ) {
+                    MyPlayer.live = false;
                 }
             }
         }

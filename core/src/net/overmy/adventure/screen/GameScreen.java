@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -97,6 +98,7 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void show () {
         super.show();
+
 
         AshleyWorld.getPooledEngine().getSystem( NPCSystem.class ).setWalkSound();
 
@@ -239,13 +241,13 @@ public class GameScreen extends Base2DScreen {
                 for ( Vector3 pushed : pushedPositions ) {
                     //queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2( 15.5f, -3.166f ), 10.0f ) );
                     stringBuilder.append(
-                            "queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2(" );
+                            "queue.add( move(" );
                     stringBuilder.append( pushed.x );
                     stringBuilder.append( "f, " );
                     //stringBuilder.append( pushed.y );
                     //stringBuilder.append( "f, " );
                     stringBuilder.append( pushed.z );
-                    stringBuilder.append( "f), 10.0f ) );\n" );
+                    stringBuilder.append( "f) );\n" );
                 }
 
                 Gdx.app.debug( "Pushed positions", "\n" + stringBuilder.toString() );
@@ -350,11 +352,12 @@ public class GameScreen extends Base2DScreen {
             AshleySubs.createCloudFX();
         }
 
+        // GAME is OVER
+
         if ( !MyPlayer.live && !showGameOver ) {
             showGameOver = true;
 
-            // FIXME game over sound
-            SoundAsset.Click.play();
+            SoundAsset.GAMEOVER.play();
 
             Label gameOverLabel = UIHelper.Label( TextAsset.END_GAME.get(), FontAsset.MENU_TITLE );
             final Group gameOverGroup = UIHelper.convertActorToGroup( gameOverLabel );
@@ -362,7 +365,8 @@ public class GameScreen extends Base2DScreen {
             gameOverGroup.addAction( Actions.sequence(
                     Actions.scaleTo( 0, 0, 0 ),
                     Actions.moveTo( Core.WIDTH_HALF, Core.HEIGHT_HALF, 0 ),
-                    Actions.scaleTo( 1, 1, Core.FADE * 10.0f ) ) );
+                    Actions.scaleTo( 1, 1, Core.FADE * 4.0f, Interpolation.bounceOut )
+                    ) );
 
             gameOverGroup.addListener( new ClickListener() {
                 public void clicked ( InputEvent event, float x, float y ) {
@@ -379,6 +383,8 @@ public class GameScreen extends Base2DScreen {
             UIHelper.scaleOut( touchPadGroup );
             UIHelper.scaleOut( jumpButton );
             UIHelper.scaleOut( showIngameMenuImage );
+
+            MyPlayer.stopSound();
         }
     }
 
@@ -693,6 +699,7 @@ public class GameScreen extends Base2DScreen {
 
         AshleyWorld.getPooledEngine().getSystem( NPCSystem.class ).disableWalkSound();
 
+        MyPlayer.stopSound();
         MusicAsset.WINDFILTER.stop();
 
         jumpButton = null;

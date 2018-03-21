@@ -5,6 +5,12 @@ package net.overmy.adventure.screen;
       Contact me → http://vk.com/id17317
  */
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -14,15 +20,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.Core;
+import net.overmy.adventure.MyCamera;
 import net.overmy.adventure.MyGdxGame;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.MyRender;
 import net.overmy.adventure.logic.DynamicLevels;
-import net.overmy.adventure.logic.Levels;
 import net.overmy.adventure.resources.FontAsset;
+import net.overmy.adventure.resources.GameColor;
+import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.Settings;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextAsset;
+import net.overmy.adventure.resources.TextureAsset;
 import net.overmy.adventure.utils.UIHelper;
 
 public class MenuScreen extends Base2DScreen {
@@ -38,35 +47,91 @@ public class MenuScreen extends Base2DScreen {
 
     private GUI_TYPE guiType;
 
+    private ModelInstance heroInstance = null;
+    private Texture       bg           = null;
+    private SpriteBatch   spriteBatch  = null;
+
 
     public MenuScreen ( MyGdxGame game ) {
         super( game );
     }
 
 
+
+    private AnimationController animationController = null;
+
+
     @Override
     public void show () {
         super.show();
+
+        bg = TextureAsset.BG_GRADIENT.get();
+        spriteBatch = MyRender.getSpriteBatch();
 
         MyRender.getStage().addActor( optionsGroup = new Group() );
         MyRender.getStage().addActor( introGroup = new Group() );
 
         showIntroGUI();
+
+        ModelAsset.PLAYER01.build();
+
+        heroInstance = MyPlayer.modelInstance;
+        if ( heroInstance == null || MyPlayer.getBody() == null ) {
+            heroInstance = ModelAsset.PLAYER01.get();
+        }
+
+        heroInstance.materials.get( 0 ).clear();
+        heroInstance.materials.get( 0 )
+                              .set( ColorAttribute.createDiffuse( GameColor.SQUIREL.get() ) );
+
+        animationController = new AnimationController( heroInstance );
+        String id = heroInstance.animations.first().id;
+        animationController.animate( id, -1, 0.2f, null, 0f );
+    }
+
+    @Override
+    public void draw ( float delta ) {
+        spriteBatch.setColor( 1, 1, 1, 1 );
+        spriteBatch.begin();
+        spriteBatch.draw( bg, 0, 0, Core.WIDTH, Core.HEIGHT );
+        spriteBatch.end();
+
+        MyCamera.addCameraAngle( delta * 10 );
+        MyCamera.addVerticalDirection( -0.0001f );
+        MyCamera.update( delta );
+
+        ModelBatch batch = MyRender.getModelBatch();
+        batch.begin( MyCamera.get() );
+        batch.render( heroInstance, MyRender.getEnvironment() );
+        batch.end();
+
+        animationController.update( delta );
     }
 
 
     private void showIntroGUI () {
         guiType = GUI_TYPE.MAIN_MENU;
         introGroup.clear(); // disable clearGroup Runnable
+        
+        Label title = UIHelper.Label( TextAsset.Title.get(), FontAsset.MENU_TITLE );
+        final Group titleGroup = UIHelper.convertActorToGroup( title );
+        titleGroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT*0.8f );
+        titleGroup.addAction( Actions.forever(
+                Actions.sequence(
+                        Actions.scaleTo( 1.2f,1.2f,3 ),
+                        Actions.scaleTo( 1.0f,1.0f,3 )
+                                )
+                                             ) );
+        introGroup.addActor( titleGroup );
 
-        boolean canResume = ( MyPlayer.getBody() != null && MyPlayer.live ) || DynamicLevels.getCurrent() != 0;
+        final boolean canResume = ( MyPlayer.getBody() != null && MyPlayer.live ) || DynamicLevels.getCurrent() != 0;
 
-        final float labelPosX = Core.WIDTH * 0.6f;
-        final float label1PosY = Core.HEIGHT * 0.4f;
+        final float labelPosX = Core.WIDTH * 0.7f;
+        final float label1PosY = Core.HEIGHT * 0.35f;
         final float label2PosY = Core.HEIGHT * 0.25f;
-        final float label3PosY = Core.HEIGHT * 0.55f;
+        final float label3PosY = Core.HEIGHT * 0.45f;
         final float leftPosX = -Core.WIDTH_HALF; // over screen position
-        float rightPosX = Core.WIDTH; // over screen position
+        final float rightPosX = Core.WIDTH; // over screen position
 
         final Label startLabel = new Label( TextAsset.START_GAME.get(),
                                             FontAsset.MENU_TITLE.getStyle() );
@@ -91,13 +156,14 @@ public class MenuScreen extends Base2DScreen {
                 UIHelper.rollOut( settingsLabel, labelPosX, label2PosY, leftPosX, label2PosY );
                 UIHelper.rollOut( resumeLabel, labelPosX, label3PosY, leftPosX, label3PosY );
 
-                Levels.init();
+                DynamicLevels.initLevels();
                 DynamicLevels.setCurrent( 0 );
                 AshleyWorld.dispose();
                 AshleyWorld.init();
 
                 MyPlayer.clearAll();
 
+                UIHelper.rollOut( titleGroup,Core.WIDTH_HALF, Core.HEIGHT*0.8f,Core.WIDTH_HALF, Core.HEIGHT*1.5f );
                 transitionTo( MyGdxGame.SCREEN_TYPE.LOADING_GAME );
             }
         } );
@@ -110,6 +176,8 @@ public class MenuScreen extends Base2DScreen {
                 UIHelper.rollOut( settingsLabel, labelPosX, label2PosY, leftPosX, label2PosY );
                 UIHelper.rollOut( startLabel, labelPosX, label1PosY, leftPosX, label1PosY );
                 UIHelper.rollOut( resumeLabel, labelPosX, label3PosY, leftPosX, label3PosY );
+                titleGroup.clearActions();
+                UIHelper.rollOut( titleGroup,Core.WIDTH_HALF, Core.HEIGHT*0.8f,Core.WIDTH_HALF, Core.HEIGHT*1.5f );
                 showSettingsGUI();
             }
         } );
@@ -125,6 +193,7 @@ public class MenuScreen extends Base2DScreen {
                     UIHelper.rollOut( settingsLabel, labelPosX, label2PosY, leftPosX, label2PosY );
                     UIHelper.rollOut( resumeLabel, labelPosX, label3PosY, leftPosX, label3PosY );
                     transitionTo( MyGdxGame.SCREEN_TYPE.LOADING_GAME );
+                    UIHelper.rollOut( titleGroup,Core.WIDTH_HALF, Core.HEIGHT*0.8f,Core.WIDTH_HALF, Core.HEIGHT*1.5f );
                 }
             } );
         }
@@ -209,6 +278,12 @@ public class MenuScreen extends Base2DScreen {
     @Override
     public void dispose () {
         super.dispose();
+
+        heroInstance = null;
+        bg           = null;
+        spriteBatch  = null;
+
+
         introGroup = null;
         optionsGroup = null;
         soundBar = null;

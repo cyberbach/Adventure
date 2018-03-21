@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
-import net.overmy.adventure.logic.Levels;
 import net.overmy.adventure.logic.TextBlock;
 
 /*
@@ -89,7 +88,6 @@ public final class Assets {
 
 
     public static void unload () {
-        Levels.dispose();
 
         FontAsset.unload( manager );
         MusicAsset.unload( manager );

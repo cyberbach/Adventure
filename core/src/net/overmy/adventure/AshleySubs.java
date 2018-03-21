@@ -597,7 +597,7 @@ public final class AshleySubs {
     }
 
 
-    static void createDustFX ( Vector3 position, float timeToRemove ) {
+    public static void createDustFX ( Vector3 position, float timeToRemove ) {
         Entity entity = pooledEngine.createEntity();
         entity.add( DecalSubs.LightDustEffect( timeToRemove * 6 ) );
         entity.add( new PositionComponent( position ) );
@@ -607,7 +607,7 @@ public final class AshleySubs {
 
 
     public static void create5StarsFX ( Vector3 position ) {
-        for ( int i = 0; i < 5; i++ ) {
+        for ( int i = 0; i < 4; i++ ) {
             float bubbleTime = MathUtils.random( 0.25f, 0.65f );
             Entity entity = pooledEngine.createEntity();
             entity.add( DecalSubs.StarsEffect( bubbleTime ) );

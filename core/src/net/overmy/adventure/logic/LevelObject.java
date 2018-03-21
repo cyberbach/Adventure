@@ -76,7 +76,9 @@ public class LevelObject {
         entity.add( new RemoveByTimeComponent( 0 ) );
         entity = null;
 
-        Gdx.app.debug( "useEntity", "" + item );
+        if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+            Gdx.app.debug( "useEntity", "" + item );
+        }
     }
 
 

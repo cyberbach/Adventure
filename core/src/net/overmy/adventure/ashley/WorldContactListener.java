@@ -3,6 +3,7 @@ package net.overmy.adventure.ashley;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ContactListener;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
@@ -250,8 +251,8 @@ public class WorldContactListener extends ContactListener {
             // мы получаем урон от Enemy
             if ( MyMapper.NPC.has( entity01 ) ) {
                 NPCComponent component = MyMapper.NPC.get( entity01 );
-                component.time = 0.0f;
                 if ( component.attacking ) {
+                    component.time = 0.0f; // drop to next action
                     btRigidBody body2 = MyMapper.PHYSICAL.get( entity02 ).body;
                     body2.getWorldTransform().getTranslation( tempPosition2 );
                     AshleySubs.create5StarsFX( tempPosition2 );
@@ -259,22 +260,32 @@ public class WorldContactListener extends ContactListener {
 
                     if ( MyMapper.LIFE.has( entity02 ) ) {
                         MyMapper.LIFE.get( entity02 ).decLife( component.damage );
+                        if ( MathUtils.randomBoolean() ) {
+                            SoundAsset.HURT1.play();
+                        } else {
+                            SoundAsset.HURT2.play();
+                        }
                     }
-                    component.attacking = false;
+                    component.attacking = false; // drop HUNT action
                 }
             }
             if ( MyMapper.NPC.has( entity02 ) ) {
                 NPCComponent component = MyMapper.NPC.get( entity02 );
-                component.time = 0.0f;
                 if ( component.attacking ) {
+                    component.time = 0.0f; // drop to next action
                     btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
                     body1.getWorldTransform().getTranslation( tempPosition1 );
                     AshleySubs.create5StarsFX( tempPosition1 );
                     SoundAsset.HIT.play();
 
-                    component.attacking = false;
+                    component.attacking = false; // drop HUNT action
                     if ( MyMapper.LIFE.has( entity01 ) ) {
                         MyMapper.LIFE.get( entity01 ).decLife( component.damage );
+                        if ( MathUtils.randomBoolean() ) {
+                            SoundAsset.HURT1.play();
+                        } else {
+                            SoundAsset.HURT2.play();
+                        }
                     }
                 }
             }
@@ -299,6 +310,14 @@ public class WorldContactListener extends ContactListener {
                 if ( MyMapper.LIFE.has( entity01 ) ) {
                     if ( contact1DestroyableBox || contact1DestroyableRock || contact1NPC ) {
                         MyMapper.LIFE.get( entity01 ).decLife( MyPlayer.damage );
+
+                        if ( contact1NPC ) {
+                            if ( MathUtils.randomBoolean() ) {
+                                SoundAsset.HURT3.play();
+                            } else {
+                                SoundAsset.HURT4.play();
+                            }
+                        }
                     }
                 }
             }
@@ -323,6 +342,14 @@ public class WorldContactListener extends ContactListener {
                 if ( MyMapper.LIFE.has( entity02 ) ) {
                     if ( contact2DestroyableBox || contact2DestroyableRock || contact2NPC ) {
                         MyMapper.LIFE.get( entity02 ).decLife( MyPlayer.damage );
+
+                        if ( contact1NPC ) {
+                            if ( MathUtils.randomBoolean() ) {
+                                SoundAsset.HURT3.play();
+                            } else {
+                                SoundAsset.HURT4.play();
+                            }
+                        }
                     }
                 }
             }

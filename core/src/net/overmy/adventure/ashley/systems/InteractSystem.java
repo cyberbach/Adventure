@@ -15,6 +15,7 @@ import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.InteractComponent;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
+import net.overmy.adventure.ashley.components.SkipActionComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.TextBlock;
@@ -97,6 +98,10 @@ public class InteractSystem extends IteratingSystem {
                 }
                 actOnEntity = false;
             }
+
+            entity.add( new SkipActionComponent() );
+        } else {
+            entity.remove( SkipActionComponent.class );
         }
     }
 

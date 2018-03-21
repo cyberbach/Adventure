@@ -18,10 +18,11 @@ import com.badlogic.gdx.audio.Sound;
 
 public enum SoundAsset {
 
+    GAMEOVER( "gameover.ogg" ),
     Coin( "coin.ogg" ),
 
-    BackSound( "click3.wav" ),
-    Click( "click4.wav" ),
+    BackSound( "click3.ogg" ),
+    Click( "click4.ogg" ),
 
     Step1( "step1.ogg" ),
     Step2( "step2.ogg" ),
@@ -40,6 +41,10 @@ public enum SoundAsset {
     Jump2( "jump2.ogg" ),
 
     HIT( "hit.ogg" ),
+    HURT1( "hurt1.ogg" ),
+    HURT2( "hurt2.ogg" ),
+    HURT3( "hurt3.ogg" ),
+    HURT4( "hurt4.ogg" ),
 
     //BoxDrop( "drop.mp3" ),
     //RobotDrop( "robotdrop.mp3" ),
@@ -106,10 +111,10 @@ public enum SoundAsset {
     }
 
 
-    public void playLoop (  ) {
+    public void playLoop () {
         float soundVolume = (float) Settings.SOUND.getInteger() / 100.0f;
         if ( soundVolume > 0.0f ) {
-            id = this.snd.loop(soundVolume, 1, 1);
+            id = this.snd.loop( soundVolume, 1, 1 );
             //this.snd.setLooping( id, true );
             //this.snd.setVolume( id, soundVolume );
         }
