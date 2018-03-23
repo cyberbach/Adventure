@@ -99,7 +99,6 @@ public class GameScreen extends Base2DScreen {
     public void show () {
         super.show();
 
-
         AshleyWorld.getPooledEngine().getSystem( NPCSystem.class ).setWalkSound();
 
         interactSystem = AshleyWorld.getPooledEngine().getSystem( InteractSystem.class );
@@ -170,6 +169,7 @@ public class GameScreen extends Base2DScreen {
     private       float cloudTimer      = MAX_CLOUD_TIMER;
 
     Label fpsLabel = null;
+
 
     @Override
     public void update ( float delta ) {
@@ -261,8 +261,8 @@ public class GameScreen extends Base2DScreen {
 
         if ( guiType == GUI_TYPE.GAME_GUI ) {
             MyPlayer.move( touchpad.getKnobPercentX(), -touchpad.getKnobPercentY() );
-        }else{
-            MyPlayer.move( 0,0 );
+        } else {
+            MyPlayer.move( 0, 0 );
         }
 
         if ( DEBUG.SHOW_FPS.get() ) {
@@ -373,7 +373,7 @@ public class GameScreen extends Base2DScreen {
                     Actions.scaleTo( 0, 0, 0 ),
                     Actions.moveTo( Core.WIDTH_HALF, Core.HEIGHT_HALF, 0 ),
                     Actions.scaleTo( 1, 1, Core.FADE * 4.0f, Interpolation.bounceOut )
-                    ) );
+                                                     ) );
 
             gameOverGroup.addListener( new ClickListener() {
                 public void clicked ( InputEvent event, float x, float y ) {
@@ -384,7 +384,6 @@ public class GameScreen extends Base2DScreen {
             } );
 
             MyRender.getStage().addActor( gameOverGroup );
-
 
             attackButton.clearActions();
             touchPadGroup.clearActions();
@@ -585,9 +584,9 @@ public class GameScreen extends Base2DScreen {
         gameGroup.clear();
         touchPadGroup.clear();
 
-        if(fpsLabel==null){
-            fpsLabel=UIHelper.Label( "",FontAsset.IVENTORY_ITEM );
-            fpsLabel.setPosition( 0, Core.HEIGHT*0.9f );
+        if ( fpsLabel == null ) {
+            fpsLabel = UIHelper.Label( "", FontAsset.IVENTORY_ITEM );
+            fpsLabel.setPosition( 0, Core.HEIGHT * 0.9f );
         }
         gameGroup.addActor( fpsLabel );
 
@@ -645,7 +644,7 @@ public class GameScreen extends Base2DScreen {
         UIHelper.scaleIn( attackButton );
         gameGroup.addActor( attackButton );
 
-        if(aimImage==null) {
+        if ( aimImage == null ) {
             float aimSize = Core.HEIGHT * 0.1f;
             aimImage = IMG.AIM.getImageActor( aimSize, aimSize );
             aimImage.setPosition( Core.WIDTH_HALF - aimSize / 2, Core.HEIGHT_HALF - aimSize / 2 );
