@@ -35,29 +35,32 @@ import net.overmy.adventure.resources.SoundAsset;
 import java.util.ArrayList;
 
 public final class MyPlayer {
-    private static final Vector2       v2Position     = new Vector2();
-    private static final Vector2       direction      = new Vector2();
-    private static final Vector3       velocity       = new Vector3();
-    private static       Matrix4       bodyTransform  = new Matrix4();
-    private static final Vector3       notFilteredPos = new Vector3();
-    private static final Vector3       filteredPos    = new Vector3();
-    private static       ModelAsset    modelAsset     = null;
-    private static       Entity        playerEntity   = null;
-    private static       boolean       jump           = false;
-    private static       boolean       attack         = false;
-    private static       float         modelAngle     = 0.0f;
-    private static       float         dustTime       = 0.1f;
-    public static        boolean       live           = true;
+    private static final Vector2 v2Position     = new Vector2();
+    private static final Vector2 direction      = new Vector2();
+    private static final Vector3 velocity       = new Vector3();
+    private static       Matrix4 bodyTransform  = new Matrix4();
+    private static final Vector3 notFilteredPos = new Vector3();
+    //private static final Vector3 filteredPos    = new Vector3();
+    private static       float   modelAngle     = 0.0f;
 
-    public static        ModelInstance modelInstance  = null; // for menu screen
+    private static float dustTimer = 0.1f;
+
+    public static boolean live = true;
+
+    private static ModelAsset    modelAsset    = null;
+    private static Entity        playerEntity  = null;
+    public static  ModelInstance modelInstance = null; // for menu screen
 
     private static boolean weaponInHand = false;
     private static Node    rightArmNode = null;
     public static  float   damage       = 5.0f;
 
-    private static ArrayList< ItemInBagg > bag         = null;
-    public static  float                   extraJump   = 0.0f;
-    public static  float                   extraSpeed2 = 0.0f;
+    private static ArrayList< ItemInBagg > bag = null;
+
+    private static boolean attack      = false;
+    private static boolean jump        = false;
+    public static  float   extraJump   = 0.0f;
+    public static  float   extraSpeed2 = 0.0f;
 
 
     public static ArrayList< ItemInBagg > getBag () {
@@ -173,9 +176,9 @@ public final class MyPlayer {
             new Vector3( -85.78828f, 0.69114524f, -168.87808f ),
             new Vector3( -136.69661f, 2.7439363f, -362.21973f ),
             new Vector3( -245.94257f, 1.0721123f, -401.8604f ),
-            new Vector3( -45.45584f,3.2740111f,-442.94907f ),
-            new Vector3( -111.20825f,2.5875528f,-439.92386f ),
-            new Vector3( -143.16548f,-2.9934058f,-463.16727f ),
+            new Vector3( -45.45584f, 3.2740111f, -442.94907f ),
+            new Vector3( -111.20825f, 2.5875528f, -439.92386f ),
+            new Vector3( -143.16548f, -2.9934058f, -463.16727f ),
             };
 
 
@@ -331,10 +334,10 @@ public final class MyPlayer {
 
             // СОздаем пыль под ногами
 
-            dustTime -= deltaTime;
-            if ( dustTime < 0 ) {
-                //dustTime = MathUtils.random( 0.05f, 0.25f );
-                dustTime = 0.12f;
+            dustTimer -= deltaTime;
+            if ( dustTimer < 0 ) {
+                //dustTimer = MathUtils.random( 0.05f, 0.25f );
+                dustTimer = 0.12f;
                 notFilteredPos.sub( 0, 0.5f, 0 );
 
                 AshleySubs.createDustFX( notFilteredPos, 0.72f );

@@ -18,7 +18,7 @@ import net.overmy.adventure.resources.Settings;
 
 public final class DynamicLevels {
 
-    private static boolean             unloaded            = true;
+    private static boolean unloaded = true;
 
     private static Array< Integer > currentConnections  = null;
     private static Array< Integer > previousConnections = null;
@@ -92,24 +92,15 @@ public final class DynamicLevels {
 
                 if ( level.entity != null ) {
                     level.entity.add( new RemoveByTimeComponent( 0 ) );
-                    if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                        Gdx.app.debug( "уровень удалён через", "DynamicLevel" );
-                    }
                 }
                 level.entity = null;
 
                 if ( level.objects != null ) {
                     if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                        Gdx.app.debug( "objects in "+p, "" + level.objects.size() );
+                        Gdx.app.debug( "objects in " + p, "" + level.objects.size() );
                     }
                     for ( LevelObject object : level.objects ) {
-                        //if ( !isModelInAnyCurrentConnections( object.modelAsset ) ) {
-                            if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                                Gdx.app.debug( "remove entity", "" + object );
-                            }
-
-                            object.removeEntity();
-                        //}
+                        object.removeEntity();
                     }
                 }
             }

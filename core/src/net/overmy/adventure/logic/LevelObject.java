@@ -74,7 +74,7 @@ public class LevelObject {
 
     public void useEntity () {
         used = true;
-        removeEntity ();
+        removeEntity();
     }
 
 
@@ -84,23 +84,26 @@ public class LevelObject {
         }
 
         if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-            Gdx.app.debug( "removeEntity", "item=" + item + " model="+modelAsset );
+            Gdx.app.debug( "removeEntity", "item=" + item + " model=" + modelAsset );
         }
         entity = null;
     }
 
 
     void buildEntity () {
-        if ( entity != null || used ) {
+        // Энтити уже создана
+        if ( entity != null ) {
+            return;
+        }
+
+        // Энтити была уже создана и мы её использовали (подобрали или убили)
+        if ( used ) {
             return;
         }
 
         if ( DEBUG.DYNAMIC_LEVELS.get() ) {
             Gdx.app.debug( "Need to build OBJECT", "" + this.type );
         }
-
-        // Из свича вынесены вверх одинаковые кусочки для всех вариантов сборки
-        //entity = AshleyWorld.getPooledEngine().createEntity();
 
         switch ( type ) {
             case LADDER:
@@ -139,8 +142,6 @@ public class LevelObject {
                 entity = AshleySubs.createWeapon( position, modelAsset, item, this );
                 break;
         }
-
-        //AshleyWorld.getPooledEngine().addEntity( entity );
     }
 
 

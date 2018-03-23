@@ -54,9 +54,9 @@ public class PhysicalBuilder {
 
 /*
     PhysicalBuilder setPosition( Vector3 newPosition ) {
-        Matrix4 matrix4 = savedBody.getWorldTransform();
+        Matrix4 matrix4 = cameraBody.getWorldTransform();
         matrix4.setToTranslation( newPosition );
-        savedBody.setWorldTransform( matrix4 );
+        cameraBody.setWorldTransform( matrix4 );
 
         return this;
     }*/

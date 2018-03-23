@@ -169,6 +169,7 @@ public class GameScreen extends Base2DScreen {
     private final float MAX_CLOUD_TIMER = 2.0f;
     private       float cloudTimer      = MAX_CLOUD_TIMER;
 
+    Label fpsLabel = null;
 
     @Override
     public void update ( float delta ) {
@@ -260,12 +261,16 @@ public class GameScreen extends Base2DScreen {
 
         if ( guiType == GUI_TYPE.GAME_GUI ) {
             MyPlayer.move( touchpad.getKnobPercentX(), -touchpad.getKnobPercentY() );
+        }else{
+            MyPlayer.move( 0,0 );
         }
 
         if ( DEBUG.SHOW_FPS.get() ) {
             if ( TimeUtils.nanoTime() - startTime > 1000000000 ) /* 1,000,000,000ns == one second */ {
                 log.setLength( 0 );
+                log.append( "▓▒░ FPS = " );
                 log.append( Gdx.graphics.getFramesPerSecond() );
+                log.append( " " );
 
                 RenderSystem rend = AshleyWorld.getPooledEngine().getSystem( RenderSystem.class );
                 int models = rend.getModelsCount();
@@ -283,8 +288,10 @@ public class GameScreen extends Base2DScreen {
 
                 log.append( " ░▒▓" );
 
-                Gdx.app.log( "▓▒░ FPS", log.toString() );
+                Gdx.app.log( "", log.toString() );
                 startTime = TimeUtils.nanoTime();
+
+                fpsLabel.setText( log.toString() );
             }
         }
 
@@ -377,6 +384,11 @@ public class GameScreen extends Base2DScreen {
             } );
 
             MyRender.getStage().addActor( gameOverGroup );
+
+
+            attackButton.clearActions();
+            touchPadGroup.clearActions();
+            jumpButton.clearActions();
 
             UIHelper.scaleOut( aimImage );
             UIHelper.scaleOut( attackButton );
@@ -573,6 +585,12 @@ public class GameScreen extends Base2DScreen {
         gameGroup.clear();
         touchPadGroup.clear();
 
+        if(fpsLabel==null){
+            fpsLabel=UIHelper.Label( "",FontAsset.IVENTORY_ITEM );
+            fpsLabel.setPosition( 0, Core.HEIGHT*0.9f );
+        }
+        gameGroup.addActor( fpsLabel );
+
         if ( touchpad == null ) {
             touchpad = UIHelper.createTouchPad();
             touchpad.setPosition( Core.HEIGHT * 0.05f, Core.HEIGHT * 0.05f );
@@ -627,9 +645,11 @@ public class GameScreen extends Base2DScreen {
         UIHelper.scaleIn( attackButton );
         gameGroup.addActor( attackButton );
 
-        float aimSize = Core.HEIGHT * 0.1f;
-        aimImage = IMG.AIM.getImageActor( aimSize, aimSize );
-        aimImage.setPosition( Core.WIDTH_HALF - aimSize / 2, Core.HEIGHT_HALF - aimSize / 2 );
+        if(aimImage==null) {
+            float aimSize = Core.HEIGHT * 0.1f;
+            aimImage = IMG.AIM.getImageActor( aimSize, aimSize );
+            aimImage.setPosition( Core.WIDTH_HALF - aimSize / 2, Core.HEIGHT_HALF - aimSize / 2 );
+        }
         gameGroup.addActor( aimImage );
 
         if ( interactGroup != null ) {
@@ -646,18 +666,17 @@ public class GameScreen extends Base2DScreen {
         if ( showIngameMenuImage == null ) {
             showIngameMenuImage = IMG.INGAME.getImageActor( inGameIconSize,
                                                             inGameIconSize );
+            showIngameMenuImage.setPosition( Core.WIDTH - inGameIconSize,
+                                             Core.HEIGHT - inGameIconSize );
+            showIngameMenuImage.addListener( new ClickListener() {
+                public void clicked ( InputEvent event, float x, float y ) {
+                    SoundAsset.Click.play();
+                    UIHelper.clickAnimation( showIngameMenuImage );
+                    showInGameMenu();
+                }
+            } );
         }
-        showIngameMenuImage.setPosition( Core.WIDTH - inGameIconSize,
-                                         Core.HEIGHT - inGameIconSize );
         gameGroup.addActor( showIngameMenuImage );
-
-        showIngameMenuImage.addListener( new ClickListener() {
-            public void clicked ( InputEvent event, float x, float y ) {
-                SoundAsset.Click.play();
-                UIHelper.clickAnimation( showIngameMenuImage );
-                showInGameMenu();
-            }
-        } );
     }
 
 
@@ -686,6 +705,8 @@ public class GameScreen extends Base2DScreen {
         if ( guiType == GUI_TYPE.INGAME_MENU ) {
             showGameGUI();
         } else {
+            touchPadGroup.clearActions();
+            jumpButton.clearActions();
             UIHelper.scaleOut( touchPadGroup );
             UIHelper.scaleOut( jumpButton );
             transitionTo( MyGdxGame.SCREEN_TYPE.MENU );

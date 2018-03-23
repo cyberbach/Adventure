@@ -8,7 +8,7 @@ package net.overmy.adventure;
 public enum DEBUG {
     SETTINGS( false ),
     CONTACTS( false ),
-    ENTITIES( false ),
+    ENTITIES( true ),
     DECAL_ENTITIES( false ),
     PHYSICAL_MESH( false ),
     SHOW_FPS( true ),
@@ -16,7 +16,7 @@ public enum DEBUG {
     STAGE( false ),
     DYNAMIC_LEVELS( false ),
     NPC_ACTIONS( false ),
-    GAME_MASTER_MODE( true ),
+    GAME_MASTER_MODE( false ),
     ENABLE_ENGLISH_TEXT( false ),
     ;
 

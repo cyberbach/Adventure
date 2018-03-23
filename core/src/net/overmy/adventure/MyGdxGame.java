@@ -45,10 +45,8 @@ public class MyGdxGame implements ApplicationListener {
         Assets.init();
         Assets.setManagerLogLevel( Logger.DEBUG );
 
-        // Здесь создание всех камер (2д и 3д) и всех батчей (2д, 3д и Декали)
-        MyRender.init();
-
         BulletWorld.init();
+        MyRender.init();// Здесь создание всех камер (2д и 3д) и всех батчей (2д, 3д и Декали)
         AshleyWorld.init();
 
         // Создание и загрузка уровней
