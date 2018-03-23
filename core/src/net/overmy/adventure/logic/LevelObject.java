@@ -19,7 +19,11 @@ import net.overmy.adventure.resources.ModelAsset;
 
 public class LevelObject {
 
-    ModelAsset modelAsset;
+    public ModelAsset modelAsset;
+
+
+
+
     protected Vector3     position;
     private   OBJECT_TYPE type;
     private   Item               item        = null;
@@ -29,6 +33,11 @@ public class LevelObject {
     private   boolean            used        = false;
     private   float              height      = 0.0f;
 
+
+    LevelObject ( OBJECT_TYPE type, Vector3 position ) {
+        this.type = type;
+        this.position = position;
+    }
 
     LevelObject ( OBJECT_TYPE type, ModelAsset models, Vector3 position ) {
         this.type = type;
@@ -49,6 +58,11 @@ public class LevelObject {
         this.type = type;
         this.item = id;
         this.modelAsset = models;
+        this.position = position;
+    }
+    LevelObject ( OBJECT_TYPE type, Item id, Vector3 position ) {
+        this.type = type;
+        this.item = id;
         this.position = position;
     }
 
@@ -108,6 +122,10 @@ public class LevelObject {
         switch ( type ) {
             case LADDER:
                 entity = AshleySubs.createLadder( position, height );
+                break;
+
+            case TRIGGER:
+                entity = AshleySubs.createTrigger( position, item );
                 break;
 
             case PICKABLE:

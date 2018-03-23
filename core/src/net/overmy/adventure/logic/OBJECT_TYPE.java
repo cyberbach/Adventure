@@ -15,4 +15,5 @@ public enum OBJECT_TYPE {
     ENEMY,
     BOX,
     ROCK,
+    TRIGGER,
 }

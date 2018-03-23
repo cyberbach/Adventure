@@ -3,7 +3,6 @@ package net.overmy.adventure.ashley.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
@@ -15,10 +14,9 @@ import net.overmy.adventure.MyCamera;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.MyRender;
 import net.overmy.adventure.ashley.MyMapper;
-import net.overmy.adventure.ashley.components.COMP_TYPE;
+import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
-import net.overmy.adventure.ashley.components.TypeOfComponent;
 
 
 /**
@@ -68,9 +66,9 @@ public class LifeSystem extends IteratingSystem {
             Matrix4 transform = MyMapper.PHYSICAL.get( entity ).body.getWorldTransform();
             transform.getTranslation( position );
 
-            COMP_TYPE typeOfEntity = MyMapper.TYPE.get( entity ).type;
+            TYPE_OF_ENTITY typeOfEntity = MyMapper.TYPE.get( entity ).type;
 
-            if ( COMP_TYPE.DESTROYABLE_BOX.equals( typeOfEntity ) ) {
+            if ( TYPE_OF_ENTITY.DESTROYABLE_BOX.equals( typeOfEntity ) ) {
                 AshleySubs.createCrateParts( position );
 
                 if ( MyMapper.CONTAINER.has( entity ) ) {
@@ -78,7 +76,7 @@ public class LifeSystem extends IteratingSystem {
                 }
             }
 
-            if ( COMP_TYPE.DESTROYABLE_ROCK.equals( typeOfEntity ) ) {
+            if ( TYPE_OF_ENTITY.DESTROYABLE_ROCK.equals( typeOfEntity ) ) {
                 AshleySubs.createRockParts( position );
             }
 
@@ -88,7 +86,7 @@ public class LifeSystem extends IteratingSystem {
                 MyMapper.LEVEL_OBJECT.get( entity ).levelObject.useEntity();
             } else {
                 entity.add( new RemoveByTimeComponent( 0 ) );
-                if ( COMP_TYPE.MYPLAYER.equals( typeOfEntity ) ) {
+                if ( TYPE_OF_ENTITY.MYPLAYER.equals( typeOfEntity ) ) {
                     MyPlayer.live = false;
                 }
             }

@@ -32,11 +32,11 @@ public enum Item {
     GAME_STUFF3( "Третий", "Очень длинное описание третьего предмета", 2 ),
     GAME_STUFF4( "Четвертый предмет", "Описание четвертого", 3 ),
     GAME_STUFF5( "предмет 5", "Описание пятое", 4 ),
-    GAME_STUFF6( "6 предмет", "Описание шестое", 5 ),*/;
+    GAME_STUFF6( "6 предмет", "Описание шестое", 5 ),*/TRIGGER1;
 
-    private TextAsset name;
-    private TextAsset about;
-    private IMG       imageID;
+    private TextAsset name = null;
+    private TextAsset about = null;
+    private IMG       imageID = null;
 
 
     public static void init () {
@@ -58,6 +58,8 @@ public enum Item {
                                     TextAsset.KALASH_WEAPON_ABOUT );
         Item.FENCE_WEAPON.setData( IMG.WEAPON4, TextAsset.FENCE_WEAPON,
                                    TextAsset.FENCE_WEAPON_ABOUT );
+
+
     }
 
 

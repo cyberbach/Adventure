@@ -5,7 +5,7 @@ package net.overmy.adventure.ashley.components;
      Contact me → http://vk.com/id17317
  */
 
-public enum COMP_TYPE {
+public enum TYPE_OF_ENTITY {
     COLLECTABLE,
     PICKABLE,
     LADDER,

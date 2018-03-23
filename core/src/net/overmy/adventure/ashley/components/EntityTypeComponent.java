@@ -7,11 +7,11 @@ import com.badlogic.ashley.core.Component;
       Contact me → http://vk.com/id17317
  */
 
-public class TypeOfComponent implements Component {
+public class EntityTypeComponent implements Component {
 
-    public final COMP_TYPE type;
+    public final TYPE_OF_ENTITY type;
 
-    public TypeOfComponent( COMP_TYPE type ) {
+    public EntityTypeComponent ( TYPE_OF_ENTITY type ) {
         this.type = type;
     }
 }

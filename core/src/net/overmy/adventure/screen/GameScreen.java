@@ -202,6 +202,22 @@ public class GameScreen extends Base2DScreen {
                 Gdx.app.debug( "Positions ", "cleared" );
             }
 
+            if ( Gdx.input.isKeyPressed( Input.Keys.W ) ) {
+                MyPlayer.move( 0, -1 );
+            }
+
+            if ( Gdx.input.isKeyPressed( Input.Keys.S ) ) {
+                MyPlayer.move( 0, 1 );
+            }
+
+            if ( Gdx.input.isKeyPressed( Input.Keys.A ) ) {
+                MyPlayer.move( -1, 0 );
+            }
+
+            if ( Gdx.input.isKeyPressed( Input.Keys.D ) ) {
+                MyPlayer.move( 1, 0 );
+            }
+
             // GameMaster Mode
             // add hover coin
             if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_1 ) ) {
@@ -262,7 +278,9 @@ public class GameScreen extends Base2DScreen {
         if ( guiType == GUI_TYPE.GAME_GUI ) {
             MyPlayer.move( touchpad.getKnobPercentX(), -touchpad.getKnobPercentY() );
         } else {
-            MyPlayer.move( 0, 0 );
+            if ( !DEBUG.GAME_MASTER_MODE.get() ) {
+                MyPlayer.move( 0, 0 );
+            }
         }
 
         if ( DEBUG.SHOW_FPS.get() ) {

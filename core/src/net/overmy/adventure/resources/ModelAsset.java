@@ -50,6 +50,10 @@ public enum ModelAsset {
     RED_BOTTLE( "redbottle" ),
     STUFF( "stuff" ),
 
+    BIRD1( "bird1" ),
+    BIRD2ANGRY( "bird2" ),
+    BUTTERFLY( "butterfly" ),
+    SHEEP( "sheep" ),
     CRAB( "crab" ),
     STAR( "star" ),
     FOX( "fox" ),

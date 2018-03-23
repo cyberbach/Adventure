@@ -23,7 +23,7 @@ import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.SkipActionComponent;
 import net.overmy.adventure.ashley.components.TextDecalComponent;
-import net.overmy.adventure.ashley.components.TypeOfComponent;
+import net.overmy.adventure.ashley.components.EntityTypeComponent;
 
 /*
       Created by Andrey Mikheev on 30.09.2017
@@ -34,13 +34,13 @@ public final class MyMapper {
 
     public static ComponentMapper< PositionComponent >     POSITION       = null;
     public static ComponentMapper< AnimationComponent >    ANIMATION      = null;
-    public static ComponentMapper< PhysicalComponent >    PHYSICAL     = null;
+    public static ComponentMapper< PhysicalComponent >     PHYSICAL       = null;
     static        ComponentMapper< BVHPhysicalComponent >  BVH_PHYSICAL   = null;
     public static ComponentMapper< ModelComponent >        MODEL          = null;
     public static ComponentMapper< GroundedComponent >     GROUNDED       = null;
     public static ComponentMapper< OutOfCameraComponent >  OUT_OF_CAMERA  = null;
     public static ComponentMapper< BoundingComponent >     BOUNDS         = null;
-    public static ComponentMapper< TypeOfComponent >       TYPE           = null;
+    public static ComponentMapper< EntityTypeComponent >   TYPE           = null;
     public static ComponentMapper< LevelIDComponent >      REMOVE_BY_ZONE = null;
     public static ComponentMapper< RemoveByTimeComponent > REMOVE_BY_TIME = null;
     public static ComponentMapper< DecalComponent >        DECAL          = null;
@@ -69,7 +69,7 @@ public final class MyMapper {
         GROUNDED = ComponentMapper.getFor( GroundedComponent.class );
         OUT_OF_CAMERA = ComponentMapper.getFor( OutOfCameraComponent.class );
         BOUNDS = ComponentMapper.getFor( BoundingComponent.class );
-        TYPE = ComponentMapper.getFor( TypeOfComponent.class );
+        TYPE = ComponentMapper.getFor( EntityTypeComponent.class );
         REMOVE_BY_ZONE = ComponentMapper.getFor( LevelIDComponent.class );
         REMOVE_BY_TIME = ComponentMapper.getFor( RemoveByTimeComponent.class );
         DECAL = ComponentMapper.getFor( DecalComponent.class );

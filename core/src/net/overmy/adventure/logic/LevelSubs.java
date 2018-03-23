@@ -177,8 +177,8 @@ class LevelSubs {
 
         objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
                                       NPCActionQueues.get( 5 ),
-                                      ModelAsset.CRAB,
-                                      new Vector3( -7.1824327f, 5, -60.462067f ) ) );
+                                      ModelAsset.CRAB,//26.918205f, -145.5957f
+                                      new Vector3( 26.918205f,4.0f, -145.5957f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
                                       NPCActionQueues.get( 6 ),
@@ -241,6 +241,31 @@ class LevelSubs {
     Array< LevelObject > level4objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+
+        objects.add( new LevelObject( OBJECT_TYPE.TRIGGER, Item.TRIGGER1,
+                                      new Vector3( -137.9316f,1.0180426f,-407.6164f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
+                                      NPCActionQueues.get( 15 ),
+                                      ModelAsset.BIRD2ANGRY,
+                                      new Vector3( -137.9316f,-1.0180426f,-407.6164f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.NPC,
+                                      NPCActionQueues.get( 16 ),
+                                      ModelAsset.BIRD1,
+                                      new Vector3( -161.27516f,0.09638158f,-356.9968f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.NPC,
+                                      NPCActionQueues.get( 10 ),
+                                      ModelAsset.SHEEP,
+                                      new Vector3( -142.12982f,1.464614f,-368.08258f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.NPC,
+                                      NPCActionQueues.get( 11 ),
+                                      ModelAsset.SHEEP,
+                                      new Vector3( -139.17807f,1.187504f,-393.3555f ) ) );
+
+
         objects.add( hoverGreenBottle( -134.07967f, 3.0370257f, -367.3695f ) );
         objects.add( hoverCoin( -131.90904f, 3.248974f, -364.48978f ) );
         objects.add( hoverCoin( -127.98646f, 2.9535644f, -367.3582f ) );
@@ -261,6 +286,16 @@ class LevelSubs {
 
     Array< LevelObject > level5objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( new LevelObject( OBJECT_TYPE.NPC,
+                                      NPCActionQueues.get( 12 ),
+                                      ModelAsset.BUTTERFLY,
+                                      new Vector3( -219.61375f,1.9190593f,-400.35522f ) ) );
+
+        objects.add( new LevelObject( OBJECT_TYPE.NPC,
+                                      NPCActionQueues.get( 13 ),
+                                      ModelAsset.SHEEP,
+                                      new Vector3( -221.7196f,4.9624543f,-426.501f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.FENCE_WEAPON,
@@ -289,6 +324,11 @@ class LevelSubs {
     Array< LevelObject > level6objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+
+        objects.add( new LevelObject( OBJECT_TYPE.NPC,
+                                      NPCActionQueues.get( 14 ),
+                                      ModelAsset.BUTTERFLY,
+                                      new Vector3( -40.59898f,1.6375828f,-420.44955f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
                                       NPCActionQueues.get( 8 ),

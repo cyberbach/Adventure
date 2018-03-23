@@ -201,8 +201,10 @@ public final class DynamicLevels {
             if ( level.objects != null ) {
                 // Загружаем объекты на уровне
                 for ( LevelObject object : level.objects ) {
-                    if ( !isWeapon( object.modelAsset ) ) {
-                        object.modelAsset.load();
+                    if ( object.modelAsset != null ) {
+                        if ( !isWeapon( object.modelAsset ) ) {
+                            object.modelAsset.load();
+                        }
                     }
                 }
             }
@@ -226,8 +228,10 @@ public final class DynamicLevels {
 
             if ( level.objects != null ) {
                 for ( LevelObject object : level.objects ) {
-                    if ( !isWeapon( object.modelAsset ) ) {
-                        object.buildModel();
+                    if ( object.modelAsset != null ) {
+                        if ( !isWeapon( object.modelAsset ) ) {
+                            object.buildModel();
+                        }
                     }
                     object.buildEntity();
                 }

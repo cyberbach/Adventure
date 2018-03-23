@@ -155,6 +155,77 @@ public final class NPCActionQueues {
                 queue9.add( wait( 5.0f ) );
                 return queue9;
 
+            case 10: // овечка на первой зелёной локации
+                Array< NPCAction > queue10 = new Array< NPCAction >();
+                queue10.add( move(-142.12982f, -368.08258f) );
+                queue10.add( wait( 2.0f ) );
+                queue10.add( move(-148.57593f, -364.6106f) );
+                queue10.add( wait( 4.0f ) );
+                queue10.add( move(-155.29565f, -371.30493f) );
+                queue10.add( move(-151.27678f, -372.23157f) );
+                queue10.add( wait( 3.0f ) );
+                return queue10;
+
+            case 11: // 2 овечка на первой зелёной локации
+                Array< NPCAction > queue11 = new Array< NPCAction >();
+                queue11.add( move(-139.17807f, -393.3555f) );
+                queue11.add( wait( 3.0f ) );
+                queue11.add( move(-131.78218f, -397.1868f) );
+                queue11.add( wait( 1.5f ) );
+                queue11.add( move(-136.02168f, -403.25275f) );
+                queue11.add( wait( 2.2f ) );
+                return queue11;
+
+            case 12: // овечка на левой зелёной локации
+                Array< NPCAction > queue12 = new Array< NPCAction >();
+                queue12.add( move(-219.61375f, -400.35522f) );
+                queue12.add( wait( 1.2f ) );
+                queue12.add( move(-225.82419f, -401.64832f) );
+                queue12.add( wait( 2.2f ) );
+                return queue12;
+
+            case 13: // 2 овечка на левой зелёной локации
+                Array< NPCAction > queue13 = new Array< NPCAction >();
+                queue13.add( move(-221.7196f, -426.501f) );
+                queue13.add( wait( 3.2f ) );
+                queue13.add( move(-220.58641f, -421.99988f) );
+                queue13.add( wait( 4.0f ) );
+                queue13.add( move(-215.5847f, -426.56372f) );
+                queue13.add( wait( 2.2f ) );
+                return queue13;
+
+            case 14: // овечка на правой зелёной локации
+                Array< NPCAction > queue14 = new Array< NPCAction >();
+                queue14.add( move(-40.59898f, -420.44955f) );
+                queue14.add( wait( 1.5f ) );
+                queue14.add( move(-43.541374f, -413.11823f) );
+                queue14.add( wait( 2.2f ) );
+                return queue14;
+
+            case 15: // злая птица на первой зелёной локации
+                Array< NPCAction > queue15 = new Array< NPCAction >();
+                queue15.add( move(-137.9316f, -407.6164f) );
+                queue15.add( wait( 1.0f ) );
+                queue15.add( hunt() );
+                queue15.add( move(-148.53554f, -398.90326f) );
+                queue15.add( wait( 2.0f ) );
+                queue15.add( hunt() );
+                queue15.add( move(-156.10858f, -417.41608f) );
+                queue15.add( wait( 1.0f ) );
+                queue15.add( hunt() );
+                queue15.add( move(-166.88496f, -422.44022f) );
+                queue15.add( wait( 3.0f ) );
+                queue15.add( hunt() );
+                return queue15;
+
+            case 16: // добрая птица на первой зелёной локации
+                Array< NPCAction > queue16 = new Array< NPCAction >();
+                queue16.add( move(-161.27516f, -356.9968f) );
+                queue16.add( wait( 3.0f ) );
+                queue16.add( move(-151.27046f, -348.61383f) );
+                queue16.add( wait( 4.0f ) );
+                return queue16;
+
             default:
                 return null;
         }

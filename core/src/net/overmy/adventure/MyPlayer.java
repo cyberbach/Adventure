@@ -21,10 +21,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.AnimationComponent;
-import net.overmy.adventure.ashley.components.COMP_TYPE;
+import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.ashley.components.MyWeaponComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
-import net.overmy.adventure.ashley.components.TypeOfComponent;
+import net.overmy.adventure.ashley.components.EntityTypeComponent;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
@@ -156,7 +156,7 @@ public final class MyPlayer {
                 .disableDeactivation();
 
         entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
-        entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+        entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
         entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
         entityWeaponInHand.add( physicalBuilder.buildPhysicalComponent() );
         AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
@@ -510,7 +510,7 @@ public final class MyPlayer {
                         .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
-                entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderWEAPON.buildPhysicalComponent() );
                 AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
@@ -539,7 +539,7 @@ public final class MyPlayer {
                         .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
-                entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderBORDER_WEAPON.buildPhysicalComponent() );
                 AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
@@ -568,7 +568,7 @@ public final class MyPlayer {
                         .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
-                entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderBROOM_WEAPON.buildPhysicalComponent() );
                 AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
@@ -597,7 +597,7 @@ public final class MyPlayer {
                         .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
-                entityWeaponInHand.add( new TypeOfComponent( COMP_TYPE.WEAPON ) );
+                entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderSwordWEAPON.buildPhysicalComponent() );
                 AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
