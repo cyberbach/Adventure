@@ -112,12 +112,12 @@ public class NPCSystem extends IteratingSystem {
         } else {
             switch ( npcAction.id ) {
                 case WAIT:
-                    npcComponent.attacking = false;
+                    npcComponent.hunting = false;
                     keepCalm();
                     break;
 
                 case MOVE:
-                    npcComponent.attacking = false;
+                    npcComponent.hunting = false;
                     npcPosition.set( notFilteredPos.x, notFilteredPos.z );
                     direction.set( npcAction.targetPosition.x, npcAction.targetPosition.y );
                     direction.sub( npcPosition );
@@ -139,18 +139,18 @@ public class NPCSystem extends IteratingSystem {
                     tmp.set( MyPlayer.getPosition() ).sub( npcPosition );
                     if ( tmp.len() > 8.0f || !MyPlayer.live ) {
                         npcComponent.time = 0;
-                        npcComponent.attacking = false;
+                        npcComponent.hunting = false;
                     } else {
                         tmp.nor();
                         direction.set( tmp );
-                        npcComponent.attacking = true;
+                        npcComponent.hunting = true;
                         soundByDistance( entity );
                     }
 
                     break;
 
                 case SAY:
-                    npcComponent.attacking = false;
+                    npcComponent.hunting = false;
                     keepCalm();
                     entity.add( new TextDecalComponent( npcAction.text, npcAction.durationTime ) );
                     npcComponent.time = 0;

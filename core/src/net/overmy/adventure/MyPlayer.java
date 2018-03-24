@@ -492,7 +492,7 @@ public final class MyPlayer {
                     speedUpTimerLabel.clear();
                     speedUpTimerLabel = null;
                 }
-                speedUpTimerLabel = AshleySubs.createTopTimer( item.item, 4 );
+                speedUpTimerLabel = AshleySubs.createTopTimer( item.item, 2 );
                 break;
 
             case PURPLE_BOTTLE:
@@ -501,7 +501,7 @@ public final class MyPlayer {
                     jumpUpTimerLabel.clear();
                     jumpUpTimerLabel = null;
                 }
-                jumpUpTimerLabel = AshleySubs.createTopTimer( item.item, 5 );
+                jumpUpTimerLabel = AshleySubs.createTopTimer( item.item, 3 );
                 break;
 
             case RED_BOTTLE:

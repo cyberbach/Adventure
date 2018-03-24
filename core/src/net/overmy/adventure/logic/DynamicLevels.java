@@ -121,11 +121,13 @@ public final class DynamicLevels {
                 if ( level.objects != null ) {
                     for ( LevelObject object : level.objects ) {
                         if ( !isModelInAnyCurrentConnections( object.modelAsset ) ) {
-                            if ( !isWeapon( object.modelAsset ) ) {
-                                if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                                    Gdx.app.debug( "unload object", "" + object.modelAsset );
+                            if ( object.modelAsset != null ) {
+                                if ( !isWeapon( object.modelAsset ) ) {
+                                    if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+                                        Gdx.app.debug( "unload object", "" + object.modelAsset );
+                                    }
+                                    object.modelAsset.unload();
                                 }
-                                object.modelAsset.unload();
                             }
                         }
                     }

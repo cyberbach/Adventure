@@ -11,8 +11,8 @@ public class NPCComponent extends TimeComponent {
     public Array< NPCAction > actionArray = new Array< NPCAction >();
 
     public int     currentAction = 0;
-    public boolean attacking     = false;
-    public float damage     = 0.0f;
+    public boolean hunting       = false;
+    public float   damage        = 0.0f;
 
 
     public NPCComponent ( Array< NPCAction > actionArray ) {
@@ -20,9 +20,10 @@ public class NPCComponent extends TimeComponent {
         this.time = actionArray.get( 0 ).durationTime;
     }
 
+
     public NPCComponent ( Array< NPCAction > actionArray, float newDamage ) {
         this.actionArray = actionArray;
         this.time = actionArray.get( 0 ).durationTime;
-        this.damage=newDamage;
+        this.damage = newDamage;
     }
 }

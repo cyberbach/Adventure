@@ -13,8 +13,8 @@ import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextAsset;
 
-public final class ColectableProcessor {
-    private ColectableProcessor () {
+public final class CollectableProcessor {
+    private CollectableProcessor () {
     }
 
 
