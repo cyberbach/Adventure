@@ -48,6 +48,7 @@ public enum ModelAsset {
     COIN( "coin" ),
     GREEN_BOTTLE( "greenbottle" ),
     RED_BOTTLE( "redbottle" ),
+    PURPLE_BOTTLE( "purplebottle" ),
     STUFF( "stuff" ),
 
     BIRD1( "bird1" ),

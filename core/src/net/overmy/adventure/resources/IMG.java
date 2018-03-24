@@ -52,6 +52,7 @@ public enum IMG {
     BSTAR( "bstaricon" ),
     YSTAR( "ystaricon" ),
 
+    PURPLE_BOTTLE( "purplebottle" ),
     RED_BOTTLE( "redbottle" ),
     GREEN_BOTTLE( "greenbottle" ),
     COIN( "coin" ),

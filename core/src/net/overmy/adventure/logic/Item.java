@@ -19,6 +19,7 @@ public enum Item {
 
     GREEN_BOTTLE,
     RED_BOTTLE,
+    PURPLE_BOTTLE,
 
     COIN,
 
@@ -32,7 +33,9 @@ public enum Item {
     GAME_STUFF3( "Третий", "Очень длинное описание третьего предмета", 2 ),
     GAME_STUFF4( "Четвертый предмет", "Описание четвертого", 3 ),
     GAME_STUFF5( "предмет 5", "Описание пятое", 4 ),
-    GAME_STUFF6( "6 предмет", "Описание шестое", 5 ),*/TRIGGER1;
+    GAME_STUFF6( "6 предмет", "Описание шестое", 5 ),*/
+    TRIGGER1,// не забудь взять оружие
+    TRIGGER2;
 
     private TextAsset name = null;
     private TextAsset about = null;
@@ -50,6 +53,7 @@ public enum Item {
         Item.GREEN_BOTTLE.setData( IMG.GREEN_BOTTLE, TextAsset.GREEN_BOTTLE,
                                    TextAsset.GREEN_BOTTLE_ABOUT );
         Item.RED_BOTTLE.setData( IMG.RED_BOTTLE, TextAsset.RED_BOTTLE, TextAsset.RED_BOTTLE_ABOUT );
+        Item.PURPLE_BOTTLE.setData( IMG.PURPLE_BOTTLE, TextAsset.PURPLE_BOTTLE, TextAsset.PURPLE_BOTTLE_ABOUT );
 
         Item.BROOM_WEAPON.setData( IMG.WEAPON1, TextAsset.BROOM_WEAPON,
                                    TextAsset.BROOM_WEAPON_ABOUT );

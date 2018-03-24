@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.resources.SoundAsset;
+import net.overmy.adventure.resources.TextAsset;
 
 public final class ColectableProcessor {
     private ColectableProcessor () {
@@ -21,7 +22,11 @@ public final class ColectableProcessor {
 
         switch ( item ) {
             case TRIGGER1:
-                AshleySubs.createText( "some text" );
+                AshleySubs.createText( TextAsset.HELP1.get() );
+                break;
+
+            case TRIGGER2:
+                AshleySubs.createText( TextAsset.HELP2.get() );
                 break;
 
             case COIN:
@@ -33,6 +38,12 @@ public final class ColectableProcessor {
             case GREEN_BOTTLE:
                 SoundAsset.Collect5.play();
                 AshleySubs.create5greenBubblesFX( position );
+                MyPlayer.addToBag( item );
+                break;
+
+            case PURPLE_BOTTLE:
+                SoundAsset.Collect5.play();
+                AshleySubs.create5StarsFX( position );
                 MyPlayer.addToBag( item );
                 break;
 

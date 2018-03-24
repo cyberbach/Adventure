@@ -16,6 +16,12 @@ class LevelSubs {
     Array< LevelObject > level0objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+        //
+        objects.add( hoverPurpleBottle( -7.6205816f,2.0821836f,-8.869345f ) );
+
+        objects.add( trigger( Item.TRIGGER1, new Vector3( -3.446573f, 1.3729875f, -7.244136f ) ) );
+        objects.add( trigger( Item.TRIGGER2, new Vector3( 5.328025f, 2.2757506f, 3.47663f ) ) );
+
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.BROOM_WEAPON,
                                       ModelAsset.BROOM_WEAPON,
@@ -107,6 +113,11 @@ class LevelSubs {
     }
 
 
+    private LevelObject trigger ( Item item, Vector3 position ) {
+        return new LevelObject( OBJECT_TYPE.TRIGGER, item, position );
+    }
+
+
     Array< LevelObject > level1objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
@@ -178,7 +189,7 @@ class LevelSubs {
         objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
                                       NPCActionQueues.get( 5 ),
                                       ModelAsset.CRAB,//26.918205f, -145.5957f
-                                      new Vector3( 26.918205f,4.0f, -145.5957f ) ) );
+                                      new Vector3( 26.918205f, 4.0f, -145.5957f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
                                       NPCActionQueues.get( 6 ),
@@ -241,30 +252,25 @@ class LevelSubs {
     Array< LevelObject > level4objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
-
-        objects.add( new LevelObject( OBJECT_TYPE.TRIGGER, Item.TRIGGER1,
-                                      new Vector3( -137.9316f,1.0180426f,-407.6164f ) ) );
-
         objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
                                       NPCActionQueues.get( 15 ),
                                       ModelAsset.BIRD2ANGRY,
-                                      new Vector3( -137.9316f,-1.0180426f,-407.6164f ) ) );
+                                      new Vector3( -137.9316f, -1.0180426f, -407.6164f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.NPC,
                                       NPCActionQueues.get( 16 ),
                                       ModelAsset.BIRD1,
-                                      new Vector3( -161.27516f,0.09638158f,-356.9968f ) ) );
+                                      new Vector3( -161.27516f, 0.09638158f, -356.9968f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.NPC,
                                       NPCActionQueues.get( 10 ),
                                       ModelAsset.SHEEP,
-                                      new Vector3( -142.12982f,1.464614f,-368.08258f ) ) );
+                                      new Vector3( -142.12982f, 1.464614f, -368.08258f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.NPC,
                                       NPCActionQueues.get( 11 ),
                                       ModelAsset.SHEEP,
-                                      new Vector3( -139.17807f,1.187504f,-393.3555f ) ) );
-
+                                      new Vector3( -139.17807f, 1.187504f, -393.3555f ) ) );
 
         objects.add( hoverGreenBottle( -134.07967f, 3.0370257f, -367.3695f ) );
         objects.add( hoverCoin( -131.90904f, 3.248974f, -364.48978f ) );
@@ -290,12 +296,12 @@ class LevelSubs {
         objects.add( new LevelObject( OBJECT_TYPE.NPC,
                                       NPCActionQueues.get( 12 ),
                                       ModelAsset.BUTTERFLY,
-                                      new Vector3( -219.61375f,1.9190593f,-400.35522f ) ) );
+                                      new Vector3( -219.61375f, 1.9190593f, -400.35522f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.NPC,
                                       NPCActionQueues.get( 13 ),
                                       ModelAsset.SHEEP,
-                                      new Vector3( -221.7196f,4.9624543f,-426.501f ) ) );
+                                      new Vector3( -221.7196f, 4.9624543f, -426.501f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.WEAPON,
                                       Item.FENCE_WEAPON,
@@ -321,29 +327,29 @@ class LevelSubs {
         return objects;
     }
 
+
     Array< LevelObject > level6objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
-
 
         objects.add( new LevelObject( OBJECT_TYPE.NPC,
                                       NPCActionQueues.get( 14 ),
                                       ModelAsset.BUTTERFLY,
-                                      new Vector3( -40.59898f,1.6375828f,-420.44955f ) ) );
+                                      new Vector3( -40.59898f, 1.6375828f, -420.44955f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.ENEMY,
                                       NPCActionQueues.get( 8 ),
                                       ModelAsset.CRAB,
-                                      new Vector3( -46.878883f,2.9280591f,-410.01724f ) ) );
+                                      new Vector3( -46.878883f, 2.9280591f, -410.01724f ) ) );
 
         objects.add( new LevelObject( OBJECT_TYPE.NPC,
                                       NPCActionQueues.get( 9 ),
                                       ModelAsset.FOX,
-                                      new Vector3( -63.024685f,0.6048689f,-442.56873f ) ) );
+                                      new Vector3( -63.024685f, 0.6048689f, -442.56873f ) ) );
 
-        objects.add( chest( -49.353012f, 1.195226f, -423.57303f, Item.GREEN_STAR) );
-        objects.add( chest( -49.944202f, 1.5459726f, -419.02133f,Item.BLUE_STAR) );
-        objects.add( chest( -49.78418f, 1.7487116f, -411.50516f, Item.RED_BOTTLE) );
-        objects.add( chest( -35.611767f, 1.8290501f, -413.95877f,Item.BROOM_WEAPON ));
+        objects.add( chest( -49.353012f, 1.195226f, -423.57303f, Item.GREEN_STAR ) );
+        objects.add( chest( -49.944202f, 1.5459726f, -419.02133f, Item.BLUE_STAR ) );
+        objects.add( chest( -49.78418f, 1.7487116f, -411.50516f, Item.RED_BOTTLE ) );
+        objects.add( chest( -35.611767f, 1.8290501f, -413.95877f, Item.BROOM_WEAPON ) );
 
         return objects;
     }
@@ -402,6 +408,12 @@ class LevelSubs {
     private LevelObject hoverRedBottle ( float x, float y, float z ) {
         return new LevelObject( OBJECT_TYPE.HOVER_COLLECTABLE, Item.RED_BOTTLE,
                                 ModelAsset.RED_BOTTLE,
+                                new Vector3( x, y, z ) );
+    }
+
+    private LevelObject hoverPurpleBottle ( float x, float y, float z ) {
+        return new LevelObject( OBJECT_TYPE.HOVER_COLLECTABLE, Item.PURPLE_BOTTLE,
+                                ModelAsset.PURPLE_BOTTLE,
                                 new Vector3( x, y, z ) );
     }
 

@@ -38,6 +38,8 @@ public enum TextAsset {
                         "Accelerates movement for 15 seconds" ),
     RED_BOTTLE( "Красный сок", "Red juice" ),
     RED_BOTTLE_ABOUT( "Восполняет здоровье", "Restore health points" ),
+    PURPLE_BOTTLE( "Виноградный компот", "Grape compote" ),
+    PURPLE_BOTTLE_ABOUT( "Большие прыжки на 15 секунд", "Big jumps for 15 seconds" ),
 
     COIN( "Золотая монета", "Gold coin" ),
 
@@ -52,7 +54,11 @@ public enum TextAsset {
             "Это оружие. Очень Очень Очень Очень Очень длинное Очень длинное Очень длинное описание третьего предмета\nУрон:110",
             "This weapon. Very Very Very Very Very Long Very Long Very long description of the third item\nDamage: 110" ),
     FENCE_WEAPON( "Забор", "Fence" ),
-    FENCE_WEAPON_ABOUT( "Это оружие\nУрон:150", "Weapon.\nDamage: 150" ),;
+    FENCE_WEAPON_ABOUT( "Это оружие\nУрон:150", "Weapon.\nDamage: 150" ),
+
+    HELP1( "Не забудь взять оружие!", "Do not forget\nto take the weapon!" ),
+    HELP2( "Зелёные бутылки\nускоряют передвижение!", "Green Bottles\naccelerate the movement!" ),
+    ;
 
     public static boolean russianLocale = true;
     private final String russianText;

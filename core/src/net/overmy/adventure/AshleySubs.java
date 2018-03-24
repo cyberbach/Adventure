@@ -14,9 +14,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 import net.overmy.adventure.ashley.DecalSubs;
@@ -73,48 +75,60 @@ public final class AshleySubs {
     // GUI entities
 
 
-    static Label createSpeedUpTimer ( Item item ) {
+    static Label createTopTimer ( Item item, int numberOfPosition ) {
+
         int iconSize = (int) ( Core.HEIGHT * 0.1f );
-        Image iconImage2 = new Image( TextureAsset.CD.getSprite() );
-        iconImage2.setSize( iconSize, iconSize );
-        iconImage2.setOrigin( iconSize / 2, iconSize / 2 );
-        iconImage2.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
-        iconImage2.addAction( Actions.forever(
+        float offset = iconSize * 1.5f * numberOfPosition;
+        float x = Core.WIDTH - offset - iconSize * 1.5f;
+
+        Group fullGroup = new Group();
+        fullGroup.setPosition( x, Core.HEIGHT - iconSize );
+
+        Image rotateImage = new Image( TextureAsset.CD.getSprite() );
+        rotateImage.setSize( iconSize, iconSize );
+        rotateImage.setOrigin( iconSize / 2, iconSize / 2 );
+        rotateImage.addAction( Actions.forever(
                 Actions.sequence(
                         Actions.rotateTo( 0, 0 ),
                         Actions.rotateTo( 360.0f, 2.0f )
                                 )
-                                             ) );
+                                              ) );
+        rotateImage.setPosition( -iconSize/2,-iconSize );
 
         Image iconImage = item.getImage( iconSize, iconSize );
-        iconImage.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
+        iconImage.setOrigin( iconSize / 2, iconSize / 2 );
+        iconImage.setPosition( -iconSize/2,0 );
 
-        ActorComponent actorComponent = new ActorComponent();
-        actorComponent.group.addActor( iconImage2 );
-        actorComponent.group.addActor( iconImage );
+        Label label = UIHelper.Label( "16", FontAsset.DIALOG_VARIANT );
+        label.setPosition( -label.getWidth() / 2, -label.getHeight() / 2 - iconSize/2 );
 
-        Label speedUpTimerLabel = UIHelper.Label( "16", FontAsset.DIALOG_VARIANT );
-        GlyphLayout layout = speedUpTimerLabel.getGlyphLayout();
-        speedUpTimerLabel.setPosition(
-                Core.WIDTH - iconSize * 2.5f - layout.width / 2,
-                Core.HEIGHT - iconSize * 1.5f - layout.height );
-        actorComponent.group.addActor( speedUpTimerLabel );
+        fullGroup.addActor( rotateImage );
+        fullGroup.addActor( iconImage );
+        fullGroup.addActor( label );
+
+        // build
 
         Entity timerEntity = AshleyWorld.getPooledEngine().createEntity();
-        timerEntity.add( actorComponent );
+        timerEntity.add( new ActorComponent( fullGroup ) );
         timerEntity.add( new RemoveByTimeComponent( 15 ) );
         AshleyWorld.getPooledEngine().addEntity( timerEntity );
 
-        return speedUpTimerLabel;
+        return label;
     }
 
-    public static void createText ( String myText ) {
-        Label text = UIHelper.Label( myText,FontAsset.IVENTORY_ITEM );
-        text.setPosition( Core.WIDTH_HALF,Core.HEIGHT_HALF );
 
+    public static void createText ( String myText ) {
+        Label text = UIHelper.Label( myText, FontAsset.IVENTORY_ITEM );
+        text.setAlignment( Align.center );
+        text.setWrap( true );
+
+        Group textGroup = UIHelper.convertActorToGroup( text );
+        textGroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT * 0.8f );
+        textGroup.setScale( 0, 0 );
+        UIHelper.scaleIn( textGroup );
 
         Entity timerEntity = AshleyWorld.getPooledEngine().createEntity();
-        timerEntity.add( new ActorComponent( UIHelper.convertActorToGroup( text ) ) );
+        timerEntity.add( new ActorComponent( textGroup ) );
         timerEntity.add( new RemoveByTimeComponent( 5 ) );
         AshleyWorld.getPooledEngine().addEntity( timerEntity );
     }
@@ -181,7 +195,7 @@ public final class AshleySubs {
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( new AnimationComponent( modelInstance ) );
         entity.add( new GroundedComponent() );
-        entity.add( new LifeComponent( 100.0f,1,2 ) );
+        entity.add( new LifeComponent( 100.0f, 1, 2 ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.MYPLAYER ) );
         entity.add( new MyPlayerComponent() );
 
@@ -374,7 +388,7 @@ public final class AshleySubs {
                         BulletWorld.GROUND_FLAG | BulletWorld.NPC_FLAG | BulletWorld.PLAYER_FLAG )
                 .disableDeactivation();
 
-        PhysicalComponent physicalComponent=physicalBuilderNPC.buildPhysicalComponent();
+        PhysicalComponent physicalComponent = physicalBuilderNPC.buildPhysicalComponent();
         physicalComponent.body.setRollingFriction( 0.1f );
         physicalComponent.body.setFriction( 0.1f );
         physicalComponent.body.setSpinningFriction( 0.1f );
@@ -744,6 +758,6 @@ public final class AshleySubs {
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.COLLECTABLE ) );
         pooledEngine.addEntity( entity );
 
-        return  entity;
+        return entity;
     }
 }

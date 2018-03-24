@@ -21,10 +21,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.AnimationComponent;
-import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
+import net.overmy.adventure.ashley.components.EntityTypeComponent;
 import net.overmy.adventure.ashley.components.MyWeaponComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
-import net.overmy.adventure.ashley.components.EntityTypeComponent;
+import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
@@ -197,8 +197,7 @@ public final class MyPlayer {
         final boolean playerOnGround = MyMapper.GROUNDED.get( playerEntity ).grounded;
 
         // Двигаем или останавливаем физическое тело
-        velocity.set( direction.x, 0 + extraJump, direction.y );
-        extraJump = 0.0f;
+        velocity.set( direction.x, 0, direction.y );
         velocity.scl( speed );
         if ( !onLadder ) {
             velocity.add( 0, playerBody.getLinearVelocity().y, 0 );
@@ -210,8 +209,8 @@ public final class MyPlayer {
 
         if ( jump && !attack ) {
             if ( playerOnGround ) {
-                final float jumpSpeed = 148.0f;
-                velocity.set( direction.x, jumpSpeed, direction.y );
+                final float jumpPower = 150.0f + extraJump;
+                velocity.set( direction.x, jumpPower, direction.y );
                 //body.setLinearVelocity( velocity );
                 playerBody.applyCentralImpulse( velocity );
 
@@ -287,14 +286,24 @@ public final class MyPlayer {
         speedUpTime -= deltaTime;
         float extraSpeed = 0.0f;
         if ( speedUpTime > 0 ) {
-            int textSpeed = (int) speedUpTime + 1;
-            speedUpTimerLabel.setText( "" + textSpeed );
+            int textOfTimer = (int) speedUpTime + 1;
+            speedUpTimerLabel.setText( "" + textOfTimer );
             GlyphLayout layout = speedUpTimerLabel.getGlyphLayout();
             int iconSize = (int) ( Core.HEIGHT * 0.1f );
-            speedUpTimerLabel.setPosition(
-                    Core.WIDTH - iconSize * 2.5f - layout.width / 2,
-                    Core.HEIGHT - iconSize * 1.5f - layout.height );
+            speedUpTimerLabel.setPosition( -layout.width / 2, -layout.height / 2 - iconSize / 2 );
             extraSpeed = 5.0f;
+        }
+
+        jumpUpTime -= deltaTime;
+        if ( jumpUpTime > 0 ) {
+            int textOfTimer = (int) jumpUpTime + 1;
+            jumpUpTimerLabel.setText( "" + textOfTimer );
+            GlyphLayout layout = jumpUpTimerLabel.getGlyphLayout();
+            int iconSize = (int) ( Core.HEIGHT * 0.1f );
+            jumpUpTimerLabel.setPosition( -layout.width / 2, -layout.height / 2 - iconSize / 2 );
+            extraJump = 150.0f;
+        } else {
+            extraJump = 0.0f;
         }
 
         final float directionLen = direction.len();
@@ -436,9 +445,11 @@ public final class MyPlayer {
     }
 
 
-    private static float speedUpTime = 0.0f;
-
+    private static float speedUpTime       = 0.0f;
     private static Label speedUpTimerLabel = null;
+
+    private static float jumpUpTime       = 0.0f;
+    private static Label jumpUpTimerLabel = null;
 
 
     public static void useItemInBag ( ItemInBagg item ) {
@@ -477,15 +488,22 @@ public final class MyPlayer {
         switch ( item.item ) {
             case GREEN_BOTTLE:
                 speedUpTime = 15.0f;
-
                 if ( speedUpTimerLabel != null ) {
                     speedUpTimerLabel.clear();
                     speedUpTimerLabel = null;
                 }
-
-                speedUpTimerLabel = AshleySubs.createSpeedUpTimer( item.item );
-
+                speedUpTimerLabel = AshleySubs.createTopTimer( item.item, 4 );
                 break;
+
+            case PURPLE_BOTTLE:
+                jumpUpTime = 15.0f;
+                if ( jumpUpTimerLabel != null ) {
+                    jumpUpTimerLabel.clear();
+                    jumpUpTimerLabel = null;
+                }
+                jumpUpTimerLabel = AshleySubs.createTopTimer( item.item, 5 );
+                break;
+
             case RED_BOTTLE:
                 MyMapper.LIFE.get( playerEntity ).life = 100;
 

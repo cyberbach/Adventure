@@ -6,28 +6,28 @@ filter: Nearest,Nearest
 repeat: none
 aim
   rotate: false
-  xy: 583, 355
+  xy: 550, 420
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 autorepair
   rotate: false
-  xy: 453, 355
+  xy: 258, 258
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 bstaricon
   rotate: false
-  xy: 163, 98
+  xy: 583, 355
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 98, 33
+  xy: 713, 290
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -55,91 +55,91 @@ cloud3
   index: -1
 cog
   rotate: false
-  xy: 388, 290
+  xy: 98, 98
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 coin
   rotate: false
-  xy: 258, 323
+  xy: 745, 420
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 conversation
   rotate: false
-  xy: 713, 355
+  xy: 258, 323
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 files
   rotate: false
-  xy: 323, 323
+  xy: 163, 163
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 fullfolder
   rotate: false
-  xy: 453, 290
+  xy: 420, 420
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 greenbottle
   rotate: false
-  xy: 648, 355
+  xy: 615, 420
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 gstaricon
   rotate: false
-  xy: 940, 420
+  xy: 713, 355
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 hit
   rotate: false
-  xy: 323, 258
+  xy: 518, 355
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 horizontalflip
   rotate: false
-  xy: 550, 420
+  xy: 518, 290
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 ingame
   rotate: false
-  xy: 420, 420
+  xy: 388, 355
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 jump
   rotate: false
-  xy: 875, 420
+  xy: 648, 290
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 openbook
   rotate: false
-  xy: 163, 33
+  xy: 98, 163
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 openfolder
   rotate: false
-  xy: 388, 355
+  xy: 355, 420
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -153,49 +153,56 @@ pad
   index: -1
 particle
   rotate: false
-  xy: 713, 322
+  xy: 778, 387
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
+purplebottle
+  rotate: false
+  xy: 485, 420
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 redbottle
   rotate: false
-  xy: 163, 163
+  xy: 323, 323
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 shoppingcart
   rotate: false
-  xy: 648, 290
+  xy: 680, 420
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 soundoff
   rotate: false
-  xy: 518, 355
+  xy: 163, 98
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 soundon
   rotate: false
-  xy: 810, 420
+  xy: 583, 290
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 speaker
   rotate: false
-  xy: 583, 290
+  xy: 163, 33
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 speakeroff
   rotate: false
-  xy: 98, 163
+  xy: 875, 420
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -209,91 +216,91 @@ starpart
   index: -1
 talk
   rotate: false
-  xy: 355, 420
+  xy: 810, 420
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 tri1
   rotate: false
-  xy: 228, 211
+  xy: 258, 241
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 tri2
   rotate: false
-  xy: 388, 273
+  xy: 1005, 468
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 tri3
   rotate: false
-  xy: 258, 241
+  xy: 228, 211
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 tri4
   rotate: false
-  xy: 1005, 468
+  xy: 355, 403
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 tri5
   rotate: false
-  xy: 355, 403
+  xy: 388, 273
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 usable
   rotate: false
-  xy: 615, 420
+  xy: 453, 355
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 verticalflip
   rotate: false
-  xy: 680, 420
+  xy: 453, 290
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 weapon1
   rotate: false
-  xy: 485, 420
+  xy: 98, 33
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 weapon2
   rotate: false
-  xy: 98, 98
+  xy: 648, 355
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 weapon3
   rotate: false
-  xy: 745, 420
+  xy: 388, 290
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 weapon4
   rotate: false
-  xy: 258, 258
+  xy: 323, 258
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 ystaricon
   rotate: false
-  xy: 518, 290
+  xy: 940, 420
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
