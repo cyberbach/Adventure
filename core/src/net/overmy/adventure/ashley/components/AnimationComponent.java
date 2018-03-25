@@ -33,7 +33,8 @@ public class AnimationComponent implements Component {
         float duration = animations.get( n ).duration * newSpeed;
         controller.animate( animations.get( n ).id, 1, duration, null, 0f );
     }
-    
+
+
     public String getID() {
         if ( controller.current != null ) { return controller.current.animation.id; }
         else { return ""; }

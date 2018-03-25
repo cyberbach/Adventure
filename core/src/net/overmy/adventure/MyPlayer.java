@@ -154,7 +154,7 @@ public final class MyPlayer {
                 .boxShape( 0.2f )
                 .setCollisionFlag( btCollisionObject.CollisionFlags.CF_NO_CONTACT_RESPONSE )
                 .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
-                .setCallbackFilter( BulletWorld.ALL_FLAG )
+                .setCallbackFilter( BulletWorld.FILTER_ALL )
                 .disableDeactivation();
 
         entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
@@ -537,7 +537,7 @@ public final class MyPlayer {
                         .hullShape()
                         .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .setCallbackFilter( BulletWorld.FILTER_ALL )
                         .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
@@ -566,7 +566,7 @@ public final class MyPlayer {
                         .hullShape()
                         .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .setCallbackFilter( BulletWorld.FILTER_ALL )
                         .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
@@ -595,7 +595,7 @@ public final class MyPlayer {
                         .hullShape()
                         .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .setCallbackFilter( BulletWorld.FILTER_ALL )
                         .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
@@ -624,7 +624,7 @@ public final class MyPlayer {
                         .hullShape()
                         .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .setCallbackFilter( BulletWorld.FILTER_ALL )
                         .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
@@ -653,7 +653,7 @@ public final class MyPlayer {
                         .hullShape()
                         .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                         .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
-                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .setCallbackFilter( BulletWorld.FILTER_ALL )
                         .disableDeactivation();
 
                 entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();

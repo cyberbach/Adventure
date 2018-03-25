@@ -126,7 +126,7 @@ public class MenuScreen extends Base2DScreen {
                                              ) );
         introGroup.addActor( titleGroup );
 
-        final boolean canResume = ( MyPlayer.getBody() != null && MyPlayer.live ) || DynamicLevels.getCurrent() != 0;
+        final boolean canResume = MyPlayer.live || DynamicLevels.getCurrent() != 0;
 
         final float labelPosX = Core.WIDTH * 0.75f;
         final float label2PosY = Core.HEIGHT * 0.23f;
@@ -173,6 +173,24 @@ public class MenuScreen extends Base2DScreen {
             }
         } );
 
+        if ( canResume ) {
+            UIHelper.rollIn( resumeLabel, rightPosX, label3PosY, labelPosX, label3PosY );
+            resumeLabel.addListener( new ClickListener() {
+                @Override
+                public void clicked ( InputEvent event, float x, float y ) {
+                    SoundAsset.Click.play();
+                    UIHelper.clickAnimation( resumeLabel );
+                    UIHelper.rollOut( startLabel, labelPosX, label1PosY, leftPosX, label1PosY );
+                    UIHelper.rollOut( settingsLabel, labelPosX, label2PosY, leftPosX, label2PosY );
+                    UIHelper.rollOut( resumeLabel, labelPosX, label3PosY, leftPosX, label3PosY );
+
+                    transitionTo( MyGdxGame.SCREEN_TYPE.LOADING_GAME );
+
+                    UIHelper.rollOut( titleGroup,Core.WIDTH_HALF, Core.HEIGHT*0.8f,Core.WIDTH_HALF, Core.HEIGHT*1.5f );
+                }
+            } );
+        }
+
         UIHelper.rollIn( settingsLabel, rightPosX, label2PosY, labelPosX, label2PosY );
         settingsLabel.addListener( new ClickListener() {
             @Override
@@ -186,22 +204,6 @@ public class MenuScreen extends Base2DScreen {
                 showSettingsGUI();
             }
         } );
-
-        if ( canResume ) {
-            UIHelper.rollIn( resumeLabel, rightPosX, label3PosY, labelPosX, label3PosY );
-            resumeLabel.addListener( new ClickListener() {
-                @Override
-                public void clicked ( InputEvent event, float x, float y ) {
-                    SoundAsset.Click.play();
-                    UIHelper.clickAnimation( startLabel );
-                    UIHelper.rollOut( startLabel, labelPosX, label1PosY, leftPosX, label1PosY );
-                    UIHelper.rollOut( settingsLabel, labelPosX, label2PosY, leftPosX, label2PosY );
-                    UIHelper.rollOut( resumeLabel, labelPosX, label3PosY, leftPosX, label3PosY );
-                    transitionTo( MyGdxGame.SCREEN_TYPE.LOADING_GAME );
-                    UIHelper.rollOut( titleGroup,Core.WIDTH_HALF, Core.HEIGHT*0.8f,Core.WIDTH_HALF, Core.HEIGHT*1.5f );
-                }
-            } );
-        }
     }
 
 

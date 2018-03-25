@@ -184,7 +184,7 @@ public final class AshleySubs {
                 .capsuleShape()
                 .setCollisionFlag( btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.PLAYER_FLAG )
-                .setCallbackFilter( BulletWorld.ALL_FLAG )
+                .setCallbackFilter( BulletWorld.FILTER_ALL )
                 .disableDeactivation();
 
         PhysicalComponent physicalComponent = physicalBuilder.buildPhysicalComponent();
@@ -215,7 +215,7 @@ public final class AshleySubs {
                     .bvhShape()
                     .setCollisionFlag( CollisionFlags.CF_STATIC_OBJECT )
                     .setCallbackFlag( BulletWorld.GROUND_FLAG )
-                    .setCallbackFilter( BulletWorld.ALL_FLAG );
+                    .setCallbackFilter( BulletWorld.FILTER_ALL );
         }
 
         Entity entity = pooledEngine.createEntity();
@@ -318,7 +318,12 @@ public final class AshleySubs {
     public static Entity createHoverCollectable ( Vector3 position,
                                                   Item item,
                                                   LevelObject object ) {
+
+        //Gdx.app.debug( "",""+item.getModelAsset() );
+
         ModelInstance modelInstanceHOVER_COLLECTABLE = item.getModelAsset().get();
+        //Gdx.app.debug( "",""+modelInstanceHOVER_COLLECTABLE );
+        ///Gdx.app.debug( "",""+position );
         modelInstanceHOVER_COLLECTABLE.transform.setToTranslation( position );
 
 /*
@@ -419,8 +424,7 @@ public final class AshleySubs {
                 .capsuleShape()
                 .setCollisionFlag( CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.NPC_FLAG )
-                .setCallbackFilter(
-                        BulletWorld.GROUND_FLAG | BulletWorld.NPC_FLAG | BulletWorld.PLAYER_FLAG | BulletWorld.MYWEAPON_FLAG )
+                .setCallbackFilter(BulletWorld.FILTER_ENEMY )
                 .disableDeactivation();
 
         float damage = 1.0f;

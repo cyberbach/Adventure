@@ -204,9 +204,15 @@ public final class DynamicLevels {
             if ( level.objects != null ) {
                 // Загружаем объекты на уровне
                 for ( LevelObject object : level.objects ) {
+/*
+                    if ( object.item != null ) {
+                        object.modelAsset = object.item.getModelAsset();
+                    }
+*/
+
                     if ( object.modelAsset != null ) {
                         if ( !isWeapon( object.modelAsset ) ) {
-                            object.modelAsset.load();
+                                object.modelAsset.load();
                         }
                     }
                 }
@@ -231,11 +237,18 @@ public final class DynamicLevels {
 
             if ( level.objects != null ) {
                 for ( LevelObject object : level.objects ) {
+                    /*if ( object.item != null ) {
+                        object.modelAsset = object.item.getModelAsset();
+                    }*/
+
                     if ( object.modelAsset != null ) {
                         if ( !isWeapon( object.modelAsset ) ) {
-                            object.buildModel();
+                            if ( object.entity == null && !object.used ) {
+                                object.modelAsset.build();
+                            }
                         }
                     }
+
                     object.buildEntity();
                 }
             }
@@ -250,7 +263,6 @@ public final class DynamicLevels {
                modelAsset.equals( ModelAsset.FENCE_WEAPON )
                 ;
     }
-
 
     public static void update ( float delta ) {
         if ( needToUpdate ) {
@@ -277,14 +289,6 @@ public final class DynamicLevels {
                     Gdx.app.debug( "unloadDelay", "tick" );
                 }
 
-                // PLAY MUSIC
-                if ( current < 3 ) {
-                    MusicAsset.WINDFILTER.play( true );
-                    //MusicAsset.FOREST.stop();
-                } else {
-                    MusicAsset.WINDFILTER.stop();
-                    //MusicAsset.FOREST.play( true );
-                }
 
                 // Здесь ненужные модели добавляются в стэк удаления менеджера Assets
                 removeNotMatchModels();

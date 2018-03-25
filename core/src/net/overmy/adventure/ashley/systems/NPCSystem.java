@@ -70,6 +70,7 @@ public class NPCSystem extends IteratingSystem {
     @Override
     protected void processEntity ( Entity entity, float delta ) {
         NPCComponent npcComponent = MyMapper.NPC.get( entity );
+
         int action = npcComponent.currentAction;
 
         boolean needToSkip = MyMapper.SKIP.has( entity );
@@ -79,10 +80,6 @@ public class NPCSystem extends IteratingSystem {
         }
 
         NPCAction npcAction;
-
-        if ( npcComponent.hurt ) {
-            Gdx.app.debug( "", "HURT -----------" );
-        }
 
         if ( npcComponent.time < 0 ) {
 
@@ -176,21 +173,32 @@ public class NPCSystem extends IteratingSystem {
         String ID_IDLE = "IDLE";
         String ID_ATTACK = "ATTACK";
         String ID_HURT = "HURT";
+        String ID_DIE = "DIE";
 
         boolean npcInIDLE = ID_IDLE.equals( ID_CURRENT );
         boolean npcIsRunning = ID_RUN.equals( ID_CURRENT );
         boolean npcIsAttacking = ID_ATTACK.equals( ID_CURRENT );
         boolean npcIsHurt = ID_HURT.equals( ID_CURRENT );
-
-        if ( !npcIsHurt && needToSkip ) {
-            entity.remove( SkipActionComponent.class );
-        }
+        boolean npcIsDie = ID_DIE.equals( ID_CURRENT );
 
         int IDLE = 0;
         int RUN = 1;
         int ATTACK = 2;
         int HURT = 3;
         int DIE = 4;
+
+        if ( npcComponent.die ) {
+            if ( !npcIsDie ) {
+                animationComponent.play( DIE, 1.0f );
+                return;
+            } else {
+                return;
+            }
+        }
+
+        if ( !npcIsHurt && needToSkip ) {
+            entity.remove( SkipActionComponent.class );
+        }
         float speed = 0.0f;
 
         boolean animationForced = forceAnimate != -1;
@@ -250,7 +258,7 @@ public class NPCSystem extends IteratingSystem {
         }
 
         if ( npcComponent.hurt ) {
-            animationComponent.play( HURT, 2.0f );
+            animationComponent.play( HURT, 1.0f );
             npcComponent.hurt = false;
         }
 

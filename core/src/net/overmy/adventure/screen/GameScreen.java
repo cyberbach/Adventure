@@ -127,6 +127,8 @@ public class GameScreen extends Base2DScreen {
 
             MyRender.getStage().addActor( ingameMenuTitle );
         }
+
+        MusicAsset.WINDFILTER.play( true );
     }
 
 
@@ -284,7 +286,7 @@ public class GameScreen extends Base2DScreen {
             }
         }
 
-        if ( DEBUG.SHOW_FPS.get() ) {
+        if ( DEBUG.FPS.get() ) {
             if ( TimeUtils.nanoTime() - startTime > 1000000000 ) /* 1,000,000,000ns == one second */ {
                 log.setLength( 0 );
                 log.append( "▓▒░ FPS = " );

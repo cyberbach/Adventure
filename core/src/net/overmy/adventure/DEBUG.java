@@ -9,15 +9,15 @@ public enum DEBUG {
     SETTINGS( false ),
 
     CONTACTS( false ),
-    ENTITIES( false ),
+    ENTITIES( true ),
     DECAL_ENTITIES( false ),
     PHYSICAL_MESH( false ),
-    SHOW_FPS( true ),
+    FPS( false ),
     SHOW_MODEL_INFO( false ),
     STAGE( false ),
-    DYNAMIC_LEVELS( false ),
+    DYNAMIC_LEVELS( true ),
     NPC_ACTIONS( false ),
-    GAME_MASTER_MODE( false ),
+    GAME_MASTER_MODE( true ),
 
     ENABLE_ENGLISH_TEXT( false ),
     ;

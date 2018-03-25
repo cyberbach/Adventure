@@ -49,6 +49,8 @@ public class MyGdxGame implements ApplicationListener {
         MyRender.init();// Здесь создание всех камер (2д и 3д) и всех батчей (2д, 3д и Декали)
         AshleyWorld.init();
 
+        MyPlayer.clearAll();
+
         // Создание и загрузка уровней
         DynamicLevels.init();
 

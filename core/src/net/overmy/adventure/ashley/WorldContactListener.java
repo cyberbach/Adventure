@@ -11,13 +11,13 @@ import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.MyPlayer;
-import net.overmy.adventure.ashley.components.SkipActionComponent;
-import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.ashley.components.LevelIDComponent;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
+import net.overmy.adventure.ashley.components.SkipActionComponent;
+import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.logic.CollectableProcessor;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
@@ -56,7 +56,7 @@ public class WorldContactListener extends ContactListener {
         }
 
         if ( !m1 || !m2 ) {
-            if ( DEBUG.CONTACTS.get() ){
+            if ( DEBUG.CONTACTS.get() ) {
                 Gdx.app.debug( "onContactProcessed", "drop" );
             }
             return;
@@ -105,7 +105,7 @@ public class WorldContactListener extends ContactListener {
         }
 
         if ( !m1 || !m2 ) {
-            if ( DEBUG.CONTACTS.get() ){
+            if ( DEBUG.CONTACTS.get() ) {
                 Gdx.app.debug( "onContactEnded", "drop" );
             }
             return;
@@ -153,9 +153,6 @@ public class WorldContactListener extends ContactListener {
 
         boolean contact1Player = type1.equals( TYPE_OF_ENTITY.MYPLAYER );
         boolean contact2Player = type2.equals( TYPE_OF_ENTITY.MYPLAYER );
-
-        boolean contact2MyWeapon = type2.equals( TYPE_OF_ENTITY.WEAPON );
-        boolean contact1MyWeapon = type1.equals( TYPE_OF_ENTITY.WEAPON );
         boolean contact1Ground = type1.equals( TYPE_OF_ENTITY.GROUND );
         boolean contact2Ground = type2.equals( TYPE_OF_ENTITY.GROUND );
         boolean contact1DestroyableBox = type1.equals( TYPE_OF_ENTITY.DESTROYABLE_BOX );
@@ -194,6 +191,8 @@ public class WorldContactListener extends ContactListener {
             return;
         }
 
+        boolean contact2MyWeapon = type2.equals( TYPE_OF_ENTITY.WEAPON );
+        boolean contact1MyWeapon = type1.equals( TYPE_OF_ENTITY.WEAPON );
         boolean contact2NPC = type2.equals( TYPE_OF_ENTITY.NPC );
         boolean contact1NPC = type1.equals( TYPE_OF_ENTITY.NPC );
         boolean contact1DestroyableRock = type1.equals( TYPE_OF_ENTITY.DESTROYABLE_ROCK );
@@ -225,7 +224,7 @@ public class WorldContactListener extends ContactListener {
             }
         }
 
-        if ( contact1NPC && contact2Player || contact2NPC && contact1Player ) {
+        if ( ( contact1NPC && contact2Player ) || ( contact2NPC && contact1Player ) ) {
             // мы получаем урон от Enemy
             if ( MyMapper.NPC.has( entity01 ) ) {
                 NPCComponent component = MyMapper.NPC.get( entity01 );
@@ -274,14 +273,15 @@ public class WorldContactListener extends ContactListener {
             return;
         }
 
-        if ( contact2MyWeapon && !contact1Player && MyPlayer.isAttacking ) {
-            if ( !contact1Ladder && !contact1Ground ) {
-                MyPlayer.isAttacking = false;
-                btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
-                btRigidBody body2 = MyMapper.PHYSICAL.get( entity02 ).body;
+        if ( MyPlayer.isAttacking ) {
+            btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
+            btRigidBody body2 = MyMapper.PHYSICAL.get( entity02 ).body;
 
-                body1.getWorldTransform().getTranslation( tempPosition1 );
-                body2.getWorldTransform().getTranslation( tempPosition2 );
+            body1.getWorldTransform().getTranslation( tempPosition1 );
+            body2.getWorldTransform().getTranslation( tempPosition2 );
+
+            if ( contact2MyWeapon && !contact1Player ) {
+                MyPlayer.isAttacking = false;
 
                 AshleySubs.create5StarsFX( tempPosition1 );
 
@@ -296,30 +296,25 @@ public class WorldContactListener extends ContactListener {
 
                         if ( contact1NPC ) {
                             NPCComponent component = MyMapper.NPC.get( entity01 );
-                            entity01.add( new SkipActionComponent() );
-                            component.hunting=false;
-                            component.hurt=true;
+                            if ( !component.die ) {
+                                entity01.add( new SkipActionComponent() );
+                                component.hunting = false;
+                                component.hurt = true;
 
-                            if ( MathUtils.randomBoolean() ) {
-                                SoundAsset.HURT3.play();
-                            } else {
-                                SoundAsset.HURT4.play();
+                                if ( MathUtils.randomBoolean() ) {
+                                    SoundAsset.HURT3.play();
+                                } else {
+                                    SoundAsset.HURT4.play();
+                                }
                             }
                         }
                     }
                 }
                 return;
             }
-        }
 
-        if ( contact1MyWeapon && !contact2Player && MyPlayer.isAttacking ) {
-            if ( !contact2Ladder && !contact2Ground ) {
+            if ( contact1MyWeapon && !contact2Player ) {
                 MyPlayer.isAttacking = false;
-                btRigidBody body1 = MyMapper.PHYSICAL.get( entity01 ).body;
-                btRigidBody body2 = MyMapper.PHYSICAL.get( entity02 ).body;
-
-                body1.getWorldTransform().getTranslation( tempPosition1 );
-                body2.getWorldTransform().getTranslation( tempPosition2 );
 
                 AshleySubs.create5StarsFX( tempPosition2 );
 
@@ -334,14 +329,16 @@ public class WorldContactListener extends ContactListener {
 
                         if ( contact2NPC ) {
                             NPCComponent component = MyMapper.NPC.get( entity02 );
-                            entity02.add( new SkipActionComponent() );
-                            component.hunting=false;
-                            component.hurt=true;
+                            if ( !component.die ) {
+                                entity02.add( new SkipActionComponent() );
+                                component.hunting = false;
+                                component.hurt = true;
 
-                            if ( MathUtils.randomBoolean() ) {
-                                SoundAsset.HURT3.play();
-                            } else {
-                                SoundAsset.HURT4.play();
+                                if ( MathUtils.randomBoolean() ) {
+                                    SoundAsset.HURT3.play();
+                                } else {
+                                    SoundAsset.HURT4.play();
+                                }
                             }
                         }
                     }
@@ -365,8 +362,6 @@ public class WorldContactListener extends ContactListener {
         }
 
         boolean contact1Player = type1.equals( TYPE_OF_ENTITY.MYPLAYER );
-        boolean contact2Player = type2.equals( TYPE_OF_ENTITY.MYPLAYER );
-        boolean contact1Ground = type1.equals( TYPE_OF_ENTITY.GROUND );
         boolean contact2Ground = type2.equals( TYPE_OF_ENTITY.GROUND );
 
         if ( contact1Player && contact2Ground ) {
@@ -377,6 +372,9 @@ public class WorldContactListener extends ContactListener {
             }
             return;
         }
+
+        boolean contact2Player = type2.equals( TYPE_OF_ENTITY.MYPLAYER );
+        boolean contact1Ground = type1.equals( TYPE_OF_ENTITY.GROUND );
 
         if ( contact2Player && contact1Ground ) {
             MyMapper.GROUNDED.get( entity02 ).grounded = false;

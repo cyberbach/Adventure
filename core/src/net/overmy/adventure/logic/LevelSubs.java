@@ -28,7 +28,7 @@ class LevelSubs {
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.WEAPON )
-                             .setItem( Item.PILLOW_WEAPON )
+                             .setItem( Item.BROOM_WEAPON )
                              .setPosition( new Vector3( -2.566254f, 0.0907035f, -4.6540112f ) ) );
 
         objects.add( new LevelObject()
@@ -118,13 +118,6 @@ class LevelSubs {
         return objects;
     }
 
-
-    private LevelObject trigger ( Item item, Vector3 position ) {
-        return new LevelObject()
-                .setType( OBJECT_TYPE.TRIGGER )
-                .setItem( item )
-                .setPosition( position );
-    }
 
 
     Array< LevelObject > level1objects () {
@@ -384,8 +377,8 @@ class LevelSubs {
     private LevelObject box ( float x, float y, float z, Item itemInBox ) {
         return new LevelObject()
                 .setType( OBJECT_TYPE.BOX )
-                .setItem( itemInBox )
                 .setModelAsset( ModelAsset.CRATE )
+                .setItem( itemInBox )
                 .setPosition( new Vector3( x, y, z ) );
     }
 
@@ -401,16 +394,16 @@ class LevelSubs {
     private LevelObject chest ( float x, float y, float z, Item itemInChest ) {
         return new LevelObject()
                 .setType( OBJECT_TYPE.BOX )
-                .setItem( itemInChest )
                 .setModelAsset( ModelAsset.CHEST )
+                .setItem( itemInChest )
                 .setPosition( new Vector3( x, y, z ) );
     }
 
 
     private LevelObject chest ( float x, float y, float z ) {
         return new LevelObject()
-                .setType( OBJECT_TYPE.BOX )
                 .setModelAsset( ModelAsset.CHEST )
+                .setType( OBJECT_TYPE.BOX )
                 .setPosition( new Vector3( x, y, z ) );
     }
 
@@ -426,6 +419,7 @@ class LevelSubs {
     private LevelObject hoverCoin ( float x, float y, float z ) {
         return new LevelObject()
                 .setType( OBJECT_TYPE.HOVER_COLLECTABLE )
+                .setModelAsset( ModelAsset.COIN )
                 .setItem( Item.COIN )
                 .setPosition( new Vector3( x, y, z ) );
     }
@@ -434,6 +428,7 @@ class LevelSubs {
     private LevelObject hoverGreenBottle ( float x, float y, float z ) {
         return new LevelObject()
                 .setType( OBJECT_TYPE.HOVER_COLLECTABLE )
+                .setModelAsset( ModelAsset.GREEN_BOTTLE )
                 .setItem( Item.GREEN_BOTTLE )
                 .setPosition( new Vector3( x, y, z ) );
     }
@@ -442,6 +437,7 @@ class LevelSubs {
     private LevelObject hoverRedBottle ( float x, float y, float z ) {
         return new LevelObject()
                 .setType( OBJECT_TYPE.HOVER_COLLECTABLE )
+                .setModelAsset( ModelAsset.RED_BOTTLE )
                 .setItem( Item.RED_BOTTLE )
                 .setPosition( new Vector3( x, y, z ) );
     }
@@ -450,6 +446,7 @@ class LevelSubs {
     private LevelObject hoverPurpleBottle ( float x, float y, float z ) {
         return new LevelObject()
                 .setType( OBJECT_TYPE.HOVER_COLLECTABLE )
+                .setModelAsset( ModelAsset.PURPLE_BOTTLE )
                 .setItem( Item.PURPLE_BOTTLE )
                 .setPosition( new Vector3( x, y, z ) );
     }
@@ -461,4 +458,13 @@ class LevelSubs {
                 .setPosition( pos )
                 .setHeightOfLadder( height );
     }
+
+
+    private LevelObject trigger ( Item item, Vector3 position ) {
+        return new LevelObject()
+                .setType( OBJECT_TYPE.TRIGGER )
+                .setItem( item )
+                .setPosition( position );
+    }
+
 }

@@ -83,7 +83,12 @@ public class LifeSystem extends IteratingSystem {
             // === Здесь ENTITY умирает ===
             // Это чтобы компонент не пересоздавался при смене локаций
             if ( MyMapper.LEVEL_OBJECT.has( entity ) ) {
-                MyMapper.LEVEL_OBJECT.get( entity ).levelObject.useEntity();
+                if ( MyMapper.TYPE.get( entity ).type.equals( TYPE_OF_ENTITY.NPC ) ) {
+                    MyMapper.NPC.get( entity ).die = true;
+                    entity.add( new RemoveByTimeComponent( 1.0f ) );
+                } else {
+                    MyMapper.LEVEL_OBJECT.get( entity ).levelObject.useEntity();
+                }
             } else {
                 entity.add( new RemoveByTimeComponent( 0 ) );
                 if ( TYPE_OF_ENTITY.MYPLAYER.equals( typeOfEntity ) ) {

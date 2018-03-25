@@ -20,11 +20,11 @@ public class LevelObject {
     public    ModelAsset         modelAsset     = null;
     protected Vector3            position       = null;
     private   OBJECT_TYPE        type           = null;
-    private   Item               item           = null;
+    public    Item               item           = null;
     private   TextInteract       textInteract   = null;
     private   Array< NPCAction > actionArray    = null;
     protected Entity             entity         = null;
-    private   boolean            used           = false;
+    public    boolean            used           = false;
     private   float              heightOfLadder = 0.0f;
     private   float              rotation       = 0.0f;
 
@@ -162,10 +162,22 @@ public class LevelObject {
         }
     }
 
+/*
 
     void buildModel () {
-        if ( entity == null && !used ) {
-            modelAsset.build();
+        if ( item != null ) {
+            modelAsset = item.getModelAsset();
+        }
+
+        if ( modelAsset != null ) {
+            if ( !isWeapon( modelAsset ) ) {
+                if ( entity == null && !used ) {
+                    modelAsset.build();
+                }
+            }
         }
     }
+*/
+
+
 }
