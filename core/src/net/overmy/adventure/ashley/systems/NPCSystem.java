@@ -15,7 +15,7 @@ import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.AnimationComponent;
-import net.overmy.adventure.ashley.components.NPCAction;
+import net.overmy.adventure.logic.NPCAction;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.TextDecalComponent;
 import net.overmy.adventure.resources.ModelAsset;
@@ -107,6 +107,8 @@ public class NPCSystem extends IteratingSystem {
 
         boolean attack = false;
 
+        int forceAnimate = -1;
+
         if ( needToSkip ) {
             direction.set( 0, 0 );
         } else {
@@ -114,6 +116,12 @@ public class NPCSystem extends IteratingSystem {
                 case WAIT:
                     npcComponent.hunting = false;
                     keepCalm();
+                    break;
+
+                case ANIMATE:
+                    npcComponent.hunting = false;
+                    keepCalm();
+                    forceAnimate = npcAction.nOfAnimation;
                     break;
 
                 case MOVE:
@@ -168,55 +176,61 @@ public class NPCSystem extends IteratingSystem {
         boolean playerIsRunning = ID_RUN.equals( ID_CURRENT );
         boolean playerIsAttacking = ID_ATTACK.equals( ID_CURRENT );
 
+        boolean animationForced = forceAnimate != -1;
+
         int IDLE = 0;
         int RUN = 1;
         int ATTACK = 2;
         //int DIE = 3;
+        float speed = 0.0f;
 
-        float directionLen = direction.len();
-        // Мы управляем персонажем джойстиком
-        float speed;
-        if ( directionLen != 0 ) {
-            // Персонаж на земле
-            float animationSpeed = 3.0f + 2.0f * directionLen;
-            if ( playerIsRunning && !attack ) {
-                animationComponent.queue( RUN, animationSpeed );
-            } else {
-                if ( attack ) {
-                    if ( !playerIsAttacking ) {
-                        animationComponent.play( ATTACK, animationSpeed );
-                    } else {
-                        animationComponent.queue( ATTACK, animationSpeed );
-                    }
+        if(!animationForced) {
+            float directionLen = direction.len();
+            // Мы управляем персонажем джойстиком
+            if ( directionLen != 0 ) {
+                // Персонаж на земле
+                float animationSpeed = 3.0f + 2.0f * directionLen;
+                if ( playerIsRunning && !attack ) {
+                    animationComponent.queue( RUN, animationSpeed );
                 } else {
-                    animationComponent.play( RUN, animationSpeed );
+                    if ( attack ) {
+                        if ( !playerIsAttacking ) {
+                            animationComponent.play( ATTACK, animationSpeed );
+                        } else {
+                            animationComponent.queue( ATTACK, animationSpeed );
+                        }
+                    } else {
+                        animationComponent.play( RUN, animationSpeed );
+                    }
+                }
+
+                float runSpeed = 4.0f;
+                speed = ( runSpeed + 1 ) * directionLen;
+
+                // Сохраняем угол для поворота модели
+                modelAngle = 90 - direction.angle();
+
+                // СОздаем пыль под ногами
+
+                dustTime -= delta;
+                if ( dustTime < 0 ) {
+                    dustTime = 0.16f;
+
+                    AshleySubs.createDustFX( notFilteredPos, 1.0f );
                 }
             }
-
-            float runSpeed = 4.0f;
-            speed = ( runSpeed + 1 ) * directionLen;
-
-            // Сохраняем угол для поворота модели
-            modelAngle = 90 - direction.angle();
-
-            // СОздаем пыль под ногами
-
-            dustTime -= delta;
-            if ( dustTime < 0 ) {
-                dustTime = 0.16f;
-
-                AshleySubs.createDustFX( notFilteredPos, 1.0f );
+            // Мы не управляем персонажем джойстиком
+            else {
+                // Персонаж на земле
+                if ( playerInIDLE ) {
+                    animationComponent.queue( IDLE, 2.0f );
+                } else {
+                    animationComponent.play( IDLE, 2.0f );
+                }
+                speed = 0.0f;
             }
-        }
-        // Мы не управляем персонажем джойстиком
-        else {
-            // Персонаж на земле
-            if ( playerInIDLE ) {
-                animationComponent.queue( IDLE, 2.0f );
-            } else {
-                animationComponent.play( IDLE, 2.0f );
-            }
-            speed = 0.0f;
+        }else{
+            animationComponent.queue( forceAnimate, 2.0f );
         }
 
         //////////////////

@@ -16,4 +16,5 @@ public enum OBJECT_TYPE {
     BOX,
     ROCK,
     TRIGGER,
+    INTERACTIVE
 }

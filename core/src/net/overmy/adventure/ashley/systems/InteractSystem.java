@@ -18,7 +18,7 @@ import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.SkipActionComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.logic.Item;
-import net.overmy.adventure.logic.TextBlock;
+import net.overmy.adventure.logic.TextInteract;
 import net.overmy.adventure.resources.SoundAsset;
 
 
@@ -36,9 +36,9 @@ public class InteractSystem extends IteratingSystem {
 
     private boolean actOnEntity = false;
 
-    private TYPE_OF_INTERACT type             = TYPE_OF_INTERACT.EMPTY;
-    private Item             currentItem      = null;
-    private TextBlock        currentTextBlock = null;
+    private TYPE_OF_INTERACT type                = TYPE_OF_INTERACT.EMPTY;
+    private Item             currentItem         = null;
+    private TextInteract     currentTextInteract = null;
 
 
     @SuppressWarnings( "unchecked" )
@@ -71,7 +71,7 @@ public class InteractSystem extends IteratingSystem {
 
             type = interactComponent.getType();
             currentItem = interactComponent.getItem();
-            currentTextBlock = interactComponent.getTextBlock();
+            currentTextInteract = interactComponent.getTextInteract();
 
             if ( actOnEntity ) {
                 switch ( type ) {
@@ -90,7 +90,7 @@ public class InteractSystem extends IteratingSystem {
                         break;
 
                     case TALK:
-                        Gdx.app.debug( "говорим с нпс", "" + currentTextBlock.getTitle() );
+                        Gdx.app.debug( "говорим с нпс", "" + currentTextInteract.getTitle() );
                         break;
 
                     case USE:
@@ -106,8 +106,8 @@ public class InteractSystem extends IteratingSystem {
     }
 
 
-    public TextBlock getCurrentTextBlock () {
-        return currentTextBlock;
+    public TextInteract getCurrentTextInteract () {
+        return currentTextInteract;
     }
 
 

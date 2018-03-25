@@ -33,6 +33,7 @@ public enum ModelAsset {
     GSTAR( "gstar" ),
     BSTAR( "bstar" ),
     YSTAR( "ystar" ),
+    BOOK( "book" ),
 
     BROOM_WEAPON( "weapon1broom" ),
     RAKE_WEAPON( "weapon2rake" ),
@@ -59,8 +60,9 @@ public enum ModelAsset {
     STAR( "star" ),
     FOX( "fox" ),
     HOG( "hog" ),
+
     PLAYER01( "squirrel" ),
-    CONE( "cone" ),;
+    ;
 
     private StringBuilder stringBuilder = new StringBuilder();
 

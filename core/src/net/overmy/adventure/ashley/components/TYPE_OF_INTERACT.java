@@ -9,5 +9,6 @@ public enum TYPE_OF_INTERACT {
     EMPTY,
     LOOT,
     TALK,
+    READ,
     USE
 }

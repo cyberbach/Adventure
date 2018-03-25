@@ -54,7 +54,10 @@ public class WorldContactListener extends ContactListener {
             Gdx.app.debug( "onContactProcessed", stringBuilder.toString() );
         }
 
-        if ( !( m1 && m2 ) ) {
+        if ( !m1 || !m2 ) {
+            if ( DEBUG.CONTACTS.get() ){
+                Gdx.app.debug( "onContactProcessed", "drop" );
+            }
             return;
         }
 
@@ -98,6 +101,13 @@ public class WorldContactListener extends ContactListener {
             stringBuilder.append( userValue2 );
             stringBuilder.append( m2 ? " (match) " : " (not match)" );
             Gdx.app.debug( "onContactEnded", stringBuilder.toString() );
+        }
+
+        if ( !m1 || !m2 ) {
+            if ( DEBUG.CONTACTS.get() ){
+                Gdx.app.debug( "onContactEnded", "drop" );
+            }
+            return;
         }
 
         // Опять поиск тех двух Entity, у которых userValue физических тела
@@ -150,8 +160,7 @@ public class WorldContactListener extends ContactListener {
         boolean contact1DestroyableBox = type1.equals( TYPE_OF_ENTITY.DESTROYABLE_BOX );
         boolean contact2DestroyableBox = type2.equals( TYPE_OF_ENTITY.DESTROYABLE_BOX );
 
-        if ( contact1Player && contact2Ground ||
-             contact1Player && contact2DestroyableBox ) {
+        if ( contact1Player && contact2Ground ) {
             LevelIDComponent levelComponent = MyMapper.REMOVE_BY_ZONE.get( entity02 );
 
             int lastID = DynamicLevels.getCurrent();
@@ -164,8 +173,7 @@ public class WorldContactListener extends ContactListener {
             return;
         }
 
-        if ( contact2Player && contact1Ground ||
-             contact2Player && contact1DestroyableBox ) {
+        if ( contact2Player && contact1Ground ) {
             LevelIDComponent levelComponent = MyMapper.REMOVE_BY_ZONE.get( entity01 );
 
             int lastID = DynamicLevels.getCurrent();
@@ -349,12 +357,18 @@ public class WorldContactListener extends ContactListener {
         if ( contact1Player && contact2Ground ) {
             MyMapper.GROUNDED.get( entity01 ).grounded = false;
             DynamicLevels.reload();
+            if ( DEBUG.CONTACTS.get() ) {
+                Gdx.app.debug( "=== DynamicLevels", "must RELOAD ===" );
+            }
             return;
         }
 
         if ( contact2Player && contact1Ground ) {
             MyMapper.GROUNDED.get( entity02 ).grounded = false;
             DynamicLevels.reload();
+            if ( DEBUG.CONTACTS.get() ) {
+                Gdx.app.debug( "=== DynamicLevels", "must RELOAD ===" );
+            }
             return;
         }
 

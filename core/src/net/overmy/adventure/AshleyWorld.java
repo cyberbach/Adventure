@@ -6,6 +6,7 @@ package net.overmy.adventure;
  */
 
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 
 import net.overmy.adventure.ashley.MyEntityListener;
 import net.overmy.adventure.ashley.MyMapper;
@@ -81,5 +82,9 @@ public final class AshleyWorld {
 
     public static void update ( float delta ) {
         pooledEngine.update( delta );
+        if ( DEBUG.CONTACTS.get() ){
+            Gdx.app.debug( "==================================",
+                           "tick ===============================" );
+        }
     }
 }

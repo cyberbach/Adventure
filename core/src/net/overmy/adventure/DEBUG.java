@@ -19,7 +19,7 @@ public enum DEBUG {
     NPC_ACTIONS( false ),
     GAME_MASTER_MODE( false ),
 
-    ENABLE_ENGLISH_TEXT( true ),
+    ENABLE_ENGLISH_TEXT( false ),
     ;
 
     private final boolean value;

@@ -7,7 +7,6 @@ package net.overmy.adventure;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.MathUtils;
@@ -36,7 +35,7 @@ import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.MyAnimationComponent;
 import net.overmy.adventure.ashley.components.MyPlayerComponent;
-import net.overmy.adventure.ashley.components.NPCAction;
+import net.overmy.adventure.logic.NPCAction;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.PositionComponent;
@@ -45,7 +44,7 @@ import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.ashley.components.EntityTypeComponent;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.LevelObject;
-import net.overmy.adventure.logic.TextBlock;
+import net.overmy.adventure.logic.TextInteract;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
@@ -358,7 +357,7 @@ public final class AshleySubs {
 
     public static Entity createNPC ( Vector3 position,
                                      ModelAsset modelAsset,
-                                     TextBlock textBlock,
+                                     TextInteract textInteract,
                                      Array< NPCAction > actionArray ) {
         ModelInstance modelInstanceNPC = modelAsset.get();
         modelInstanceNPC.transform.setToTranslation( position );
@@ -396,8 +395,8 @@ public final class AshleySubs {
         Entity entity = pooledEngine.createEntity();
         entity.add( new ModelComponent( modelInstanceNPC ) );
         entity.add( new AnimationComponent( modelInstanceNPC ) );
-        if ( textBlock != null ) {
-            entity.add( new InteractComponent( TYPE_OF_INTERACT.TALK, textBlock ) );
+        if ( textInteract != null ) {
+            entity.add( new InteractComponent( TYPE_OF_INTERACT.TALK, textInteract ) );
         }
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.NPC ) );
         entity.add( new NPCComponent( actionArray ) );
@@ -756,6 +755,43 @@ public final class AshleySubs {
         entity.add( physicalBuilderLADDER.buildPhysicalComponent() );
         entity.add( new CollectableComponent( item ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.COLLECTABLE ) );
+        pooledEngine.addEntity( entity );
+
+        return entity;
+    }
+
+
+    public static Entity createInteractive ( Vector3 position, ModelAsset modelAsset,
+                                             TextInteract textInteract, float rotation ) {
+
+        ModelInstance modelInstance = modelAsset.get();
+        modelInstance.transform.idt();
+        modelInstance.transform.translate( position );
+        modelInstance.transform.rotate( Vector3.Y,rotation );
+
+/*
+
+                TextureRegion region3 = IMG.BOX_TEXTURE.getRegion();
+                modelInstanceHOVER_COLLECTABLE.materials.get( 0 ).clear();
+                modelInstanceHOVER_COLLECTABLE.materials.get( 0 ).set( TextureAttribute.createDiffuse( region3 ) );
+*/
+
+        PhysicalBuilder physicalBuilder = new PhysicalBuilder()
+                .setModelInstance( modelInstance )
+                .defaultMotionState()
+                .zeroMass()
+                .boxShape()
+                .setCollisionFlag( CollisionFlags.CF_KINEMATIC_OBJECT )
+                .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
+                .setCallbackFilter( BulletWorld.PLAYER_FLAG );
+
+        Entity entity = pooledEngine.createEntity();
+        entity.add( new ModelComponent( modelInstance ) );
+        entity.add( physicalBuilder.buildPhysicalComponent() );
+        if ( textInteract != null ) {
+            entity.add( new InteractComponent( TYPE_OF_INTERACT.READ, textInteract ) );
+        }
+        entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.INTERACTIVE ) );
         pooledEngine.addEntity( entity );
 
         return entity;

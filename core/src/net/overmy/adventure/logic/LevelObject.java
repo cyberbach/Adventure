@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.Array;
 import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.DEBUG;
-import net.overmy.adventure.ashley.components.NPCAction;
-import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.resources.ModelAsset;
 
 /**
@@ -19,20 +17,66 @@ import net.overmy.adventure.resources.ModelAsset;
 
 public class LevelObject {
 
-    public ModelAsset modelAsset;
+    public    ModelAsset         modelAsset     = null;
+    protected Vector3            position       = null;
+    private   OBJECT_TYPE        type           = null;
+    private   Item               item           = null;
+    private   TextInteract       textInteract   = null;
+    private   Array< NPCAction > actionArray    = null;
+    protected Entity             entity         = null;
+    private   boolean            used           = false;
+    private   float              heightOfLadder = 0.0f;
+    private   float              rotation       = 0.0f;
 
 
+    public LevelObject setHeightOfLadder ( float heightOfLadder ) {
+        this.heightOfLadder = heightOfLadder;
+        return this;
+    }
 
 
-    protected Vector3     position;
-    private   OBJECT_TYPE type;
-    private   Item               item        = null;
-    private   TextBlock          textBlock   = null;
-    private   Array< NPCAction > actionArray = null;
-    protected Entity             entity      = null;
-    private   boolean            used        = false;
-    private   float              height      = 0.0f;
+    public LevelObject setModelAsset ( ModelAsset modelAsset ) {
+        this.modelAsset = modelAsset;
+        return this;
+    }
 
+
+    public LevelObject setPosition ( Vector3 position ) {
+        this.position = position;
+        return this;
+    }
+
+
+    public LevelObject setType ( OBJECT_TYPE type ) {
+        this.type = type;
+        return this;
+    }
+
+
+    public LevelObject setItem ( Item item ) {
+        this.item = item;
+        return this;
+    }
+
+
+    public LevelObject setTextInteract ( TextInteract textInteract ) {
+        this.textInteract = textInteract;
+        return this;
+    }
+
+
+    public LevelObject setActionQueue (
+            Array< NPCAction > actionArray ) {
+        this.actionArray = actionArray;
+        return this;
+    }
+
+
+    public LevelObject setRotation ( float rotation ) {
+        this.rotation = rotation;
+        return this;
+    }
+/*
 
     LevelObject ( OBJECT_TYPE type, Vector3 position ) {
         this.type = type;
@@ -46,11 +90,11 @@ public class LevelObject {
     }
 
 
-    LevelObject ( OBJECT_TYPE type, ModelAsset models, Vector3 position, float height ) {
+    LevelObject ( OBJECT_TYPE type, ModelAsset models, Vector3 position, float heightOfLadder ) {
         this.type = type;
         this.modelAsset = models;
         this.position = position;
-        this.height = height;
+        this.heightOfLadder = heightOfLadder;
     }
 
 
@@ -67,13 +111,22 @@ public class LevelObject {
     }
 
 
-    LevelObject ( OBJECT_TYPE type, TextBlock textBlock, Array< NPCAction > actionArray,
+    LevelObject ( OBJECT_TYPE type, TextInteract textInteract, Array< NPCAction > actionArray,
                   ModelAsset models, Vector3 position ) {
         this.type = type;
-        this.textBlock = textBlock;
+        this.textInteract = textInteract;
         this.modelAsset = models;
         this.position = position;
         this.actionArray = actionArray;
+    }
+
+    LevelObject ( OBJECT_TYPE type,
+                  ModelAsset models, TextInteract textInteract, Vector3 position, float rot ) {
+        this.type = type;
+        this.textInteract = textInteract;
+        this.modelAsset = models;
+        this.position = position;
+        this.rotation=rot;
     }
 
 
@@ -84,6 +137,7 @@ public class LevelObject {
         this.position = position;
         this.actionArray = actionArray;
     }
+*/
 
 
     public void useEntity () {
@@ -121,7 +175,7 @@ public class LevelObject {
 
         switch ( type ) {
             case LADDER:
-                entity = AshleySubs.createLadder( position, height );
+                entity = AshleySubs.createLadder( position, heightOfLadder );
                 break;
 
             case TRIGGER:
@@ -149,7 +203,7 @@ public class LevelObject {
                 break;
 
             case NPC:
-                entity = AshleySubs.createNPC( position, modelAsset, textBlock, actionArray );
+                entity = AshleySubs.createNPC( position, modelAsset, textInteract, actionArray );
                 break;
 
             case ENEMY:
@@ -158,6 +212,11 @@ public class LevelObject {
 
             case WEAPON:
                 entity = AshleySubs.createWeapon( position, modelAsset, item, this );
+                break;
+
+            case INTERACTIVE:
+                entity = AshleySubs.createInteractive( position, modelAsset, textInteract,
+                                                       rotation );
                 break;
         }
     }

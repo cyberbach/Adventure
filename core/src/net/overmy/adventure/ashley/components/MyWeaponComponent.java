@@ -4,9 +4,6 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.Matrix4;
 
-import net.overmy.adventure.logic.Item;
-import net.overmy.adventure.logic.TextBlock;
-
 
 /**
  * Created by Andrey (cb) Mikheev

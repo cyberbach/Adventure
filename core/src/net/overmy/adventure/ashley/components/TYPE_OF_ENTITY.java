@@ -8,6 +8,7 @@ package net.overmy.adventure.ashley.components;
 public enum TYPE_OF_ENTITY {
     COLLECTABLE,
     PICKABLE,
+    INTERACTIVE,
     LADDER,
     GROUND,
     WEAPON,

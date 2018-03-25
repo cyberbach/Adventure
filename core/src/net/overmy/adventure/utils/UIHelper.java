@@ -20,6 +20,7 @@ import net.overmy.adventure.Core;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.IMG;
+import net.overmy.adventure.resources.TextureAsset;
 
 /*
      Created by Andrey Mikheev on 29.09.2017
@@ -46,6 +47,24 @@ public final class UIHelper {
         return LabelWithWrap( text, currentFont );
     }*/
 
+
+    public static LoadIndicator initLoadIndicator () {
+        LoadIndicator indicatorGroup = new LoadIndicator();
+
+        final int size = (int) ( Core.HEIGHT * 0.16f );
+
+        Image image = new Image( TextureAsset.CD.getSprite() );
+        image.setSize( size, size );
+        image.setOrigin( size / 2, size / 2 );
+        image.addAction( Actions.forever( Actions.sequence(
+                Actions.rotateTo( 0, 0 ),
+                Actions.rotateTo( 360, 1 )
+                                                          ) ) );
+        image.setPosition( Core.WIDTH - size * 1.5f, size / 2 );
+        indicatorGroup.addActor( image );
+
+        return indicatorGroup;
+    }
 
     public static Label LabelWithWrap ( final String text, final FontAsset currentFont ) {
         Label returnLabel = new Label( text, currentFont.getStyle() );

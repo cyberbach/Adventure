@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -43,14 +44,14 @@ import net.overmy.adventure.ashley.systems.RenderSystem;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
-import net.overmy.adventure.logic.TextBlock;
+import net.overmy.adventure.logic.TextInteract;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.IMG;
 import net.overmy.adventure.resources.MusicAsset;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextAsset;
-import net.overmy.adventure.resources.TextDialogAsset;
+import net.overmy.adventure.resources.TextInteractAsset;
 import net.overmy.adventure.resources.TextureAsset;
 import net.overmy.adventure.utils.GFXHelper;
 import net.overmy.adventure.utils.LoadIndicator;
@@ -59,15 +60,15 @@ import net.overmy.adventure.utils.UIHelper;
 import java.util.ArrayList;
 
 public class GameScreen extends Base2DScreen {
-    Image showIngameMenuImage = null;
-    Image aimImage            = null;
-    private Image         attackButton   = null;
-    private Image         jumpButton     = null;
-    private Touchpad      touchpad       = null;
-    private LoadIndicator indicatorGroup = null;
-    private Group         interactGroup  = null;
-    private Group         touchPadGroup  = null;
-    private Group         bagButtonGroup = null;
+    private Image         showIngameMenuImage = null;
+    private Image         aimImage            = null;
+    private Image         attackButton        = null;
+    private Image         jumpButton          = null;
+    private Touchpad      touchpad            = null;
+    private LoadIndicator indicatorGroup      = null;
+    private Group         interactGroup       = null;
+    private Group         touchPadGroup       = null;
+    private Group         bagButtonGroup      = null;
 
     private InteractSystem interactSystem = null;
 
@@ -110,21 +111,17 @@ public class GameScreen extends Base2DScreen {
         MyPlayer.init();
 
         touchPadGroup = new Group();
-        MyRender.getStage().addActor( indicatorGroup = initLoadIndicator() );
+        MyRender.getStage().addActor( indicatorGroup = UIHelper.initLoadIndicator() );
         MyRender.getStage().addActor( gameGroup = new Group() );
 
         showGameGUI();
-
-        // Music environment
-        MusicAsset.WINDFILTER.play( true );
 
         if ( DEBUG.GAME_MASTER_MODE.get() ) {
             String helpString = "ENTER - push position\n1- show bonus pos\n" +
                                 "2-show box pos\n3-show NPC move pos\n" +
                                 "\nBackSpace-clear positions\n\n" +
                                 "9 speed up\n" +
-                                "0 speed normal\n" +
-                                "insert - big jump";
+                                "0 speed normal";
             Label ingameMenuTitle = UIHelper.Label( helpString, FontAsset.IVENTORY_ITEM );
             ingameMenuTitle.setPosition( 0, Core.HEIGHT_HALF );
 
@@ -194,7 +191,11 @@ public class GameScreen extends Base2DScreen {
                 thisTransform.getTranslation( thisPosition );
                 pushedPositions.add( thisPosition );
 
-                Gdx.app.debug( "Position " + thisPosition, "pushed" );
+                Quaternion rotation = new Quaternion();
+                thisTransform.getRotation( rotation );
+
+                Gdx.app.debug( "Position " + thisPosition + " angle=" +
+                               rotation.getAngleAround( Vector3.Y ), "pushed" );
             }
 
             if ( Gdx.input.isKeyJustPressed( Input.Keys.BACKSPACE ) ) {
@@ -321,6 +322,8 @@ public class GameScreen extends Base2DScreen {
             if ( !readyToPick ) {
                 readyToPick = true;
 
+                boolean isBook = false;
+
                 log.setLength( 0 );
                 switch ( typeOfInteract ) {
                     case EMPTY:
@@ -331,6 +334,10 @@ public class GameScreen extends Base2DScreen {
                     case TALK:
                         log.append( TextAsset.TALK.get() );
                         break;
+                    case READ:
+                        isBook = true;
+                        log.append( TextAsset.READ.get() );
+                        break;
                     case USE:
                         log.append( TextAsset.USE.get() );
                         break;
@@ -338,7 +345,7 @@ public class GameScreen extends Base2DScreen {
                 if ( interactSystem.getCurrentItem() != null ) {
                     log.append( interactSystem.getCurrentItem().getName() );
                 } else {
-                    log.append( interactSystem.getCurrentTextBlock().getTitle() );
+                    log.append( interactSystem.getCurrentTextInteract().getTitle() );
                 }
                 Label interactText = UIHelper.Label( log.toString(), FontAsset.IVENTORY_ITEM );
                 float w = interactText.getWidth();
@@ -354,12 +361,13 @@ public class GameScreen extends Base2DScreen {
 
                 interactGroup.addActor( lineImage );
                 interactGroup.addActor( interactText );
+                final boolean finalIsBook = isBook;
                 interactGroup.addListener( new ClickListener() {
                     public void clicked ( InputEvent event, float x, float y ) {
                         UIHelper.clickAnimation( interactGroup );
                         interactSystem.act();
-                        if ( interactSystem.getCurrentTextBlock() != null ) {
-                            showDialogMenu( interactSystem.getCurrentTextBlock() );
+                        if ( interactSystem.getCurrentTextInteract() != null ) {
+                            showDialogMenu( interactSystem.getCurrentTextInteract(), finalIsBook );
                         }
                     }
                 } );
@@ -514,7 +522,7 @@ public class GameScreen extends Base2DScreen {
     }
 
 
-    private void showDialogMenu ( TextBlock currentTextBlock ) {
+    private void showDialogMenu ( TextInteract currentTextInteract, final boolean isBook ) {
         guiType = GUI_TYPE.INGAME_MENU;
 
         gameGroup.clear();
@@ -541,24 +549,25 @@ public class GameScreen extends Base2DScreen {
         bgImage.setPosition( offset, offset );
         gameGroup.addActor( bgImage );
 
-        Label dialogTitle = UIHelper.Label( currentTextBlock.getTitle(), FontAsset.MENU_TITLE );
+        Label dialogTitle = UIHelper.Label( currentTextInteract.getTitle(), FontAsset.MENU_TITLE );
         float fontOffset = dialogTitle.getHeight() * 1.5f;
         dialogTitle.setPosition( offset + fontOffset,
                                  Core.HEIGHT - offset - fontOffset );
         gameGroup.addActor( dialogTitle );
 
-        Label dialogBody = UIHelper.Label( currentTextBlock.getBody(), FontAsset.DIALOG_VARIANT );
+        Label dialogBody = UIHelper.Label( currentTextInteract.getBody(),
+                                           FontAsset.DIALOG_VARIANT );
         dialogBody.setColor( Color.YELLOW );
         dialogBody.setPosition( offset + fontOffset,
                                 Core.HEIGHT - 2 * offset - fontOffset );
         dialogBody.setWrap( true );
         gameGroup.addActor( dialogBody );
 
-        Gdx.app.debug( "connections", "" + currentTextBlock.getConnections() );
+        Gdx.app.debug( "connections", "" + currentTextInteract.getConnections() );
 
         int j = 0;
-        for ( int i = 0; i < currentTextBlock.getConnections().size; i++ ) {
-            final TextBlock connection = currentTextBlock.getConnections().get( i );
+        for ( int i = 0; i < currentTextInteract.getConnections().size; i++ ) {
+            final TextInteract connection = currentTextInteract.getConnections().get( i );
 
             Label dialogVariant = UIHelper.Label( connection.getAction(),
                                                   FontAsset.DIALOG_VARIANT );
@@ -567,15 +576,22 @@ public class GameScreen extends Base2DScreen {
             dialogVariant.addListener( new ClickListener() {
                 public void clicked ( InputEvent event, float x, float y ) {
                     processTextBlock( connection );
-                    showDialogMenu( connection );
+                    showDialogMenu( connection, isBook );
                 }
             } );
             gameGroup.addActor( dialogVariant );
             j++;
         }
 
-        Label dialogVariant = UIHelper.Label( TextDialogAsset.CloseDialog.get(),
-                                              FontAsset.DIALOG_VARIANT );
+        Label dialogVariant;
+        if ( isBook ) {
+            dialogVariant = UIHelper.Label( TextInteractAsset.CloseBook.get(),
+                                            FontAsset.DIALOG_VARIANT );
+        } else {
+            dialogVariant = UIHelper.Label( TextInteractAsset.CloseDialog.get(),
+                                            FontAsset.DIALOG_VARIANT );
+        }
+
         dialogVariant.setPosition( offset + fontOffset,
                                    Core.HEIGHT_HALF - offset / 2 - j * offset );
         dialogVariant.addListener( new ClickListener() {
@@ -587,11 +603,11 @@ public class GameScreen extends Base2DScreen {
     }
 
 
-    private void processTextBlock ( TextBlock connection ) {
-        if ( connection.equals( TextBlock.DialogNPC4 ) ) {
-            TextBlock.DialogNPC1.getConnections().clear();
-            TextBlock.DialogNPC1.setText( TextDialogAsset.NPC1Name, TextDialogAsset.NPC4text,
-                                          TextDialogAsset.Empty );
+    private void processTextBlock ( TextInteract connection ) {
+        if ( connection.equals( TextInteract.DialogNPC4 ) ) {
+            TextInteract.DialogNPC1.getConnections().clear();
+            TextInteract.DialogNPC1.setText( TextInteractAsset.NPC1Name, TextInteractAsset.NPC4text,
+                                             TextInteractAsset.Empty );
         }
     }
 
@@ -697,23 +713,6 @@ public class GameScreen extends Base2DScreen {
     }
 
 
-    private LoadIndicator initLoadIndicator () {
-        indicatorGroup = new LoadIndicator();
-
-        final int size = (int) ( Core.HEIGHT * 0.16f );
-
-        Image image = new Image( TextureAsset.CD.getSprite() );
-        image.setSize( size, size );
-        image.setOrigin( size / 2, size / 2 );
-        image.addAction( Actions.forever( Actions.sequence(
-                Actions.rotateTo( 0, 0 ),
-                Actions.rotateTo( 360, 1 )
-                                                          ) ) );
-        image.setPosition( Core.WIDTH - size * 1.5f, size / 2 );
-        indicatorGroup.addActor( image );
-
-        return indicatorGroup;
-    }
 
 
     @Override
@@ -738,7 +737,7 @@ public class GameScreen extends Base2DScreen {
         AshleyWorld.getPooledEngine().getSystem( NPCSystem.class ).disableWalkSound();
 
         MyPlayer.stopSound();
-        MusicAsset.WINDFILTER.stop();
+        MusicAsset.stopAll();
 
         jumpButton = null;
         touchpad = null;

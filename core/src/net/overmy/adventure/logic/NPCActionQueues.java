@@ -8,13 +8,15 @@ package net.overmy.adventure.logic;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import net.overmy.adventure.ashley.components.NPCAction;
-import net.overmy.adventure.ashley.components.NPCAction.NPC_ACTION_ID;
+import net.overmy.adventure.logic.NPCAction.NPC_ACTION_ID;
+import net.overmy.adventure.resources.TextAsset;
 
 public final class NPCActionQueues {
     private NPCActionQueues () {
     }
 
+    static final int ID_ATTACK = 2;
+    static final int ID_SOME_ANIMATION = 3;
 
     public static Array< NPCAction > get ( int id ) {
 
@@ -23,7 +25,11 @@ public final class NPCActionQueues {
                 Array< NPCAction > queue = new Array< NPCAction >();
                 queue.add( wait( 15.0f ) );
                 queue.add( move( -25.33078f, -66.74849f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.BLUE_STAR,3 ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.ANIMATE, 3, ID_ATTACK ));
                 queue.add( move( -18.664494f, -65.147026f ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.OPTIONS,3 ) );
+                queue.add( new NPCAction( NPC_ACTION_ID.ANIMATE, 3, ID_SOME_ANIMATION ));
                 queue.add( move( -14.296296f, -65.65968f ) );
                 queue.add( move( -10.035321f, -78.6422f ) );
                 queue.add( move( -20.728638f, -86.38529f ) );

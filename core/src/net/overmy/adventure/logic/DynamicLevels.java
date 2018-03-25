@@ -9,6 +9,7 @@ import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.resources.Assets;
 import net.overmy.adventure.resources.ModelAsset;
+import net.overmy.adventure.resources.MusicAsset;
 import net.overmy.adventure.resources.Settings;
 
 /**
@@ -73,7 +74,7 @@ public final class DynamicLevels {
     public static void reload () {
         needToUpdate = true;
         needToBuild = true;
-        unloadDelay = 0.5f;
+        unloadDelay = 1.5f;
         copyCurrentConnectionsToPrevious();
         updateCurrentConnections();
         removeNotMatchEntities();
@@ -276,6 +277,15 @@ public final class DynamicLevels {
                     Gdx.app.debug( "unloadDelay", "tick" );
                 }
 
+                // PLAY MUSIC
+                if ( current < 3 ) {
+                    MusicAsset.WINDFILTER.play( true );
+                    //MusicAsset.FOREST.stop();
+                } else {
+                    MusicAsset.WINDFILTER.stop();
+                    //MusicAsset.FOREST.play( true );
+                }
+
                 // Здесь ненужные модели добавляются в стэк удаления менеджера Assets
                 removeNotMatchModels();
                 needToUpdate = true;
@@ -291,6 +301,10 @@ public final class DynamicLevels {
 
     public static void setCurrent ( int id ) {
         current = id;
+
+        if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+            Gdx.app.debug( "Now current id", "" + current );
+        }
     }
 
 

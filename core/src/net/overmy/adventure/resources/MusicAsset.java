@@ -18,10 +18,10 @@ import com.badlogic.gdx.math.MathUtils;
  */
 
 public enum MusicAsset {
-    WINDFILTER( "windfilter" ),
+    WINDFILTER( "windfilter.mp3" ),
+    //FOREST( "forest.mp3" ),
     ;
 
-    private static Music currentTrack = null;
     private final String path;
     private Music music = null;
     private static float timer = 0.01f;
@@ -30,21 +30,24 @@ public enum MusicAsset {
 
     MusicAsset( final String path ) {
         String DEFAULT_DIR = "music/";
-        String DEFAULT_EXT = ".mp3";
-        this.path = DEFAULT_DIR + path + DEFAULT_EXT;
+        //String DEFAULT_EXT = ".mp3";
+        this.path = DEFAULT_DIR + path;// + DEFAULT_EXT;
     }
 
 
+/*
 
     public static void updateVolume( float newVolume ) {
         //float musicVolume = (float) Settings.MUSIC.getInteger() / 100.0f;
         currentTrack.setVolume( newVolume );
     }
 
+*/
 
 
     public static void stopAll() {
         for ( int i = 0; i < MusicAsset.values().length; i++ )
+            if ( MusicAsset.values()[ i ].music != null )
             MusicAsset.values()[ i ].music.stop();
     }
 
@@ -55,7 +58,7 @@ public enum MusicAsset {
             MusicAsset.values()[ i ].music = manager.get( MusicAsset.values()[ i ].path,
                                                           Music.class );
 
-        currentTrack = MusicAsset.values()[ 0 ].music;
+        //currentTrack = MusicAsset.values()[ 0 ].music;
     }
 
 
@@ -68,7 +71,7 @@ public enum MusicAsset {
 
 
     public static void unload( final AssetManager manager ) {
-        currentTrack = null;
+        //currentTrack = null;
         stopAll();
         for ( int i = 0; i < MusicAsset.values().length; i++ ) {
 
@@ -95,10 +98,12 @@ public enum MusicAsset {
             return;
         }
         timer = 0.1f;
+/*
 
         if ( currentTrack.isPlaying() ) {
             return;
         }
+*/
 
         if ( bars > 0 ) {
             MusicAsset.values()[ currentID ].play();
@@ -112,20 +117,39 @@ public enum MusicAsset {
         }
     }
 
+    public void playNext( float delta ) {
+        timer -= delta;
+
+        if ( timer > 0 ) {
+            return;
+        }
+        timer = 0.1f;
+/*
+
+        if ( currentTrack.isPlaying() ) {
+            return;
+        }
+*/
+
+        //currentTrack.stop();
+        this.play( true );
+    }
+
 
 
     public void play( boolean loop ) {
-        if ( currentTrack.isPlaying() ) {
-            currentTrack.stop();
-        }
+        /*if ( currentTrack.isPlaying() ) {
+            currentTrack.pause();
+        }*/
 
         float musicVolume = (float) Settings.MUSIC.getInteger() / 100.0f;
         if ( musicVolume > 0 ) {
+            //currentTrack = music;
+
             this.music.setVolume( musicVolume );
             this.music.setLooping( loop );
             this.music.play();
 
-            currentTrack = music;
         }
         else {
             stopAll();

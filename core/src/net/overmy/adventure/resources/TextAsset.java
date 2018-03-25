@@ -25,6 +25,7 @@ public enum TextAsset {
     INVENTORY( "Инвентарь", "Inventory" ),
     LOOT( "Подобрать : ", "Loot : " ),
     TALK( "Начать диалог : ", "Talk to : " ),
+    READ( "Прочитать : ", "Read : " ),
     USE( "Использовать : ", "Use : " ),
 
     // item section
