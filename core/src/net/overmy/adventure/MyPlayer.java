@@ -226,16 +226,6 @@ public final class MyPlayer {
             jump = false;
         }
 
-        if ( attack ) {
-            final int HIT = 2;
-            final AnimationComponent animationComponent = MyMapper.ANIMATION.get(
-                    playerEntity );
-            animationComponent.play( HIT, 2.4f );
-            attack = false;
-
-            isAttacking = true;
-        }
-
         playerBody.getWorldTransform( bodyTransform );
         bodyTransform.getTranslation( notFilteredPos );
         bodyTransform.idt();
@@ -264,11 +254,12 @@ public final class MyPlayer {
         final boolean playerOnGround = MyMapper.GROUNDED.get( playerEntity ).grounded;
         final boolean playerInIDLE = ID_IDLE.equals( ID_CURRENT );
         final boolean playerIsRunning = ID_RUN.equals( ID_CURRENT );
-        final boolean playerHitSomething = ID_ATTACK.equals( ID_CURRENT );
+        final boolean playerIsAttacking = ID_ATTACK.equals( ID_CURRENT );
 //        final boolean playerJump = ID_JUMP.equals( ID_CURRENT );
 
         final int IDLE = 0;
         final int RUN = 1;
+        final int ATTACK = 2;
 
         // SET sound of walking steps
         if ( !onLadder ) {
@@ -306,30 +297,41 @@ public final class MyPlayer {
             extraJump = 0.0f;
         }
 
+
+        if ( attack ) {
+            animationComponent.play( ATTACK, 2.4f );
+            animationComponent.queue( IDLE, 2.0f );
+            attack = false;
+            isAttacking = true;
+        }
+
+
         final float directionLen = direction.len();
         // Мы управляем персонажем джойстиком
         if ( directionLen != 0 ) {
             // Персонаж на земле
             if ( playerOnGround ) {
                 final float animationSpeed = 3.0f + 2.0f * directionLen;
-                if ( !playerHitSomething ) {
+                if ( !playerIsAttacking ) {
+                    isAttacking = false;
                     if ( playerIsRunning ) {
                         animationComponent.queue( RUN, animationSpeed );
                     } else {
                         animationComponent.play( RUN, animationSpeed );
-                        isAttacking = false;
                     }
                 }
             }
             // Персонаж в воздухе
             else {
-                if ( !playerHitSomething ) {
+                if ( !playerIsAttacking ) {
+                    isAttacking = false;
                     if ( playerInIDLE ) {
                         animationComponent.queue( IDLE, 2.0f );
                     } else {
                         animationComponent.play( IDLE, 2.0f );
-                        isAttacking = false;
                     }
+                }else{
+                    animationComponent.queue( IDLE, 2.0f );
                 }
             }
             final float runSpeed = 5.0f + extraSpeed2;
@@ -346,7 +348,7 @@ public final class MyPlayer {
             dustTimer -= deltaTime;
             if ( dustTimer < 0 ) {
                 //dustTimer = MathUtils.random( 0.05f, 0.25f );
-                dustTimer = 0.12f;
+                dustTimer = 0.14f;
                 notFilteredPos.sub( 0, 0.5f, 0 );
 
                 AshleySubs.createDustFX( notFilteredPos, 0.72f );
@@ -356,13 +358,15 @@ public final class MyPlayer {
         else {
             // Персонаж на земле
             if ( playerOnGround ) {
-                if ( !playerHitSomething ) {
+                if ( !playerIsAttacking ) {
                     if ( playerInIDLE ) {
                         animationComponent.queue( IDLE, 2.0f );
                     } else {
                         animationComponent.play( IDLE, 2.0f );
                     }
                 }
+            }else{
+                animationComponent.queue( IDLE, 2.0f );
             }
             speed = 0.0f;
         }

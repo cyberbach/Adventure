@@ -7,6 +7,7 @@ package net.overmy.adventure;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.MathUtils;
@@ -253,10 +254,9 @@ public final class AshleySubs {
 
 
     public static Entity createPickable ( Vector3 position,
-                                          ModelAsset modelAsset,
                                           Item item,
                                           LevelObject object ) {
-        ModelInstance modelInstancePICKABLE = modelAsset.get();
+        ModelInstance modelInstancePICKABLE = item.getModelAsset().get();
         modelInstancePICKABLE.transform.setToTranslation( position );
 
         PhysicalBuilder physicalBuilderPICKABLE = new PhysicalBuilder()
@@ -285,10 +285,9 @@ public final class AshleySubs {
 
 
     public static Entity createCollectable ( Vector3 position,
-                                             ModelAsset modelAsset,
                                              Item item,
                                              LevelObject object ) {
-        ModelInstance modelInstanceCOLLECTABLE = modelAsset.get();
+        ModelInstance modelInstanceCOLLECTABLE = item.getModelAsset().get();
         modelInstanceCOLLECTABLE.transform.setToTranslation( position );
 
         PhysicalBuilder physicalBuilderCOLLECTABLE = new PhysicalBuilder()
@@ -317,10 +316,11 @@ public final class AshleySubs {
 
 
     public static Entity createHoverCollectable ( Vector3 position,
-                                                  ModelAsset modelAsset,
                                                   Item item,
                                                   LevelObject object ) {
-        ModelInstance modelInstanceHOVER_COLLECTABLE = modelAsset.get();
+        Gdx.app.debug( "try to create entity",""+item.getName()+" "+item.getModelAsset() );
+
+        ModelInstance modelInstanceHOVER_COLLECTABLE = item.getModelAsset().get();
         modelInstanceHOVER_COLLECTABLE.transform.setToTranslation( position );
 
 /*
@@ -409,7 +409,8 @@ public final class AshleySubs {
 
     public static Entity createEnemy ( Vector3 position,
                                        ModelAsset modelAsset,
-                                       Array< NPCAction > actionArray ) {
+                                       Array< NPCAction > actionArray,
+                                       LevelObject object ) {
         ModelInstance modelInstanceENEMY = modelAsset.get();
         modelInstanceENEMY.transform.setToTranslation( position );
 
@@ -445,6 +446,7 @@ public final class AshleySubs {
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.NPC ) );
         entity.add( new NPCComponent( actionArray, damage ) );
         entity.add( physicalBuilderENEMY.buildPhysicalComponent() );
+        entity.add( new LevelObjectComponent( object ) );
         entity.add( new LifeComponent( 100, 1.5f, 2.0f ) );
         pooledEngine.addEntity( entity );
 
@@ -453,10 +455,9 @@ public final class AshleySubs {
 
 
     public static Entity createWeapon ( Vector3 position,
-                                        ModelAsset modelAsset,
                                         Item item,
                                         LevelObject object ) {
-        ModelInstance modelInstanceWEAPON = modelAsset.get();
+        ModelInstance modelInstanceWEAPON = item.getModelAsset().get();
         modelInstanceWEAPON.transform.setToTranslation( position );
 
         PhysicalBuilder physicalBuilderWEAPON = new PhysicalBuilder()

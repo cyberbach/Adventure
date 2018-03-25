@@ -5,6 +5,10 @@ package net.overmy.adventure.resources;
      Contact me → http://vk.com/id17317
  */
 
+import com.badlogic.gdx.Gdx;
+
+import net.overmy.adventure.DEBUG;
+
 public enum TextInteractAsset {
     Empty( "" ),
     CloseDialog( "Закончить диалог", "1 eng" ),
@@ -48,7 +52,8 @@ public enum TextInteractAsset {
 
     public static void init() {
         String defaultLocale = java.util.Locale.getDefault().toString();
-        russianLocale = "ru_RU".equals( defaultLocale );
+        Gdx.app.debug( "Default locale", "" + defaultLocale );
+        russianLocale = !DEBUG.ENABLE_ENGLISH_TEXT.get() && "ru_RU".equals( defaultLocale );
     }
 
 

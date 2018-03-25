@@ -16,10 +16,6 @@ class LevelSubs {
     Array< LevelObject > level0objects () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
-        //
-        /*
-        objects.add( hoverPurpleBottle( -7.6205816f,2.0821836f,-8.869345f ) );
-*/
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.INTERACTIVE )
                              .setModelAsset( ModelAsset.BOOK )
@@ -32,7 +28,6 @@ class LevelSubs {
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.WEAPON )
-                             .setModelAsset( ModelAsset.BROOM_WEAPON )
                              .setItem( Item.BROOM_WEAPON )
                              .setPosition( new Vector3( -2.566254f, 0.0907035f, -4.6540112f ) ) );
 
@@ -144,15 +139,16 @@ class LevelSubs {
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.WEAPON )
-                             .setModelAsset( ModelAsset.KALASH_WEAPON )
                              .setItem( Item.KALASH_WEAPON )
                              .setPosition( new Vector3( -29.12711f, 1.3195913f, -82.997826f ) ) );
 
+        objects.add( ladder(new Vector3( -33.666f, 12.0f, -79.593f ), 10.0f) );
+        /*
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.LADDER )
                              .setHeightOfLadder( 10.0f )
                              .setPosition( new Vector3( -33.666f, 12.0f, -79.593f ) ) );
-
+*/
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
                              .setActionQueue( NPCActionQueues.get( 3 ) )
@@ -218,7 +214,6 @@ class LevelSubs {
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.WEAPON )
-                             .setModelAsset( ModelAsset.RAKE_WEAPON )
                              .setItem( Item.RAKE_WEAPON )
                              .setPosition( new Vector3( -1.1865791f, 2.7401257f, -153.47026f ) ) );
 
@@ -334,7 +329,6 @@ class LevelSubs {
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.WEAPON )
                              .setItem( Item.FENCE_WEAPON )
-                             .setModelAsset( ModelAsset.FENCE_WEAPON )
                              .setPosition( new Vector3( -244.39001f, 1.686245f, -420.27023f ) ) );
 
         objects.add( hoverCoin( -218.1792f, 1.2710103f, -408.69302f ) );
@@ -433,7 +427,6 @@ class LevelSubs {
         return new LevelObject()
                 .setType( OBJECT_TYPE.HOVER_COLLECTABLE )
                 .setItem( Item.COIN )
-                .setModelAsset( ModelAsset.COIN )
                 .setPosition( new Vector3( x, y, z ) );
     }
 
@@ -442,7 +435,6 @@ class LevelSubs {
         return new LevelObject()
                 .setType( OBJECT_TYPE.HOVER_COLLECTABLE )
                 .setItem( Item.GREEN_BOTTLE )
-                .setModelAsset( ModelAsset.GREEN_BOTTLE )
                 .setPosition( new Vector3( x, y, z ) );
     }
 
@@ -451,7 +443,6 @@ class LevelSubs {
         return new LevelObject()
                 .setType( OBJECT_TYPE.HOVER_COLLECTABLE )
                 .setItem( Item.RED_BOTTLE )
-                .setModelAsset( ModelAsset.RED_BOTTLE )
                 .setPosition( new Vector3( x, y, z ) );
     }
 
@@ -460,15 +451,14 @@ class LevelSubs {
         return new LevelObject()
                 .setType( OBJECT_TYPE.HOVER_COLLECTABLE )
                 .setItem( Item.PURPLE_BOTTLE )
-                .setModelAsset( ModelAsset.PURPLE_BOTTLE )
                 .setPosition( new Vector3( x, y, z ) );
     }
 
 
-    private LevelObject ladder ( Vector3 pos ) {
+    private LevelObject ladder ( Vector3 pos, float height ) {
         return new LevelObject()
                 .setType( OBJECT_TYPE.LADDER )
-                .setModelAsset( ModelAsset.COIN )
-                .setPosition( pos );
+                .setPosition( pos )
+                .setHeightOfLadder( height );
     }
 }

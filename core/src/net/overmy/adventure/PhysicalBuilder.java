@@ -52,15 +52,6 @@ public class PhysicalBuilder {
     private btRigidBodyConstructionInfo savedInfo           = null;
 
 
-/*
-    PhysicalBuilder setPosition( Vector3 newPosition ) {
-        Matrix4 matrix4 = cameraBody.getWorldTransform();
-        matrix4.setToTranslation( newPosition );
-        cameraBody.setWorldTransform( matrix4 );
-
-        return this;
-    }*/
-
 
     PhysicalBuilder setScale ( float scale ) {
         this.scale = scale;

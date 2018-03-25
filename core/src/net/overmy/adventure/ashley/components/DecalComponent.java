@@ -11,8 +11,8 @@ import net.overmy.adventure.utils.Vector3Animator;
 
 public class DecalComponent implements Component {
 
-    public final Decal           decal;
-    public final Vector3Animator animator;
+    public Decal           decal;
+    public Vector3Animator animator;
 
     public DecalComponent( Decal decal, Vector3Animator animator ) {
         this.decal = decal;

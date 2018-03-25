@@ -89,6 +89,11 @@ public class MyEntityListener implements EntityListener {
     @Override
     public void entityRemoved ( Entity entity ) {
 
+        if ( MyMapper.DECAL.has( entity ) ) {
+            MyMapper.DECAL.get( entity ).animator = null;
+            MyMapper.DECAL.get( entity ).decal = null;
+        }
+
         if ( MyMapper.ACTOR.has( entity ) ) {
             MyMapper.ACTOR.get( entity ).group.remove();
         }

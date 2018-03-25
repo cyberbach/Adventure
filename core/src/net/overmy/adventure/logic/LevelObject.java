@@ -55,6 +55,9 @@ public class LevelObject {
 
     public LevelObject setItem ( Item item ) {
         this.item = item;
+        if ( item.getModelAsset() != null ) {
+            this.modelAsset = item.getModelAsset();
+        }
         return this;
     }
 
@@ -76,68 +79,6 @@ public class LevelObject {
         this.rotation = rotation;
         return this;
     }
-/*
-
-    LevelObject ( OBJECT_TYPE type, Vector3 position ) {
-        this.type = type;
-        this.position = position;
-    }
-
-    LevelObject ( OBJECT_TYPE type, ModelAsset models, Vector3 position ) {
-        this.type = type;
-        this.modelAsset = models;
-        this.position = position;
-    }
-
-
-    LevelObject ( OBJECT_TYPE type, ModelAsset models, Vector3 position, float heightOfLadder ) {
-        this.type = type;
-        this.modelAsset = models;
-        this.position = position;
-        this.heightOfLadder = heightOfLadder;
-    }
-
-
-    LevelObject ( OBJECT_TYPE type, Item id, ModelAsset models, Vector3 position ) {
-        this.type = type;
-        this.item = id;
-        this.modelAsset = models;
-        this.position = position;
-    }
-    LevelObject ( OBJECT_TYPE type, Item id, Vector3 position ) {
-        this.type = type;
-        this.item = id;
-        this.position = position;
-    }
-
-
-    LevelObject ( OBJECT_TYPE type, TextInteract textInteract, Array< NPCAction > actionArray,
-                  ModelAsset models, Vector3 position ) {
-        this.type = type;
-        this.textInteract = textInteract;
-        this.modelAsset = models;
-        this.position = position;
-        this.actionArray = actionArray;
-    }
-
-    LevelObject ( OBJECT_TYPE type,
-                  ModelAsset models, TextInteract textInteract, Vector3 position, float rot ) {
-        this.type = type;
-        this.textInteract = textInteract;
-        this.modelAsset = models;
-        this.position = position;
-        this.rotation=rot;
-    }
-
-
-    LevelObject ( OBJECT_TYPE type, Array< NPCAction > actionArray,
-                  ModelAsset models, Vector3 position ) {
-        this.type = type;
-        this.modelAsset = models;
-        this.position = position;
-        this.actionArray = actionArray;
-    }
-*/
 
 
     public void useEntity () {
@@ -183,7 +124,7 @@ public class LevelObject {
                 break;
 
             case PICKABLE:
-                entity = AshleySubs.createPickable( position, modelAsset, item, this );
+                entity = AshleySubs.createPickable( position, item, this );
                 break;
 
             case BOX:
@@ -195,11 +136,11 @@ public class LevelObject {
                 break;
 
             case COLLECTABLE:
-                entity = AshleySubs.createCollectable( position, modelAsset, item, this );
+                entity = AshleySubs.createCollectable( position, item, this );
                 break;
 
             case HOVER_COLLECTABLE:
-                entity = AshleySubs.createHoverCollectable( position, modelAsset, item, this );
+                entity = AshleySubs.createHoverCollectable( position, item, this );
                 break;
 
             case NPC:
@@ -207,11 +148,11 @@ public class LevelObject {
                 break;
 
             case ENEMY:
-                entity = AshleySubs.createEnemy( position, modelAsset, actionArray );
+                entity = AshleySubs.createEnemy( position, modelAsset, actionArray, this );
                 break;
 
             case WEAPON:
-                entity = AshleySubs.createWeapon( position, modelAsset, item, this );
+                entity = AshleySubs.createWeapon( position, item, this );
                 break;
 
             case INTERACTIVE:
