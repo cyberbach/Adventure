@@ -39,6 +39,7 @@ public enum ModelAsset {
     RAKE_WEAPON( "weapon2rake" ),
     KALASH_WEAPON( "weapon3kalash" ),
     FENCE_WEAPON( "weapon4fence" ),
+    PILLOW_WEAPON( "pillow" ),
 
     ROCK_PART( "rockpart" ),
     ROCK( "rock" ),

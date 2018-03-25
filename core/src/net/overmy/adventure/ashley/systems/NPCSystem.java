@@ -15,6 +15,7 @@ import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.AnimationComponent;
+import net.overmy.adventure.ashley.components.SkipActionComponent;
 import net.overmy.adventure.logic.NPCAction;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.TextDecalComponent;
@@ -41,7 +42,6 @@ public class NPCSystem extends IteratingSystem {
 
 
     private Vector2 npcPosition = new Vector2();
-
 
     private static SoundAsset walk = null;
 
@@ -79,6 +79,10 @@ public class NPCSystem extends IteratingSystem {
         }
 
         NPCAction npcAction;
+
+        if ( npcComponent.hurt ) {
+            Gdx.app.debug( "", "HURT -----------" );
+        }
 
         if ( npcComponent.time < 0 ) {
 
@@ -171,36 +175,45 @@ public class NPCSystem extends IteratingSystem {
         String ID_RUN = "RUN";
         String ID_IDLE = "IDLE";
         String ID_ATTACK = "ATTACK";
+        String ID_HURT = "HURT";
 
-        boolean playerInIDLE = ID_IDLE.equals( ID_CURRENT );
-        boolean playerIsRunning = ID_RUN.equals( ID_CURRENT );
-        boolean playerIsAttacking = ID_ATTACK.equals( ID_CURRENT );
+        boolean npcInIDLE = ID_IDLE.equals( ID_CURRENT );
+        boolean npcIsRunning = ID_RUN.equals( ID_CURRENT );
+        boolean npcIsAttacking = ID_ATTACK.equals( ID_CURRENT );
+        boolean npcIsHurt = ID_HURT.equals( ID_CURRENT );
 
-        boolean animationForced = forceAnimate != -1;
+        if ( !npcIsHurt && needToSkip ) {
+            entity.remove( SkipActionComponent.class );
+        }
 
         int IDLE = 0;
         int RUN = 1;
         int ATTACK = 2;
-        //int DIE = 3;
+        int HURT = 3;
+        int DIE = 4;
         float speed = 0.0f;
 
-        if(!animationForced) {
+        boolean animationForced = forceAnimate != -1;
+
+        if ( !animationForced ) {
             float directionLen = direction.len();
             // Мы управляем персонажем джойстиком
             if ( directionLen != 0 ) {
                 // Персонаж на земле
                 float animationSpeed = 3.0f + 2.0f * directionLen;
-                if ( playerIsRunning && !attack ) {
+                if ( npcIsRunning && !attack ) {
                     animationComponent.queue( RUN, animationSpeed );
                 } else {
                     if ( attack ) {
-                        if ( !playerIsAttacking ) {
+                        if ( !npcIsAttacking && !npcIsHurt ) {
                             animationComponent.play( ATTACK, animationSpeed );
                         } else {
                             animationComponent.queue( ATTACK, animationSpeed );
                         }
                     } else {
-                        animationComponent.play( RUN, animationSpeed );
+                        if ( !npcIsHurt ) {
+                            animationComponent.play( RUN, animationSpeed );
+                        }
                     }
                 }
 
@@ -219,18 +232,26 @@ public class NPCSystem extends IteratingSystem {
                     AshleySubs.createDustFX( notFilteredPos, 1.0f );
                 }
             }
-            // Мы не управляем персонажем джойстиком
+            // Скрипт не управляет персонажем
             else {
+                if ( !npcIsHurt )
                 // Персонаж на земле
-                if ( playerInIDLE ) {
-                    animationComponent.queue( IDLE, 2.0f );
-                } else {
-                    animationComponent.play( IDLE, 2.0f );
+                {
+                    if ( npcInIDLE ) {
+                        animationComponent.queue( IDLE, 2.0f );
+                    } else {
+                        animationComponent.play( IDLE, 2.0f );
+                    }
                 }
                 speed = 0.0f;
             }
-        }else{
+        } else {
             animationComponent.queue( forceAnimate, 2.0f );
+        }
+
+        if ( npcComponent.hurt ) {
+            animationComponent.play( HURT, 2.0f );
+            npcComponent.hurt = false;
         }
 
         //////////////////
@@ -263,8 +284,8 @@ public class NPCSystem extends IteratingSystem {
         boolean isFlyingNPC = false;
         if ( MyMapper.LEVEL_OBJECT.has( entity ) ) {
             ModelAsset npcAsset = MyMapper.LEVEL_OBJECT.get( entity ).levelObject.modelAsset;
-            isFlyingNPC = npcAsset.equals( ModelAsset.BUTTERFLY )||
-                          npcAsset.equals( ModelAsset.BIRD1 )||
+            isFlyingNPC = npcAsset.equals( ModelAsset.BUTTERFLY ) ||
+                          npcAsset.equals( ModelAsset.BIRD1 ) ||
                           npcAsset.equals( ModelAsset.BIRD2ANGRY );
         }
 

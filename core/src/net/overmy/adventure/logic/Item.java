@@ -28,6 +28,7 @@ public enum Item {
     RAKE_WEAPON,
     KALASH_WEAPON,
     FENCE_WEAPON,
+    PILLOW_WEAPON,
 
     /*GAME_STUFF1( "Первый предмет", "Подробное описание этого первого предмета", 0 ),
     GAME_STUFF2( "Какой-то второй предмет", "Описание второго предмета", 1 ),
@@ -100,6 +101,11 @@ public enum Item {
                          .setName( TextAsset.FENCE_WEAPON )
                          .setAbout( TextAsset.FENCE_WEAPON_ABOUT )
                          .setModel( ModelAsset.FENCE_WEAPON );
+
+        Item.PILLOW_WEAPON.setIMG( IMG.PILLOW )
+                         .setName( TextAsset.PILLOW_WEAPON )
+                         .setAbout( TextAsset.PILLOW_WEAPON_ABOUT )
+                         .setModel( ModelAsset.PILLOW_WEAPON );
     }
 
 

@@ -299,11 +299,11 @@ public class GameScreen extends Base2DScreen {
                 log.append( "/" );
                 log.append( totalModels );
 
-                int d = AshleyWorld.getPooledEngine()
-                                   .getSystem( DecalSystem.class )
-                                   .getDecalCount();
+                DecalSystem decalSystem = AshleyWorld.getPooledEngine().getSystem( DecalSystem.class );
                 log.append( " Decals=" );
-                log.append( d );
+                log.append( decalSystem.getVisibleDecalCount() );
+                log.append( "/" );
+                log.append( decalSystem.getDecalCount() );
 
                 log.append( " ░▒▓" );
 

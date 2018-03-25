@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.MyPlayer;
+import net.overmy.adventure.ashley.components.SkipActionComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.ashley.components.LevelIDComponent;
 import net.overmy.adventure.ashley.components.NPCComponent;
@@ -235,6 +236,8 @@ public class WorldContactListener extends ContactListener {
                     AshleySubs.create5StarsFX( tempPosition2 );
                     SoundAsset.HIT.play();
 
+                    MyPlayer.hurt = true;
+
                     if ( MyMapper.LIFE.has( entity02 ) ) {
                         MyMapper.LIFE.get( entity02 ).decLife( component.damage );
                         if ( MathUtils.randomBoolean() ) {
@@ -254,6 +257,8 @@ public class WorldContactListener extends ContactListener {
                     body1.getWorldTransform().getTranslation( tempPosition1 );
                     AshleySubs.create5StarsFX( tempPosition1 );
                     SoundAsset.HIT.play();
+
+                    MyPlayer.hurt = true;
 
                     component.hunting = false; // drop HUNT action
                     if ( MyMapper.LIFE.has( entity01 ) ) {
@@ -290,6 +295,11 @@ public class WorldContactListener extends ContactListener {
                         MyMapper.LIFE.get( entity01 ).decLife( MyPlayer.damage );
 
                         if ( contact1NPC ) {
+                            NPCComponent component = MyMapper.NPC.get( entity01 );
+                            entity01.add( new SkipActionComponent() );
+                            component.hunting=false;
+                            component.hurt=true;
+
                             if ( MathUtils.randomBoolean() ) {
                                 SoundAsset.HURT3.play();
                             } else {
@@ -322,7 +332,12 @@ public class WorldContactListener extends ContactListener {
                     if ( contact2DestroyableBox || contact2DestroyableRock || contact2NPC ) {
                         MyMapper.LIFE.get( entity02 ).decLife( MyPlayer.damage );
 
-                        if ( contact1NPC ) {
+                        if ( contact2NPC ) {
+                            NPCComponent component = MyMapper.NPC.get( entity02 );
+                            entity02.add( new SkipActionComponent() );
+                            component.hunting=false;
+                            component.hurt=true;
+
                             if ( MathUtils.randomBoolean() ) {
                                 SoundAsset.HURT3.play();
                             } else {

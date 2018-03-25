@@ -25,8 +25,7 @@ public class PhysicalSystem extends IteratingSystem {
 
     @SuppressWarnings( "unchecked" )
     public PhysicalSystem () {
-        super( Family.all( PhysicalComponent.class ).
-                exclude( OutOfCameraComponent.class ).get() );
+        super( Family.all( PhysicalComponent.class ).get() );
 
         contacts = new WorldContactListener();
     }

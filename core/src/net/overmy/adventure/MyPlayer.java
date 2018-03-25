@@ -62,6 +62,8 @@ public final class MyPlayer {
     public static  float   extraJump   = 0.0f;
     public static  float   extraSpeed2 = 0.0f;
 
+    public static boolean hurt = false;
+
 
     public static ArrayList< ItemInBagg > getBag () {
         return bag;
@@ -250,16 +252,19 @@ public final class MyPlayer {
         final String ID_ATTACK = "ATTACK";
         final String ID_RUN = "RUN";
         final String ID_IDLE = "IDLE";
+        final String ID_HURT = "HURT";
 
         final boolean playerOnGround = MyMapper.GROUNDED.get( playerEntity ).grounded;
         final boolean playerInIDLE = ID_IDLE.equals( ID_CURRENT );
         final boolean playerIsRunning = ID_RUN.equals( ID_CURRENT );
         final boolean playerIsAttacking = ID_ATTACK.equals( ID_CURRENT );
+        final boolean playerIsHurt = ID_HURT.equals( ID_CURRENT );
 //        final boolean playerJump = ID_JUMP.equals( ID_CURRENT );
 
         final int IDLE = 0;
         final int RUN = 1;
         final int ATTACK = 2;
+        final int HURT = 4;
 
         // SET sound of walking steps
         if ( !onLadder ) {
@@ -297,14 +302,12 @@ public final class MyPlayer {
             extraJump = 0.0f;
         }
 
-
-        if ( attack ) {
+        if ( attack && !playerIsHurt ) {
             animationComponent.play( ATTACK, 2.4f );
             animationComponent.queue( IDLE, 2.0f );
             attack = false;
             isAttacking = true;
         }
-
 
         final float directionLen = direction.len();
         // Мы управляем персонажем джойстиком
@@ -312,7 +315,7 @@ public final class MyPlayer {
             // Персонаж на земле
             if ( playerOnGround ) {
                 final float animationSpeed = 3.0f + 2.0f * directionLen;
-                if ( !playerIsAttacking ) {
+                if ( !playerIsAttacking && !playerIsHurt ) {
                     isAttacking = false;
                     if ( playerIsRunning ) {
                         animationComponent.queue( RUN, animationSpeed );
@@ -323,14 +326,14 @@ public final class MyPlayer {
             }
             // Персонаж в воздухе
             else {
-                if ( !playerIsAttacking ) {
+                if ( !playerIsAttacking && !playerIsHurt ) {
                     isAttacking = false;
                     if ( playerInIDLE ) {
                         animationComponent.queue( IDLE, 2.0f );
                     } else {
                         animationComponent.play( IDLE, 2.0f );
                     }
-                }else{
+                } else {
                     animationComponent.queue( IDLE, 2.0f );
                 }
             }
@@ -358,17 +361,22 @@ public final class MyPlayer {
         else {
             // Персонаж на земле
             if ( playerOnGround ) {
-                if ( !playerIsAttacking ) {
+                if ( !playerIsAttacking && !playerIsHurt ) {
                     if ( playerInIDLE ) {
                         animationComponent.queue( IDLE, 2.0f );
                     } else {
                         animationComponent.play( IDLE, 2.0f );
                     }
                 }
-            }else{
+            } else {
                 animationComponent.queue( IDLE, 2.0f );
             }
             speed = 0.0f;
+        }
+
+        if ( hurt ) {
+            hurt = false;
+            animationComponent.play( HURT, 2.0f );
         }
     }
 
@@ -462,8 +470,9 @@ public final class MyPlayer {
         boolean kalashIsItem = item.item.equals( Item.KALASH_WEAPON );
         boolean rakeIsItem = item.item.equals( Item.RAKE_WEAPON );
         boolean fenceIsItem = item.item.equals( Item.FENCE_WEAPON );
+        boolean pillowIsItem = item.item.equals( Item.PILLOW_WEAPON );
 
-        if ( broomIsItem || kalashIsItem || rakeIsItem || fenceIsItem ) {
+        if ( broomIsItem || kalashIsItem || rakeIsItem || fenceIsItem || pillowIsItem ) {
             if ( weaponInHand ) {
                 if ( modelInstanceWeaponInHand != null ) {
                     modelInstanceWeaponInHand.nodes.get( 0 ).detach();
@@ -510,6 +519,35 @@ public final class MyPlayer {
 
             case RED_BOTTLE:
                 MyMapper.LIFE.get( playerEntity ).life = 100;
+
+                break;
+
+            case PILLOW_WEAPON:
+                // create weapon in ashley
+                modelInstanceWeaponInHand = ModelAsset.PILLOW_WEAPON.get();
+                // attach only model without physics
+                modelInstanceWeaponInHand.nodes.get( 0 ).attachTo( rightArmNode );
+
+                PhysicalBuilder physicalBuilderPILLOW_WEAPON = new PhysicalBuilder()
+                        .setModelInstance( modelInstanceWeaponInHand );
+
+                physicalBuilderPILLOW_WEAPON
+                        .defaultMotionState()
+                        .zeroMass()
+                        .hullShape()
+                        .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                        .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
+                        .setCallbackFilter( BulletWorld.ALL_FLAG )
+                        .disableDeactivation();
+
+                entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
+                entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
+                entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
+                entityWeaponInHand.add( physicalBuilderPILLOW_WEAPON.buildPhysicalComponent() );
+                AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+
+                weaponInHand = true;
+                damage = 10;
 
                 break;
 

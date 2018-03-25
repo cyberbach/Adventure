@@ -318,8 +318,6 @@ public final class AshleySubs {
     public static Entity createHoverCollectable ( Vector3 position,
                                                   Item item,
                                                   LevelObject object ) {
-        Gdx.app.debug( "try to create entity",""+item.getName()+" "+item.getModelAsset() );
-
         ModelInstance modelInstanceHOVER_COLLECTABLE = item.getModelAsset().get();
         modelInstanceHOVER_COLLECTABLE.transform.setToTranslation( position );
 

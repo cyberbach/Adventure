@@ -22,11 +22,11 @@ public class DecalSystem extends IteratingSystem {
 
     private Vector3 offsetByAnimator = new Vector3();
     private int     decalCount       = 0;
+    private int     visibleDecalCount       = 0;
 
     @SuppressWarnings ( "unchecked" )
     public DecalSystem(  ) {
-        super( Family.all( DecalComponent.class )
-                     .exclude( OutOfCameraComponent.class ).get() );
+        super( Family.all( DecalComponent.class ).get() );
     }
 
     @Override
@@ -56,6 +56,7 @@ public class DecalSystem extends IteratingSystem {
             // facing overrides all rotations
             decalComponent.decal.lookAt( MyCamera.get().position, MyCamera.get().up );
             MyRender.getDecalBatch().add( decalComponent.decal );
+            visibleDecalCount++;
         }
 
         decalCount++;
@@ -64,10 +65,17 @@ public class DecalSystem extends IteratingSystem {
     @Override
     public void update( float delta ) {
         decalCount = 0;
+        visibleDecalCount       = 0;
         super.update( delta );
     }
 
-    public int getDecalCount() {
+
+    public int getVisibleDecalCount () {
+        return visibleDecalCount;
+    }
+
+
+    public int getDecalCount () {
         return decalCount;
     }
 }

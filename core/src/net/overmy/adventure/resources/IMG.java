@@ -45,6 +45,7 @@ public enum IMG {
     WEAPON2( "weapon2" ),
     WEAPON3( "weapon3" ),
     WEAPON4( "weapon4" ),
+    PILLOW( "pillow" ),
 
 
     // inventory

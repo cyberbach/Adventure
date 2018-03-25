@@ -28,7 +28,7 @@ class LevelSubs {
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.WEAPON )
-                             .setItem( Item.BROOM_WEAPON )
+                             .setItem( Item.PILLOW_WEAPON )
                              .setPosition( new Vector3( -2.566254f, 0.0907035f, -4.6540112f ) ) );
 
         objects.add( new LevelObject()

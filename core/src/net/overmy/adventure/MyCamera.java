@@ -39,7 +39,7 @@ public class MyCamera {
 
 
     public static void init () {
-        float backCullingDistance = 400.0f;// Задняя плоскость отсечения (дальность тумана)
+        float cullingDistance = 400.0f;// Задняя плоскость отсечения (дальность тумана)
         float defaultFOV = 58.0f; // Угол обзора (67 - стандартный)
         float cullingFOV = 70.0f;
 
@@ -47,12 +47,12 @@ public class MyCamera {
 
         camera = new PerspectiveCamera( defaultFOV, Core.WIDTH, Core.HEIGHT );
         camera.near = 0.1f;
-        camera.far = backCullingDistance;
+        camera.far = cullingDistance;
         camera.up.set( upVector );
 
         cullingCamera = new PerspectiveCamera( cullingFOV, Core.WIDTH, Core.HEIGHT );
         cullingCamera.near = 0.1f;
-        cullingCamera.far = backCullingDistance * 1.1f;
+        cullingCamera.far = cullingDistance * 1.2f;
         cullingCamera.up.set( upVector );
 
         Color lightColor = new Color( 0.6f, 0.6f, 0.6f, 1.0f );

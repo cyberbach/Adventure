@@ -44,6 +44,10 @@ public enum TextAsset {
 
     COIN( "Золотая монета", "Gold coin" ),
 
+    PILLOW_WEAPON( "Подушка", "Pillow" ),
+    PILLOW_WEAPON_ABOUT( "Эпичная подушка героя\nУрон:10",
+                        "Epic pillow of the hero\nDamage: 10" ),
+
     BROOM_WEAPON( "Метла", "The broom" ),
     BROOM_WEAPON_ABOUT( "Это оружие. Подробное описание этого первого предмета\nУрон:35",
                         "This weapon. A detailed description of this first subject\nDamage: 35" ),
