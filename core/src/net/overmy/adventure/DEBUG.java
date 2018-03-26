@@ -12,12 +12,12 @@ public enum DEBUG {
     ENTITIES( false ),
     DECAL_ENTITIES( false ),
     PHYSICAL_MESH( false ),
-    FPS( false ),
+    FPS( true ),
     SHOW_MODEL_INFO( false ),
     STAGE( false ),
     DYNAMIC_LEVELS( false ),
     NPC_ACTIONS( false ),
-    GAME_MASTER_MODE( true ),
+    GAME_MASTER_MODE( false ),
 
     ENABLE_ENGLISH_TEXT( false ),
     ;
