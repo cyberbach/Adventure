@@ -54,10 +54,10 @@ public class LevelObject {
 
 
     public LevelObject setItem ( Item item ) {
-        this.item = item;
+        this.item = item;/*
         if ( item.getModelAsset() != null ) {
             this.modelAsset = item.getModelAsset();
-        }
+        }*/
         return this;
     }
 
@@ -89,7 +89,7 @@ public class LevelObject {
 
     void removeEntity () {
         if ( entity != null ) {
-            AshleyWorld.getPooledEngine().removeEntity( entity );
+            AshleyWorld.getEngine().removeEntity( entity );
         }
 
         if ( DEBUG.DYNAMIC_LEVELS.get() ) {
@@ -124,7 +124,7 @@ public class LevelObject {
                 break;
 
             case PICKABLE:
-                entity = AshleySubs.createPickable( position, item, this );
+                entity = AshleySubs.createPickable( position, item,modelAsset, this );
                 break;
 
             case BOX:
@@ -136,11 +136,11 @@ public class LevelObject {
                 break;
 
             case COLLECTABLE:
-                entity = AshleySubs.createCollectable( position, item, this );
+                entity = AshleySubs.createCollectable( position, item, modelAsset, this );
                 break;
 
             case HOVER_COLLECTABLE:
-                entity = AshleySubs.createHoverCollectable( position, item, this );
+                entity = AshleySubs.createHoverCollectable( position, item, modelAsset, this );
                 break;
 
             case NPC:

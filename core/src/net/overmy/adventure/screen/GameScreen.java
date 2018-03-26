@@ -100,9 +100,9 @@ public class GameScreen extends Base2DScreen {
     public void show () {
         super.show();
 
-        AshleyWorld.getPooledEngine().getSystem( NPCSystem.class ).setWalkSound();
+        AshleyWorld.getEngine().getSystem( NPCSystem.class ).setWalkSound();
 
-        interactSystem = AshleyWorld.getPooledEngine().getSystem( InteractSystem.class );
+        interactSystem = AshleyWorld.getEngine().getSystem( InteractSystem.class );
 
         bg = TextureAsset.BG_GRADIENT.get();
         spriteBatch = MyRender.getSpriteBatch();
@@ -293,7 +293,7 @@ public class GameScreen extends Base2DScreen {
                 log.append( Gdx.graphics.getFramesPerSecond() );
                 log.append( " " );
 
-                RenderSystem rend = AshleyWorld.getPooledEngine().getSystem( RenderSystem.class );
+                RenderSystem rend = AshleyWorld.getEngine().getSystem( RenderSystem.class );
                 int models = rend.getModelsCount();
                 int totalModels = rend.getTotalModelsCount();
                 log.append( " Models=" );
@@ -301,7 +301,7 @@ public class GameScreen extends Base2DScreen {
                 log.append( "/" );
                 log.append( totalModels );
 
-                DecalSystem decalSystem = AshleyWorld.getPooledEngine().getSystem( DecalSystem.class );
+                DecalSystem decalSystem = AshleyWorld.getEngine().getSystem( DecalSystem.class );
                 log.append( " Decals=" );
                 log.append( decalSystem.getVisibleDecalCount() );
                 log.append( "/" );
@@ -736,7 +736,7 @@ public class GameScreen extends Base2DScreen {
     public void dispose () {
         super.dispose();
 
-        AshleyWorld.getPooledEngine().getSystem( NPCSystem.class ).disableWalkSound();
+        AshleyWorld.getEngine().getSystem( NPCSystem.class ).disableWalkSound();
 
         MyPlayer.stopSound();
         MusicAsset.stopAll();

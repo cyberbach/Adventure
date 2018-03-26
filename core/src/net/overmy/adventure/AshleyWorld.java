@@ -5,7 +5,7 @@ package net.overmy.adventure;
       Contact me → http://vk.com/id17317
  */
 
-import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 
 import net.overmy.adventure.ashley.MyEntityListener;
@@ -23,12 +23,12 @@ import net.overmy.adventure.ashley.systems.RenderSystem;
 import net.overmy.adventure.ashley.systems.TextDecalSystem;
 
 public final class AshleyWorld {
-    public static PooledEngine getPooledEngine () {
-        return pooledEngine;
+    public static Engine getEngine () {
+        return engine;
     }
 
 
-    private static PooledEngine pooledEngine = null;
+    private static Engine engine = null;
 
 
     private AshleyWorld () {
@@ -36,44 +36,44 @@ public final class AshleyWorld {
 
 
     public static void init () {
-        pooledEngine = new PooledEngine();
+        engine = new Engine();
 
-        AshleySubs.init( pooledEngine );
+        AshleySubs.init( engine );
         MyMapper.init();
 
-        pooledEngine.addSystem( new LifeSystem() );
-        //pooledEngine.addSystem( new RemoveByLevelSystem() );
-        pooledEngine.addSystem( new RemoveByTimeSystem() );
-        pooledEngine.addSystem( new NPCSystem() );
-        pooledEngine.addSystem( new MyWeaponSystem() );
-        pooledEngine.addSystem( new AnimationSystem() );
-        pooledEngine.addSystem( new MyAnimationSystem() );
-        pooledEngine.addSystem( new PhysicalSystem() );
-        pooledEngine.addSystem( new RenderSystem() );
-        pooledEngine.addSystem( new TextDecalSystem() );
-        pooledEngine.addSystem( new DecalSystem() );
-        pooledEngine.addSystem( new InteractSystem() );
+        engine.addSystem( new LifeSystem() );
+        //engine.addSystem( new RemoveByLevelSystem() );
+        engine.addSystem( new RemoveByTimeSystem() );
+        engine.addSystem( new NPCSystem() );
+        engine.addSystem( new MyWeaponSystem() );
+        engine.addSystem( new AnimationSystem() );
+        engine.addSystem( new MyAnimationSystem() );
+        engine.addSystem( new PhysicalSystem() );
+        engine.addSystem( new RenderSystem() );
+        engine.addSystem( new TextDecalSystem() );
+        engine.addSystem( new DecalSystem() );
+        engine.addSystem( new InteractSystem() );
 
-        pooledEngine.addEntityListener( new MyEntityListener() );
+        engine.addEntityListener( new MyEntityListener() );
     }
 
 
     public static void dispose () {
-        pooledEngine.removeSystem( pooledEngine.getSystem( LifeSystem.class ) );
-        //pooledEngine.removeSystem( pooledEngine.getSystem( RemoveByLevelSystem.class ) );
-        pooledEngine.removeSystem( pooledEngine.getSystem( RemoveByTimeSystem.class ) );
-        pooledEngine.removeSystem( pooledEngine.getSystem( NPCSystem.class ) );
-        pooledEngine.removeSystem( pooledEngine.getSystem( AnimationSystem.class ) );
-        pooledEngine.removeSystem( pooledEngine.getSystem( MyAnimationSystem.class ) );
-        pooledEngine.removeSystem( pooledEngine.getSystem( PhysicalSystem.class ) );
-        pooledEngine.removeSystem( pooledEngine.getSystem( RenderSystem.class ) );
-        pooledEngine.removeSystem( pooledEngine.getSystem( DecalSystem.class ) );
-        pooledEngine.removeSystem( pooledEngine.getSystem( InteractSystem.class ) );
-        pooledEngine.removeSystem( pooledEngine.getSystem( MyWeaponSystem.class ) );
+        engine.removeSystem( engine.getSystem( LifeSystem.class ) );
+        //engine.removeSystem( engine.getSystem( RemoveByLevelSystem.class ) );
+        engine.removeSystem( engine.getSystem( RemoveByTimeSystem.class ) );
+        engine.removeSystem( engine.getSystem( NPCSystem.class ) );
+        engine.removeSystem( engine.getSystem( AnimationSystem.class ) );
+        engine.removeSystem( engine.getSystem( MyAnimationSystem.class ) );
+        engine.removeSystem( engine.getSystem( PhysicalSystem.class ) );
+        engine.removeSystem( engine.getSystem( RenderSystem.class ) );
+        engine.removeSystem( engine.getSystem( DecalSystem.class ) );
+        engine.removeSystem( engine.getSystem( InteractSystem.class ) );
+        engine.removeSystem( engine.getSystem( MyWeaponSystem.class ) );
 
-        pooledEngine.removeAllEntities();
-        pooledEngine.clearPools();
-        pooledEngine = null;
+        engine.removeAllEntities();
+        //engine.clearPools();
+        engine = null;
 
         AshleySubs.dispose();
         MyMapper.dispose();
@@ -81,7 +81,7 @@ public final class AshleyWorld {
 
 
     public static void update ( float delta ) {
-        pooledEngine.update( delta );
+        engine.update( delta );
         if ( DEBUG.CONTACTS.get() ){
             Gdx.app.debug( "==================================",
                            "tick ===============================" );

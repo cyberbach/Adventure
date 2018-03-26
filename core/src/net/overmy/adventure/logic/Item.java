@@ -49,38 +49,38 @@ public enum Item {
         // connect Item enum to IMG enum, TextAsset enum, ModelAsset enum
         Item.COIN.setIMG( IMG.COIN )
                  .setName( TextAsset.COIN )
-                 .setAbout( TextAsset.MONEY_ABOUT )
-                 .setModel( ModelAsset.COIN );
+                 .setAbout( TextAsset.MONEY_ABOUT );
+                 //.setModel( ModelAsset.COIN );
 
         Item.YELLOW_STAR.setIMG( IMG.YSTAR )
                         .setName( TextAsset.YELLOW_STAR )
-                        .setAbout( TextAsset.MONEY_ABOUT )
-                        .setModel( ModelAsset.YSTAR );
+                        .setAbout( TextAsset.MONEY_ABOUT );
+                        //.setModel( ModelAsset.YSTAR );
 
         Item.BLUE_STAR.setIMG( IMG.BSTAR )
                       .setName( TextAsset.BLUE_STAR )
-                      .setAbout( TextAsset.MONEY_ABOUT )
-                      .setModel( ModelAsset.BSTAR );
+                      .setAbout( TextAsset.MONEY_ABOUT );
+                      //.setModel( ModelAsset.BSTAR );
 
         Item.GREEN_STAR.setIMG( IMG.GSTAR )
                        .setName( TextAsset.GREEN_STAR )
-                       .setAbout( TextAsset.MONEY_ABOUT )
-                       .setModel( ModelAsset.GSTAR );
+                       .setAbout( TextAsset.MONEY_ABOUT );
+                       //.setModel( ModelAsset.GSTAR );
 
         Item.GREEN_BOTTLE.setIMG( IMG.GREEN_BOTTLE )
                          .setName( TextAsset.GREEN_BOTTLE )
-                         .setAbout( TextAsset.GREEN_BOTTLE_ABOUT )
-                         .setModel( ModelAsset.GREEN_BOTTLE );
+                         .setAbout( TextAsset.GREEN_BOTTLE_ABOUT );
+                         //.setModel( ModelAsset.GREEN_BOTTLE );
 
         Item.RED_BOTTLE.setIMG( IMG.RED_BOTTLE )
                        .setName( TextAsset.RED_BOTTLE )
-                       .setAbout( TextAsset.RED_BOTTLE_ABOUT )
-                       .setModel( ModelAsset.RED_BOTTLE );
+                       .setAbout( TextAsset.RED_BOTTLE_ABOUT );
+                       //.setModel( ModelAsset.RED_BOTTLE );
 
         Item.PURPLE_BOTTLE.setIMG( IMG.PURPLE_BOTTLE )
                           .setName( TextAsset.PURPLE_BOTTLE )
-                          .setAbout( TextAsset.PURPLE_BOTTLE_ABOUT )
-                          .setModel( ModelAsset.PURPLE_BOTTLE );
+                          .setAbout( TextAsset.PURPLE_BOTTLE_ABOUT );
+                          //.setModel( ModelAsset.PURPLE_BOTTLE );
 
         Item.BROOM_WEAPON.setIMG( IMG.WEAPON1 )
                          .setName( TextAsset.BROOM_WEAPON )
@@ -115,6 +115,7 @@ public enum Item {
     }
 
 
+
     public Item setName ( TextAsset name ) {
         this.name = name;
         return this;
@@ -136,6 +137,7 @@ public enum Item {
     public ModelAsset getModelAsset () {
         return modelAsset;
     }
+
 
 
     public String getName () {

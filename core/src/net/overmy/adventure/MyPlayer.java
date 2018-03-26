@@ -157,11 +157,11 @@ public final class MyPlayer {
                 .setCallbackFilter( BulletWorld.FILTER_ALL )
                 .disableDeactivation();
 
-        entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
+        entityWeaponInHand = new Entity();//AshleyWorld.getPooledEngine().createEntity();
         entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
         entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
         entityWeaponInHand.add( physicalBuilder.buildPhysicalComponent() );
-        AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+        AshleyWorld.getEngine().addEntity( entityWeaponInHand );
 
         // set position by loaded dynamic level n
 
@@ -540,11 +540,11 @@ public final class MyPlayer {
                         .setCallbackFilter( BulletWorld.FILTER_ALL )
                         .disableDeactivation();
 
-                entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
+                entityWeaponInHand = new Entity(); //AshleyWorld.getPooledEngine().createEntity();
                 entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderPILLOW_WEAPON.buildPhysicalComponent() );
-                AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+                AshleyWorld.getEngine().addEntity( entityWeaponInHand );
 
                 weaponInHand = true;
                 damage = 10;
@@ -569,11 +569,11 @@ public final class MyPlayer {
                         .setCallbackFilter( BulletWorld.FILTER_ALL )
                         .disableDeactivation();
 
-                entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
+                entityWeaponInHand = new Entity(); //AshleyWorld.getPooledEngine().createEntity();
                 entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderWEAPON.buildPhysicalComponent() );
-                AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+                AshleyWorld.getEngine().addEntity( entityWeaponInHand );
 
                 weaponInHand = true;
                 damage = 110;
@@ -598,11 +598,11 @@ public final class MyPlayer {
                         .setCallbackFilter( BulletWorld.FILTER_ALL )
                         .disableDeactivation();
 
-                entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
+                entityWeaponInHand = new Entity(); //AshleyWorld.getPooledEngine().createEntity();
                 entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderBORDER_WEAPON.buildPhysicalComponent() );
-                AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+                AshleyWorld.getEngine().addEntity( entityWeaponInHand );
 
                 weaponInHand = true;
                 damage = 150;
@@ -627,11 +627,11 @@ public final class MyPlayer {
                         .setCallbackFilter( BulletWorld.FILTER_ALL )
                         .disableDeactivation();
 
-                entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
+                entityWeaponInHand = new Entity(); //AshleyWorld.getPooledEngine().createEntity();
                 entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderBROOM_WEAPON.buildPhysicalComponent() );
-                AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+                AshleyWorld.getEngine().addEntity( entityWeaponInHand );
 
                 weaponInHand = true;
                 damage = 35;
@@ -656,11 +656,11 @@ public final class MyPlayer {
                         .setCallbackFilter( BulletWorld.FILTER_ALL )
                         .disableDeactivation();
 
-                entityWeaponInHand = AshleyWorld.getPooledEngine().createEntity();
+                entityWeaponInHand = new Entity(); //AshleyWorld.getPooledEngine().createEntity();
                 entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
                 entityWeaponInHand.add( new MyWeaponComponent( rightArmNode, bodyTransform ) );
                 entityWeaponInHand.add( physicalBuilderSwordWEAPON.buildPhysicalComponent() );
-                AshleyWorld.getPooledEngine().addEntity( entityWeaponInHand );
+                AshleyWorld.getEngine().addEntity( entityWeaponInHand );
 
                 weaponInHand = true;
                 damage = 60;

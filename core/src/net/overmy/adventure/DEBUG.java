@@ -9,13 +9,13 @@ public enum DEBUG {
     SETTINGS( false ),
 
     CONTACTS( false ),
-    ENTITIES( true ),
+    ENTITIES( false ),
     DECAL_ENTITIES( false ),
     PHYSICAL_MESH( false ),
     FPS( false ),
     SHOW_MODEL_INFO( false ),
     STAGE( false ),
-    DYNAMIC_LEVELS( true ),
+    DYNAMIC_LEVELS( false ),
     NPC_ACTIONS( false ),
     GAME_MASTER_MODE( true ),
 

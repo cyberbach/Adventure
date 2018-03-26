@@ -5,9 +5,8 @@ package net.overmy.adventure;
       Contact me → http://vk.com/id17317
  */
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.MathUtils;
@@ -56,20 +55,20 @@ import net.overmy.adventure.utils.UIHelper;
 public final class AshleySubs {
 
 
-    private static PooledEngine pooledEngine = null;
+    private static Engine engine = null;
 
 
     private AshleySubs () {
     }
 
 
-    public static void init ( PooledEngine pooledEngine2 ) {
-        pooledEngine = pooledEngine2;
+    public static void init ( Engine engineIn ) {
+        engine = engineIn;
     }
 
 
     protected static void dispose () {
-        pooledEngine = null;
+        engine = null;
     }
 
     // GUI entities
@@ -108,10 +107,10 @@ public final class AshleySubs {
 
         // build
 
-        Entity timerEntity = AshleyWorld.getPooledEngine().createEntity();
+        Entity timerEntity = new Entity(); // engine.createEntity();
         timerEntity.add( new ActorComponent( fullGroup ) );
         timerEntity.add( new RemoveByTimeComponent( 15 ) );
-        AshleyWorld.getPooledEngine().addEntity( timerEntity );
+        engine.addEntity( timerEntity );
 
         return label;
     }
@@ -127,10 +126,10 @@ public final class AshleySubs {
         textGroup.setScale( 0, 0 );
         UIHelper.scaleIn( textGroup );
 
-        Entity timerEntity = AshleyWorld.getPooledEngine().createEntity();
+        Entity timerEntity = new Entity(); // engine.createEntity();
         timerEntity.add( new ActorComponent( textGroup ) );
         timerEntity.add( new RemoveByTimeComponent( 5 ) );
-        AshleyWorld.getPooledEngine().addEntity( timerEntity );
+        engine.addEntity( timerEntity );
     }
 
 
@@ -159,10 +158,10 @@ public final class AshleySubs {
         actorComponent.group.addActor( iconImage );
         actorComponent.group.setPosition( 0, 0 );
 
-        Entity timerEntity = AshleyWorld.getPooledEngine().createEntity();
+        Entity timerEntity = new Entity(); // engine.createEntity();
         timerEntity.add( actorComponent );
         timerEntity.add( new RemoveByTimeComponent( Core.FADE * 2.0f ) );
-        AshleyWorld.getPooledEngine().addEntity( timerEntity );
+        engine.addEntity( timerEntity );
     }
 
     // Game Entities
@@ -190,7 +189,7 @@ public final class AshleySubs {
         PhysicalComponent physicalComponent = physicalBuilder.buildPhysicalComponent();
         physicalComponent.body.setFriction( 0.1f );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( physicalComponent );
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( new AnimationComponent( modelInstance ) );
@@ -199,7 +198,7 @@ public final class AshleySubs {
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.MYPLAYER ) );
         entity.add( new MyPlayerComponent() );
 
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
         return entity;
     }
 
@@ -218,7 +217,7 @@ public final class AshleySubs {
                     .setCallbackFilter( BulletWorld.FILTER_ALL );
         }
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( new LevelIDComponent( zoneModel.ordinal() ) );
         entity.add( new ModelComponent( zoneModel.get() ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.GROUND ) );
@@ -227,7 +226,7 @@ public final class AshleySubs {
             entity.add( physicalBuilder.buildBVHPhysicalComponent() );
         }
         entity.add( new BoundingComponent( zoneModel.getBoundingBox() ) );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -244,10 +243,10 @@ public final class AshleySubs {
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG )
                 .setPosition( position );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( physicalBuilderLADDER.buildPhysicalComponent() );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.LADDER ) );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -255,8 +254,9 @@ public final class AshleySubs {
 
     public static Entity createPickable ( Vector3 position,
                                           Item item,
+                                          ModelAsset modelAsset,
                                           LevelObject object ) {
-        ModelInstance modelInstancePICKABLE = item.getModelAsset().get();
+        ModelInstance modelInstancePICKABLE = modelAsset.get();
         modelInstancePICKABLE.transform.setToTranslation( position );
 
         PhysicalBuilder physicalBuilderPICKABLE = new PhysicalBuilder()
@@ -268,7 +268,7 @@ public final class AshleySubs {
                 .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
                 .setCallbackFilter( BulletWorld.GROUND_FLAG | BulletWorld.PLAYER_FLAG );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         if ( modelInstancePICKABLE.animations.size > 0 ) {
             entity.add( new AnimationComponent( modelInstancePICKABLE ) );
         }
@@ -278,7 +278,7 @@ public final class AshleySubs {
         entity.add( new InteractComponent( TYPE_OF_INTERACT.LOOT, item ) );
         entity.add( new LevelObjectComponent( object ) );
         entity.add( physicalBuilderPICKABLE.buildPhysicalComponent() );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -286,8 +286,9 @@ public final class AshleySubs {
 
     public static Entity createCollectable ( Vector3 position,
                                              Item item,
+                                             ModelAsset modelAsset,
                                              LevelObject object ) {
-        ModelInstance modelInstanceCOLLECTABLE = item.getModelAsset().get();
+        ModelInstance modelInstanceCOLLECTABLE = modelAsset.get();
         modelInstanceCOLLECTABLE.transform.setToTranslation( position );
 
         PhysicalBuilder physicalBuilderCOLLECTABLE = new PhysicalBuilder()
@@ -299,7 +300,7 @@ public final class AshleySubs {
                 .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( new ModelComponent( modelInstanceCOLLECTABLE ) );
         if ( modelInstanceCOLLECTABLE.animations.size > 0 ) {
             entity.add( new AnimationComponent( modelInstanceCOLLECTABLE ) );
@@ -309,7 +310,7 @@ public final class AshleySubs {
         entity.add( new CollectableComponent( item ) );
         entity.add( new LevelObjectComponent( object ) );
         entity.add( physicalBuilderCOLLECTABLE.buildPhysicalComponent() );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -317,11 +318,12 @@ public final class AshleySubs {
 
     public static Entity createHoverCollectable ( Vector3 position,
                                                   Item item,
+                                                  ModelAsset modelAsset,
                                                   LevelObject object ) {
 
         //Gdx.app.debug( "",""+item.getModelAsset() );
 
-        ModelInstance modelInstanceHOVER_COLLECTABLE = item.getModelAsset().get();
+        ModelInstance modelInstanceHOVER_COLLECTABLE = modelAsset.get();
         //Gdx.app.debug( "",""+modelInstanceHOVER_COLLECTABLE );
         ///Gdx.app.debug( "",""+position );
         modelInstanceHOVER_COLLECTABLE.transform.setToTranslation( position );
@@ -342,7 +344,7 @@ public final class AshleySubs {
                 .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         if ( modelInstanceHOVER_COLLECTABLE.animations.size > 0 ) {
             entity.add( new AnimationComponent( modelInstanceHOVER_COLLECTABLE ) );
         }
@@ -352,7 +354,7 @@ public final class AshleySubs {
         entity.add( new CollectableComponent( item ) );
         entity.add( new LevelObjectComponent( object ) );
         entity.add( physicalBuilderHOVER_COLLECTABLE.buildPhysicalComponent() );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -395,7 +397,7 @@ public final class AshleySubs {
         physicalComponent.body.setFriction( 0.1f );
         physicalComponent.body.setSpinningFriction( 0.1f );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( new ModelComponent( modelInstanceNPC ) );
         entity.add( new AnimationComponent( modelInstanceNPC ) );
         if ( textInteract != null ) {
@@ -404,7 +406,7 @@ public final class AshleySubs {
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.NPC ) );
         entity.add( new NPCComponent( actionArray ) );
         entity.add( physicalComponent );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -442,7 +444,7 @@ public final class AshleySubs {
                 break;
         }
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( new ModelComponent( modelInstanceENEMY ) );
         entity.add( new AnimationComponent( modelInstanceENEMY ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.NPC ) );
@@ -450,7 +452,7 @@ public final class AshleySubs {
         entity.add( physicalBuilderENEMY.buildPhysicalComponent() );
         entity.add( new LevelObjectComponent( object ) );
         entity.add( new LifeComponent( 100, 1.5f, 2.0f ) );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -471,13 +473,13 @@ public final class AshleySubs {
                 .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
                 .setCallbackFilter( BulletWorld.NPC_FLAG );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( new ModelComponent( modelInstanceWEAPON ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
         entity.add( new InteractComponent( TYPE_OF_INTERACT.LOOT, item ) );
         entity.add( new LevelObjectComponent( object ) );
         entity.add( physicalBuilderWEAPON.buildPhysicalComponent() );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -497,13 +499,13 @@ public final class AshleySubs {
                 .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
-        Entity entityFromBox = pooledEngine.createEntity();
+        Entity entityFromBox = new Entity(); // engine.createEntity();
         entityFromBox.add( new ModelComponent( modelInstanceFromBox ) );
         entityFromBox.add( new MyAnimationComponent() );
         entityFromBox.add( new EntityTypeComponent( TYPE_OF_ENTITY.COLLECTABLE ) );
         entityFromBox.add( new CollectableComponent( item ) );
         entityFromBox.add( physicalBuilderFromBox.buildPhysicalComponent() );
-        pooledEngine.addEntity( entityFromBox );
+        engine.addEntity( entityFromBox );
     }
 
 
@@ -529,7 +531,7 @@ public final class AshleySubs {
                 .setCallbackFlag( BulletWorld.DESTROYABLE_FLAG )
                 .setCallbackFilter( BulletWorld.MYWEAPON_FLAG );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         if ( modelInstance.animations.size > 0 ) {
             entity.add( new AnimationComponent( modelInstance ) );
         }
@@ -541,7 +543,7 @@ public final class AshleySubs {
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.DESTROYABLE_BOX ) );
         entity.add( new LevelObjectComponent( object ) );
         entity.add( physicalBuilderBOX.buildPhysicalComponent() );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -566,13 +568,13 @@ public final class AshleySubs {
         PhysicalComponent physicalComponent = physicalBuilderBOX.buildPhysicalComponent();
         //physicalComponent.body.setFriction( 100.0f );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( new LifeComponent( 300.0f, 1.5f, 1.0f ) );
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.DESTROYABLE_ROCK ) );
         entity.add( new LevelObjectComponent( object ) );
         entity.add( physicalComponent );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -616,11 +618,11 @@ public final class AshleySubs {
                     .setStartImpulse( randomPosition )
                     .setCallbackFilter( 0 );
 
-            Entity partEntity = pooledEngine.createEntity();
+            Entity partEntity = new Entity(); // engine.createEntity();
             partEntity.add( new ModelComponent( modelInstance ) );
             partEntity.add( new RemoveByTimeComponent( timeOfLife ) );
             partEntity.add( physicalBuilder.buildPhysicalComponent() );
-            pooledEngine.addEntity( partEntity );
+            engine.addEntity( partEntity );
 
             SoundAsset.BoxCrush.play();
         }
@@ -628,22 +630,22 @@ public final class AshleySubs {
 
 
     public static void createDustFX ( Vector3 position, float timeToRemove ) {
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( DecalSubs.LightDustEffect( timeToRemove ) );
         entity.add( new PositionComponent( position ) );
         entity.add( new RemoveByTimeComponent( timeToRemove ) );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
     }
 
 
     public static void create5StarsFX ( Vector3 position ) {
         for ( int i = 0; i < 4; i++ ) {
             float fxTime = MathUtils.random( 0.25f, 0.65f );
-            Entity entity = pooledEngine.createEntity();
+            Entity entity = new Entity(); // engine.createEntity();
             entity.add( DecalSubs.StarsEffect( fxTime ) );
             entity.add( new PositionComponent( position ) );
             entity.add( new RemoveByTimeComponent( fxTime ) );
-            pooledEngine.addEntity( entity );
+            engine.addEntity( entity );
         }
     }
 
@@ -651,11 +653,11 @@ public final class AshleySubs {
     public static void create5coinsFX ( Vector3 position ) {
         for ( int i = 0; i < 5; i++ ) {
             float fxTime = MathUtils.random( 0.25f, 0.65f );
-            Entity entity = pooledEngine.createEntity();
+            Entity entity = new Entity(); // engine.createEntity();
             entity.add( DecalSubs.CoinEffect( fxTime ) );
             entity.add( new PositionComponent( position ) );
             entity.add( new RemoveByTimeComponent( fxTime ) );
-            pooledEngine.addEntity( entity );
+            engine.addEntity( entity );
         }
     }
 
@@ -663,11 +665,11 @@ public final class AshleySubs {
     public static void create5greenBubblesFX ( Vector3 position ) {
         for ( int i = 0; i < 5; i++ ) {
             float bubbleTime = MathUtils.random( 0.25f, 0.65f );
-            Entity entity = pooledEngine.createEntity();
+            Entity entity = new Entity(); // engine.createEntity();
             entity.add( DecalSubs.GreenBubbleEffect( bubbleTime ) );
             entity.add( new PositionComponent( position ) );
             entity.add( new RemoveByTimeComponent( bubbleTime ) );
-            pooledEngine.addEntity( entity );
+            engine.addEntity( entity );
         }
     }
 
@@ -675,11 +677,11 @@ public final class AshleySubs {
     public static void create5redBubblesFX ( Vector3 position ) {
         for ( int i = 0; i < 5; i++ ) {
             float bubbleTime = MathUtils.random( 0.25f, 0.65f );
-            Entity entity = pooledEngine.createEntity();
+            Entity entity = new Entity(); // engine.createEntity();
             entity.add( DecalSubs.RedBubbleEffect( bubbleTime ) );
             entity.add( new PositionComponent( position ) );
             entity.add( new RemoveByTimeComponent( bubbleTime ) );
-            pooledEngine.addEntity( entity );
+            engine.addEntity( entity );
         }
     }
 
@@ -687,13 +689,13 @@ public final class AshleySubs {
     public static void createCloudFX () {
         float fxTime = MathUtils.random( 25.25f, 35.65f );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( DecalSubs.CloudEffect( MyPlayer.getPosition().x,
                                            MyPlayer.getPosition().y,
                                            fxTime ) );
         entity.add( new PositionComponent( new Vector3() ) );
         entity.add( new RemoveByTimeComponent( fxTime ) );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
     }
 
 
@@ -731,11 +733,11 @@ public final class AshleySubs {
                     .setStartImpulse( randomPosition )
                     .setCallbackFilter( 0 );
 
-            Entity partEntity = pooledEngine.createEntity();
+            Entity partEntity = new Entity(); // engine.createEntity();
             partEntity.add( new ModelComponent( modelInstance ) );
             partEntity.add( new RemoveByTimeComponent( timeOfLife ) );
             partEntity.add( physicalBuilder.buildPhysicalComponent() );
-            pooledEngine.addEntity( partEntity );
+            engine.addEntity( partEntity );
 
             SoundAsset.BoxCrush.play();
         }
@@ -754,11 +756,11 @@ public final class AshleySubs {
                 .setPosition( position )
                 .disableDeactivation();
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( physicalBuilderLADDER.buildPhysicalComponent() );
         entity.add( new CollectableComponent( item ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.COLLECTABLE ) );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
@@ -788,14 +790,14 @@ public final class AshleySubs {
                 .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
-        Entity entity = pooledEngine.createEntity();
+        Entity entity = new Entity(); // engine.createEntity();
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( physicalBuilder.buildPhysicalComponent() );
         if ( textInteract != null ) {
             entity.add( new InteractComponent( TYPE_OF_INTERACT.READ, textInteract ) );
         }
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.INTERACTIVE ) );
-        pooledEngine.addEntity( entity );
+        engine.addEntity( entity );
 
         return entity;
     }
