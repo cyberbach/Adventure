@@ -14,7 +14,7 @@ import net.overmy.adventure.ashley.systems.AnimationSystem;
 import net.overmy.adventure.ashley.systems.DecalSystem;
 import net.overmy.adventure.ashley.systems.InteractSystem;
 import net.overmy.adventure.ashley.systems.LifeSystem;
-import net.overmy.adventure.ashley.systems.MyAnimationSystem;
+import net.overmy.adventure.ashley.systems.MyRotationSystem;
 import net.overmy.adventure.ashley.systems.MyWeaponSystem;
 import net.overmy.adventure.ashley.systems.NPCSystem;
 import net.overmy.adventure.ashley.systems.PhysicalSystem;
@@ -47,7 +47,7 @@ public final class AshleyWorld {
         engine.addSystem( new NPCSystem() );
         engine.addSystem( new MyWeaponSystem() );
         engine.addSystem( new AnimationSystem() );
-        engine.addSystem( new MyAnimationSystem() );
+        engine.addSystem( new MyRotationSystem() );
         engine.addSystem( new PhysicalSystem() );
         engine.addSystem( new RenderSystem() );
         engine.addSystem( new TextDecalSystem() );
@@ -64,7 +64,7 @@ public final class AshleyWorld {
         engine.removeSystem( engine.getSystem( RemoveByTimeSystem.class ) );
         engine.removeSystem( engine.getSystem( NPCSystem.class ) );
         engine.removeSystem( engine.getSystem( AnimationSystem.class ) );
-        engine.removeSystem( engine.getSystem( MyAnimationSystem.class ) );
+        engine.removeSystem( engine.getSystem( MyRotationSystem.class ) );
         engine.removeSystem( engine.getSystem( PhysicalSystem.class ) );
         engine.removeSystem( engine.getSystem( RenderSystem.class ) );
         engine.removeSystem( engine.getSystem( DecalSystem.class ) );

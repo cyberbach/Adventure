@@ -63,6 +63,11 @@ public enum TextAsset {
 
     HELP1( "Не забудь взять оружие!", "Do not forget\nto take the weapon!" ),
     HELP2( "Зелёные бутылки\nускоряют передвижение!", "Green Bottles\naccelerate the movement!" ),
+
+    BEARTEXT1( "Гульман, выходи!",
+               "Gulman, come on!" ),
+    BEARTEXT2( "Опять шедевр делает...",
+               "New masterpiece is coming..." ),
     ;
 
     public static boolean russianLocale = true;

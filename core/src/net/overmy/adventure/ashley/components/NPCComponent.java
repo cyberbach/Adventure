@@ -1,6 +1,6 @@
 package net.overmy.adventure.ashley.components;
 
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.ashley.utils.ImmutableArray;
 
 import net.overmy.adventure.logic.NPCAction;
 
@@ -10,7 +10,7 @@ import net.overmy.adventure.logic.NPCAction;
  */
 
 public class NPCComponent extends TimeComponent {
-    public Array< NPCAction > actionArray = new Array< NPCAction >();
+    public ImmutableArray< NPCAction > actionArray;
 
     public int     currentAction = 0;
     public boolean hunting       = false;
@@ -19,13 +19,13 @@ public class NPCComponent extends TimeComponent {
     public boolean die           = false;
 
 
-    public NPCComponent ( Array< NPCAction > actionArray ) {
+    public NPCComponent ( ImmutableArray< NPCAction > actionArray ) {
         this.actionArray = actionArray;
         this.time = actionArray.get( 0 ).durationTime;
     }
 
 
-    public NPCComponent ( Array< NPCAction > actionArray, float newDamage ) {
+    public NPCComponent ( ImmutableArray< NPCAction > actionArray, float newDamage ) {
         this.actionArray = actionArray;
         this.time = actionArray.get( 0 ).durationTime;
         this.damage = newDamage;

@@ -38,13 +38,17 @@ public enum SoundAsset {
     BoxCrush( "cratesmash.ogg" ),
 
     Jump1( "jump.ogg" ),
-    Jump2( "jump2.ogg" ),
+    HUU( "huu.ogg" ),
 
     HIT( "hit.ogg" ),
     HURT1( "hurt1.ogg" ),
     HURT2( "hurt2.ogg" ),
     HURT3( "hurt3.ogg" ),
     HURT4( "hurt4.ogg" ),
+
+    OPENBOTTLE( "woing.ogg" ),
+    ENDBOTTLE( "woing2.ogg" ),
+    EQUIP( "equip.ogg" ),
 
     //BoxDrop( "drop.mp3" ),
     //RobotDrop( "robotdrop.mp3" ),

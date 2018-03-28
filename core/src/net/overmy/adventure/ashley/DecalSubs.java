@@ -23,10 +23,11 @@ public class DecalSubs {
     }
 
 
-    public static DecalComponent LightDustEffect ( float time ) {
+    public static DecalComponent LightDustEffect ( float time, GameColor color ) {
         float decalSize = 0.1f;
 
         Decal decal = Decal.newDecal( decalSize, decalSize, randomTriangle(), true );
+        decal.setColor( color.get() );
 
         float fromX = MathUtils.random( -0.5f, 0.5f );
         float fromY = -0.1f;
@@ -107,65 +108,14 @@ public class DecalSubs {
     }
 
 
-    public static DecalComponent CoinEffect ( float time ) {
-        float decalSize = 0.08f;
 
-        TextureRegion bubbleTextureRegion = IMG.COIN.getRegion();
-        Decal decal = Decal.newDecal( decalSize, decalSize, bubbleTextureRegion, true );
-
-        float fromX = MathUtils.random( -0.5f, 0.5f );
-        float fromY = 0.0f;
-        float fromZ = MathUtils.random( -0.5f, 0.5f );
-
-        float toX = MathUtils.random( -1.5f, 1.5f );
-        float toY = MathUtils.random( 0.5f, 2.0f );
-        float toZ = MathUtils.random( -1.5f, 1.5f );
-
-        float myTime = MathUtils.random( 0.8f * time, time );
-
-        Vector3Animator animator = new Vector3Animator();
-        animator.setFrom( fromX, fromY, fromZ );
-        animator.setTo( toX, toY, toZ );
-        animator.setAnimationTime( myTime );
-
-        return new DecalComponent( decal, animator );
-    }
-
-
-    public static DecalComponent GreenBubbleEffect ( float time ) {
+    public static DecalComponent BubbleEffect ( float time, GameColor color ) {
         float decalSize = 0.1f;
 
         TextureRegion bubbleTextureRegion = IMG.COIN.getRegion();
         Decal decal = Decal.newDecal( decalSize, decalSize, bubbleTextureRegion, true );
 
-        decal.setColor( GameColor.GREEN.get() );
-
-        float fromX = MathUtils.random( -0.5f, 0.5f );
-        float fromY = 0.0f;
-        float fromZ = MathUtils.random( -0.5f, 0.5f );
-
-        float toX = MathUtils.random( -2.5f, 2.5f );
-        float toY = MathUtils.random( 0.5f, 2.0f );
-        float toZ = MathUtils.random( -2.5f, 2.5f );
-
-        float myTime = MathUtils.random( 0.8f * time, time );
-
-        Vector3Animator animator = new Vector3Animator();
-        animator.setFrom( fromX, fromY, fromZ );
-        animator.setTo( toX, toY, toZ );
-        animator.setAnimationTime( myTime );
-
-        return new DecalComponent( decal, animator );
-    }
-
-
-    public static DecalComponent RedBubbleEffect ( float time ) {
-        float decalSize = 0.1f;
-
-        TextureRegion bubbleTextureRegion = IMG.COIN.getRegion();
-        Decal decal = Decal.newDecal( decalSize, decalSize, bubbleTextureRegion, true );
-
-        decal.setColor( GameColor.RED.get() );
+        decal.setColor( color.get() );
 
         float fromX = MathUtils.random( -0.5f, 0.5f );
         float fromY = 0.0f;

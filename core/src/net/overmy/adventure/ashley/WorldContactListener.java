@@ -32,9 +32,9 @@ public class WorldContactListener extends ContactListener {
 
     private ImmutableArray< Entity > entities = null;
 
-    private StringBuilder stringBuilder = null;
-    private Vector3       tempPosition1 = new Vector3();
-    private Vector3       tempPosition2 = new Vector3();
+    private StringBuilder stringBuilder;
+    private Vector3 tempPosition1 = new Vector3();
+    private Vector3 tempPosition2 = new Vector3();
 
 
     public WorldContactListener () {
@@ -106,7 +106,7 @@ public class WorldContactListener extends ContactListener {
 
         if ( !m1 || !m2 ) {
             if ( DEBUG.CONTACTS.get() ) {
-                Gdx.app.debug( "onContactEnded", "drop" );
+                Gdx.app.debug( "onContactProcessed", "drop" );
             }
             return;
         }
@@ -163,26 +163,48 @@ public class WorldContactListener extends ContactListener {
 
             int lastID = DynamicLevels.getCurrent();
             int newID = levelComponent.id;
-            DynamicLevels.setCurrent( newID );
-            if ( !MyMapper.GROUNDED.get( entity01 ).grounded && lastID != newID ) {
-                DynamicLevels.reload();
+            if ( DEBUG.CONTACTS.get() ) {
+                Gdx.app.debug( "Before reload", "new = " + newID + " last = " + lastID );
+            }
+            if ( lastID != newID ) {
+                DynamicLevels.setCurrent( newID );
+            }
+            if ( !MyMapper.GROUNDED.get( entity01 ).grounded ) {
+                //DynamicLevels.reload();
+                if ( DEBUG.CONTACTS.get() ) {
+                    Gdx.app.debug( "after reload", "new = " + newID );
+                }
             }
             MyMapper.GROUNDED.get( entity01 ).grounded = true;
             return;
         }
+
+
+/*
 
         if ( contact2Player && contact1Ground ) {
             LevelIDComponent levelComponent = MyMapper.REMOVE_BY_ZONE.get( entity01 );
 
             int lastID = DynamicLevels.getCurrent();
             int newID = levelComponent.id;
-            DynamicLevels.setCurrent( newID );
-            if ( !MyMapper.GROUNDED.get( entity02 ).grounded && lastID != newID ) {
-                DynamicLevels.reload();
+            if ( DEBUG.CONTACTS.get() ) {
+                Gdx.app.debug( "Before reload", "new = " + newID + " last = " + lastID );
+            }
+            if ( lastID != newID ) {
+                DynamicLevels.setCurrent( newID );
+            }
+            if ( !MyMapper.GROUNDED.get( entity02 ).grounded ) {
+                //DynamicLevels.reload();
+                if ( DEBUG.CONTACTS.get() ) {
+                    Gdx.app.debug( "after reload", "new = " + newID );
+                }
             }
             MyMapper.GROUNDED.get( entity02 ).grounded = true;
             return;
         }
+*/
+
+
 
         boolean contact2Ladder = type2.equals( TYPE_OF_ENTITY.LADDER );
 
@@ -197,8 +219,8 @@ public class WorldContactListener extends ContactListener {
         boolean contact1NPC = type1.equals( TYPE_OF_ENTITY.NPC );
         boolean contact1DestroyableRock = type1.equals( TYPE_OF_ENTITY.DESTROYABLE_ROCK );
         boolean contact2DestroyableRock = type2.equals( TYPE_OF_ENTITY.DESTROYABLE_ROCK );
-        boolean contact1Ladder = type1.equals( TYPE_OF_ENTITY.LADDER );
-        boolean contact1Collectable = type1.equals( TYPE_OF_ENTITY.COLLECTABLE );
+        //boolean contact1Ladder = type1.equals( TYPE_OF_ENTITY.LADDER );
+        //boolean contact1Collectable = type1.equals( TYPE_OF_ENTITY.COLLECTABLE );
         boolean contact2Collectable = type2.equals( TYPE_OF_ENTITY.COLLECTABLE );
 
         boolean outOfCamera = MyMapper.OUT_OF_CAMERA.has( entity02 );
@@ -296,17 +318,17 @@ public class WorldContactListener extends ContactListener {
 
                         if ( contact1NPC ) {
                             NPCComponent component = MyMapper.NPC.get( entity01 );
-                            if ( !component.die ) {
-                                entity01.add( new SkipActionComponent() );
-                                component.hunting = false;
-                                component.hurt = true;
+                            entity01.add( new SkipActionComponent() );
+                            component.hunting = false;
+                            component.hurt = true;
 
+                            //if ( !component.die ) {
                                 if ( MathUtils.randomBoolean() ) {
                                     SoundAsset.HURT3.play();
                                 } else {
                                     SoundAsset.HURT4.play();
                                 }
-                            }
+                            //}
                         }
                     }
                 }
@@ -329,7 +351,7 @@ public class WorldContactListener extends ContactListener {
 
                         if ( contact2NPC ) {
                             NPCComponent component = MyMapper.NPC.get( entity02 );
-                            if ( !component.die ) {
+                            //if ( !component.die ) {
                                 entity02.add( new SkipActionComponent() );
                                 component.hunting = false;
                                 component.hurt = true;
@@ -339,7 +361,7 @@ public class WorldContactListener extends ContactListener {
                                 } else {
                                     SoundAsset.HURT4.play();
                                 }
-                            }
+                            //}
                         }
                     }
                     //return;
@@ -373,6 +395,8 @@ public class WorldContactListener extends ContactListener {
             return;
         }
 
+/*
+
         boolean contact2Player = type2.equals( TYPE_OF_ENTITY.MYPLAYER );
         boolean contact1Ground = type1.equals( TYPE_OF_ENTITY.GROUND );
 
@@ -384,6 +408,8 @@ public class WorldContactListener extends ContactListener {
             }
             return;
         }
+*/
+
 
         boolean contact2Ladder = type2.equals( TYPE_OF_ENTITY.LADDER );
         if ( contact1Player && contact2Ladder ) {

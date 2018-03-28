@@ -22,14 +22,14 @@ public class Level {
     public Entity entity = null;
 
 
-    Level ( String connectionString, Array< LevelObject > objects ) {
-        this.connections = toInts( connectionString );
+    Level ( String connection, Array< LevelObject > objects ) {
+        this.connections = toInts( connection );
         this.objects = new ImmutableArray< LevelObject >( objects );
     }
 
 
-    Level ( String connectionString ) {
-        this.connections = toInts( connectionString );
+    Level ( String connection ) {
+        this.connections = toInts( connection );
     }
 
 

@@ -2,7 +2,7 @@ package net.overmy.adventure.ashley.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.SortedIteratingSystem;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -19,17 +19,17 @@ import net.overmy.adventure.ashley.components.OutOfCameraComponent;
       Contact me → http://vk.com/id17317
  */
 
-public class RenderSystem extends SortedIteratingSystem {
+public class RenderSystem extends IteratingSystem {
 
-    private final ModelBatch  batch;
+    private final ModelBatch  modelBatch;
     private final Environment environment;
 
-    private int modelsCount      = 0;
-    private int totalModelsCount = 0;
+    private int visibleModelsCount = 0;
+    private int totalModelsCount   = 0;
 
 
-    public int getModelsCount () {
-        return modelsCount;
+    public int getVisibleModelsCount () {
+        return visibleModelsCount;
     }
 
 
@@ -40,27 +40,28 @@ public class RenderSystem extends SortedIteratingSystem {
 
     @SuppressWarnings( "unchecked" )
     public RenderSystem () {
-        super( Family.all( ModelComponent.class ).get(), new BlendComparator() );
+        super( Family.all( ModelComponent.class ).get() );
 
         environment = MyRender.getEnvironment();
-        batch = MyRender.getModelBatch();
+        modelBatch = MyRender.getModelBatch();
     }
 
 
     @Override
     public void update ( float delta ) {
-        modelsCount = 0;
+        visibleModelsCount = 0;
         totalModelsCount = 0;
 
-        batch.begin( MyCamera.get() );
+        modelBatch.begin( MyCamera.get() );
         super.update( delta );
-        batch.end();
+        modelBatch.end();
     }
 
 
     @Override
     protected void processEntity ( Entity entity, float deltaTime ) {
         totalModelsCount++;
+        // Это код для уровней, только у них есть границы
         if ( MyMapper.BOUNDS.has( entity ) ) {
             final BoundingBox boundingBox = MyMapper.BOUNDS.get( entity ).boundingBox;
             if ( MyCamera.isVisible( boundingBox ) ) {
@@ -68,24 +69,22 @@ public class RenderSystem extends SortedIteratingSystem {
                     entity.remove( OutOfCameraComponent.class );
                 }
                 final ModelInstance modelInstance = MyMapper.MODEL.get( entity ).modelInstance;
-                batch.render( modelInstance, environment );
-                modelsCount++;
+                modelBatch.render( modelInstance, environment );
+                visibleModelsCount++;
             } else {
                 entity.add( new OutOfCameraComponent() );
             }
         } else {
-            // TODO может быть нужна проверка
+            // Код для всех остальных моделей (не уровней)
             final ModelInstance modelInstance = MyMapper.MODEL.get( entity ).modelInstance;
-            if ( modelInstance != null ) {
-                if ( MyCamera.isVisible( modelInstance.transform ) ) {
-                    if ( MyMapper.OUT_OF_CAMERA.has( entity ) ) {
-                        entity.remove( OutOfCameraComponent.class );
-                    }
-                    batch.render( modelInstance, environment );
-                    modelsCount++;
-                } else {
-                    entity.add( new OutOfCameraComponent() );
+            if ( MyCamera.isVisible( modelInstance.transform ) ) {
+                if ( MyMapper.OUT_OF_CAMERA.has( entity ) ) {
+                    entity.remove( OutOfCameraComponent.class );
                 }
+                modelBatch.render( modelInstance, environment );
+                visibleModelsCount++;
+            } else {
+                entity.add( new OutOfCameraComponent() );
             }
         }
     }

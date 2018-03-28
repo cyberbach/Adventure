@@ -1,9 +1,9 @@
 package net.overmy.adventure.logic;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 
 import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.AshleyWorld;
@@ -17,16 +17,16 @@ import net.overmy.adventure.resources.ModelAsset;
 
 public class LevelObject {
 
-    public    ModelAsset         modelAsset     = null;
-    protected Vector3            position       = null;
-    private   OBJECT_TYPE        type           = null;
-    public    Item               item           = null;
-    private   TextInteract       textInteract   = null;
-    private   Array< NPCAction > actionArray    = null;
-    protected Entity             entity         = null;
-    public    boolean            used           = false;
-    private   float              heightOfLadder = 0.0f;
-    private   float              rotation       = 0.0f;
+    public    ModelAsset                  dynamicModelAsset = null;
+    protected Vector3                     position          = null;
+    private   OBJECT_TYPE                 type              = null;
+    public    Item                        item              = null;
+    private   TextInteract                textInteract      = null;
+    private   ImmutableArray< NPCAction > actionArray       = null;
+    protected Entity                      entity            = null;
+    public    boolean                     used              = false;
+    private   float                       heightOfLadder    = 0.0f;
+    private   float                       rotation          = 0.0f;
 
 
     public LevelObject setHeightOfLadder ( float heightOfLadder ) {
@@ -35,8 +35,8 @@ public class LevelObject {
     }
 
 
-    public LevelObject setModelAsset ( ModelAsset modelAsset ) {
-        this.modelAsset = modelAsset;
+    public LevelObject setDynamicModelAsset ( ModelAsset dynamicModelAsset ) {
+        this.dynamicModelAsset = dynamicModelAsset;
         return this;
     }
 
@@ -56,7 +56,7 @@ public class LevelObject {
     public LevelObject setItem ( Item item ) {
         this.item = item;/*
         if ( item.getModelAsset() != null ) {
-            this.modelAsset = item.getModelAsset();
+            this.dynamicModelAsset = item.getModelAsset();
         }*/
         return this;
     }
@@ -68,9 +68,8 @@ public class LevelObject {
     }
 
 
-    public LevelObject setActionQueue (
-            Array< NPCAction > actionArray ) {
-        this.actionArray = actionArray;
+    public LevelObject setActionQueue ( ImmutableArray< NPCAction > queue ) {
+        this.actionArray = queue;
         return this;
     }
 
@@ -93,7 +92,7 @@ public class LevelObject {
         }
 
         if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-            Gdx.app.debug( "removeEntity", "item=" + item + " model=" + modelAsset );
+            Gdx.app.debug( "removeEntity", "item=" + item + " model=" + dynamicModelAsset );
         }
         entity = null;
     }
@@ -124,31 +123,33 @@ public class LevelObject {
                 break;
 
             case PICKABLE:
-                entity = AshleySubs.createPickable( position, item,modelAsset, this );
+                entity = AshleySubs.createPickable( position, item, dynamicModelAsset, this );
                 break;
 
             case BOX:
-                entity = AshleySubs.createCrate( position, modelAsset, item, this );
+                entity = AshleySubs.createCrate( position, dynamicModelAsset, item, this );
                 break;
 
             case ROCK:
-                entity = AshleySubs.createRock( position, modelAsset, this );
+                entity = AshleySubs.createRock( position, dynamicModelAsset, this );
                 break;
 
             case COLLECTABLE:
-                entity = AshleySubs.createCollectable( position, item, modelAsset, this );
+                entity = AshleySubs.createCollectable( position, item, dynamicModelAsset, this );
                 break;
 
             case HOVER_COLLECTABLE:
-                entity = AshleySubs.createHoverCollectable( position, item, modelAsset, this );
+                entity = AshleySubs.createHoverCollectable( position, item,
+                                                            dynamicModelAsset, this );
                 break;
 
             case NPC:
-                entity = AshleySubs.createNPC( position, modelAsset, textInteract, actionArray );
+                entity = AshleySubs.createNPC( position, dynamicModelAsset, textInteract,
+                                               actionArray );
                 break;
 
             case ENEMY:
-                entity = AshleySubs.createEnemy( position, modelAsset, actionArray, this );
+                entity = AshleySubs.createEnemy( position, dynamicModelAsset, actionArray, this );
                 break;
 
             case WEAPON:
@@ -156,8 +157,8 @@ public class LevelObject {
                 break;
 
             case INTERACTIVE:
-                entity = AshleySubs.createInteractive( position, modelAsset, textInteract,
-                                                       rotation );
+                entity = AshleySubs.createInteractive( position, dynamicModelAsset,
+                                                       textInteract, rotation );
                 break;
         }
     }
@@ -166,18 +167,16 @@ public class LevelObject {
 
     void buildModel () {
         if ( item != null ) {
-            modelAsset = item.getModelAsset();
+            dynamicModelAsset = item.getModelAsset();
         }
 
-        if ( modelAsset != null ) {
-            if ( !isWeapon( modelAsset ) ) {
+        if ( dynamicModelAsset != null ) {
+            if ( !isWeapon( dynamicModelAsset ) ) {
                 if ( entity == null && !used ) {
-                    modelAsset.build();
+                    dynamicModelAsset.build();
                 }
             }
         }
     }
 */
-
-
 }

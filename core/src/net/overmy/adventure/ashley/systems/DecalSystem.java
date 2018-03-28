@@ -11,6 +11,7 @@ import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.DecalComponent;
 import net.overmy.adventure.MyCamera;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
+import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.utils.Vector3Animator;
 
 /**
@@ -20,17 +21,19 @@ import net.overmy.adventure.utils.Vector3Animator;
 
 public class DecalSystem extends IteratingSystem {
 
-    private Vector3 offsetByAnimator = new Vector3();
-    private int     decalCount       = 0;
-    private int     visibleDecalCount       = 0;
+    private Vector3 offsetByAnimator  = new Vector3();
+    private int     decalCount        = 0;
+    private int     visibleDecalCount = 0;
 
-    @SuppressWarnings ( "unchecked" )
-    public DecalSystem(  ) {
-        super( Family.all( DecalComponent.class ).get() );
+
+    @SuppressWarnings( "unchecked" )
+    public DecalSystem () {
+        super( Family.all( DecalComponent.class, PositionComponent.class ).get() );
     }
 
+
     @Override
-    protected void processEntity( Entity entity, float delta ) {
+    protected void processEntity ( Entity entity, float delta ) {
         final DecalComponent decalComponent = MyMapper.DECAL.get( entity );
 
         final Vector3Animator animator = decalComponent.animator;
@@ -62,10 +65,11 @@ public class DecalSystem extends IteratingSystem {
         decalCount++;
     }
 
+
     @Override
-    public void update( float delta ) {
+    public void update ( float delta ) {
         decalCount = 0;
-        visibleDecalCount       = 0;
+        visibleDecalCount = 0;
         super.update( delta );
     }
 

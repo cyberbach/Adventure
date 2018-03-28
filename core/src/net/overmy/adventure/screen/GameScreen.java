@@ -123,7 +123,7 @@ public class GameScreen extends Base2DScreen {
                                 "9 speed up\n" +
                                 "0 speed normal";
             Label ingameMenuTitle = UIHelper.Label( helpString, FontAsset.IVENTORY_ITEM );
-            ingameMenuTitle.setPosition( 0, Core.HEIGHT_HALF );
+            ingameMenuTitle.setPosition( 16, Core.HEIGHT_HALF );
 
             MyRender.getStage().addActor( ingameMenuTitle );
         }
@@ -167,7 +167,7 @@ public class GameScreen extends Base2DScreen {
     private final float MAX_CLOUD_TIMER = 2.0f;
     private       float cloudTimer      = MAX_CLOUD_TIMER;
 
-    Label fpsLabel = null;
+    private Label fpsLabel = null;
 
 
     @Override
@@ -196,13 +196,15 @@ public class GameScreen extends Base2DScreen {
                 Quaternion rotation = new Quaternion();
                 thisTransform.getRotation( rotation );
 
-                Gdx.app.debug( "Position " + thisPosition + " angle=" +
-                               rotation.getAngleAround( Vector3.Y ), "pushed" );
+                String pos = "new Vector3( " + thisPosition.x + "f, " +
+                             thisPosition.y + "f, " + thisPosition.z + "f )";
+                Gdx.app.debug( "Pushed angle = " +
+                               rotation.getAngleAround( Vector3.Y ), "\n" + pos );
             }
 
             if ( Gdx.input.isKeyJustPressed( Input.Keys.BACKSPACE ) ) {
                 pushedPositions.clear();
-                Gdx.app.debug( "Positions ", "cleared" );
+                Gdx.app.debug( "♦ Positions", "cleared ♦" );
             }
 
             if ( Gdx.input.isKeyPressed( Input.Keys.W ) ) {
@@ -219,6 +221,10 @@ public class GameScreen extends Base2DScreen {
 
             if ( Gdx.input.isKeyPressed( Input.Keys.D ) ) {
                 MyPlayer.move( 1, 0 );
+            }
+
+            if ( Gdx.input.isKeyJustPressed( Input.Keys.SPACE ) ) {
+                MyPlayer.startJump();
             }
 
             // GameMaster Mode
@@ -294,7 +300,7 @@ public class GameScreen extends Base2DScreen {
                 log.append( " " );
 
                 RenderSystem rend = AshleyWorld.getEngine().getSystem( RenderSystem.class );
-                int models = rend.getModelsCount();
+                int models = rend.getVisibleModelsCount();
                 int totalModels = rend.getTotalModelsCount();
                 log.append( " Models=" );
                 log.append( models );
@@ -311,8 +317,9 @@ public class GameScreen extends Base2DScreen {
 
                 Gdx.app.log( "", log.toString() );
                 startTime = TimeUtils.nanoTime();
-
-                fpsLabel.setText( log.toString() );
+                if ( DEBUG.SCREEN_FPS.get() ) {
+                    fpsLabel.setText( log.toString() );
+                }
             }
         }
 
@@ -620,11 +627,13 @@ public class GameScreen extends Base2DScreen {
         gameGroup.clear();
         touchPadGroup.clear();
 
-        if ( fpsLabel == null ) {
-            fpsLabel = UIHelper.Label( "", FontAsset.IVENTORY_ITEM );
-            fpsLabel.setPosition( 0, Core.HEIGHT * 0.9f );
+        if ( DEBUG.SCREEN_FPS.get() ) {
+            if ( fpsLabel == null ) {
+                fpsLabel = UIHelper.Label( "", FontAsset.IVENTORY_ITEM );
+                fpsLabel.setPosition( 0, Core.HEIGHT * 0.9f );
+            }
+            gameGroup.addActor( fpsLabel );
         }
-        gameGroup.addActor( fpsLabel );
 
         if ( touchpad == null ) {
             touchpad = UIHelper.createTouchPad();
@@ -652,8 +661,10 @@ public class GameScreen extends Base2DScreen {
             jumpButton.addListener( new ClickListener() {
                 @Override
                 public void clicked ( InputEvent event, float x, float y ) {
-                    MyPlayer.startJump();
-                    UIHelper.clickAnimation( jumpButton );
+                    if ( MyPlayer.canJump ) {
+                        MyPlayer.startJump();
+                        UIHelper.clickAnimation( jumpButton );
+                    }
                 }
             } );
         }
@@ -671,9 +682,11 @@ public class GameScreen extends Base2DScreen {
             attackButton.addListener( new ClickListener() {
                 @Override
                 public void clicked ( InputEvent event, float x, float y ) {
-                    MyPlayer.startAttack();
-                    SoundAsset.Jump2.play();
-                    UIHelper.clickAnimation( attackButton );
+                    if ( MyPlayer.canAttack ) {
+                        MyPlayer.startAttack();
+                        SoundAsset.HUU.play();
+                        UIHelper.clickAnimation( attackButton );
+                    }
                 }
             } );
         }
@@ -713,8 +726,6 @@ public class GameScreen extends Base2DScreen {
         }
         gameGroup.addActor( showIngameMenuImage );
     }
-
-
 
 
     @Override

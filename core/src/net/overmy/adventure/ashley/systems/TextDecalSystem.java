@@ -71,7 +71,7 @@ public class TextDecalSystem extends IteratingSystem {
         tmpMat4.set( MyCamera.get().combined ).mul( textTransform );
         // Домножаем матрицу камеры на нашу новую матрицу
 
-        String text = MyMapper.TEXT_DECAL.get( entity ).text.toString();
+        String text = MyMapper.TEXT_DECAL.get( entity ).text.get();
 
         batch.setProjectionMatrix( tmpMat4 );
         batch.begin();

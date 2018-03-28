@@ -6,15 +6,14 @@ package net.overmy.adventure.logic;
 */
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 import net.overmy.adventure.resources.TextAsset;
 
 public class NPCAction {
     public NPC_ACTION_ID id;
     public float         durationTime;
-    public Vector2 targetPosition = null;
-    public TextAsset text = null;
+    public Vector2   targetPosition = null;
+    public TextAsset text           = null;
     public int nOfAnimation;
 
     public enum NPC_ACTION_ID {
@@ -26,25 +25,27 @@ public class NPCAction {
     }
 
 
-    public NPCAction ( NPC_ACTION_ID id, float durationTime ) {
+    NPCAction ( NPC_ACTION_ID id, float durationTime ) {
         this.id = id;
         this.durationTime = durationTime;
     }
 
-    public NPCAction ( NPC_ACTION_ID id, float durationTime, int n ) {
+
+    NPCAction ( NPC_ACTION_ID id, float durationTime, int n ) {
         this.id = id;
         this.durationTime = durationTime;
-        this.nOfAnimation=n;
+        this.nOfAnimation = n;
     }
 
 
-    public NPCAction ( NPC_ACTION_ID id, Vector2 targetPosition, float durationTime ) {
+    NPCAction ( NPC_ACTION_ID id, Vector2 targetPosition, float durationTime ) {
         this.id = id;
         this.targetPosition = targetPosition;
         this.durationTime = durationTime;
     }
 
-    public NPCAction ( NPC_ACTION_ID id, TextAsset text, float durationTime ) {
+
+    NPCAction ( NPC_ACTION_ID id, TextAsset text, float durationTime ) {
         this.id = id;
         this.text = text;
         this.durationTime = durationTime;

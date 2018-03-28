@@ -7,9 +7,13 @@ package net.overmy.adventure;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.g3d.Attribute;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject.CollisionFlags;
@@ -18,32 +22,32 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 
 import net.overmy.adventure.ashley.DecalSubs;
 import net.overmy.adventure.ashley.components.ActorComponent;
 import net.overmy.adventure.ashley.components.AnimationComponent;
 import net.overmy.adventure.ashley.components.BoundingComponent;
-import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.ashley.components.CollectableComponent;
 import net.overmy.adventure.ashley.components.ContainerComponent;
+import net.overmy.adventure.ashley.components.EntityTypeComponent;
 import net.overmy.adventure.ashley.components.GroundedComponent;
 import net.overmy.adventure.ashley.components.InteractComponent;
 import net.overmy.adventure.ashley.components.LevelIDComponent;
 import net.overmy.adventure.ashley.components.LevelObjectComponent;
 import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.ModelComponent;
-import net.overmy.adventure.ashley.components.MyAnimationComponent;
 import net.overmy.adventure.ashley.components.MyPlayerComponent;
-import net.overmy.adventure.logic.NPCAction;
+import net.overmy.adventure.ashley.components.MyRotationComponent;
+import net.overmy.adventure.ashley.components.MyWeaponComponent;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.PhysicalComponent;
 import net.overmy.adventure.ashley.components.PositionComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
+import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
-import net.overmy.adventure.ashley.components.EntityTypeComponent;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.LevelObject;
+import net.overmy.adventure.logic.NPCAction;
 import net.overmy.adventure.logic.TextInteract;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
@@ -92,22 +96,20 @@ public final class AshleySubs {
                         Actions.rotateTo( 360.0f, 2.0f )
                                 )
                                               ) );
-        rotateImage.setPosition( -iconSize/2,-iconSize );
+        rotateImage.setPosition( -iconSize / 2, -iconSize );
 
         Image iconImage = item.getImage( iconSize, iconSize );
         iconImage.setOrigin( iconSize / 2, iconSize / 2 );
-        iconImage.setPosition( -iconSize/2,0 );
+        iconImage.setPosition( -iconSize / 2, 0 );
 
         Label label = UIHelper.Label( "16", FontAsset.DIALOG_VARIANT );
-        label.setPosition( -label.getWidth() / 2, -label.getHeight() / 2 - iconSize/2 );
+        label.setPosition( -label.getWidth() / 2, -label.getHeight() / 2 - iconSize / 2 );
 
         fullGroup.addActor( rotateImage );
         fullGroup.addActor( iconImage );
         fullGroup.addActor( label );
 
-        // build
-
-        Entity timerEntity = new Entity(); // engine.createEntity();
+        Entity timerEntity = new Entity();
         timerEntity.add( new ActorComponent( fullGroup ) );
         timerEntity.add( new RemoveByTimeComponent( 15 ) );
         engine.addEntity( timerEntity );
@@ -126,7 +128,7 @@ public final class AshleySubs {
         textGroup.setScale( 0, 0 );
         UIHelper.scaleIn( textGroup );
 
-        Entity timerEntity = new Entity(); // engine.createEntity();
+        Entity timerEntity = new Entity();
         timerEntity.add( new ActorComponent( textGroup ) );
         timerEntity.add( new RemoveByTimeComponent( 5 ) );
         engine.addEntity( timerEntity );
@@ -135,30 +137,18 @@ public final class AshleySubs {
 
     static void addItemToBad ( Item item ) {
         int iconSize = (int) ( Core.HEIGHT * 0.1f );
-        /*
-        iconImage2.setSize( iconSize, iconSize );
-        iconImage2.setOrigin( iconSize / 2, iconSize / 2 );
-        iconImage2.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
-        iconImage2.addAction( Actions.forever(
-                Actions.sequence(
-                        Actions.rotateTo( 0, 0 ),
-                        Actions.rotateTo( 360.0f, 2.0f )
-                                )
-                                             ) );*/
 
         Image iconImage = item.getImage( iconSize, iconSize );
         iconImage.setSize( iconSize, iconSize );
-        //iconImage.setPosition( Core.WIDTH - iconSize * 3.0f, Core.HEIGHT - iconSize );
         UIHelper.roller( iconImage,
                          Core.WIDTH_HALF - iconSize / 2, Core.HEIGHT_HALF - iconSize / 2,
                          Core.WIDTH - iconSize * 1.5f, Core.HEIGHT - iconSize * 1.5f );
-        //iconImage.addAction( Actions.rotateTo( 360,Core.FADE ) );
 
         ActorComponent actorComponent = new ActorComponent();
         actorComponent.group.addActor( iconImage );
         actorComponent.group.setPosition( 0, 0 );
 
-        Entity timerEntity = new Entity(); // engine.createEntity();
+        Entity timerEntity = new Entity();
         timerEntity.add( actorComponent );
         timerEntity.add( new RemoveByTimeComponent( Core.FADE * 2.0f ) );
         engine.addEntity( timerEntity );
@@ -168,29 +158,22 @@ public final class AshleySubs {
 
 
     static Entity createPlayer ( ModelInstance modelInstance ) {
-        modelInstance.transform.setToTranslation( new Vector3( 0, 3, 0 ) );
 
-        modelInstance.materials.get( 0 ).clear();
-        //modelInstance.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
-        modelInstance.materials.get( 0 )
-                               .set( ColorAttribute.createDiffuse( GameColor.SQUIREL.get() ) );
+        changeMaterialColor( modelInstance, GameColor.SQUIREL );
 
         PhysicalBuilder physicalBuilder = new PhysicalBuilder()
                 .setModelInstance( modelInstance )
                 .defaultMotionState()
                 .setMass( 20.0f )
-                //.capsuleShape( 0.5f, 0.2f )
+                .setPosition( new Vector3( 0, 3, 0 ) )
                 .capsuleShape()
                 .setCollisionFlag( btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.PLAYER_FLAG )
                 .setCallbackFilter( BulletWorld.FILTER_ALL )
                 .disableDeactivation();
 
-        PhysicalComponent physicalComponent = physicalBuilder.buildPhysicalComponent();
-        physicalComponent.body.setFriction( 0.1f );
-
-        Entity entity = new Entity(); // engine.createEntity();
-        entity.add( physicalComponent );
+        Entity entity = new Entity();
+        entity.add( physicalBuilder.buildPhysicalComponent() );
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( new AnimationComponent( modelInstance ) );
         entity.add( new GroundedComponent() );
@@ -203,8 +186,8 @@ public final class AshleySubs {
     }
 
 
-    public static Entity createGround ( ModelAsset zoneModel ) {
-        ModelInstance physics = zoneModel.getSimple();
+    public static Entity createGround ( ModelAsset modelAsset ) {
+        ModelInstance physics = modelAsset.getSimple();
         PhysicalBuilder physicalBuilder = null;
         if ( physics != null ) {
             physicalBuilder = new PhysicalBuilder()
@@ -214,18 +197,18 @@ public final class AshleySubs {
                     .bvhShape()
                     .setCollisionFlag( CollisionFlags.CF_STATIC_OBJECT )
                     .setCallbackFlag( BulletWorld.GROUND_FLAG )
-                    .setCallbackFilter( BulletWorld.FILTER_ALL );
+                    .setCallbackFilter( BulletWorld.PLAYER_FLAG );
         }
 
-        Entity entity = new Entity(); // engine.createEntity();
-        entity.add( new LevelIDComponent( zoneModel.ordinal() ) );
-        entity.add( new ModelComponent( zoneModel.get() ) );
+        Entity entity = new Entity();
+        entity.add( new LevelIDComponent( modelAsset.ordinal() ) );
+        entity.add( new ModelComponent( modelAsset.get() ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.GROUND ) );
         if ( physics != null ) {
             entity.add( physicalBuilder.buildPhysicalComponent() );
             entity.add( physicalBuilder.buildBVHPhysicalComponent() );
         }
-        entity.add( new BoundingComponent( zoneModel.getBoundingBox() ) );
+        entity.add( new BoundingComponent( modelAsset.getBoundingBox() ) );
         engine.addEntity( entity );
 
         return entity;
@@ -234,7 +217,7 @@ public final class AshleySubs {
 
     public static Entity createLadder ( Vector3 position, float height ) {
 
-        PhysicalBuilder physicalBuilderLADDER = new PhysicalBuilder()
+        PhysicalBuilder physicalBuilder = new PhysicalBuilder()
                 .defaultMotionState()
                 .zeroMass()
                 .cylinderShape( 0.5f, height )
@@ -243,8 +226,8 @@ public final class AshleySubs {
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG )
                 .setPosition( position );
 
-        Entity entity = new Entity(); // engine.createEntity();
-        entity.add( physicalBuilderLADDER.buildPhysicalComponent() );
+        Entity entity = new Entity();
+        entity.add( physicalBuilder.buildPhysicalComponent() );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.LADDER ) );
         engine.addEntity( entity );
 
@@ -252,28 +235,27 @@ public final class AshleySubs {
     }
 
 
-    public static Entity createPickable ( Vector3 position,
-                                          Item item,
-                                          ModelAsset modelAsset,
-                                          LevelObject object ) {
-        ModelInstance modelInstancePICKABLE = modelAsset.get();
-        modelInstancePICKABLE.transform.setToTranslation( position );
+    public static Entity createPickable ( Vector3 position, Item item,
+                                          ModelAsset modelAsset, LevelObject object ) {
+
+        ModelInstance modelInstance = modelAsset.get();
 
         PhysicalBuilder physicalBuilderPICKABLE = new PhysicalBuilder()
-                .setModelInstance( modelInstancePICKABLE )
+                .setModelInstance( modelInstance )
                 .defaultMotionState()
+                .setPosition( position )
                 .setMass( 1.0f )
                 .hullShape()
                 .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                 .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
-                .setCallbackFilter( BulletWorld.GROUND_FLAG | BulletWorld.PLAYER_FLAG );
+                .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
-        Entity entity = new Entity(); // engine.createEntity();
-        if ( modelInstancePICKABLE.animations.size > 0 ) {
-            entity.add( new AnimationComponent( modelInstancePICKABLE ) );
+        Entity entity = new Entity();
+        if ( modelInstance.animations.size > 0 ) {
+            entity.add( new AnimationComponent( modelInstance ) );
         }
-        entity.add( new MyAnimationComponent() );
-        entity.add( new ModelComponent( modelInstancePICKABLE ) );
+        entity.add( new MyRotationComponent() );
+        entity.add( new ModelComponent( modelInstance ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.PICKABLE ) );
         entity.add( new InteractComponent( TYPE_OF_INTERACT.LOOT, item ) );
         entity.add( new LevelObjectComponent( object ) );
@@ -284,28 +266,27 @@ public final class AshleySubs {
     }
 
 
-    public static Entity createCollectable ( Vector3 position,
-                                             Item item,
-                                             ModelAsset modelAsset,
-                                             LevelObject object ) {
-        ModelInstance modelInstanceCOLLECTABLE = modelAsset.get();
-        modelInstanceCOLLECTABLE.transform.setToTranslation( position );
+    public static Entity createCollectable ( Vector3 position, Item item,
+                                             ModelAsset modelAsset, LevelObject object ) {
+
+        ModelInstance modelInstance = modelAsset.get();
 
         PhysicalBuilder physicalBuilderCOLLECTABLE = new PhysicalBuilder()
-                .setModelInstance( modelInstanceCOLLECTABLE )
+                .setModelInstance( modelInstance )
                 .defaultMotionState()
+                .setPosition( position )
                 .setMass( 1.0f )
                 .boxShape()
                 .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                 .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
-        Entity entity = new Entity(); // engine.createEntity();
-        entity.add( new ModelComponent( modelInstanceCOLLECTABLE ) );
-        if ( modelInstanceCOLLECTABLE.animations.size > 0 ) {
-            entity.add( new AnimationComponent( modelInstanceCOLLECTABLE ) );
+        Entity entity = new Entity();
+        entity.add( new ModelComponent( modelInstance ) );
+        if ( modelInstance.animations.size > 0 ) {
+            entity.add( new AnimationComponent( modelInstance ) );
         }
-        entity.add( new MyAnimationComponent() );
+        entity.add( new MyRotationComponent() );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.COLLECTABLE ) );
         entity.add( new CollectableComponent( item ) );
         entity.add( new LevelObjectComponent( object ) );
@@ -321,35 +302,24 @@ public final class AshleySubs {
                                                   ModelAsset modelAsset,
                                                   LevelObject object ) {
 
-        //Gdx.app.debug( "",""+item.getModelAsset() );
-
-        ModelInstance modelInstanceHOVER_COLLECTABLE = modelAsset.get();
-        //Gdx.app.debug( "",""+modelInstanceHOVER_COLLECTABLE );
-        ///Gdx.app.debug( "",""+position );
-        modelInstanceHOVER_COLLECTABLE.transform.setToTranslation( position );
-
-/*
-
-                TextureRegion region3 = IMG.BOX_TEXTURE.getRegion();
-                modelInstanceHOVER_COLLECTABLE.materials.get( 0 ).clear();
-                modelInstanceHOVER_COLLECTABLE.materials.get( 0 ).set( TextureAttribute.createDiffuse( region3 ) );
-*/
+        ModelInstance modelInstance = modelAsset.get();
 
         PhysicalBuilder physicalBuilderHOVER_COLLECTABLE = new PhysicalBuilder()
-                .setModelInstance( modelInstanceHOVER_COLLECTABLE )
+                .setModelInstance( modelInstance )
                 .defaultMotionState()
+                .setPosition( position )
                 .zeroMass()
                 .boxShape()
                 .setCollisionFlag( CollisionFlags.CF_KINEMATIC_OBJECT )
                 .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
-        Entity entity = new Entity(); // engine.createEntity();
-        if ( modelInstanceHOVER_COLLECTABLE.animations.size > 0 ) {
-            entity.add( new AnimationComponent( modelInstanceHOVER_COLLECTABLE ) );
+        Entity entity = new Entity();
+        entity.add( new ModelComponent( modelInstance ) );
+        if ( modelInstance.animations.size > 0 ) {
+            entity.add( new AnimationComponent( modelInstance ) );
         }
-        entity.add( new ModelComponent( modelInstanceHOVER_COLLECTABLE ) );
-        entity.add( new MyAnimationComponent() );
+        entity.add( new MyRotationComponent() );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.COLLECTABLE ) );
         entity.add( new CollectableComponent( item ) );
         entity.add( new LevelObjectComponent( object ) );
@@ -363,33 +333,29 @@ public final class AshleySubs {
     public static Entity createNPC ( Vector3 position,
                                      ModelAsset modelAsset,
                                      TextInteract textInteract,
-                                     Array< NPCAction > actionArray ) {
-        ModelInstance modelInstanceNPC = modelAsset.get();
-        modelInstanceNPC.transform.setToTranslation( position );
+                                     ImmutableArray< NPCAction > actionArray ) {
 
-        if ( modelAsset.equals( ModelAsset.HOG ) ) {
-            modelInstanceNPC.materials.get( 0 ).clear();
-            modelInstanceNPC.materials.get( 0 )
-                                      .set( ColorAttribute.createDiffuse(
-                                              GameColor.HOG.get() ) );
+        ModelInstance modelInstance = modelAsset.get();
+
+        if ( ModelAsset.HOG.equals( modelAsset ) ) {
+            changeMaterialColor( modelInstance, GameColor.HOG );
         }
-
-        if ( modelAsset.equals( ModelAsset.FOX ) ) {
-            modelInstanceNPC.materials.get( 0 ).clear();
-            modelInstanceNPC.materials.get( 0 )
-                                      .set( ColorAttribute.createDiffuse(
-                                              GameColor.FOX.get() ) );
+        if ( ModelAsset.BEAR.equals( modelAsset ) ) {
+            changeMaterialColor( modelInstance, GameColor.YELLOW );
+        }
+        if ( ModelAsset.FOX.equals( modelAsset ) ) {
+            changeMaterialColor( modelInstance, GameColor.FOX );
         }
 
         PhysicalBuilder physicalBuilderNPC = new PhysicalBuilder()
-                .setModelInstance( modelInstanceNPC )
+                .setModelInstance( modelInstance )
                 .defaultMotionState()
+                .setPosition( position )
                 .setMass( 60.0f )
                 .capsuleShape()
                 .setCollisionFlag( CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.NPC_FLAG )
-                .setCallbackFilter(
-                        BulletWorld.GROUND_FLAG | BulletWorld.NPC_FLAG | BulletWorld.PLAYER_FLAG )
+                .setCallbackFilter( BulletWorld.FILTER_NPC )
                 .disableDeactivation();
 
         PhysicalComponent physicalComponent = physicalBuilderNPC.buildPhysicalComponent();
@@ -397,9 +363,9 @@ public final class AshleySubs {
         physicalComponent.body.setFriction( 0.1f );
         physicalComponent.body.setSpinningFriction( 0.1f );
 
-        Entity entity = new Entity(); // engine.createEntity();
-        entity.add( new ModelComponent( modelInstanceNPC ) );
-        entity.add( new AnimationComponent( modelInstanceNPC ) );
+        Entity entity = new Entity();
+        entity.add( new ModelComponent( modelInstance ) );
+        entity.add( new AnimationComponent( modelInstance ) );
         if ( textInteract != null ) {
             entity.add( new InteractComponent( TYPE_OF_INTERACT.TALK, textInteract ) );
         }
@@ -414,22 +380,31 @@ public final class AshleySubs {
 
     public static Entity createEnemy ( Vector3 position,
                                        ModelAsset modelAsset,
-                                       Array< NPCAction > actionArray,
+                                       ImmutableArray< NPCAction > actionArray,
                                        LevelObject object ) {
-        ModelInstance modelInstanceENEMY = modelAsset.get();
-        modelInstanceENEMY.transform.setToTranslation( position );
+
+        ModelInstance modelInstance = modelAsset.get();
+
+        if ( ModelAsset.BEAR.equals( modelAsset ) ) {
+            changeMaterialColor( modelInstance, GameColor.RED );
+        }
+
+        if ( ModelAsset.WOLF.equals( modelAsset ) ) {
+            changeMaterialColor( modelInstance, GameColor.RED );
+        }
 
         PhysicalBuilder physicalBuilderENEMY = new PhysicalBuilder()
-                .setModelInstance( modelInstanceENEMY )
+                .setModelInstance( modelInstance )
                 .defaultMotionState()
+                .setPosition( position )
                 .setMass( 60.0f )
                 .capsuleShape()
                 .setCollisionFlag( CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.NPC_FLAG )
-                .setCallbackFilter(BulletWorld.FILTER_ENEMY )
+                .setCallbackFilter( BulletWorld.FILTER_NPC )
                 .disableDeactivation();
 
-        float damage = 1.0f;
+        float damage = 15.0f;
         switch ( modelAsset ) {
             case CRAB:
                 physicalBuilderENEMY.capsuleShape( 0.5f, 0.15f );
@@ -444,9 +419,9 @@ public final class AshleySubs {
                 break;
         }
 
-        Entity entity = new Entity(); // engine.createEntity();
-        entity.add( new ModelComponent( modelInstanceENEMY ) );
-        entity.add( new AnimationComponent( modelInstanceENEMY ) );
+        Entity entity = new Entity();
+        entity.add( new ModelComponent( modelInstance ) );
+        entity.add( new AnimationComponent( modelInstance ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.NPC ) );
         entity.add( new NPCComponent( actionArray, damage ) );
         entity.add( physicalBuilderENEMY.buildPhysicalComponent() );
@@ -461,20 +436,20 @@ public final class AshleySubs {
     public static Entity createWeapon ( Vector3 position,
                                         Item item,
                                         LevelObject object ) {
-        ModelInstance modelInstanceWEAPON = item.getModelAsset().get();
-        modelInstanceWEAPON.transform.setToTranslation( position );
+        ModelInstance modelInstance = item.getModelAsset().get();
 
         PhysicalBuilder physicalBuilderWEAPON = new PhysicalBuilder()
-                .setModelInstance( modelInstanceWEAPON )
+                .setModelInstance( modelInstance )
                 .defaultMotionState()
+                .setPosition( position )
                 .setMass( 3.0f )
                 .hullShape()
                 .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                 .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
                 .setCallbackFilter( BulletWorld.NPC_FLAG );
 
-        Entity entity = new Entity(); // engine.createEntity();
-        entity.add( new ModelComponent( modelInstanceWEAPON ) );
+        Entity entity = new Entity();
+        entity.add( new ModelComponent( modelInstance ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
         entity.add( new InteractComponent( TYPE_OF_INTERACT.LOOT, item ) );
         entity.add( new LevelObjectComponent( object ) );
@@ -487,7 +462,6 @@ public final class AshleySubs {
 
     public static void createGift ( Vector3 position, Item item ) {
         ModelInstance modelInstanceFromBox = ModelAsset.GIFT.get();
-        //modelInstanceFromBox.transform.setToTranslation( position );
 
         PhysicalBuilder physicalBuilderFromBox = new PhysicalBuilder()
                 .setModelInstance( modelInstanceFromBox )
@@ -499,9 +473,9 @@ public final class AshleySubs {
                 .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
-        Entity entityFromBox = new Entity(); // engine.createEntity();
+        Entity entityFromBox = new Entity();
         entityFromBox.add( new ModelComponent( modelInstanceFromBox ) );
-        entityFromBox.add( new MyAnimationComponent() );
+        entityFromBox.add( new MyRotationComponent() );
         entityFromBox.add( new EntityTypeComponent( TYPE_OF_ENTITY.COLLECTABLE ) );
         entityFromBox.add( new CollectableComponent( item ) );
         entityFromBox.add( physicalBuilderFromBox.buildPhysicalComponent() );
@@ -514,12 +488,6 @@ public final class AshleySubs {
                                        Item item,
                                        LevelObject object ) {
         ModelInstance modelInstance = modelAsset.get();
-/*
-
-                TextureRegion region = IMG.BOX_TEXTURE.getRegion();
-                modelInstanceBOX.materials.get( 0 ).clear();
-                modelInstanceBOX.materials.get( 0 ).set( TextureAttribute.createDiffuse( region ) );
-*/
 
         PhysicalBuilder physicalBuilderBOX = new PhysicalBuilder()
                 .setModelInstance( modelInstance )
@@ -531,7 +499,7 @@ public final class AshleySubs {
                 .setCallbackFlag( BulletWorld.DESTROYABLE_FLAG )
                 .setCallbackFilter( BulletWorld.MYWEAPON_FLAG );
 
-        Entity entity = new Entity(); // engine.createEntity();
+        Entity entity = new Entity();
         if ( modelInstance.animations.size > 0 ) {
             entity.add( new AnimationComponent( modelInstance ) );
         }
@@ -568,7 +536,7 @@ public final class AshleySubs {
         PhysicalComponent physicalComponent = physicalBuilderBOX.buildPhysicalComponent();
         //physicalComponent.body.setFriction( 100.0f );
 
-        Entity entity = new Entity(); // engine.createEntity();
+        Entity entity = new Entity();
         entity.add( new LifeComponent( 300.0f, 1.5f, 1.0f ) );
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.DESTROYABLE_ROCK ) );
@@ -577,6 +545,28 @@ public final class AshleySubs {
         engine.addEntity( entity );
 
         return entity;
+    }
+
+    public static Entity createHandWeapon ( ModelInstance instance, Node arm, Matrix4 bodyTransform ){
+        // attach only model without physics
+        instance.nodes.get( 0 ).attachTo( arm );
+
+        PhysicalBuilder physicalBuilder = new PhysicalBuilder()
+                .setModelInstance( instance )
+                .defaultMotionState()
+                .zeroMass()
+                .hullShape()
+                .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
+                .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
+                .setCallbackFilter( BulletWorld.FILTER_ALL )
+                .disableDeactivation();
+
+        Entity entityWeaponInHand = new Entity();
+        entityWeaponInHand.add( new EntityTypeComponent( TYPE_OF_ENTITY.WEAPON ) );
+        entityWeaponInHand.add( new MyWeaponComponent( arm, bodyTransform ) );
+        entityWeaponInHand.add( physicalBuilder.buildPhysicalComponent() );
+        AshleyWorld.getEngine().addEntity( entityWeaponInHand );
+        return entityWeaponInHand;
     }
 
     // FX entities
@@ -615,10 +605,11 @@ public final class AshleySubs {
                     .boxShape()
                     .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                     .setCallbackFlag( BulletWorld.PART_FLAG )
+                    .setCallbackFilter( BulletWorld.GROUND_FLAG )
                     .setStartImpulse( randomPosition )
                     .setCallbackFilter( 0 );
 
-            Entity partEntity = new Entity(); // engine.createEntity();
+            Entity partEntity = new Entity();
             partEntity.add( new ModelComponent( modelInstance ) );
             partEntity.add( new RemoveByTimeComponent( timeOfLife ) );
             partEntity.add( physicalBuilder.buildPhysicalComponent() );
@@ -629,19 +620,31 @@ public final class AshleySubs {
     }
 
 
-    public static void createDustFX ( Vector3 position, float timeToRemove ) {
-        Entity entity = new Entity(); // engine.createEntity();
-        entity.add( DecalSubs.LightDustEffect( timeToRemove ) );
+    public static void createDustFX ( Vector3 position, float timeToRemove, GameColor gameColor ) {
+        Entity entity = new Entity();
+        entity.add( DecalSubs.LightDustEffect( timeToRemove, gameColor ) );
         entity.add( new PositionComponent( position ) );
         entity.add( new RemoveByTimeComponent( timeToRemove ) );
         engine.addEntity( entity );
     }
 
+    public static void createRaiseRedFX ( Vector3 position ) {
+        for ( int i = 0; i < 25; i++ ) {
+            float time = MathUtils.random( 0.5f, 1.8f );
+            Vector3 randomPosition = new Vector3( position );
+            randomPosition.x += MathUtils.random( -0.2f, 0.2f );
+            randomPosition.y -= 0.5f;
+            randomPosition.z += MathUtils.random( -0.2f, 0.2f );
+            AshleySubs.createDustFX( randomPosition, time, GameColor.RED );
+        }
+    }
+
+
 
     public static void create5StarsFX ( Vector3 position ) {
         for ( int i = 0; i < 4; i++ ) {
             float fxTime = MathUtils.random( 0.25f, 0.65f );
-            Entity entity = new Entity(); // engine.createEntity();
+            Entity entity = new Entity();
             entity.add( DecalSubs.StarsEffect( fxTime ) );
             entity.add( new PositionComponent( position ) );
             entity.add( new RemoveByTimeComponent( fxTime ) );
@@ -650,46 +653,23 @@ public final class AshleySubs {
     }
 
 
-    public static void create5coinsFX ( Vector3 position ) {
-        for ( int i = 0; i < 5; i++ ) {
-            float fxTime = MathUtils.random( 0.25f, 0.65f );
-            Entity entity = new Entity(); // engine.createEntity();
-            entity.add( DecalSubs.CoinEffect( fxTime ) );
-            entity.add( new PositionComponent( position ) );
-            entity.add( new RemoveByTimeComponent( fxTime ) );
-            engine.addEntity( entity );
-        }
-    }
-
-
-    public static void create5greenBubblesFX ( Vector3 position ) {
+    public static void create5BubblesFX ( Vector3 position, GameColor gameColor ) {
         for ( int i = 0; i < 5; i++ ) {
             float bubbleTime = MathUtils.random( 0.25f, 0.65f );
-            Entity entity = new Entity(); // engine.createEntity();
-            entity.add( DecalSubs.GreenBubbleEffect( bubbleTime ) );
+            Entity entity = new Entity();
+            entity.add( DecalSubs.BubbleEffect( bubbleTime, gameColor ) );
             entity.add( new PositionComponent( position ) );
             entity.add( new RemoveByTimeComponent( bubbleTime ) );
             engine.addEntity( entity );
         }
     }
 
-
-    public static void create5redBubblesFX ( Vector3 position ) {
-        for ( int i = 0; i < 5; i++ ) {
-            float bubbleTime = MathUtils.random( 0.25f, 0.65f );
-            Entity entity = new Entity(); // engine.createEntity();
-            entity.add( DecalSubs.RedBubbleEffect( bubbleTime ) );
-            entity.add( new PositionComponent( position ) );
-            entity.add( new RemoveByTimeComponent( bubbleTime ) );
-            engine.addEntity( entity );
-        }
-    }
 
 
     public static void createCloudFX () {
         float fxTime = MathUtils.random( 25.25f, 35.65f );
 
-        Entity entity = new Entity(); // engine.createEntity();
+        Entity entity = new Entity();
         entity.add( DecalSubs.CloudEffect( MyPlayer.getPosition().x,
                                            MyPlayer.getPosition().y,
                                            fxTime ) );
@@ -733,7 +713,7 @@ public final class AshleySubs {
                     .setStartImpulse( randomPosition )
                     .setCallbackFilter( 0 );
 
-            Entity partEntity = new Entity(); // engine.createEntity();
+            Entity partEntity = new Entity();
             partEntity.add( new ModelComponent( modelInstance ) );
             partEntity.add( new RemoveByTimeComponent( timeOfLife ) );
             partEntity.add( physicalBuilder.buildPhysicalComponent() );
@@ -756,7 +736,7 @@ public final class AshleySubs {
                 .setPosition( position )
                 .disableDeactivation();
 
-        Entity entity = new Entity(); // engine.createEntity();
+        Entity entity = new Entity();
         entity.add( physicalBuilderLADDER.buildPhysicalComponent() );
         entity.add( new CollectableComponent( item ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.COLLECTABLE ) );
@@ -772,14 +752,7 @@ public final class AshleySubs {
         ModelInstance modelInstance = modelAsset.get();
         modelInstance.transform.idt();
         modelInstance.transform.translate( position );
-        modelInstance.transform.rotate( Vector3.Y,rotation );
-
-/*
-
-                TextureRegion region3 = IMG.BOX_TEXTURE.getRegion();
-                modelInstanceHOVER_COLLECTABLE.materials.get( 0 ).clear();
-                modelInstanceHOVER_COLLECTABLE.materials.get( 0 ).set( TextureAttribute.createDiffuse( region3 ) );
-*/
+        modelInstance.transform.rotate( Vector3.Y, rotation );
 
         PhysicalBuilder physicalBuilder = new PhysicalBuilder()
                 .setModelInstance( modelInstance )
@@ -790,7 +763,7 @@ public final class AshleySubs {
                 .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG );
 
-        Entity entity = new Entity(); // engine.createEntity();
+        Entity entity = new Entity();
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( physicalBuilder.buildPhysicalComponent() );
         if ( textInteract != null ) {
@@ -801,4 +774,19 @@ public final class AshleySubs {
 
         return entity;
     }
+
+
+    private static void changeMaterialColor ( ModelInstance modelInstance, GameColor gameColor ) {
+        Attribute diffuseColor = ColorAttribute.createDiffuse( gameColor.get() );
+        modelInstance.materials.first().clear();
+        modelInstance.materials.first().set( diffuseColor );
+    }
+/*
+    private static void changeMaterialTexture ( ModelInstance modelInstance, IMG image ) {
+        TextureRegion region = image.getRegion();
+        Attribute diffuseTexture = TextureAttribute.createDiffuse( region );
+        modelInstance.materials.first().clear();
+        modelInstance.materials.first().set( diffuseTexture );
+    }
+    */
 }

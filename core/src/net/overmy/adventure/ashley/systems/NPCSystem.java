@@ -19,6 +19,7 @@ import net.overmy.adventure.ashley.components.SkipActionComponent;
 import net.overmy.adventure.logic.NPCAction;
 import net.overmy.adventure.ashley.components.NPCComponent;
 import net.overmy.adventure.ashley.components.TextDecalComponent;
+import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.SoundAsset;
 
@@ -84,7 +85,7 @@ public class NPCSystem extends IteratingSystem {
         if ( npcComponent.time < 0 ) {
 
             action++;
-            if ( action > npcComponent.actionArray.size - 1 ) {
+            if ( action > npcComponent.actionArray.size() - 1 ) {
                 action = 0;
             }
 
@@ -189,7 +190,7 @@ public class NPCSystem extends IteratingSystem {
 
         if ( npcComponent.die ) {
             if ( !npcIsDie ) {
-                animationComponent.play( DIE, 1.0f );
+                animationComponent.queue( DIE, 3.5f );
                 return;
             } else {
                 return;
@@ -237,7 +238,7 @@ public class NPCSystem extends IteratingSystem {
                 if ( dustTime < 0 ) {
                     dustTime = 0.16f;
 
-                    AshleySubs.createDustFX( notFilteredPos, 1.0f );
+                    AshleySubs.createDustFX( notFilteredPos, 0.6f, GameColor.WHITEGL );
                 }
             }
             // Скрипт не управляет персонажем
@@ -258,7 +259,7 @@ public class NPCSystem extends IteratingSystem {
         }
 
         if ( npcComponent.hurt ) {
-            animationComponent.play( HURT, 1.0f );
+            animationComponent.play( HURT, 3.5f );
             npcComponent.hurt = false;
         }
 
@@ -291,7 +292,7 @@ public class NPCSystem extends IteratingSystem {
 
         boolean isFlyingNPC = false;
         if ( MyMapper.LEVEL_OBJECT.has( entity ) ) {
-            ModelAsset npcAsset = MyMapper.LEVEL_OBJECT.get( entity ).levelObject.modelAsset;
+            ModelAsset npcAsset = MyMapper.LEVEL_OBJECT.get( entity ).levelObject.dynamicModelAsset;
             isFlyingNPC = npcAsset.equals( ModelAsset.BUTTERFLY ) ||
                           npcAsset.equals( ModelAsset.BIRD1 ) ||
                           npcAsset.equals( ModelAsset.BIRD2ANGRY );

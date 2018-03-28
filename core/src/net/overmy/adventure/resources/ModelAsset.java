@@ -28,7 +28,14 @@ public enum ModelAsset {
     Level6,
     Level7,
     Level8,
-    //Level2,
+    Level9,
+    Level10,
+    Level11,
+    Level12,
+    Level13,
+    Level14,
+    Level15,
+    Level16,
 
     GSTAR( "gstar" ),
     BSTAR( "bstar" ),
@@ -51,7 +58,6 @@ public enum ModelAsset {
     GREEN_BOTTLE( "greenbottle" ),
     RED_BOTTLE( "redbottle" ),
     PURPLE_BOTTLE( "purplebottle" ),
-    STUFF( "stuff" ),
 
     BIRD1( "bird1" ),
     BIRD2ANGRY( "bird2" ),
@@ -61,6 +67,8 @@ public enum ModelAsset {
     STAR( "star" ),
     FOX( "fox" ),
     HOG( "hog" ),
+    BEAR( "bear" ),
+    WOLF( "wolf" ),
 
     PLAYER01( "squirrel" ),
     ;

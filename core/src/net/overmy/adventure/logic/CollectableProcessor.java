@@ -5,11 +5,11 @@ package net.overmy.adventure.logic;
         Contact me → http://vk.com/id17317
 */
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
 import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.MyPlayer;
+import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextAsset;
 
@@ -18,7 +18,7 @@ public final class CollectableProcessor {
     }
 
 
-    public static void process( Item item, Vector3 position){
+    public static void process ( Item item, Vector3 position ) {
 
         switch ( item ) {
             case TRIGGER1:
@@ -31,13 +31,13 @@ public final class CollectableProcessor {
 
             case COIN:
                 SoundAsset.Coin.play();
-                AshleySubs.create5coinsFX( position );
+                AshleySubs.create5BubblesFX( position, GameColor.YELLOW );
                 MyPlayer.addToBag( item );
                 break;
 
             case GREEN_BOTTLE:
                 SoundAsset.Collect5.play();
-                AshleySubs.create5greenBubblesFX( position );
+                AshleySubs.create5BubblesFX( position, GameColor.GREEN );
                 MyPlayer.addToBag( item );
                 break;
 
@@ -49,7 +49,7 @@ public final class CollectableProcessor {
 
             case RED_BOTTLE:
                 SoundAsset.Collect5.play();
-                AshleySubs.create5redBubblesFX( position );
+                AshleySubs.create5BubblesFX( position, GameColor.RED );
                 MyPlayer.addToBag( item );
                 break;
 

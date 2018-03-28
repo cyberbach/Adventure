@@ -26,6 +26,8 @@ public enum GameColor {
     BG_CLEAR( 0xFFFFFF ),
     //BG_CLEAR( 0x191B1F ),
     LOADING( 0x9CA197 ),
+    YELLOW( 0xEFD542 ),
+    PURPLE( 0xFF0DFF ),
 
     BUTTON( 0xE3CDA4 ),
 

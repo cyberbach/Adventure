@@ -9,7 +9,6 @@ import net.overmy.adventure.DEBUG;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.resources.Assets;
 import net.overmy.adventure.resources.ModelAsset;
-import net.overmy.adventure.resources.MusicAsset;
 import net.overmy.adventure.resources.Settings;
 
 /**
@@ -30,17 +29,25 @@ public final class DynamicLevels {
     public static void initLevels () {
         Array< Level > levelArray = new Array< Level >();
 
-        LevelSubs ls = new LevelSubs();
+        LevelObjectSubs objects = new LevelObjectSubs();
 
-        levelArray.add( new Level( "0, 1", ls.level0objects() ) );
-        levelArray.add( new Level( "1, 0, 2, 3", ls.level1objects() ) );
-        levelArray.add( new Level( "2, 1, 3", ls.level2objects() ) );
-        levelArray.add( new Level( "3, 1, 2, 4", ls.level3objects() ) );
-        levelArray.add( new Level( "4, 3, 5, 6", ls.level4objects() ) );
-        levelArray.add( new Level( "5, 4", ls.level5objects() ) ); // левая глючная
-        levelArray.add( new Level( "6, 4, 7", ls.level6objects() ) );
-        levelArray.add( new Level( "7, 6, 8" ) ); // переход на секретную локу
-        levelArray.add( new Level( "8, 7" ) ); // секретная лока зима
+        levelArray.add( new Level( "0, 1", objects.LEVEL0() ) );
+        levelArray.add( new Level( "1, 0, 2, 3", objects.LEVEL1() ) );
+        levelArray.add( new Level( "2, 1, 3", objects.LEVEL2() ) );
+        levelArray.add( new Level( "3, 1, 2, 4", objects.LEVEL3() ) );
+        levelArray.add( new Level( "4, 3, 5, 6", objects.LEVEL4() ) );
+        levelArray.add( new Level( "5, 4", objects.LEVEL5() ) ); // левая глючная
+        levelArray.add( new Level( "6, 4, 7, 9", objects.LEVEL6() ) );
+        levelArray.add( new Level( "7, 6, 8", objects.LEVEL8() ) ); // переход на секретную локу
+        levelArray.add( new Level( "8, 7, 15" ) ); // секретная лока
+        levelArray.add( new Level( "9, 6, 11, 10, 14", objects.LEVEL9() ) );
+        levelArray.add( new Level( "10, 9", objects.LEVEL10() ) );
+        levelArray.add( new Level( "11, 9, 12", objects.LEVEL11() ) );
+        levelArray.add( new Level( "12, 11, 13", objects.LEVEL12() ) );
+        levelArray.add( new Level( "13, 12, 14, 16", objects.LEVEL13() ) );
+        levelArray.add( new Level( "14, 13, 9", objects.LEVEL14() ) );
+        levelArray.add( new Level( "15, 8", objects.LEVEL15() ) ); // секретная лока
+        levelArray.add( new Level( "16, 13", objects.LEVEL16() ) ); // ЗИМА
 
         levels = new ImmutableArray< Level >( levelArray );
     }
@@ -68,23 +75,12 @@ public final class DynamicLevels {
 
     private static boolean needToUpdate = false;
     private static boolean needToBuild  = false;
-    private static float   unloadDelay  = 0.0f;
-
-
-    public static void reload () {
-        needToUpdate = true;
-        needToBuild = true;
-        unloadDelay = 1.5f;
-        copyCurrentConnectionsToPrevious();
-        updateCurrentConnections();
-        removeNotMatchEntities();
-        loadNewModels();
-    }
+    private static float   unloadDelay  = 0.2f;
 
 
     private static void removeNotMatchEntities () {
         for ( int p : previousConnections ) {
-            if ( !isZoneInCurrentConnections( p ) ) {
+            if ( zoneNotInCurrentConnections( p ) ) {
                 Level level = levels.get( p );
 
                 if ( DEBUG.DYNAMIC_LEVELS.get() ) {
@@ -112,7 +108,7 @@ public final class DynamicLevels {
     private static void removeNotMatchModels () {
         for ( int p : previousConnections ) {
             //Gdx.app.debug( "try",""+p );
-            if ( !isZoneInCurrentConnections( p ) ) {
+            if ( zoneNotInCurrentConnections( p ) ) {
                 if ( DEBUG.DYNAMIC_LEVELS.get() ) {
                     Gdx.app.debug( "unload level", "" + ModelAsset.values()[ p ] );
                 }
@@ -121,13 +117,14 @@ public final class DynamicLevels {
                 Level level = levels.get( p );
                 if ( level.objects != null ) {
                     for ( LevelObject object : level.objects ) {
-                        if ( !isModelInAnyCurrentConnections( object.modelAsset ) ) {
-                            if ( object.modelAsset != null ) {
-                                if ( !isWeapon( object.modelAsset ) ) {
+                        if ( !isModelInAnyCurrentConnections( object.dynamicModelAsset ) ) {
+                            if ( object.dynamicModelAsset != null ) {
+                                if ( notWeapon( object.dynamicModelAsset ) ) {
                                     if ( DEBUG.DYNAMIC_LEVELS.get() ) {
-                                        Gdx.app.debug( "unload object", "" + object.modelAsset );
+                                        Gdx.app.debug( "unload object",
+                                                       "" + object.dynamicModelAsset );
                                     }
-                                    object.modelAsset.unload();
+                                    object.dynamicModelAsset.unload();
                                 }
                             }
                         }
@@ -139,13 +136,13 @@ public final class DynamicLevels {
     }
 
 
-    private static boolean isZoneInCurrentConnections ( int n ) {
+    private static boolean zoneNotInCurrentConnections ( int n ) {
         for ( int i : currentConnections ) {
             if ( n == i ) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
 
@@ -154,7 +151,7 @@ public final class DynamicLevels {
             Level level = levels.get( i );
             if ( level.objects != null ) {
                 for ( LevelObject object : level.objects ) {
-                    if ( object.modelAsset == models ) {
+                    if ( object.dynamicModelAsset == models ) {
                         if ( DEBUG.DYNAMIC_LEVELS.get() ) {
                             Gdx.app.debug( "" + models, "in current set" );
                         }
@@ -177,6 +174,7 @@ public final class DynamicLevels {
             currentConnections.clear();
 
             Level level = levels.get( current );
+
             assert level.connections != null;
             for ( int i : level.connections ) {
                 currentConnections.add( i );
@@ -196,23 +194,19 @@ public final class DynamicLevels {
 
 
     private static void loadNewModels () {
+        if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+            Gdx.app.debug( "loadNewModels", "start" );
+        }
         for ( int i : currentConnections ) {
-            // Загружаем текущий уровень
             ModelAsset.values()[ i ].load();
 
             Level level = levels.get( i );
             if ( level.objects != null ) {
                 // Загружаем объекты на уровне
                 for ( LevelObject object : level.objects ) {
-/*
-                    if ( object.item != null ) {
-                        object.modelAsset = object.item.getModelAsset();
-                    }
-*/
-
-                    if ( object.modelAsset != null ) {
-                        if ( !isWeapon( object.modelAsset ) ) {
-                                object.modelAsset.load();
+                    if ( object.dynamicModelAsset != null ) {
+                        if ( notWeapon( object.dynamicModelAsset ) ) {
+                            object.dynamicModelAsset.load();
                         }
                     }
                 }
@@ -222,6 +216,9 @@ public final class DynamicLevels {
 
 
     private static void buildEntities () {
+        if ( DEBUG.DYNAMIC_LEVELS.get() ) {
+            Gdx.app.debug( "buildEntities", "start" );
+        }
         for ( int i : currentConnections ) {
             Level level = levels.get( i );
 
@@ -238,13 +235,13 @@ public final class DynamicLevels {
             if ( level.objects != null ) {
                 for ( LevelObject object : level.objects ) {
                     /*if ( object.item != null ) {
-                        object.modelAsset = object.item.getModelAsset();
+                        object.dynamicModelAsset = object.item.getModelAsset();
                     }*/
 
-                    if ( object.modelAsset != null ) {
-                        if ( !isWeapon( object.modelAsset ) ) {
+                    if ( object.dynamicModelAsset != null ) {
+                        if ( notWeapon( object.dynamicModelAsset ) ) {
                             if ( object.entity == null && !object.used ) {
-                                object.modelAsset.build();
+                                object.dynamicModelAsset.build();
                             }
                         }
                     }
@@ -256,16 +253,34 @@ public final class DynamicLevels {
     }
 
 
-    private static boolean isWeapon ( ModelAsset modelAsset ) {
-        return modelAsset.equals( ModelAsset.BROOM_WEAPON ) ||
-               modelAsset.equals( ModelAsset.RAKE_WEAPON ) ||
-               modelAsset.equals( ModelAsset.KALASH_WEAPON ) ||
-               modelAsset.equals( ModelAsset.FENCE_WEAPON )
-                ;
+    private static boolean notWeapon ( ModelAsset asset ) {
+        boolean broom = ModelAsset.BROOM_WEAPON.equals( asset );
+        boolean rake = ModelAsset.RAKE_WEAPON.equals( asset );
+        boolean kalash = ModelAsset.KALASH_WEAPON.equals( asset );
+        boolean fence = ModelAsset.FENCE_WEAPON.equals( asset );
+        boolean pillow = ModelAsset.PILLOW_WEAPON.equals( asset );
+        return !( broom || rake || kalash || fence || pillow );
     }
+
+
+    public static void reload () {
+        needToUpdate = true;
+        needToBuild = true;
+        unloadDelay = 0.3f;
+        copyCurrentConnectionsToPrevious();
+        updateCurrentConnections();
+        removeNotMatchEntities();
+        loadNewModels();
+    }
+
 
     public static void update ( float delta ) {
         if ( needToUpdate ) {
+            /*reloadDelay-=delta;
+            if(reloadDelay<0) {
+                reload ();
+            }*/
+
             if ( Assets.getManager().update() ) {
                 needToUpdate = false;
                 if ( needToBuild ) {
@@ -288,7 +303,6 @@ public final class DynamicLevels {
                 if ( DEBUG.DYNAMIC_LEVELS.get() ) {
                     Gdx.app.debug( "unloadDelay", "tick" );
                 }
-
 
                 // Здесь ненужные модели добавляются в стэк удаления менеджера Assets
                 removeNotMatchModels();

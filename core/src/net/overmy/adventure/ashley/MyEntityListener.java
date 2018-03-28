@@ -55,7 +55,6 @@ public class MyEntityListener implements EntityListener {
             }
         }
 
-
         if ( MyMapper.PHYSICAL.has( entity ) ) {
             BulletWorld.addBody( MyMapper.PHYSICAL.get( entity ).body );
             log.append( " UV=" );
@@ -90,6 +89,12 @@ public class MyEntityListener implements EntityListener {
 
     @Override
     public void entityRemoved ( Entity entity ) {
+
+        if ( MyMapper.LEVEL_OBJECT.has( entity ) && MyMapper.NPC.has( entity ) ) {
+            if ( MyMapper.NPC.get( entity ).die ) {
+                MyMapper.LEVEL_OBJECT.get( entity ).levelObject.used = true;
+            }
+        }
 
         if ( MyMapper.DECAL.has( entity ) ) {
             MyMapper.DECAL.get( entity ).animator = null;

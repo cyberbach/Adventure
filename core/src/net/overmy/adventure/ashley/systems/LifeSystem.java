@@ -14,9 +14,9 @@ import net.overmy.adventure.MyCamera;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.MyRender;
 import net.overmy.adventure.ashley.MyMapper;
-import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
+import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 
 
 /**
@@ -83,9 +83,12 @@ public class LifeSystem extends IteratingSystem {
             // === Здесь ENTITY умирает ===
             // Это чтобы компонент не пересоздавался при смене локаций
             if ( MyMapper.LEVEL_OBJECT.has( entity ) ) {
-                if ( MyMapper.TYPE.get( entity ).type.equals( TYPE_OF_ENTITY.NPC ) ) {
-                    MyMapper.NPC.get( entity ).die = true;
-                    entity.add( new RemoveByTimeComponent( 1.0f ) );
+                TYPE_OF_ENTITY type = MyMapper.TYPE.get( entity ).type;
+                if ( type.equals( TYPE_OF_ENTITY.NPC ) ) {
+                    if ( !MyMapper.NPC.get( entity ).die ) {
+                        MyMapper.NPC.get( entity ).die = true;
+                        entity.add( new RemoveByTimeComponent( 1.0f ) );
+                    }
                 } else {
                     MyMapper.LEVEL_OBJECT.get( entity ).levelObject.useEntity();
                 }
