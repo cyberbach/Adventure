@@ -87,8 +87,8 @@ public class MenuScreen extends Base2DScreen {
                               .set( ColorAttribute.createDiffuse( GameColor.SQUIREL.get() ) );
 
         animationController = new AnimationController( heroInstance );
-        String id = heroInstance.animations.first().id;
-        animationController.animate( id, -1, 0.2f, null, 0f );
+        //String id = heroInstance.animations.first().id;
+        animationController.animate( "DANCE", -1, 0.3f, null, 0f );
     }
 
     @Override
@@ -98,8 +98,8 @@ public class MenuScreen extends Base2DScreen {
         spriteBatch.draw( bg, 0, 0, Core.WIDTH, Core.HEIGHT );
         spriteBatch.end();
 
-        MyCamera.addCameraAngle( delta * 10 );
-        MyCamera.addVerticalDirection( -0.0001f );
+        MyCamera.addCameraAngle( delta * 50 );
+        MyCamera.addVerticalDirection( -0.001f );
         MyCamera.update( delta );
 
         ModelBatch batch = MyRender.getModelBatch();

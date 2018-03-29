@@ -41,6 +41,7 @@ import net.overmy.adventure.ashley.systems.DecalSystem;
 import net.overmy.adventure.ashley.systems.InteractSystem;
 import net.overmy.adventure.ashley.systems.NPCSystem;
 import net.overmy.adventure.ashley.systems.RenderSystem;
+import net.overmy.adventure.ashley.systems.TextDecalSystem;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
@@ -100,6 +101,7 @@ public class GameScreen extends Base2DScreen {
     public void show () {
         super.show();
 
+        AshleyWorld.getEngine().getSystem( TextDecalSystem.class ).init();
         AshleyWorld.getEngine().getSystem( NPCSystem.class ).setWalkSound();
 
         interactSystem = AshleyWorld.getEngine().getSystem( InteractSystem.class );
@@ -265,7 +267,7 @@ public class GameScreen extends Base2DScreen {
                 StringBuilder stringBuilder = new StringBuilder();
 
                 for ( Vector3 pushed : pushedPositions ) {
-                    //queue.add( new NPCAction( NPC_ACTION_ID.MOVE, new Vector2( 15.5f, -3.166f ), 10.0f ) );
+                    //queue.add( new NPCAction( ACTION_ID.MOVE, new Vector2( 15.5f, -3.166f ), 10.0f ) );
                     stringBuilder.append(
                             "queue.add( move(" );
                     stringBuilder.append( pushed.x );

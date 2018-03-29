@@ -6,6 +6,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import net.overmy.adventure.MyCamera;
 import net.overmy.adventure.MyRender;
@@ -13,6 +14,7 @@ import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.OutOfCameraComponent;
 import net.overmy.adventure.ashley.components.TextDecalComponent;
 import net.overmy.adventure.resources.FontAsset;
+import net.overmy.adventure.utils.UIHelper;
 
 
 /**
@@ -29,6 +31,8 @@ public class TextDecalSystem extends IteratingSystem {
 
     private final Vector3 position = new Vector3();
 
+    private Label textLabel = null;
+
 
     @SuppressWarnings( "unchecked" )
     public TextDecalSystem () {
@@ -36,6 +40,13 @@ public class TextDecalSystem extends IteratingSystem {
                      .exclude( OutOfCameraComponent.class ).get() );
 
         this.batch = MyRender.getSpriteBatch();
+    }
+
+
+    public void init () {
+        if ( textLabel == null ) {
+            this.textLabel = UIHelper.Label( "b", FontAsset.MENU_TITLE );
+        }
     }
 
 
@@ -51,6 +62,11 @@ public class TextDecalSystem extends IteratingSystem {
 
         Matrix4 transform = MyMapper.PHYSICAL.get( entity ).body.getWorldTransform();
         transform.getTranslation( position );
+
+        String text = MyMapper.TEXT_DECAL.get( entity ).text.get();
+
+        textLabel.setText( text );
+        float textWidth = textLabel.getPrefWidth();
 
         position.add( 0, 1.6f, 0 ).scl( 100 );
         // Это позиция 3д-объекта, к которому привязан текст
@@ -71,13 +87,12 @@ public class TextDecalSystem extends IteratingSystem {
         tmpMat4.set( MyCamera.get().combined ).mul( textTransform );
         // Домножаем матрицу камеры на нашу новую матрицу
 
-        String text = MyMapper.TEXT_DECAL.get( entity ).text.get();
-
         batch.setProjectionMatrix( tmpMat4 );
         batch.begin();
-        FontAsset.MENU_TITLE.get().draw( batch, text, 0, 0 );
+        FontAsset.MENU_TITLE.get().draw( batch, text, -textWidth / 2, 0 );
         batch.end();
 
+        // Восстанавливаем матрицу камеры
         batch.setProjectionMatrix( MyRender.getCamera().combined );
     }
 }

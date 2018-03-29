@@ -8,6 +8,7 @@ package net.overmy.adventure;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g3d.Attribute;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -54,6 +55,7 @@ import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextureAsset;
+import net.overmy.adventure.utils.GFXHelper;
 import net.overmy.adventure.utils.UIHelper;
 
 public final class AshleySubs {
@@ -123,14 +125,42 @@ public final class AshleySubs {
         text.setAlignment( Align.center );
         text.setWrap( true );
 
-        Group textGroup = UIHelper.convertActorToGroup( text );
+        Group textGroup = new Group();
+        final float time = MathUtils.random( Core.FADE * 0.2f, Core.FADE );
+
+        // Text Background
+        int w = (int) ( text.getWidth() * 1.2f );
+        int h = (int) ( text.getHeight() * 1.1f );
+        Sprite bgSprite = GFXHelper.createSpriteRGB888( w, h );
+        Image bgImage = new Image( bgSprite );
+        bgImage.setColor( GameColor.BLACKGL.get() );
+        bgImage.setOrigin( w / 2, h / 2 );
+        bgImage.setPosition( -w / 2, -h / 2 );
+        bgImage.setScale( 0, 0 );
+        float lifeTime = 5.0f - time;
+        bgImage.addAction( Actions.sequence(
+                Actions.scaleTo( 0, 0, 0 ),
+                Actions.scaleTo( 1, 1, time / 2 ),
+                Actions.scaleTo( 0.86f, 0.9f, lifeTime / 3 ),
+                Actions.scaleTo( 1.1f, 1.2f, lifeTime / 3 ),
+                Actions.scaleTo( 1.0f, 1.0f, lifeTime / 3 ),
+                Actions.scaleTo( 0, 0, time / 2 ) ) );
+
+        textGroup.addActor( bgImage );
+        textGroup.addActor( text );
         textGroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT * 0.8f );
         textGroup.setScale( 0, 0 );
-        UIHelper.scaleIn( textGroup );
+
+        // Group animation
+        textGroup.addAction( Actions.sequence(
+                Actions.scaleTo( 0, 0, 0 ),
+                Actions.scaleTo( 1, 1, time ),
+                Actions.delay( lifeTime - time ),
+                Actions.scaleTo( 0, 0, time ) ) );
 
         Entity timerEntity = new Entity();
         timerEntity.add( new ActorComponent( textGroup ) );
-        timerEntity.add( new RemoveByTimeComponent( 5 ) );
+        timerEntity.add( new RemoveByTimeComponent( 5.0f ) );
         engine.addEntity( timerEntity );
     }
 
@@ -547,7 +577,9 @@ public final class AshleySubs {
         return entity;
     }
 
-    public static Entity createHandWeapon ( ModelInstance instance, Node arm, Matrix4 bodyTransform ){
+
+    public static Entity createHandWeapon ( ModelInstance instance, Node arm,
+                                            Matrix4 bodyTransform ) {
         // attach only model without physics
         instance.nodes.get( 0 ).attachTo( arm );
 
@@ -628,6 +660,7 @@ public final class AshleySubs {
         engine.addEntity( entity );
     }
 
+
     public static void createRaiseRedFX ( Vector3 position ) {
         for ( int i = 0; i < 25; i++ ) {
             float time = MathUtils.random( 0.5f, 1.8f );
@@ -638,7 +671,6 @@ public final class AshleySubs {
             AshleySubs.createDustFX( randomPosition, time, GameColor.RED );
         }
     }
-
 
 
     public static void create5StarsFX ( Vector3 position ) {
@@ -663,7 +695,6 @@ public final class AshleySubs {
             engine.addEntity( entity );
         }
     }
-
 
 
     public static void createCloudFX () {
@@ -724,12 +755,12 @@ public final class AshleySubs {
     }
 
 
-    public static Entity createTrigger ( Vector3 position, Item item ) {
+    public static Entity createTrigger ( Vector3 position, Item item, float size ) {
 
         PhysicalBuilder physicalBuilderLADDER = new PhysicalBuilder()
                 .defaultMotionState()
                 .zeroMass()
-                .boxShape( 4 )
+                .boxShape( size )
                 .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                 .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG )

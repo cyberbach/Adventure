@@ -515,15 +515,9 @@ public final class MyPlayer {
 
 
     public static void useItemInBag ( ItemInBagg item ) {
-
-        boolean broomIsItem = item.item.equals( Item.BROOM_WEAPON );
-        boolean kalashIsItem = item.item.equals( Item.KALASH_WEAPON );
-        boolean rakeIsItem = item.item.equals( Item.RAKE_WEAPON );
-        boolean fenceIsItem = item.item.equals( Item.FENCE_WEAPON );
-        boolean pillowIsItem = item.item.equals( Item.PILLOW_WEAPON );
-
-        if ( broomIsItem || kalashIsItem || rakeIsItem || fenceIsItem || pillowIsItem ) {
+        if ( item.item.isWeapon() ) {
             if ( weaponInstance != null ) {
+                // attach in AshleySubs, detach here
                 weaponInstance.nodes.get( 0 ).detach();
             }
 
@@ -539,15 +533,44 @@ public final class MyPlayer {
             itemInHand = item;
             bag.remove( item );
             SoundAsset.EQUIP.play();
-        } else {
-            if ( item.count < 2 ) {
-                bag.remove( item );
-            } else {
-                item.count -= 1;
+
+            // EQUIP weapon (attach in AshleySubs, detach here)
+            weaponInstance = item.item.getModelAsset().get();
+            weaponEntity = AshleySubs.createHandWeapon( weaponInstance,
+                                                        rightArmNode,
+                                                        bodyTransform );
+
+            switch ( item.item ) {
+                case PILLOW_WEAPON:
+                    damage = 10;
+                    break;
+                case GUN_WEAPON:
+                    damage = 120;
+                    break;
+                case KALASH_WEAPON:
+                    damage = 110;
+                    break;
+                case FENCE_WEAPON:
+                    damage = 150;
+                    break;
+                case BROOM_WEAPON:
+                    damage = 35;
+                    break;
+                case RAKE_WEAPON:
+                    damage = 60;
+                    break;
             }
-            SoundAsset.OPENBOTTLE.play();
+            return;
         }
 
+        if ( item.count < 2 ) {
+            bag.remove( item );
+        } else {
+            item.count -= 1;
+        }
+        SoundAsset.OPENBOTTLE.play();
+
+        // USE item, not weapon
         switch ( item.item ) {
             case GREEN_BOTTLE:
                 speedUpTime = 15.0f;
@@ -555,7 +578,7 @@ public final class MyPlayer {
                     speedUpTimerLabel.clear();
                     speedUpTimerLabel = null;
                 }
-                speedUpTimerLabel = AshleySubs.createTopTimer( item.item, 2 );
+                speedUpTimerLabel = AshleySubs.createTopTimer( item.item, 1 );
                 break;
 
             case PURPLE_BOTTLE:
@@ -564,53 +587,13 @@ public final class MyPlayer {
                     jumpUpTimerLabel.clear();
                     jumpUpTimerLabel = null;
                 }
-                jumpUpTimerLabel = AshleySubs.createTopTimer( item.item, 3 );
+                jumpUpTimerLabel = AshleySubs.createTopTimer( item.item, 2 );
                 break;
 
             case RED_BOTTLE:
                 MyMapper.LIFE.get( playerEntity ).decLife( 0 );
                 MyMapper.LIFE.get( playerEntity ).life = 100;
                 AshleySubs.createRaiseRedFX( notFilteredPos );
-                break;
-
-            case PILLOW_WEAPON:
-                weaponInstance = ModelAsset.PILLOW_WEAPON.get();
-                weaponEntity = AshleySubs.createHandWeapon( weaponInstance,
-                                                            rightArmNode,
-                                                            bodyTransform );
-                damage = 10;
-                break;
-
-            case KALASH_WEAPON:
-                weaponInstance = ModelAsset.KALASH_WEAPON.get();
-                weaponEntity = AshleySubs.createHandWeapon( weaponInstance,
-                                                            rightArmNode,
-                                                            bodyTransform );
-                damage = 110;
-                break;
-
-            case FENCE_WEAPON:
-                weaponInstance = ModelAsset.FENCE_WEAPON.get();
-                weaponEntity = AshleySubs.createHandWeapon( weaponInstance,
-                                                            rightArmNode,
-                                                            bodyTransform );
-                damage = 150;
-                break;
-
-            case BROOM_WEAPON:
-                weaponInstance = ModelAsset.BROOM_WEAPON.get();
-                weaponEntity = AshleySubs.createHandWeapon( weaponInstance,
-                                                            rightArmNode,
-                                                            bodyTransform );
-                damage = 35;
-                break;
-
-            case RAKE_WEAPON:
-                weaponInstance = ModelAsset.RAKE_WEAPON.get();
-                weaponEntity = AshleySubs.createHandWeapon( weaponInstance,
-                                                            rightArmNode,
-                                                            bodyTransform );
-                damage = 60;
                 break;
         }
     }

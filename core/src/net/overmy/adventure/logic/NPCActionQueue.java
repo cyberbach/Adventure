@@ -9,7 +9,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import net.overmy.adventure.logic.NPCAction.NPC_ACTION_ID;
+import net.overmy.adventure.logic.NPCAction.ACTION_ID;
 import net.overmy.adventure.resources.TextAsset;
 
 public final class NPCActionQueue {
@@ -25,11 +25,14 @@ public final class NPCActionQueue {
         Array< NPCAction > queue = new Array< NPCAction >();
         queue.add( wait( 15.0f ) );
         queue.add( move( -25.33078f, -66.74849f ) );
-        queue.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.BLUE_STAR, 3 ) );
-        queue.add( new NPCAction( NPC_ACTION_ID.ANIMATE, 3, ID_ATTACK ) );
+        queue.add( new NPCAction( ACTION_ID.SAY, TextAsset.TestString1, 3 ) );
+        queue.add( new NPCAction( ACTION_ID.ANIMATE, 3, ID_ATTACK ) );
         queue.add( move( -18.664494f, -65.147026f ) );
-        queue.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.OPTIONS, 3 ) );
-        queue.add( new NPCAction( NPC_ACTION_ID.ANIMATE, 3, ID_SOME_ANIMATION ) );
+        queue.add( new NPCAction( ACTION_ID.SAY, TextAsset.TestString2, 3 ) );
+        queue.add( wait( 3.0f ) );
+        queue.add( new NPCAction( ACTION_ID.SAY, TextAsset.TestString3, 3 ) );
+        queue.add( wait( 5.0f ) );
+        queue.add( new NPCAction( ACTION_ID.ANIMATE, 3, ID_SOME_ANIMATION ) );
         queue.add( move( -14.296296f, -65.65968f ) );
         queue.add( move( -10.035321f, -78.6422f ) );
         queue.add( move( -20.728638f, -86.38529f ) );
@@ -394,12 +397,12 @@ public final class NPCActionQueue {
     public static ImmutableArray<NPCAction> BEAR1_ON_LEVEL8 () {
         Array< NPCAction > queue = new Array< NPCAction >();
         queue.add( move(-171.49295f, -518.231f) );
-        queue.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.BEARTEXT1, 2 ) );
+        queue.add( new NPCAction( ACTION_ID.SAY, TextAsset.BEARTEXT1, 2 ) );
         queue.add( wait( 1.2f ) );
         queue.add( move(-170.6102f, -513.2062f) );
         queue.add( wait( 1.5f ) );
         queue.add( move(-166.10829f, -514.4292f) );
-        queue.add( new NPCAction( NPC_ACTION_ID.SAY, TextAsset.BEARTEXT2, 4 ) );
+        queue.add( new NPCAction( NPCAction.ACTION_ID.SAY, TextAsset.BEARTEXT2, 4 ) );
         queue.add( wait( 0.8f ) );
         queue.add( move(-169.84256f, -515.8019f) );
         queue.add( wait( 1.5f ) );
@@ -494,17 +497,17 @@ public final class NPCActionQueue {
     }
 
     private static NPCAction wait ( float time ) {
-        return new NPCAction( NPC_ACTION_ID.WAIT, time );
+        return new NPCAction( ACTION_ID.WAIT, time );
     }
 
 
     private static NPCAction hunt () {
-        return new NPCAction( NPC_ACTION_ID.HUNT, 5.0f );
+        return new NPCAction( ACTION_ID.HUNT, 5.0f );
     }
 
 
     private static NPCAction move ( float x, float y ) {
-        return new NPCAction( NPC_ACTION_ID.MOVE, new Vector2( x, y ), 10.0f );
+        return new NPCAction( ACTION_ID.MOVE, new Vector2( x, y ), 10.0f );
     }
 
 

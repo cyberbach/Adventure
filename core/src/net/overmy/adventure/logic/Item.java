@@ -29,6 +29,7 @@ public enum Item {
     KALASH_WEAPON,
     FENCE_WEAPON,
     PILLOW_WEAPON,
+    GUN_WEAPON,
 
     /*GAME_STUFF1( "Первый предмет", "Подробное описание этого первого предмета", 0 ),
     GAME_STUFF2( "Какой-то второй предмет", "Описание второго предмета", 1 ),
@@ -43,92 +44,122 @@ public enum Item {
     private TextAsset  about      = null;
     private IMG        imageID    = null;
     private ModelAsset modelAsset = null;
+    private boolean    weapon     = false;
+
+
+    public boolean isWeapon () {
+        return weapon;
+    }
 
 
     public static void init () {
         // connect Item enum to IMG enum, TextAsset enum, ModelAsset enum
-        Item.COIN.setIMG( IMG.COIN )
-                 .setName( TextAsset.COIN )
-                 .setAbout( TextAsset.MONEY_ABOUT );
-                 //.setModel( ModelAsset.COIN );
+        Item.COIN
+                .setIMG( IMG.COIN )
+                .setName( TextAsset.COIN )
+                .setAbout( TextAsset.MONEY_ABOUT );
 
-        Item.YELLOW_STAR.setIMG( IMG.YSTAR )
-                        .setName( TextAsset.YELLOW_STAR )
-                        .setAbout( TextAsset.MONEY_ABOUT );
-                        //.setModel( ModelAsset.YSTAR );
+        Item.YELLOW_STAR
+                .setIMG( IMG.YSTAR )
+                .setName( TextAsset.YELLOW_STAR )
+                .setAbout( TextAsset.MONEY_ABOUT );
 
-        Item.BLUE_STAR.setIMG( IMG.BSTAR )
-                      .setName( TextAsset.BLUE_STAR )
-                      .setAbout( TextAsset.MONEY_ABOUT );
-                      //.setModel( ModelAsset.BSTAR );
+        Item.BLUE_STAR
+                .setIMG( IMG.BSTAR )
+                .setName( TextAsset.BLUE_STAR )
+                .setAbout( TextAsset.MONEY_ABOUT );
 
-        Item.GREEN_STAR.setIMG( IMG.GSTAR )
-                       .setName( TextAsset.GREEN_STAR )
-                       .setAbout( TextAsset.MONEY_ABOUT );
-                       //.setModel( ModelAsset.GSTAR );
+        Item.GREEN_STAR
+                .setIMG( IMG.GSTAR )
+                .setName( TextAsset.GREEN_STAR )
+                .setAbout( TextAsset.MONEY_ABOUT );
 
-        Item.GREEN_BOTTLE.setIMG( IMG.GREEN_BOTTLE )
-                         .setName( TextAsset.GREEN_BOTTLE )
-                         .setAbout( TextAsset.GREEN_BOTTLE_ABOUT );
-                         //.setModel( ModelAsset.GREEN_BOTTLE );
+        Item.GREEN_BOTTLE
+                .setIMG( IMG.GREEN_BOTTLE )
+                .setName( TextAsset.GREEN_BOTTLE )
+                .setAbout( TextAsset.GREEN_BOTTLE_ABOUT );
 
-        Item.RED_BOTTLE.setIMG( IMG.RED_BOTTLE )
-                       .setName( TextAsset.RED_BOTTLE )
-                       .setAbout( TextAsset.RED_BOTTLE_ABOUT );
-                       //.setModel( ModelAsset.RED_BOTTLE );
+        Item.RED_BOTTLE
+                .setIMG( IMG.RED_BOTTLE )
+                .setName( TextAsset.RED_BOTTLE )
+                .setAbout( TextAsset.RED_BOTTLE_ABOUT );
 
-        Item.PURPLE_BOTTLE.setIMG( IMG.PURPLE_BOTTLE )
-                          .setName( TextAsset.PURPLE_BOTTLE )
-                          .setAbout( TextAsset.PURPLE_BOTTLE_ABOUT );
-                          //.setModel( ModelAsset.PURPLE_BOTTLE );
+        Item.PURPLE_BOTTLE
+                .setIMG( IMG.PURPLE_BOTTLE )
+                .setName( TextAsset.PURPLE_BOTTLE )
+                .setAbout( TextAsset.PURPLE_BOTTLE_ABOUT );
 
-        Item.BROOM_WEAPON.setIMG( IMG.WEAPON1 )
-                         .setName( TextAsset.BROOM_WEAPON )
-                         .setAbout( TextAsset.BROOM_WEAPON_ABOUT )
-                         .setModel( ModelAsset.BROOM_WEAPON );
+        // weapons
 
-        Item.RAKE_WEAPON.setIMG( IMG.WEAPON2 )
-                        .setName( TextAsset.RAKE_WEAPON )
-                        .setAbout( TextAsset.RAKE_WEAPON_ABOUT )
-                        .setModel( ModelAsset.RAKE_WEAPON );
+        Item.BROOM_WEAPON
+                .itIsWeapon()
+                .setIMG( IMG.WEAPON1 )
+                .setName( TextAsset.BROOM_WEAPON )
+                .setAbout( TextAsset.BROOM_WEAPON_ABOUT )
+                .setModel( ModelAsset.BROOM_WEAPON );
 
-        Item.KALASH_WEAPON.setIMG( IMG.WEAPON3 )
-                          .setName( TextAsset.KALASH_WEAPON )
-                          .setAbout( TextAsset.KALASH_WEAPON_ABOUT )
-                          .setModel( ModelAsset.KALASH_WEAPON );
+        Item.RAKE_WEAPON
+                .itIsWeapon()
+                .setIMG( IMG.WEAPON2 )
+                .setName( TextAsset.RAKE_WEAPON )
+                .setAbout( TextAsset.RAKE_WEAPON_ABOUT )
+                .setModel( ModelAsset.RAKE_WEAPON );
 
-        Item.FENCE_WEAPON.setIMG( IMG.WEAPON4 )
-                         .setName( TextAsset.FENCE_WEAPON )
-                         .setAbout( TextAsset.FENCE_WEAPON_ABOUT )
-                         .setModel( ModelAsset.FENCE_WEAPON );
+        Item.KALASH_WEAPON
+                .itIsWeapon()
+                .setIMG( IMG.WEAPON3 )
+                .setName( TextAsset.KALASH_WEAPON )
+                .setAbout( TextAsset.KALASH_WEAPON_ABOUT )
+                .setModel( ModelAsset.KALASH_WEAPON );
 
-        Item.PILLOW_WEAPON.setIMG( IMG.PILLOW )
-                         .setName( TextAsset.PILLOW_WEAPON )
-                         .setAbout( TextAsset.PILLOW_WEAPON_ABOUT )
-                         .setModel( ModelAsset.PILLOW_WEAPON );
+        Item.FENCE_WEAPON
+                .itIsWeapon()
+                .setIMG( IMG.WEAPON4 )
+                .setName( TextAsset.FENCE_WEAPON )
+                .setAbout( TextAsset.FENCE_WEAPON_ABOUT )
+                .setModel( ModelAsset.FENCE_WEAPON );
+
+        Item.PILLOW_WEAPON
+                .itIsWeapon()
+                .setIMG( IMG.PILLOW )
+                .setName( TextAsset.PILLOW_WEAPON )
+                .setAbout( TextAsset.PILLOW_WEAPON_ABOUT )
+                .setModel( ModelAsset.PILLOW_WEAPON );
+
+        Item.GUN_WEAPON
+                .itIsWeapon()
+                .setIMG( IMG.GUN )
+                .setName( TextAsset.GUN_WEAPON )
+                .setAbout( TextAsset.GUN_WEAPON_ABOUT )
+                .setModel( ModelAsset.GUN_WEAPON );
     }
 
 
-    public Item setModel ( ModelAsset modelAsset ) {
+    private Item setModel ( ModelAsset modelAsset ) {
         this.modelAsset = modelAsset;
         return this;
     }
 
 
-
-    public Item setName ( TextAsset name ) {
+    private Item setName ( TextAsset name ) {
         this.name = name;
         return this;
     }
 
 
-    public Item setAbout ( TextAsset about ) {
+    private Item itIsWeapon () {
+        this.weapon = true;
+        return this;
+    }
+
+
+    private Item setAbout ( TextAsset about ) {
         this.about = about;
         return this;
     }
 
 
-    public Item setIMG ( IMG imageID ) {
+    private Item setIMG ( IMG imageID ) {
         this.imageID = imageID;
         return this;
     }
@@ -137,7 +168,6 @@ public enum Item {
     public ModelAsset getModelAsset () {
         return modelAsset;
     }
-
 
 
     public String getName () {

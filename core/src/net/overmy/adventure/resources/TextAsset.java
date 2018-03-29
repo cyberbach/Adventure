@@ -59,15 +59,20 @@ public enum TextAsset {
             "Это оружие. Очень Очень Очень Очень Очень длинное Очень длинное Очень длинное описание третьего предмета\nУрон:110",
             "This weapon. Very Very Very Very Very Long Very Long Very long description of the third item\nDamage: 110" ),
     FENCE_WEAPON( "Забор", "Fence" ),
-    FENCE_WEAPON_ABOUT( "Это оружие\nУрон:150", "Weapon.\nDamage: 150" ),
+    FENCE_WEAPON_ABOUT( "Это оружие\nУрон:150", "Weapon\nDamage: 150" ),
+    GUN_WEAPON( "Пистолет. На палке", "Gun. On stick" ),
+    GUN_WEAPON_ABOUT( "Это оружие\nУрон:120", "Weapon\nDamage: 120" ),
 
     HELP1( "Не забудь взять оружие!", "Do not forget\nto take the weapon!" ),
     HELP2( "Зелёные бутылки\nускоряют передвижение!", "Green Bottles\naccelerate the movement!" ),
 
-    BEARTEXT1( "Гульман, выходи!",
-               "Gulman, come on!" ),
-    BEARTEXT2( "Опять шедевр делает...",
-               "New masterpiece is coming..." ),
+    BEARTEXT1( "Гульман, выходи!", "Gulman, come on!" ),
+    BEARTEXT2( "Опять шедевр делает...", "New masterpiece is coming..." ),
+
+    //33 43
+    TestString1( "aaaaa12345aaaaa 6789 , 9876 aaaaa54321aaaaa\naaaaa12345aaaaa 6789 , 9876 aaaaa54321aaaaa", "Опять шедевр делает...\nasdf sdaf dsfsdfdsfsdf sdf dsfdsfds" ),
+    TestString2( "12345 6789 0 9876 54321" ),
+    TestString3( "a . b" ),
     ;
 
     public static boolean russianLocale = true;

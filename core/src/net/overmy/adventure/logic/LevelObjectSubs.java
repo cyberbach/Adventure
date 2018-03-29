@@ -25,8 +25,8 @@ class LevelObjectSubs {
                              .setPosition( new Vector3( -7.6205816f, 1.8f, -8.869345f ) )
                              .setRotation( 110.0f ) );
 
-        objects.add( trigger( Item.TRIGGER1, new Vector3( -3.446573f, 1.3729875f, -7.244136f ) ) );
-        objects.add( trigger( Item.TRIGGER2, new Vector3( 5.328025f, 2.2757506f, 3.47663f ) ) );
+        objects.add( trigger( Item.TRIGGER1, -3.446573f, 1.3729875f, -7.244136f, 4.0f ) );
+        objects.add( trigger( Item.TRIGGER2, 5.328025f, 2.2757506f, 3.47663f, 3.0f ) );
 
         objects.add( weapon( -2.566254f, 0.0907035f, -4.6540112f, Item.BROOM_WEAPON ) );
 
@@ -56,7 +56,7 @@ class LevelObjectSubs {
         objects.add( box( 7.102702f, 3.5108666f, 16.62674f, Item.BLUE_STAR ) );
         objects.add( chest( -2.1007736f, 2.50011f, 10.098732f, Item.COIN ) );
         objects.add( box( -8.834456f, 1.6002967f, -1.8023157f ) );
-        objects.add( box( 5.86802f, 1.1149557f, -0.5165689f ) );
+        objects.add( box( 5.86802f, 1.1149557f, -0.5165689f, Item.COIN ) );
 
         return objects;
     }
@@ -327,6 +327,8 @@ class LevelObjectSubs {
                              .setActionQueue( NPCActionQueue.BEAR4_ON_LEVEL8() )
                              .setDynamicModelAsset( ModelAsset.BEAR )
                              .setPosition( new Vector3( -167.88797f, 5.4292164f, -498.12292f ) ) );
+
+        objects.add( weapon( -168.6412f, 6.6022253f, -517.167f, Item.GUN_WEAPON ) );
 
         objects.add( hoverGreenBottle( -210.48468f, 7.024612f, -471.9825f ) );
         objects.add( hoverCoin( -214.6377f, 4.6362476f, -484.83377f ) );
@@ -675,10 +677,11 @@ class LevelObjectSubs {
     }
 
 
-    private LevelObject trigger ( Item item, Vector3 position ) {
+    private LevelObject trigger ( Item item, float x, float y, float z, float size ) {
         return new LevelObject()
+                .setSize( size )
                 .setType( OBJECT_TYPE.TRIGGER )
                 .setItem( item )
-                .setPosition( position );
+                .setPosition( new Vector3( x, y, z ) );
     }
 }

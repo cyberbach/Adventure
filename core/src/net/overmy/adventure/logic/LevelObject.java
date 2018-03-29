@@ -27,6 +27,7 @@ public class LevelObject {
     public    boolean                     used              = false;
     private   float                       heightOfLadder    = 0.0f;
     private   float                       rotation          = 0.0f;
+    private   float                       size              = 1.0f;
 
 
     public LevelObject setHeightOfLadder ( float heightOfLadder ) {
@@ -80,6 +81,12 @@ public class LevelObject {
     }
 
 
+    public LevelObject setSize ( float size ) {
+        this.size = size;
+        return this;
+    }
+
+
     public void useEntity () {
         used = true;
         removeEntity();
@@ -119,7 +126,7 @@ public class LevelObject {
                 break;
 
             case TRIGGER:
-                entity = AshleySubs.createTrigger( position, item );
+                entity = AshleySubs.createTrigger( position, item, size );
                 break;
 
             case PICKABLE:

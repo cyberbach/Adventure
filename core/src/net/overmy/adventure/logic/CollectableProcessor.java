@@ -53,19 +53,7 @@ public final class CollectableProcessor {
                 MyPlayer.addToBag( item );
                 break;
 
-            case GREEN_STAR:
-                SoundAsset.PickupStar.play();
-                AshleySubs.create5StarsFX( position );
-                MyPlayer.addToBag( item );
-                break;
-
-            case BLUE_STAR:
-                SoundAsset.PickupStar.play();
-                AshleySubs.create5StarsFX( position );
-                MyPlayer.addToBag( item );
-                break;
-
-            case YELLOW_STAR:
+            default:
                 SoundAsset.PickupStar.play();
                 AshleySubs.create5StarsFX( position );
                 MyPlayer.addToBag( item );

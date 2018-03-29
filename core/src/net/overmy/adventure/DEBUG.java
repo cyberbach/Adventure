@@ -13,14 +13,14 @@ public enum DEBUG {
     SHOW_MODEL_INFO( false ),
     NPC_ACTIONS( false ),
 
-    FPS( true ),
-    SCREEN_FPS( true ), // должен быть включен FPS
+    FPS( false ),
+    SCREEN_FPS( false ), // должен быть включен FPS
 
     CONTACTS( false ),
     ENTITIES( false ),
     PHYSICAL_MESH( false ),
     DYNAMIC_LEVELS( false ),
-    GAME_MASTER_MODE( false ),
+    GAME_MASTER_MODE( true ),
     ;
 
     private final boolean value;
