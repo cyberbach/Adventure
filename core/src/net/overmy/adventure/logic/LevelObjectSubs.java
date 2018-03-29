@@ -582,6 +582,28 @@ class LevelObjectSubs {
         return objects;
     }
 
+    public Array< LevelObject > LEVEL17 () {
+        Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( hoverCoin( -7.7378583f, 5.4489617f, -836.1298f) );
+        objects.add( hoverCoin( -10.758249f, 5.796095f, -834.1596f) );
+        objects.add( hoverCoin( -23.012491f, 5.0994725f, -836.59576f) );
+        objects.add( hoverCoin( -25.855799f, 4.1877203f, -830.0857f) );
+        objects.add( hoverCoin( -22.660063f, 5.445558f, -810.1364f) );
+        objects.add( hoverCoin( -25.024685f, 5.4443707f, -808.82117f) );
+        objects.add( hoverCoin( -24.42993f, 5.4369473f, -805.3749f) );
+        objects.add( hoverCoin( -20.635303f, 5.414798f, -803.8069f) );
+
+        objects.add( box( -5.0326953f, 3.6815329f, -802.6161f, Item.BROOM_WEAPON) );
+        objects.add( box( 17.296389f, 6.279765f, -807.19037f, Item.COIN) );
+        objects.add( box( 7.6474934f, 3.245613f, -837.31085f,Item.GREEN_BOTTLE) );
+
+        objects.add( hoverRedBottle( -1.3750398f, 3.7980022f, -817.3871f) );
+        objects.add( hoverPurpleBottle( -0.83791935f, 3.857041f, -812.11957f) );
+
+        return objects;
+    }
+
 
     private LevelObject weapon ( float x, float y, float z, Item itemInBox ) {
         return new LevelObject()

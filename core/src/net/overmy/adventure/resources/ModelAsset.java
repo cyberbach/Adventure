@@ -36,6 +36,8 @@ public enum ModelAsset {
     Level14,
     Level15,
     Level16,
+    Level17,
+    Level18,
 
     GSTAR( "gstar" ),
     BSTAR( "bstar" ),

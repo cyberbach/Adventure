@@ -68,6 +68,7 @@ public final class Assets {
         ModelAsset.FENCE_WEAPON.load();
         ModelAsset.ROCK_PART.load();
         ModelAsset.GUN_WEAPON.load();
+        ModelAsset.PILLOW_WEAPON.load();
     }
 
 
@@ -86,6 +87,7 @@ public final class Assets {
         ModelAsset.FENCE_WEAPON.build();
         ModelAsset.ROCK_PART.build();
         ModelAsset.GUN_WEAPON.build();
+        ModelAsset.PILLOW_WEAPON.build();
     }
 
 
