@@ -29,6 +29,9 @@ public enum IMG {
     OPENBOOK("openbook"),
     USABLE("usable"),
 
+    SPEAKER("speaker"),
+    SOUNDON("soundon"),
+
     PAD( "pad" ),
     BUTTON( "button" ),
     AIM( "aim" ),

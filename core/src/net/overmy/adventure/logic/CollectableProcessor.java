@@ -18,6 +18,9 @@ public final class CollectableProcessor {
     }
 
 
+    //       триггер1 триггер2          триггер2 триггер3
+    // ............1 ..........................2 ..............3
+
     public static void process ( Item item, Vector3 position ) {
 
         switch ( item ) {

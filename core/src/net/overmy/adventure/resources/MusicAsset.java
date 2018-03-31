@@ -8,9 +8,12 @@
 
 package net.overmy.adventure.resources;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.MathUtils;
+
+import net.overmy.adventure.DEBUG;
 
 /*
      Created by Andrey Mikheev on 29.09.2017
@@ -18,17 +21,15 @@ import com.badlogic.gdx.math.MathUtils;
  */
 
 public enum MusicAsset {
-    WINDFILTER( "windfilter.mp3" ),
-    //FOREST( "forest.mp3" ),
-    ;
+    WINDFILTER( "windfilter.ogg" ),
+    FOREST( "forest.ogg" ),;
 
     private final String path;
-    private Music music = null;
+    private        Music music = null;
     private static float timer = 0.01f;
 
 
-
-    MusicAsset( final String path ) {
+    MusicAsset ( final String path ) {
         String DEFAULT_DIR = "music/";
         //String DEFAULT_EXT = ".mp3";
         this.path = DEFAULT_DIR + path;// + DEFAULT_EXT;
@@ -45,32 +46,49 @@ public enum MusicAsset {
 */
 
 
-    public static void stopAll() {
-        for ( int i = 0; i < MusicAsset.values().length; i++ )
-            if ( MusicAsset.values()[ i ].music != null )
-            MusicAsset.values()[ i ].music.stop();
+    public static void stopAll () {
+        if ( DEBUG.ON_WINDOWS.get() ) {
+            return;
+        }
+
+        for ( int i = 0; i < MusicAsset.values().length; i++ ) {
+            if ( MusicAsset.values()[ i ].music != null ) {
+                MusicAsset.values()[ i ].music.stop();
+            }
+        }
     }
 
 
+    public static void build ( final AssetManager manager ) {
+        if ( DEBUG.ON_WINDOWS.get() ) {
+            return;
+        }
 
-    public static void build( final AssetManager manager ) {
-        for ( int i = 0; i < MusicAsset.values().length; i++ )
+        for ( int i = 0; i < MusicAsset.values().length; i++ ) {
             MusicAsset.values()[ i ].music = manager.get( MusicAsset.values()[ i ].path,
                                                           Music.class );
+        }
 
         //currentTrack = MusicAsset.values()[ 0 ].music;
     }
 
 
+    public static void load ( final AssetManager manager ) {
+        if ( DEBUG.ON_WINDOWS.get() ) {
+            return;
+        }
 
-    public static void load( final AssetManager manager ) {
-        for ( int i = 0; i < MusicAsset.values().length; i++ )
+        for ( int i = 0; i < MusicAsset.values().length; i++ ) {
             manager.load( MusicAsset.values()[ i ].path, Music.class );
+        }
     }
 
 
+    public static void unload ( final AssetManager manager ) {
+        if ( DEBUG.ON_WINDOWS.get() ) {
+            return;
+        }
 
-    public static void unload( final AssetManager manager ) {
         //currentTrack = null;
         stopAll();
         for ( int i = 0; i < MusicAsset.values().length; i++ ) {
@@ -85,13 +103,11 @@ public enum MusicAsset {
     }
 
 
-
-    private static int bars = 0;
+    private static int bars      = 0;
     private static int currentID = 0;
 
 
-
-    public static void playRandom( float delta ) {
+    public static void playRandom ( float delta ) {
         timer -= delta;
 
         if ( timer > 0 ) {
@@ -108,8 +124,7 @@ public enum MusicAsset {
         if ( bars > 0 ) {
             MusicAsset.values()[ currentID ].play();
             bars--;
-        }
-        else {
+        } else {
             bars = MathUtils.randomBoolean() ? 4 : 6;
             int tracks = MusicAsset.values().length;
             currentID = MathUtils.random( tracks - 1 );
@@ -117,7 +132,8 @@ public enum MusicAsset {
         }
     }
 
-    public void playNext( float delta ) {
+
+    public void playNext ( float delta ) {
         timer -= delta;
 
         if ( timer > 0 ) {
@@ -136,9 +152,12 @@ public enum MusicAsset {
     }
 
 
+    public void play ( boolean loop ) {
+        if ( DEBUG.ON_WINDOWS.get() ) {
+            return;
+        }
 
-    public void play( boolean loop ) {
-        /*if ( currentTrack.isPlaying() ) {
+   /*if ( currentTrack.isPlaying() ) {
             currentTrack.pause();
         }*/
 
@@ -148,29 +167,27 @@ public enum MusicAsset {
 
             this.music.setVolume( musicVolume );
             this.music.setLooping( loop );
-            this.music.play();
 
-        }
-        else {
+            Gdx.app.debug( "play( boolean loop ) volume" + musicVolume, "" + this.music );
+
+            this.music.play();
+        } else {
             stopAll();
         }
     }
 
 
-
-    public void setPan( float x ) {
+    public void setPan ( float x ) {
         this.music.setPan( x, 1 );
     }
 
 
-
-    public void play() {
+    public void play () {
         play( false );
     }
 
 
-
-    public void stop() {
+    public void stop () {
         this.music.stop();
     }
 
@@ -178,9 +195,15 @@ public enum MusicAsset {
     //public Music get() { return Gdx.audio.newMusic( Gdx.files.internal( this.path ) ); }
 
 
-
-    public Music get() {
+    public Music get () {
         return this.music;
+    }
+
+
+    public void stopLoop () {
+        if ( this.music.isPlaying() ) {
+            this.music.setLooping( false );
+        }
     }
 
 }

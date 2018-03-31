@@ -128,9 +128,32 @@ public class GameScreen extends Base2DScreen {
             ingameMenuTitle.setPosition( 16, Core.HEIGHT_HALF );
 
             MyRender.getStage().addActor( ingameMenuTitle );
+
+            Image image1 = IMG.SPEAKER.getImageActor( 64,64 );
+            image1.setPosition( Core.WIDTH*0.3f,Core.HEIGHT*0.8f );
+            image1.addListener( new ClickListener(  ){
+                public void clicked (InputEvent event, float x, float y) {
+                    // TODO
+                    MusicAsset.WINDFILTER.play( true );
+                    MusicAsset.FOREST.stopLoop();
+                }
+            } );
+
+            Image image2 = IMG.SOUNDON.getImageActor( 64,64 );
+            image2.setPosition( Core.WIDTH*0.3f,Core.HEIGHT*0.6f );
+            image2.addListener( new ClickListener(  ){
+                public void clicked (InputEvent event, float x, float y) {
+                    // TODO
+                    MusicAsset.FOREST.play( true );
+                    MusicAsset.WINDFILTER.stopLoop();
+                }
+            } );
+
+            MyRender.getStage().addActor( image1 );
+            MyRender.getStage().addActor( image2 );
         }
 
-        MusicAsset.WINDFILTER.play( true );
+        //MusicAsset.WINDFILTER.play( true );
     }
 
 

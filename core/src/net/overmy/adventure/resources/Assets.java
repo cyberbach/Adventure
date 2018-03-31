@@ -22,7 +22,6 @@ public final class Assets {
 
     private static AssetManager manager = null;
 
-
     private Assets () {
     }
 
