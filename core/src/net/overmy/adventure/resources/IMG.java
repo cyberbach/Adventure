@@ -37,6 +37,7 @@ public enum IMG {
     AIM( "aim" ),
     INGAME( "ingame" ),
 
+    UPGRADE( "upgrade" ),
     JUMP_BUTTON( "jump" ),
     HIT_BUTTON( "hit" ),
 
@@ -48,8 +49,11 @@ public enum IMG {
     WEAPON2( "weapon2" ),
     WEAPON3( "weapon3" ),
     WEAPON4( "weapon4" ),
+    BAT( "bat" ),
     PILLOW( "pillow" ),
     GUN( "gun" ),
+
+    KEY( "key" ),
 
 
     // inventory
@@ -57,6 +61,7 @@ public enum IMG {
     BSTAR( "bstaricon" ),
     YSTAR( "ystaricon" ),
 
+    BLUE_BOTTLE( "bluebottle" ),
     PURPLE_BOTTLE( "purplebottle" ),
     RED_BOTTLE( "redbottle" ),
     GREEN_BOTTLE( "greenbottle" ),

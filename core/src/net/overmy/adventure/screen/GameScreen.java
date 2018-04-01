@@ -71,6 +71,8 @@ public class GameScreen extends Base2DScreen {
     private Group         touchPadGroup       = null;
     private Group         bagButtonGroup      = null;
 
+    private TextDecalSystem textDecalSystem = null;
+
     private InteractSystem interactSystem = null;
 
 
@@ -101,7 +103,8 @@ public class GameScreen extends Base2DScreen {
     public void show () {
         super.show();
 
-        AshleyWorld.getEngine().getSystem( TextDecalSystem.class ).init();
+        textDecalSystem = AshleyWorld.getEngine().getSystem( TextDecalSystem.class );
+        textDecalSystem.init();
         AshleyWorld.getEngine().getSystem( NPCSystem.class ).setWalkSound();
 
         interactSystem = AshleyWorld.getEngine().getSystem( InteractSystem.class );
@@ -129,20 +132,20 @@ public class GameScreen extends Base2DScreen {
 
             MyRender.getStage().addActor( ingameMenuTitle );
 
-            Image image1 = IMG.SPEAKER.getImageActor( 64,64 );
-            image1.setPosition( Core.WIDTH*0.3f,Core.HEIGHT*0.8f );
-            image1.addListener( new ClickListener(  ){
-                public void clicked (InputEvent event, float x, float y) {
+            Image image1 = IMG.SPEAKER.getImageActor( 64, 64 );
+            image1.setPosition( Core.WIDTH * 0.3f, Core.HEIGHT * 0.8f );
+            image1.addListener( new ClickListener() {
+                public void clicked ( InputEvent event, float x, float y ) {
                     // TODO
                     MusicAsset.WINDFILTER.play( true );
                     MusicAsset.FOREST.stopLoop();
                 }
             } );
 
-            Image image2 = IMG.SOUNDON.getImageActor( 64,64 );
-            image2.setPosition( Core.WIDTH*0.3f,Core.HEIGHT*0.6f );
-            image2.addListener( new ClickListener(  ){
-                public void clicked (InputEvent event, float x, float y) {
+            Image image2 = IMG.SOUNDON.getImageActor( 64, 64 );
+            image2.setPosition( Core.WIDTH * 0.3f, Core.HEIGHT * 0.6f );
+            image2.addListener( new ClickListener() {
+                public void clicked ( InputEvent event, float x, float y ) {
                     // TODO
                     MusicAsset.FOREST.play( true );
                     MusicAsset.WINDFILTER.stopLoop();
@@ -309,6 +312,8 @@ public class GameScreen extends Base2DScreen {
         MyPlayer.updateControls( delta );
         MyCamera.update( delta );
 
+        textDecalSystem.setLastPlayerPosition( MyPlayer.getPosition() );
+
         if ( guiType == GUI_TYPE.GAME_GUI ) {
             MyPlayer.move( touchpad.getKnobPercentX(), -touchpad.getKnobPercentY() );
         } else {
@@ -357,6 +362,8 @@ public class GameScreen extends Base2DScreen {
                 readyToPick = true;
 
                 boolean isBook = false;
+                boolean itemInInventory = false;
+                boolean USEinteract = false;
 
                 log.setLength( 0 );
                 switch ( typeOfInteract ) {
@@ -373,11 +380,14 @@ public class GameScreen extends Base2DScreen {
                         log.append( TextAsset.READ.get() );
                         break;
                     case USE:
+                        USEinteract = true;
                         log.append( TextAsset.USE.get() );
+
                         break;
                 }
                 if ( interactSystem.getCurrentItem() != null ) {
                     log.append( interactSystem.getCurrentItem().getName() );
+                    itemInInventory = MyPlayer.testBag( interactSystem.getCurrentItem() );
                 } else {
                     log.append( interactSystem.getCurrentTextInteract().getTitle() );
                 }
@@ -396,10 +406,20 @@ public class GameScreen extends Base2DScreen {
                 interactGroup.addActor( lineImage );
                 interactGroup.addActor( interactText );
                 final boolean finalIsBook = isBook;
+                final boolean finalUSEinteract = USEinteract;
+                final boolean finalItemInInventory = itemInInventory;
                 interactGroup.addListener( new ClickListener() {
                     public void clicked ( InputEvent event, float x, float y ) {
+                        SoundAsset.EQUIP.play();
                         UIHelper.clickAnimation( interactGroup );
-                        interactSystem.act();
+                        if ( finalUSEinteract ) {
+                            if ( finalItemInInventory ) {
+                                interactSystem.act();
+                            }
+                        } else {
+                            interactSystem.act();
+                        }
+
                         if ( interactSystem.getCurrentTextInteract() != null ) {
                             showDialogMenu( interactSystem.getCurrentTextInteract(), finalIsBook );
                         }
@@ -499,6 +519,7 @@ public class GameScreen extends Base2DScreen {
         table.setWidth( Core.WIDTH - offset * 2 );
 
         for ( final ItemInBagg itemInBagg : MyPlayer.getBag() ) {
+            Image upgradeIcon = IMG.UPGRADE.getImageActor( offset, offset );
             Image img = itemInBagg.item.getImage( offset, offset );
             Label txt = UIHelper.Label( itemInBagg.item.getName(), FontAsset.IVENTORY_ITEM );
             txt.setWrap( true );
@@ -511,7 +532,13 @@ public class GameScreen extends Base2DScreen {
             boolean itemIsMoney = itemInBagg.item.equals( Item.COIN ) ||
                                   itemInBagg.item.equals( Item.BLUE_STAR ) ||
                                   itemInBagg.item.equals( Item.YELLOW_STAR ) ||
-                                  itemInBagg.item.equals( Item.GREEN_STAR );
+                                  itemInBagg.item.equals( Item.GREEN_STAR ) ||
+                                  itemInBagg.item.equals( Item.KEY1 ) ||
+                                  itemInBagg.item.equals( Item.KEY2 ) ||
+                                  itemInBagg.item.equals( Item.KEY3 ) ||
+                                  itemInBagg.item.equals( Item.KEY4 ) ||
+                                  itemInBagg.item.equals( Item.KEY5 ) ||
+                                  itemInBagg.item.equals( Item.KEY6 );
 
             final Image useImage = IMG.USABLE.getImageActor( offset, offset );
             if ( !itemIsMoney ) {
@@ -529,21 +556,33 @@ public class GameScreen extends Base2DScreen {
 
             float offset_half = offset / 2;
 
-            table.add( img ).pad( 0, 0, 0, offset_half );
-            table.add( count ).width( offset_half );
-            table.add( txt ).width( offset * 3 );
-            table.add( fullTxt ).pad( 0, offset_half, 0, 0 ).width( offset * 5 );
+            table.add( img ).left().minWidth( offset );
+            table.add( count ).left();
+            table.add( txt ).left().width( offset * 4 );
+            table.add( fullTxt ).left().width( offset * 6 );
             if ( !itemIsMoney ) {
-                table.add( useImage ).pad( 0, offset_half, 0, 0 );
+                if ( itemInBagg.count > 1 ) {
+                    table.add( upgradeIcon ).left().minWidth( offset );
+                    upgradeIcon.addListener( new ClickListener() {
+                        public void clicked ( InputEvent event, float x, float y ) {
+                            SoundAsset.Click.play();
+                            UIHelper.clickAnimation( useImage );
+                            MyPlayer.upgradeWeapon( itemInBagg );
+                            showInGameMenu();
+                        }
+                    } );
+                } else {
+                    table.add().left().minWidth( offset );
+                }
+                table.add( useImage ).left().minWidth( offset );
             }
-
             table.row();
 
             Sprite lineSprite = GFXHelper.createSpriteRGB888( Core.WIDTH - offset * 2.5f,
-                                                              offset / 5 );
+                                                              offset / 8 );
             Image lineImage = new Image( lineSprite );
             lineImage.setColor( GameColor.BLACKGL.get() );
-            table.add( lineImage ).colspan( 5 ).row();
+            table.add( lineImage ).center().colspan( 6 ).row();
         }
 
         ScrollPane scrollPane = new ScrollPane( table );
@@ -772,6 +811,7 @@ public class GameScreen extends Base2DScreen {
     public void dispose () {
         super.dispose();
 
+        textDecalSystem = null;
         AshleyWorld.getEngine().getSystem( NPCSystem.class ).disableWalkSound();
 
         MyPlayer.stopSound();

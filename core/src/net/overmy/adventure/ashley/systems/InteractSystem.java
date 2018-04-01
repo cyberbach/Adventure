@@ -94,6 +94,10 @@ public class InteractSystem extends IteratingSystem {
                         break;
 
                     case USE:
+                        DoorSystem doorSystem = getEngine().getSystem( DoorSystem.class );
+                        doorSystem.processKey( currentItem );
+                        Gdx.app.debug( "используем", "" + currentItem.getName() );
+
                         break;
                 }
                 actOnEntity = false;

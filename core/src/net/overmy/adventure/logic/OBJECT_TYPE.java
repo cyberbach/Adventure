@@ -9,6 +9,8 @@ public enum OBJECT_TYPE {
     WEAPON,
     LADDER,
     PICKABLE,
+    DOOR,
+    DOOR_SWITCH,
     HOVER_COLLECTABLE,
     COLLECTABLE,
     NPC,

@@ -43,6 +43,9 @@ public enum ModelAsset {
     BSTAR( "bstar" ),
     YSTAR( "ystar" ),
     BOOK( "book" ),
+    DOOR( "door" ),
+    LOCK( "lock" ),
+    KEY( "key" ),
 
     BROOM_WEAPON( "weapon1broom" ),
     RAKE_WEAPON( "weapon2rake" ),
@@ -50,6 +53,7 @@ public enum ModelAsset {
     FENCE_WEAPON( "weapon4fence" ),
     PILLOW_WEAPON( "pillow" ),
     GUN_WEAPON( "gun" ),
+    BAT_WEAPON( "bat" ),
 
     ROCK_PART( "rockpart" ),
     ROCK( "rock" ),
@@ -61,6 +65,7 @@ public enum ModelAsset {
     GREEN_BOTTLE( "greenbottle" ),
     RED_BOTTLE( "redbottle" ),
     PURPLE_BOTTLE( "purplebottle" ),
+    BLUE_BOTTLE( "bluebottle" ),
 
     BIRD1( "bird1" ),
     BIRD2ANGRY( "bird2" ),

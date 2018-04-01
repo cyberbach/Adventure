@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.Core;
@@ -116,6 +117,7 @@ public class MenuScreen extends Base2DScreen {
         introGroup.clear(); // disable clearGroup Runnable
         
         Label title = UIHelper.Label( TextAsset.Title.get(), FontAsset.MENU_TITLE );
+        title.setAlignment( Align.center );
         final Group titleGroup = UIHelper.convertActorToGroup( title );
         titleGroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT*0.8f );
         titleGroup.addAction( Actions.forever(

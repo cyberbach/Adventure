@@ -12,6 +12,7 @@ import net.overmy.adventure.ashley.MyEntityListener;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.systems.AnimationSystem;
 import net.overmy.adventure.ashley.systems.DecalSystem;
+import net.overmy.adventure.ashley.systems.DoorSystem;
 import net.overmy.adventure.ashley.systems.InteractSystem;
 import net.overmy.adventure.ashley.systems.LifeSystem;
 import net.overmy.adventure.ashley.systems.MyRotationSystem;
@@ -53,6 +54,7 @@ public final class AshleyWorld {
         engine.addSystem( new TextDecalSystem() );
         engine.addSystem( new DecalSystem() );
         engine.addSystem( new InteractSystem() );
+        engine.addSystem( new DoorSystem() );
 
         engine.addEntityListener( new MyEntityListener() );
     }
@@ -70,6 +72,7 @@ public final class AshleyWorld {
         engine.removeSystem( engine.getSystem( DecalSystem.class ) );
         engine.removeSystem( engine.getSystem( InteractSystem.class ) );
         engine.removeSystem( engine.getSystem( MyWeaponSystem.class ) );
+        engine.removeSystem( engine.getSystem( DoorSystem.class ) );
 
         engine.removeAllEntities();
         //engine.clearPools();

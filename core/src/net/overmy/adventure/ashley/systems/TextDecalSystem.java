@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
@@ -32,6 +33,13 @@ public class TextDecalSystem extends IteratingSystem {
     private final Vector3 position = new Vector3();
 
     private Label textLabel = null;
+
+    private Vector2 lastPlayerPosition = new Vector2();
+
+
+    public void setLastPlayerPosition ( Vector2 lastPlayerPosition ) {
+        this.lastPlayerPosition.set( lastPlayerPosition );
+    }
 
 
     @SuppressWarnings( "unchecked" )
@@ -62,6 +70,11 @@ public class TextDecalSystem extends IteratingSystem {
 
         Matrix4 transform = MyMapper.PHYSICAL.get( entity ).body.getWorldTransform();
         transform.getTranslation( position );
+
+        lastPlayerPosition.sub( position.x, position.z );
+        if ( lastPlayerPosition.len() > 7 ) {
+            return;
+        }
 
         String text = MyMapper.TEXT_DECAL.get( entity ).text.get();
 

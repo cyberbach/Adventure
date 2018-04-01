@@ -17,6 +17,7 @@ import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
+import net.overmy.adventure.logic.Item;
 
 
 /**
@@ -88,6 +89,12 @@ public class LifeSystem extends IteratingSystem {
                     if ( !MyMapper.NPC.get( entity ).die ) {
                         MyMapper.NPC.get( entity ).die = true;
                         entity.add( new RemoveByTimeComponent( 1.0f ) );
+
+                        Item itemForDrop = MyMapper.NPC.get( entity ).dropItem;
+                        if(itemForDrop!=null) {
+                            position.add( 0, 3, 0 );
+                            AshleySubs.createPickable( position, itemForDrop );
+                        }
                     }
                 } else {
                     MyMapper.LEVEL_OBJECT.get( entity ).levelObject.useEntity();

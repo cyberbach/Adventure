@@ -9,6 +9,7 @@ import net.overmy.adventure.ashley.components.BoundingComponent;
 import net.overmy.adventure.ashley.components.CollectableComponent;
 import net.overmy.adventure.ashley.components.ContainerComponent;
 import net.overmy.adventure.ashley.components.DecalComponent;
+import net.overmy.adventure.ashley.components.DoorComponent;
 import net.overmy.adventure.ashley.components.GroundedComponent;
 import net.overmy.adventure.ashley.components.InteractComponent;
 import net.overmy.adventure.ashley.components.LevelIDComponent;
@@ -54,6 +55,7 @@ public final class MyMapper {
     public static ComponentMapper< ContainerComponent >   CONTAINER    = null;
     public static ComponentMapper< ActorComponent >       ACTOR        = null;
     public static ComponentMapper< SkipActionComponent >  SKIP         = null;
+    public static ComponentMapper< DoorComponent >        DOOR         = null;
 
 
     private MyMapper () {
@@ -83,6 +85,7 @@ public final class MyMapper {
         CONTAINER = ComponentMapper.getFor( ContainerComponent.class );
         ACTOR = ComponentMapper.getFor( ActorComponent.class );
         SKIP = ComponentMapper.getFor( SkipActionComponent.class );
+        DOOR = ComponentMapper.getFor( DoorComponent.class );
     }
 
 
@@ -109,5 +112,6 @@ public final class MyMapper {
         CONTAINER = null;
         ACTOR = null;
         SKIP = null;
+        DOOR = null;
     }
 }

@@ -33,9 +33,10 @@ public final class BulletWorld {
     public final static int NPC_FLAG         = 1 << 15;
     public final static int DESTROYABLE_FLAG = 1 << 16;
     public final static int PART_FLAG        = 1 << 17;
+    public final static int DOOR_FLAG        = 1 << 18;
 
     public final static int FILTER_ALL = GROUND_FLAG | LADDER_FLAG | MYWEAPON_FLAG |
-                                           PICKABLE_FLAG | COLLECTABLE_FLAG | NPC_FLAG | DESTROYABLE_FLAG;
+                                           PICKABLE_FLAG | COLLECTABLE_FLAG | NPC_FLAG | DESTROYABLE_FLAG | DOOR_FLAG;
     public final static int FILTER_NPC = PLAYER_FLAG | MYWEAPON_FLAG;
 
     private static btDynamicsWorld dynamicsWorld = null;

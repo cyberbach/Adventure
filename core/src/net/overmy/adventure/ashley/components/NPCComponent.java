@@ -2,6 +2,7 @@ package net.overmy.adventure.ashley.components;
 
 import com.badlogic.ashley.utils.ImmutableArray;
 
+import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.NPCAction;
 
 /*
@@ -17,6 +18,7 @@ public class NPCComponent extends TimeComponent {
     public boolean hurt          = false;
     public float   damage        = 0.0f;
     public boolean die           = false;
+    public Item dropItem = null;
 
 
     public NPCComponent ( ImmutableArray< NPCAction > actionArray ) {
@@ -29,5 +31,12 @@ public class NPCComponent extends TimeComponent {
         this.actionArray = actionArray;
         this.time = actionArray.get( 0 ).durationTime;
         this.damage = newDamage;
+    }
+
+    public NPCComponent ( ImmutableArray< NPCAction > actionArray, float newDamage, Item dropItem ) {
+        this.actionArray = actionArray;
+        this.time = actionArray.get( 0 ).durationTime;
+        this.damage = newDamage;
+        this.dropItem = dropItem;
     }
 }

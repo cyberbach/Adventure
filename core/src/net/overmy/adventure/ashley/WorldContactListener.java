@@ -259,7 +259,7 @@ public class WorldContactListener extends ContactListener {
 
                     MyPlayer.hurt = true;
 
-                    if ( MyMapper.LIFE.has( entity02 ) ) {
+                    if ( MyMapper.LIFE.has( entity02 ) && !MyPlayer.immortal ) {
                         MyMapper.LIFE.get( entity02 ).decLife( component.damage );
                         if ( MathUtils.randomBoolean() ) {
                             SoundAsset.HURT1.play();
@@ -282,7 +282,7 @@ public class WorldContactListener extends ContactListener {
                     MyPlayer.hurt = true;
 
                     component.hunting = false; // drop HUNT action
-                    if ( MyMapper.LIFE.has( entity01 ) ) {
+                    if ( MyMapper.LIFE.has( entity01 ) && !MyPlayer.immortal ) {
                         MyMapper.LIFE.get( entity01 ).decLife( component.damage );
                         if ( MathUtils.randomBoolean() ) {
                             SoundAsset.HURT1.play();

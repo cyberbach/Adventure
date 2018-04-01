@@ -17,8 +17,51 @@ class LevelObjectSubs {
 
     Array< LevelObject > LEVEL0 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+/*
 
         objects.add( new LevelObject()
+                .setType( OBJECT_TYPE.DOOR )
+                .setDoorAngles(305.72955f,77.70956f)
+                .setDynamicModelAsset( ModelAsset.DOOR )
+                .setItem( Item.KEY1 )
+                .setPosition( new Vector3( 0.87952834f, 0.5416097f, -15.525002f ) ) );
+*/
+/*
+        objects.add( new LevelObject()
+                .setType( OBJECT_TYPE.DOOR )
+                .setDoorAngles(105.22955f,296.64957f)
+                .setDynamicModelAsset( ModelAsset.DOOR )
+                .setItem( Item.COIN )
+                .setPosition( new Vector3( -6.7347302f, 0.55675274f, -13.492119f ) ) );*//*
+
+
+        objects.add( new LevelObject()
+                .setType( OBJECT_TYPE.DOOR_SWITCH )
+                .setDynamicModelAsset( ModelAsset.LOCK )
+                .setItem( Item.KEY1 )
+                .setPosition( new Vector3( 1.0180728f, 1.907327f, -5.882462f ) ) );
+*/
+
+        objects.add( trigger( Item.TRIGGER1, -3.446573f, 1.3729875f, -7.244136f, 4.0f ) );
+        //objects.add( weapon( -2.566254f, 0.0907035f, -4.6540112f, Item.BROOM_WEAPON ) );
+       // objects.add( weapon( 1.0180728f, 1.907327f, -5.882462f, Item.BROOM_WEAPON) );
+
+        objects.add( hoverBlueBottle( 3.5297053f, 1.9786499f, -4.1287537f) );
+        objects.add( weapon( 4.541143f, 1.4141711f, -2.2358634f, Item.RAKE_WEAPON) );
+
+        objects.add( weapon( 7.5239773f, 1.326849f, -2.0801325f, Item.BAT_WEAPON) );
+        objects.add( weapon( 4.942679f, 1.4902402f, 1.7424695f, Item.BAT_WEAPON) );
+
+        objects.add( weapon( 8.667573f, 2.1916878f, 2.8152184f, Item.KALASH_WEAPON) );
+        objects.add( hoverCoin( 6.8247967f, 2.3583481f, 4.868616f) );
+
+        objects.add( weapon( 9.002632f, 2.0301335f, 7.437962f, Item.GUN_WEAPON) );
+        objects.add( weapon( 7.0671344f, 1.9452436f, 9.3607435f, Item.GUN_WEAPON) );
+
+        objects.add( weapon( 4.221447f, 1.0784031f, 10.264698f, Item.PILLOW_WEAPON) );
+        objects.add( weapon( 3.3727143f, 1.2619562f, 8.226095f, Item.PILLOW_WEAPON) );
+
+        /*objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.INTERACTIVE )
                              .setDynamicModelAsset( ModelAsset.BOOK )
                              .setTextInteract( TextInteract.Book1 )
@@ -56,7 +99,7 @@ class LevelObjectSubs {
         objects.add( box( 7.102702f, 3.5108666f, 16.62674f, Item.BLUE_STAR ) );
         objects.add( chest( -2.1007736f, 2.50011f, 10.098732f, Item.COIN ) );
         objects.add( box( -8.834456f, 1.6002967f, -1.8023157f ) );
-        objects.add( box( 5.86802f, 1.1149557f, -0.5165689f, Item.COIN ) );
+        objects.add( box( 5.86802f, 1.1149557f, -0.5165689f, Item.COIN ) );*/
 
         return objects;
     }
@@ -64,6 +107,24 @@ class LevelObjectSubs {
 
     Array< LevelObject > LEVEL1 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        /*
+        Pushed angle = 316.11386:
+new Vector3( -65.847916f, 0.5416059f, -73.49805f )
+         */
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR )
+                             .setDoorAngles(316.0f,50.0f)
+                             .setDynamicModelAsset( ModelAsset.DOOR )
+                             .setItem( Item.KEY1 )
+                             .setPosition( new Vector3( -65.847916f, 0.5416059f, -73.49805f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR_SWITCH )
+                             .setDynamicModelAsset( ModelAsset.LOCK )
+                             .setItem( Item.KEY1 )
+                             .setRotation( 50.0f )
+                             .setPosition( new Vector3( -61.363125f, 0.54160416f, -69.18484f ) ) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
@@ -85,6 +146,7 @@ class LevelObjectSubs {
                              .setType( OBJECT_TYPE.ENEMY )
                              .setActionQueue( NPCActionQueue.STAR2_ON_LEVEL1() )
                              .setDynamicModelAsset( ModelAsset.STAR )
+                             .setItem( Item.KEY1 )
                              .setPosition( new Vector3( -7.1824327f, 5, -60.462067f ) ) );
 
         objects.add( hoverCoin( -59.468754f, 0.54161084f, -63.818703f ) );
@@ -284,6 +346,7 @@ class LevelObjectSubs {
                              .setType( OBJECT_TYPE.ENEMY )
                              .setActionQueue( NPCActionQueue.CRAB_ON_LEVEL6() )
                              .setDynamicModelAsset( ModelAsset.CRAB )
+                             .setItem( Item.KEY2 )
                              .setPosition( new Vector3( -46.878883f, 2.9280591f, -410.01724f ) ) );
 
         objects.add( new LevelObject()
@@ -296,6 +359,37 @@ class LevelObjectSubs {
         objects.add( chest( -49.944202f, 1.5459726f, -419.02133f, Item.BLUE_STAR ) );
         objects.add( chest( -49.78418f, 1.7487116f, -411.50516f, Item.RED_BOTTLE ) );
         objects.add( chest( -35.611767f, 1.8290501f, -413.95877f, Item.BROOM_WEAPON ) );
+
+        return objects;
+    }
+
+    Array< LevelObject > LEVEL7 () {
+        Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR )
+                             .setDoorAngles(2.0f,105.0f)
+                             .setDynamicModelAsset( ModelAsset.DOOR )
+                             .setItem( Item.KEY2 )
+                             .setPosition( new Vector3( -111.437614f, 2.6524525f, -440.5856f ) ) );
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR )
+                             .setDoorAngles(158.0f,122.0f)
+                             .setDynamicModelAsset( ModelAsset.DOOR )
+                             .setItem( Item.KEY2 )
+                             .setPosition( new Vector3(  -113.05335f, 2.6433806f, -430.00235f  ) ) );
+
+
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR_SWITCH )
+                             .setDynamicModelAsset( ModelAsset.LOCK )
+                             .setItem( Item.KEY2 )
+                             .setRotation( 83.0f )
+                             .setPosition( new Vector3( -102.94945f, 2.0175083f, -440.3557f ) ) );
 
         return objects;
     }
@@ -413,10 +507,41 @@ class LevelObjectSubs {
     public Array< LevelObject > LEVEL11 () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR )
+                             .setDoorAngles(251.0f,350.0f)
+                             .setDynamicModelAsset( ModelAsset.DOOR )
+                             .setItem( Item.KEY3 )
+                             .setPosition( new Vector3( -100.048386f, 3.0279393f, -554.2773f ) ) );
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR )
+                             .setDoorAngles(75.0f,305.0f)
+                             .setDynamicModelAsset( ModelAsset.DOOR )
+                             .setItem( Item.KEY3 )
+                             .setPosition( new Vector3(  -114.85803f, 3.9332876f, -563.1705f   ) ) );
+
+
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR_SWITCH )
+                             .setDynamicModelAsset( ModelAsset.LOCK )
+                             .setItem( Item.KEY3 )
+                             .setRotation( 34.0f )
+                             .setPosition( new Vector3( -109.41304f, 0.8357556f, -542.67914f ) ) );
+
+
+
+
+
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
                              .setActionQueue( NPCActionQueue.CRAB1_ON_LEVEL11() )
                              .setDynamicModelAsset( ModelAsset.CRAB )
+                             .setItem( Item.KEY3 )
                              .setPosition( new Vector3( -84.048195f, 2.627729f, -522.14417f ) ) );
 
         objects.add( new LevelObject()
@@ -678,6 +803,14 @@ class LevelObjectSubs {
                 .setType( OBJECT_TYPE.HOVER_COLLECTABLE )
                 .setDynamicModelAsset( ModelAsset.RED_BOTTLE )
                 .setItem( Item.RED_BOTTLE )
+                .setPosition( new Vector3( x, y, z ) );
+    }
+
+    private LevelObject hoverBlueBottle ( float x, float y, float z ) {
+        return new LevelObject()
+                .setType( OBJECT_TYPE.HOVER_COLLECTABLE )
+                .setDynamicModelAsset( ModelAsset.BLUE_BOTTLE )
+                .setItem( Item.BLUE_BOTTLE )
                 .setPosition( new Vector3( x, y, z ) );
     }
 

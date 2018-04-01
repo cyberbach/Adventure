@@ -3,6 +3,7 @@ package net.overmy.adventure.logic;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import net.overmy.adventure.AshleySubs;
@@ -28,6 +29,8 @@ public class LevelObject {
     private   float                       heightOfLadder    = 0.0f;
     private   float                       rotation          = 0.0f;
     private   float                       size              = 1.0f;
+
+    private Vector2 doorAngles = null;
 
 
     public LevelObject setHeightOfLadder ( float heightOfLadder ) {
@@ -121,6 +124,14 @@ public class LevelObject {
         }
 
         switch ( type ) {
+            case DOOR:
+                entity = AshleySubs.createDoor( position, item, doorAngles );
+                break;
+
+            case DOOR_SWITCH:
+                entity = AshleySubs.createDoorSwitch( position, item, rotation );
+                break;
+
             case LADDER:
                 entity = AshleySubs.createLadder( position, heightOfLadder );
                 break;
@@ -156,7 +167,7 @@ public class LevelObject {
                 break;
 
             case ENEMY:
-                entity = AshleySubs.createEnemy( position, dynamicModelAsset, actionArray, this );
+                entity = AshleySubs.createEnemy( position, dynamicModelAsset, actionArray, item, this );
                 break;
 
             case WEAPON:
@@ -168,6 +179,13 @@ public class LevelObject {
                                                        textInteract, rotation );
                 break;
         }
+    }
+
+
+    public LevelObject setDoorAngles ( float fromAngle, float toAngle ) {
+        doorAngles=new Vector2(  );
+        doorAngles.set( fromAngle,toAngle );
+        return this;
     }
 
 /*

@@ -469,6 +469,7 @@ public final class NPCActionQueue {
         Array< NPCAction > queue = new Array< NPCAction >();
         queue.add( wait( 0.5f ) );
         queue.add( move(-230.05342f, -592.1338f) );
+        queue.add( new NPCAction( ACTION_ID.SAY, TextAsset.BEWARE_ME_BUNNY, 2 ) );
         queue.add( wait( 1.7f ) );
         queue.add( hunt() );
         queue.add( move(-235.86606f, -592.9476f) );
@@ -488,6 +489,7 @@ public final class NPCActionQueue {
         queue.add( wait( 0.5f ) );
         queue.add( hunt() );
         queue.add( move(-266.36893f, -622.872f) );
+        queue.add( new NPCAction( ACTION_ID.SAY, TextAsset.BEWARE_ME_BUNNY, 2 ) );
         queue.add( wait( 1.5f ) );
         queue.add( hunt() );
         queue.add( move(-272.5677f, -612.9443f) );

@@ -318,6 +318,23 @@ public final class MyPlayer {
             }
         }
 
+        timerWorked = immortalTime >= 0;
+        immortalTime -= deltaTime;
+        boolean immortalFX = immortalTime >= 0;
+        if ( immortalFX ) {
+            int textOfTimer = (int) immortalTime + 1;
+            immortalTimerLabel.setText( "" + textOfTimer );
+            GlyphLayout layout = immortalTimerLabel.getGlyphLayout();
+            int iconSize = (int) ( Core.HEIGHT * 0.1f );
+            immortalTimerLabel.setPosition( -layout.width / 2, -layout.height / 2 - iconSize / 2 );
+            immortal = true;
+        } else {
+            immortal = false;
+            if ( timerWorked ) {
+                SoundAsset.ENDBOTTLE.play();
+            }
+        }
+
         timerWorked = jumpUpTime >= 0;
         jumpUpTime -= deltaTime;
         boolean jumpUpFX = jumpUpTime >= 0;
@@ -406,6 +423,7 @@ public final class MyPlayer {
         }
     }
 
+    public static boolean immortal = false;
 
     private static void dust ( float deltaTime, boolean speedUpFX, boolean jumpUpFX ) {
         dustTimer -= deltaTime;
@@ -508,6 +526,9 @@ public final class MyPlayer {
     }
 
 
+    private static float immortalTime       = -0.1f;
+    private static Label immortalTimerLabel = null;
+
     private static float speedUpTime       = -0.1f;
     private static Label speedUpTimerLabel = null;
 
@@ -560,6 +581,30 @@ public final class MyPlayer {
                 case RAKE_WEAPON:
                     damage = 60;
                     break;
+                case PILLOW_WEAPON_UPGRADED:
+                    damage = 30;
+                    break;
+                case GUN_WEAPON_UPGRADED:
+                    damage = 190;
+                    break;
+                case KALASH_WEAPON_UPGRADED:
+                    damage = 170;
+                    break;
+                case FENCE_WEAPON_UPGRADED:
+                    damage = 190;
+                    break;
+                case BROOM_WEAPON_UPGRADED:
+                    damage = 80;
+                    break;
+                case RAKE_WEAPON_UPGRADED:
+                    damage = 120;
+                    break;
+                case BAT_WEAPON:
+                    damage = 50;
+                    break;
+                case BAT_WEAPON_UPGRADED:
+                    damage = 250;
+                    break;
             }
             return;
         }
@@ -580,6 +625,15 @@ public final class MyPlayer {
                     speedUpTimerLabel = null;
                 }
                 speedUpTimerLabel = AshleySubs.createTopTimer( item.item, 1 );
+                break;
+
+            case BLUE_BOTTLE:
+                immortalTime = 30.0f;
+                if ( immortalTimerLabel != null ) {
+                    immortalTimerLabel.clear();
+                    immortalTimerLabel = null;
+                }
+                immortalTimerLabel = AshleySubs.createTopTimer( item.item, 3, 30 );
                 break;
 
             case PURPLE_BOTTLE:
@@ -605,5 +659,41 @@ public final class MyPlayer {
             walk.setVolume( 0.0f );
             walk.stop();
         }
+    }
+
+
+    public static void upgradeWeapon ( ItemInBagg itemInBagg ) {
+        switch ( itemInBagg.item ) {
+            case PILLOW_WEAPON:
+                addToBag( Item.PILLOW_WEAPON_UPGRADED );
+                break;
+            case GUN_WEAPON:
+                addToBag( Item.GUN_WEAPON_UPGRADED );
+                break;
+            case KALASH_WEAPON:
+                addToBag( Item.KALASH_WEAPON_UPGRADED );
+                break;
+            case FENCE_WEAPON:
+                addToBag( Item.FENCE_WEAPON_UPGRADED );
+                break;
+            case BROOM_WEAPON:
+                addToBag( Item.BROOM_WEAPON_UPGRADED );
+                break;
+            case RAKE_WEAPON:
+                addToBag( Item.RAKE_WEAPON_UPGRADED );
+                break;
+            case BAT_WEAPON:
+                addToBag( Item.BAT_WEAPON_UPGRADED );
+                break;
+        }
+        bag.remove( itemInBagg );
+    }
+
+
+    public static boolean testBag ( Item testItem ) {
+        for(ItemInBagg itemInBagg : bag){
+            if(itemInBagg.item.equals( testItem ))return true;
+        }
+        return false;
     }
 }
