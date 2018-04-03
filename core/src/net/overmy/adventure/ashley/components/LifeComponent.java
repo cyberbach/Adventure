@@ -2,6 +2,7 @@ package net.overmy.adventure.ashley.components;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.math.Vector2;
 
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.utils.GFXHelper;
@@ -28,12 +29,11 @@ public class LifeComponent extends TimeComponent {
         this.heightOffset = heightOffset;
         this.width = width;
 
-        final TextureRegion textureRegion = new TextureRegion(
+        final TextureRegion regionRed = new TextureRegion(
                 GFXHelper.createTexture( 16, 16, GameColor.RED.get() ) );
         final float decalSize = 0.12f;
 
-        decal = Decal.newDecal( decalSize, decalSize, textureRegion, false );
-        //decal.setColor( GameColor.RED.get() );
+        decal = Decal.newDecal( decalSize, decalSize, regionRed, false );
     }
 
 

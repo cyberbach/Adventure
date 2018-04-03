@@ -90,6 +90,8 @@ public final class MyPlayer {
 
     public static boolean isAttacking = false;
 
+    private static float environmentTimeFX = 0.2f;
+
 
     private MyPlayer () {
     }
@@ -141,8 +143,8 @@ public final class MyPlayer {
 
         playerEntity = AshleySubs.createPlayer( modelInstance );
         playerBody = MyMapper.PHYSICAL.get( playerEntity ).body;
-        //body.setSpinningFriction( 0.1f );
-        //body.setRollingFriction( 0.1f );
+        //setBody.setSpinningFriction( 0.1f );
+        //setBody.setRollingFriction( 0.1f );
 
         onLadder = false;
 
@@ -236,7 +238,7 @@ public final class MyPlayer {
             if ( playerOnGround ) {
                 final float jumpPower = 150.0f + extraJump;
                 velocity.set( direction.x, jumpPower, direction.y );
-                //body.setLinearVelocity( velocity );
+                //setBody.setLinearVelocity( velocity );
                 playerBody.applyCentralImpulse( velocity );
 
                 SoundAsset.Jump1.play();
@@ -260,6 +262,12 @@ public final class MyPlayer {
         MyCamera.setCameraPosition( notFilteredPos );
 
         v2Position.set( notFilteredPos.x, notFilteredPos.z );
+
+        environmentTimeFX-=deltaTime;
+        if(environmentTimeFX<0){
+            environmentTimeFX=0.4f;
+            AshleySubs.createEnvironmentFX(notFilteredPos,8, GameColor.BLUE);
+        }
     }
 
 
@@ -518,6 +526,11 @@ public final class MyPlayer {
 
     public static Vector2 getPosition () {
         return v2Position;
+    }
+
+
+    public static Vector3 getNotFilteredPos () {
+        return notFilteredPos;
     }
 
 

@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Matrix4;
@@ -18,6 +19,8 @@ import net.overmy.adventure.ashley.components.LifeComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.logic.Item;
+import net.overmy.adventure.resources.GameColor;
+import net.overmy.adventure.utils.GFXHelper;
 
 
 /**
@@ -91,8 +94,7 @@ public class LifeSystem extends IteratingSystem {
                         entity.add( new RemoveByTimeComponent( 1.0f ) );
 
                         Item itemForDrop = MyMapper.NPC.get( entity ).dropItem;
-                        if(itemForDrop!=null) {
-                            position.add( 0, 3, 0 );
+                        if ( itemForDrop != null ) {
                             AshleySubs.createPickable( position, itemForDrop );
                         }
                     }

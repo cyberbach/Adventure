@@ -41,15 +41,29 @@ public final class DynamicLevels {
         levelArray.add( new Level( "7, 6, 8", objects.LEVEL7() ) ); // переход на секретную локу
         levelArray.add( new Level( "8, 7, 15", objects.LEVEL8() ) ); // секретная лока
         levelArray.add( new Level( "9, 6, 11, 10, 14", objects.LEVEL9() ) );
-        levelArray.add( new Level( "10, 9", objects.LEVEL10() ) );
+        levelArray.add( new Level( "10, 9, 25", objects.LEVEL10() ) );
         levelArray.add( new Level( "11, 9, 12", objects.LEVEL11() ) );
         levelArray.add( new Level( "12, 11, 13", objects.LEVEL12() ) );
         levelArray.add( new Level( "13, 12, 14, 16", objects.LEVEL13() ) );
         levelArray.add( new Level( "14, 13, 9", objects.LEVEL14() ) );
         levelArray.add( new Level( "15, 8", objects.LEVEL15() ) ); // секретная лока
-        levelArray.add( new Level( "16, 13, 17", objects.LEVEL16() ) ); // ЗИМА
+        levelArray.add( new Level( "16, 13, 17, 22", objects.LEVEL16() ) ); // ЗИМА
         levelArray.add( new Level( "17, 16, 18", objects.LEVEL17() ) ); // ЗИМА
-        levelArray.add( new Level( "18, 17" ) ); // дорожка к боссу
+        levelArray.add( new Level( "18, 17, 19" ) ); // дорожка к боссу
+
+        levelArray.add( new Level( "19, 18, 31" ) );
+        levelArray.add( new Level( "20, 17,21" ) );
+        levelArray.add( new Level( "21, 20,22" ) );
+        levelArray.add( new Level( "22, 23,16,21" ) );
+        levelArray.add( new Level( "23, 24,22" ) );
+        levelArray.add( new Level( "24, 25,23" ) );
+        levelArray.add( new Level( "25, 10,24, 26" ) );
+        levelArray.add( new Level( "26, 27, 25" ) );
+        levelArray.add( new Level( "27, 28, 26" ) );
+        levelArray.add( new Level( "28, 29, 27" ) );
+        levelArray.add( new Level( "29, 30, 28" ) );
+        levelArray.add( new Level( "30, 29" ) );
+        levelArray.add( new Level( "31, 19" ) );
 
         levels = new ImmutableArray< Level >( levelArray );
     }

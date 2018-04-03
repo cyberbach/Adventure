@@ -22,7 +22,8 @@ public enum FontAsset {
     IVENTORY_ITEM( "bb.otf", 26, 0 ),
     IVENTORY_ITEM_TEXT( "bb.otf", 20, 0 ),
 
-    DIALOG_VARIANT( "nsk.ttf", 20 ),
+    DIALOG_VARIANT( "nsk.ttf", 26 ),
+    DIALOG_BODY( "nsk.ttf", 22 ),
     ;
 
     private final String path;

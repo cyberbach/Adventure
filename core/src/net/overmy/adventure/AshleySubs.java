@@ -300,7 +300,6 @@ public final class AshleySubs {
     }
 
     public static Entity createPickable ( Vector3 position, Item item ) {
-
         ModelInstance modelInstance = item.getModelAsset().get();
 
         PhysicalBuilder physicalBuilderPICKABLE = new PhysicalBuilder()
@@ -309,6 +308,7 @@ public final class AshleySubs {
                 .setPosition( position )
                 .setMass( 1.0f )
                 .hullShape()
+                .setStartImpulse( new Vector3( 0,8,0 ) )
                 .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                 .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG );
@@ -737,6 +737,14 @@ public final class AshleySubs {
     public static void createDustFX ( Vector3 position, float timeToRemove, GameColor gameColor ) {
         Entity entity = new Entity();
         entity.add( DecalSubs.LightDustEffect( timeToRemove, gameColor ) );
+        entity.add( new PositionComponent( position ) );
+        entity.add( new RemoveByTimeComponent( timeToRemove ) );
+        engine.addEntity( entity );
+    }
+
+    public static void createEnvironmentFX ( Vector3 position, float timeToRemove, GameColor gameColor ) {
+        Entity entity = new Entity();
+        entity.add( DecalSubs.EnvironmentDustEffect( timeToRemove, gameColor ) );
         entity.add( new PositionComponent( position ) );
         entity.add( new RemoveByTimeComponent( timeToRemove ) );
         engine.addEntity( entity );

@@ -128,7 +128,7 @@ new Vector3( -65.847916f, 0.5416059f, -73.49805f )
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
-                             .setTextInteract( TextInteract.DialogNPC1 )
+                             .setTextInteract( TextInteract.Dialog1HogPrickle )
                              .setActionQueue( NPCActionQueue.HOG_ON_LEVEL1() )
                              .setDynamicModelAsset( ModelAsset.HOG )
                              .setPosition( new Vector3( -25.33078f, 5, -66.74849f ) ) );
@@ -262,8 +262,9 @@ new Vector3( -65.847916f, 0.5416059f, -73.49805f )
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
-                             .setActionQueue( NPCActionQueue.BIRD2_LEVEL4() )
-                             .setDynamicModelAsset( ModelAsset.BIRD1 )
+                             .setActionQueue( NPCActionQueue.HOG_LEVEL4() )
+                             .setTextInteract( TextInteract.Dialog2HogPester )
+                             .setDynamicModelAsset( ModelAsset.HOG )
                              .setPosition( new Vector3( -161.27516f, 0.09638158f, -356.9968f ) ) );
 
         objects.add( new LevelObject()
@@ -352,6 +353,7 @@ new Vector3( -65.847916f, 0.5416059f, -73.49805f )
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
                              .setActionQueue( NPCActionQueue.FOX_ON_LEVEL6() )
+                             .setTextInteract( TextInteract.Dialog3FoxAlice )
                              .setDynamicModelAsset( ModelAsset.FOX )
                              .setPosition( new Vector3( -63.024685f, 0.6048689f, -442.56873f ) ) );
 

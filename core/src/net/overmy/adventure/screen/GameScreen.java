@@ -7,7 +7,6 @@ package net.overmy.adventure.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -540,6 +539,11 @@ public class GameScreen extends Base2DScreen {
                                   itemInBagg.item.equals( Item.KEY5 ) ||
                                   itemInBagg.item.equals( Item.KEY6 );
 
+            boolean itemIsBottle = itemInBagg.item.equals( Item.BLUE_BOTTLE ) ||
+                                   itemInBagg.item.equals( Item.RED_BOTTLE ) ||
+                                   itemInBagg.item.equals( Item.GREEN_BOTTLE ) ||
+                                   itemInBagg.item.equals( Item.PURPLE_BOTTLE );
+
             final Image useImage = IMG.USABLE.getImageActor( offset, offset );
             if ( !itemIsMoney ) {
                 useImage.addListener( new ClickListener() {
@@ -561,7 +565,7 @@ public class GameScreen extends Base2DScreen {
             table.add( txt ).left().width( offset * 4 );
             table.add( fullTxt ).left().width( offset * 6 );
             if ( !itemIsMoney ) {
-                if ( itemInBagg.count > 1 ) {
+                if ( itemInBagg.count > 1 && !itemIsBottle ) {
                     table.add( upgradeIcon ).left().minWidth( offset );
                     upgradeIcon.addListener( new ClickListener() {
                         public void clicked ( InputEvent event, float x, float y ) {
@@ -596,6 +600,11 @@ public class GameScreen extends Base2DScreen {
 
 
     private void showDialogMenu ( TextInteract currentTextInteract, final boolean isBook ) {
+        if ( currentTextInteract.haveNotBody() ) {
+            showGameGUI();
+            return;
+        }
+
         guiType = GUI_TYPE.INGAME_MENU;
 
         gameGroup.clear();
@@ -615,28 +624,35 @@ public class GameScreen extends Base2DScreen {
 
         int offset = (int) ( Core.HEIGHT * 0.1f );
         int w = Core.WIDTH - offset * 2;
-        int h = Core.HEIGHT - offset * 2;
+        int h = Core.HEIGHT - offset;
         Sprite bgSprite = GFXHelper.createSpriteRGB888( w, h );
         Image bgImage = new Image( bgSprite );
         bgImage.setColor( GameColor.BLACKGL.get() );
-        bgImage.setPosition( offset, offset );
+        bgImage.setPosition( offset, offset / 2 );
         gameGroup.addActor( bgImage );
 
+        // title
+
         Label dialogTitle = UIHelper.Label( currentTextInteract.getTitle(), FontAsset.MENU_TITLE );
+        dialogTitle.setWrap( true );
         float fontOffset = dialogTitle.getHeight() * 1.5f;
-        dialogTitle.setPosition( offset + fontOffset,
-                                 Core.HEIGHT - offset - fontOffset );
+        dialogTitle.setPosition( offset * 1.4f,
+                                 Core.HEIGHT - offset - fontOffset / 2 );
         gameGroup.addActor( dialogTitle );
 
-        Label dialogBody = UIHelper.Label( currentTextInteract.getBody(),
-                                           FontAsset.DIALOG_VARIANT );
-        dialogBody.setColor( Color.YELLOW );
-        dialogBody.setPosition( offset + fontOffset,
-                                Core.HEIGHT - 2 * offset - fontOffset );
+        // setBody
+
+        Label dialogBody = UIHelper.Label( currentTextInteract.getBody(), FontAsset.DIALOG_BODY );
+        dialogBody.setWidth( Core.WIDTH - offset * 6.5f );
         dialogBody.setWrap( true );
+        Gdx.app.debug( "height", "" + dialogBody.getHeight() );
+        dialogBody.setPosition( offset * 5.5f,
+                                Core.HEIGHT - offset * 2.5f - dialogBody.getHeight() );
         gameGroup.addActor( dialogBody );
 
         Gdx.app.debug( "connections", "" + currentTextInteract.getConnections() );
+
+        // variants
 
         int j = 0;
         for ( int i = 0; i < currentTextInteract.getConnections().size; i++ ) {
@@ -644,10 +660,11 @@ public class GameScreen extends Base2DScreen {
 
             Label dialogVariant = UIHelper.Label( connection.getAction(),
                                                   FontAsset.DIALOG_VARIANT );
-            dialogVariant.setPosition( offset + fontOffset,
-                                       Core.HEIGHT_HALF - offset / 2 - i * offset );
+            dialogVariant.setPosition( offset * 2,
+                                       Core.HEIGHT_HALF - offset - i * offset );
             dialogVariant.addListener( new ClickListener() {
                 public void clicked ( InputEvent event, float x, float y ) {
+                    SoundAsset.Click.play();
                     processTextBlock( connection );
                     showDialogMenu( connection, isBook );
                 }
@@ -665,10 +682,11 @@ public class GameScreen extends Base2DScreen {
                                             FontAsset.DIALOG_VARIANT );
         }
 
-        dialogVariant.setPosition( offset + fontOffset,
-                                   Core.HEIGHT_HALF - offset / 2 - j * offset );
+        dialogVariant.setPosition( offset * 2,
+                                   Core.HEIGHT_HALF - offset - j * offset );
         dialogVariant.addListener( new ClickListener() {
             public void clicked ( InputEvent event, float x, float y ) {
+                SoundAsset.Click.play();
                 showGameGUI();
             }
         } );
@@ -677,10 +695,21 @@ public class GameScreen extends Base2DScreen {
 
 
     private void processTextBlock ( TextInteract connection ) {
-        if ( connection.equals( TextInteract.DialogNPC4 ) ) {
-            TextInteract.DialogNPC1.getConnections().clear();
-            TextInteract.DialogNPC1.setText( TextInteractAsset.NPC1Name, TextInteractAsset.NPC4text,
-                                             TextInteractAsset.Empty );
+        //if(connection.getConnections()==null)showGameGUI();
+        /*if ( connection.equals( TextInteract.DialogNPC4 ) ) {
+            TextInteract.NPC1hogKolyu4ka.getConnections().clear();
+            TextInteract.NPC1hogKolyu4ka.setText( TextInteractAsset.HogPrickle, TextInteractAsset.NPC4text,
+                                                  TextInteractAsset.Empty );
+        }*/
+
+        Vector3 pos1 = new Vector3( MyPlayer.getNotFilteredPos() ).add( 0,0.5f,0 );
+        switch ( connection ){
+            case Dialog3FoxAliceQ3V1:
+                AshleySubs.createPickable( pos1, Item.PILLOW_WEAPON );
+                TextInteract.Dialog3FoxAlice.getConnections().clear();
+                TextInteract.Dialog3FoxAlice.connect( TextInteract.Dialog3FoxAliceV1,
+                                                      TextInteract.Dialog3FoxAliceV2 );
+                break;
         }
     }
 

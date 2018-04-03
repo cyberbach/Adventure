@@ -259,7 +259,7 @@ public final class NPCActionQueue {
     }
 
 
-    public static ImmutableArray< NPCAction > BIRD2_LEVEL4 () {
+    public static ImmutableArray< NPCAction > HOG_LEVEL4 () {
         Array< NPCAction > queue = new Array< NPCAction >();
         queue.add( move( -161.27516f, -356.9968f ) );
         queue.add( wait( 3.0f ) );

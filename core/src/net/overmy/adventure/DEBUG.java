@@ -6,7 +6,7 @@ package net.overmy.adventure;
 */
 
 public enum DEBUG {
-    ENABLE_ENGLISH_TEXT( true ),
+    ENABLE_ENGLISH_TEXT( false ),
     SETTINGS( false ),
     STAGE( false ),
     DECAL_ENTITIES( false ),
@@ -22,7 +22,7 @@ public enum DEBUG {
     ENTITIES( false ),
     PHYSICAL_MESH( false ),
     DYNAMIC_LEVELS( false ),
-    GAME_MASTER_MODE( true ),
+    GAME_MASTER_MODE( false ),
     ;
 
     private final boolean value;

@@ -34,8 +34,32 @@ public class DecalSubs {
         float fromZ = MathUtils.random( -0.5f, 0.5f );
 
         float toX = MathUtils.random( -0.5f, 0.5f );
-        float toY = MathUtils.random( 0.5f, 1.5f );
+        float toY = MathUtils.random( 0.2f, 0.6f );
         float toZ = MathUtils.random( -0.5f, 0.5f );
+
+        //float myTime = MathUtils.random( 0.8f * time, time );
+
+        Vector3Animator animator = new Vector3Animator();
+        animator.setFrom( fromX, fromY, fromZ );
+        animator.setTo( toX, toY, toZ );
+        animator.setAnimationTime( time );
+
+        return new DecalComponent( decal, animator );
+    }
+
+    public static DecalComponent EnvironmentDustEffect ( float time, GameColor color ) {
+        float decalSize = 0.1f;
+
+        Decal decal = Decal.newDecal( decalSize, decalSize, randomTriangle(), true );
+        decal.setColor( color.get() );
+
+        float fromX = MathUtils.randomBoolean() ? MathUtils.random( -6f, -3f ) :MathUtils.random( 3f, 6f );
+        float fromY = -0.2f;
+        float fromZ = MathUtils.randomBoolean() ? MathUtils.random( -6f, -3f ) :MathUtils.random( 3f, 6f );
+
+        float toX = fromX + MathUtils.random( -0.5f, 0.5f );
+        float toY = MathUtils.random( 5.5f, 7.5f );
+        float toZ = fromZ + MathUtils.random( -0.5f, 0.5f );
 
         //float myTime = MathUtils.random( 0.8f * time, time );
 

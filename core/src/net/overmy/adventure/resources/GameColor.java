@@ -20,6 +20,7 @@ public enum GameColor {
     //BG( 0x2F343B ),
     FOX( 0xECB2B9 ),
     HOG( 0xA7D1EB ),
+    BLUE( 0x348ABF ),
     SQUIREL( 0xF2B11B ),
     BG( 0xFFFFFF ),
     BG2( new Color( 1.0f / 0x2F, 1.0f / 0x34, 1.0f / 0x3B, 0.5f ) ),
@@ -31,8 +32,9 @@ public enum GameColor {
 
     BUTTON( 0xE3CDA4 ),
 
-    BLACKGL( new Color( 0,0,0, 0.5f ) ),
+    BLACKGL( new Color( 0,0,0, 0.6f ) ),
     WHITEGL( new Color( 1,1,1, 0.4f ) ),
+    WHITE( new Color( 1,1,1, 0.8f ) ),
     RED(  0xFF5A4A ),
     GREEN( 0xCEFF88 );
 
