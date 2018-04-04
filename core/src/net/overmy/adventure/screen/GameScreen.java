@@ -227,6 +227,7 @@ public class GameScreen extends Base2DScreen {
                              thisPosition.y + "f, " + thisPosition.z + "f )";
                 Gdx.app.debug( "Pushed angle = " +
                                rotation.getAngleAround( Vector3.Y ), "\n" + pos );
+                Gdx.app.debug( "THIS LOCATION", "" + DynamicLevels.getCurrent() );
             }
 
             if ( Gdx.input.isKeyJustPressed( Input.Keys.BACKSPACE ) ) {

@@ -48,7 +48,7 @@ public final class DynamicLevels {
         levelArray.add( new Level( "14, 13, 9", objects.LEVEL14() ) );
         levelArray.add( new Level( "15, 8", objects.LEVEL15() ) ); // секретная лока
         levelArray.add( new Level( "16, 13, 17, 22", objects.LEVEL16() ) ); // ЗИМА
-        levelArray.add( new Level( "17, 16, 18", objects.LEVEL17() ) ); // ЗИМА
+        levelArray.add( new Level( "17, 16, 18, 20", objects.LEVEL17() ) ); // ЗИМА
         levelArray.add( new Level( "18, 17, 19" ) ); // дорожка к боссу
 
         levelArray.add( new Level( "19, 18, 31" ) );
