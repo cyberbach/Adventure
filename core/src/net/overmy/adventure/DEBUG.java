@@ -22,7 +22,7 @@ public enum DEBUG {
     ENTITIES( false ),
     PHYSICAL_MESH( false ),
     DYNAMIC_LEVELS( false ),
-    GAME_MASTER_MODE( false ),
+    GAME_MASTER_MODE( true ),
     ;
 
     private final boolean value;
