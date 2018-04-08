@@ -358,6 +358,34 @@ public final class AshleySubs {
         return entity;
     }
 
+    public static Entity createCollectable ( Vector3 position, Item item, ModelAsset modelAsset ) {
+
+        ModelInstance modelInstance = modelAsset.get();
+
+        PhysicalBuilder physicalBuilderCOLLECTABLE = new PhysicalBuilder()
+                .setModelInstance( modelInstance )
+                .defaultMotionState()
+                .setPosition( position )
+                .setMass( 1.0f )
+                .boxShape()
+                .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
+                .setCallbackFlag( BulletWorld.COLLECTABLE_FLAG )
+                .setCallbackFilter( BulletWorld.PLAYER_FLAG );
+
+        Entity entity = new Entity();
+        entity.add( new ModelComponent( modelInstance ) );
+        if ( modelInstance.animations.size > 0 ) {
+            entity.add( new AnimationComponent( modelInstance ) );
+        }
+        entity.add( new MyRotationComponent() );
+        entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.COLLECTABLE ) );
+        entity.add( new CollectableComponent( item ) );
+        entity.add( physicalBuilderCOLLECTABLE.buildPhysicalComponent() );
+        engine.addEntity( entity );
+
+        return entity;
+    }
+
 
     public static Entity createHoverCollectable ( Vector3 position,
                                                   Item item,

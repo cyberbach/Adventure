@@ -41,6 +41,7 @@ import net.overmy.adventure.ashley.systems.InteractSystem;
 import net.overmy.adventure.ashley.systems.NPCSystem;
 import net.overmy.adventure.ashley.systems.RenderSystem;
 import net.overmy.adventure.ashley.systems.TextDecalSystem;
+import net.overmy.adventure.logic.CollectableProcessor;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
@@ -48,6 +49,7 @@ import net.overmy.adventure.logic.TextInteract;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.IMG;
+import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.MusicAsset;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextAsset;
@@ -648,7 +650,7 @@ public class GameScreen extends Base2DScreen {
         dialogBody.setWrap( true );
         Gdx.app.debug( "height", "" + dialogBody.getHeight() );
         dialogBody.setPosition( offset * 5.5f,
-                                Core.HEIGHT - offset * 2.5f - dialogBody.getHeight() );
+                                Core.HEIGHT - offset * 1.5f - dialogBody.getHeight() );
         gameGroup.addActor( dialogBody );
 
         Gdx.app.debug( "connections", "" + currentTextInteract.getConnections() );
@@ -696,20 +698,31 @@ public class GameScreen extends Base2DScreen {
 
 
     private void processTextBlock ( TextInteract connection ) {
-        //if(connection.getConnections()==null)showGameGUI();
-        /*if ( connection.equals( TextInteract.DialogNPC4 ) ) {
-            TextInteract.NPC1hogKolyu4ka.getConnections().clear();
-            TextInteract.NPC1hogKolyu4ka.setText( TextInteractAsset.HogPrickle, TextInteractAsset.NPC4text,
-                                                  TextInteractAsset.Empty );
-        }*/
 
         Vector3 pos1 = new Vector3( MyPlayer.getNotFilteredPos() ).add( 0,0.5f,0 );
+
         switch ( connection ){
             case Dialog3FoxAliceQ3V1:
-                AshleySubs.createPickable( pos1, Item.PILLOW_WEAPON );
+                CollectableProcessor.process(Item.PILLOW_WEAPON,pos1);
                 TextInteract.Dialog3FoxAlice.getConnections().clear();
                 TextInteract.Dialog3FoxAlice.connect( TextInteract.Dialog3FoxAliceV1,
                                                       TextInteract.Dialog3FoxAliceV2 );
+                break;
+
+            case Dialog8NigelBirdQ4V1:
+                CollectableProcessor.process(Item.KALASH_WEAPON,pos1);
+                break;
+
+            case Dialog7RacoonBabyQ4V1:
+                pos1.add( 0.0f,1.2f,0 );
+                for(int i=0;i<10;i++){
+                    CollectableProcessor.process(Item.COIN,pos1);
+                }
+
+                break;
+
+            case Dialog9CheinieRacoonQ4V1:
+                CollectableProcessor.process(Item.GREEN_BOTTLE,pos1);
                 break;
         }
     }

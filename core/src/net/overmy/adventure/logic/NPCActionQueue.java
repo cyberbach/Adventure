@@ -21,6 +21,20 @@ public final class NPCActionQueue {
     private static final int ID_SOME_ANIMATION = 3;
 
 
+    public static ImmutableArray< NPCAction > BUNNY_ON_LEVEL0 () {
+        Array< NPCAction > queue = new Array< NPCAction >();
+        queue.add( move(-1.7200319f, 10.46532f) );
+        queue.add( wait( 1.0f ) );
+        queue.add( move(-1.9040691f, 7.416032f) );
+        queue.add( wait( 2.0f ) );
+        queue.add( move(2.7612164f, 5.5861015f) );
+        queue.add( wait( 3.0f ) );
+        queue.add( move(-0.47394562f, 3.526068f) );
+        queue.add( move(-3.5705903f, 5.456116f) );
+        queue.add( wait( 1.0f ) );
+        return new ImmutableArray< NPCAction >( queue );
+    }
+
     public static ImmutableArray< NPCAction > HOG_ON_LEVEL1 () {
         Array< NPCAction > queue = new Array< NPCAction >();
         queue.add( wait( 15.0f ) );
@@ -149,6 +163,28 @@ public final class NPCActionQueue {
         return new ImmutableArray< NPCAction >( queue );
     }
 
+    public static ImmutableArray< NPCAction > SHARK_ON_LEVEL3 () {
+        Array< NPCAction > queue = new Array< NPCAction >();
+        queue.add( move(-69.446945f, -251.36264f) );
+        queue.add( wait( 0.6f ) );
+        queue.add( hunt() );
+        queue.add( move(-75.144844f, -252.5359f) );
+        queue.add( wait( 1.4f ) );
+        queue.add( hunt() );
+        queue.add( move(-77.29335f, -242.72508f) );
+        queue.add( hunt() );
+        queue.add( move(-66.97161f, -244.6279f) );
+        queue.add( wait( 0.8f ) );
+        queue.add( hunt() );
+        queue.add( move(-58.487083f, -265.92316f) );
+        queue.add( wait( 2.4f ) );
+        queue.add( hunt() );
+        queue.add( move(-69.66185f, -243.60669f) );
+        queue.add( wait( 0.7f ) );
+        queue.add( hunt() );
+        return new ImmutableArray< NPCAction >( queue );
+    }
+
 
     public static ImmutableArray< NPCAction > CRAB_ON_LEVEL6 () {
         Array< NPCAction > queue = new Array< NPCAction >();
@@ -227,6 +263,22 @@ public final class NPCActionQueue {
         queue.add( wait( 4.0f ) );
         queue.add( move( -215.5847f, -426.56372f ) );
         queue.add( wait( 2.2f ) );
+        return new ImmutableArray< NPCAction >( queue );
+    }
+
+    public static ImmutableArray< NPCAction > BURDOK_ON_LEVEL5 () {
+        Array< NPCAction > queue = new Array< NPCAction >();
+        queue.add( move(-221.65602f, -416.17563f) );
+        queue.add( wait( 1.1f ) );
+        queue.add( hunt() );
+        queue.add( move(-219.22012f, -410.15714f) );
+        queue.add( wait( 0.5f ) );
+        queue.add( move(-224.89061f, -408.55685f) );
+        queue.add( wait( 1.7f ) );
+        queue.add( hunt() );
+        queue.add( move(-214.65916f, -412.53247f) );
+        queue.add( wait( 0.3f ) );
+        queue.add( hunt() );
         return new ImmutableArray< NPCAction >( queue );
     }
 
@@ -493,6 +545,31 @@ public final class NPCActionQueue {
         queue.add( wait( 1.5f ) );
         queue.add( hunt() );
         queue.add( move(-272.5677f, -612.9443f) );
+        queue.add( wait( 0.2f ) );
+        queue.add( hunt() );
+        return new ImmutableArray< NPCAction >( queue );
+    }
+
+    public static ImmutableArray<NPCAction> SNOWMAN_ON_LEVEL19 () {
+        Array< NPCAction > queue = new Array< NPCAction >();
+        queue.add( move(-111.52003f, -844.50574f) );
+        queue.add( wait( 1.2f ) );
+        queue.add( hunt() );
+        queue.add( move(-109.27993f, -837.82465f) );
+        queue.add( wait( 0.5f ) );
+        queue.add( move(-115.48555f, -833.6619f) );
+        queue.add( wait( 2.2f ) );
+        queue.add( hunt() );
+        queue.add( move(-118.73633f, -842.1679f) );
+        queue.add( wait( 0.7f ) );
+        queue.add( move(-112.3849f, -839.33093f) );
+        queue.add( wait( 0.3f ) );
+        queue.add( hunt() );
+        queue.add( move(-111.86092f, -846.1629f) );
+        queue.add( wait( 1.2f ) );
+        queue.add( hunt() );
+        queue.add( move(-99.80032f, -847.01196f) );
+        queue.add( move(-96.21273f, -832.92755f) );
         queue.add( wait( 0.2f ) );
         queue.add( hunt() );
         return new ImmutableArray< NPCAction >( queue );

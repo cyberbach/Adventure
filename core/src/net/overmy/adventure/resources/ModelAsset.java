@@ -80,6 +80,11 @@ public enum ModelAsset {
     PURPLE_BOTTLE( "purplebottle" ),
     BLUE_BOTTLE( "bluebottle" ),
 
+    LITTLE_BUNNY( "littlebunny" ),
+    SNOWMAN( "snowman" ),
+    BURDOK( "burdok" ),
+    SHARK( "shark" ),
+
     BIRD1( "bird1" ),
     BIRD2ANGRY( "bird2" ),
     BUTTERFLY( "butterfly" ),

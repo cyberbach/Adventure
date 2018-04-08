@@ -17,6 +17,15 @@ class LevelObjectSubs {
 
     Array< LevelObject > LEVEL0 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.NPC )
+                             .setActionQueue( NPCActionQueue.BUNNY_ON_LEVEL0() )
+                             .setTextInteract( TextInteract.Dialog9CheinieRacoon )
+                             .setDynamicModelAsset( ModelAsset.LITTLE_BUNNY )
+                             .setPosition( new Vector3( -1.7200319f, 2.3986692f, 10.46532f ) ) );
+
 /*
 
         objects.add( new LevelObject()
@@ -226,6 +235,15 @@ new Vector3( -65.847916f, 0.5416059f, -73.49805f )
     Array< LevelObject > LEVEL3 () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.ENEMY )
+                             .setActionQueue( NPCActionQueue.SHARK_ON_LEVEL3() )
+                             .setDynamicModelAsset( ModelAsset.SHARK )
+                             .setItem( Item.KEY3 )
+                             .setPosition( new Vector3( -69.446945f, 1.2875233f, -251.36264f ) ) );
+
+
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
                              .setActionQueue( NPCActionQueue.STAR_ON_LEVEL3() )
@@ -299,6 +317,13 @@ new Vector3( -65.847916f, 0.5416059f, -73.49805f )
 
     Array< LevelObject > LEVEL5 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.ENEMY )
+                             .setActionQueue( NPCActionQueue.BURDOK_ON_LEVEL5() )
+                             .setDynamicModelAsset( ModelAsset.BURDOK )
+                             .setItem( Item.KEY5 )
+                             .setPosition( new Vector3( -221.65602f, 3.282184f, -416.17563f ) ) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
@@ -727,6 +752,21 @@ new Vector3( -65.847916f, 0.5416059f, -73.49805f )
 
         objects.add( hoverRedBottle( -1.3750398f, 3.7980022f, -817.3871f) );
         objects.add( hoverPurpleBottle( -0.83791935f, 3.857041f, -812.11957f) );
+
+        return objects;
+    }
+
+    public Array< LevelObject > LEVEL19 () {
+        Array< LevelObject > objects = new Array< LevelObject >();
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.ENEMY )
+                             .setActionQueue( NPCActionQueue.SNOWMAN_ON_LEVEL19() )
+                             .setDynamicModelAsset( ModelAsset.SNOWMAN )
+                             .setItem( Item.KEY6 )
+                             .setPosition( new Vector3( -111.52003f, 2.680404f, -844.50574f ) ) );
+
 
         return objects;
     }
