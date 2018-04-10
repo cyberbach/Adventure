@@ -23,7 +23,7 @@ public class LevelObject {
     private   OBJECT_TYPE                 type              = null;
     public    Item                        item              = null;
     private   TextInteract                textInteract      = null;
-    private   ImmutableArray< NPCAction > actionArray       = null;
+    private   ImmutableArray< NPCAction > script            = null; // очередь действий - это скрипт
     protected Entity                      entity            = null;
     public    boolean                     used              = false;
     private   float                       heightOfLadder    = 0.0f;
@@ -72,8 +72,8 @@ public class LevelObject {
     }
 
 
-    public LevelObject setActionQueue ( ImmutableArray< NPCAction > queue ) {
-        this.actionArray = queue;
+    public LevelObject setScript ( ImmutableArray< NPCAction > actionsQueue ) {
+        this.script = actionsQueue;
         return this;
     }
 
@@ -163,11 +163,11 @@ public class LevelObject {
 
             case NPC:
                 entity = AshleySubs.createNPC( position, dynamicModelAsset, textInteract,
-                                               actionArray );
+                                               script );
                 break;
 
             case ENEMY:
-                entity = AshleySubs.createEnemy( position, dynamicModelAsset, actionArray, item, this );
+                entity = AshleySubs.createEnemy( position, dynamicModelAsset, script, item, this );
                 break;
 
             case WEAPON:

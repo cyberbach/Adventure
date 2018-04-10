@@ -29,7 +29,7 @@ public final class DynamicLevels {
     public static void initLevels () {
         Array< Level > levelArray = new Array< Level >();
 
-        LevelObjectSubs objects = new LevelObjectSubs();
+        ObjectBuilder objects = new ObjectBuilder();
 
         levelArray.add( new Level( "0, 1", objects.LEVEL0() ) );
         levelArray.add( new Level( "1, 0, 2, 3", objects.LEVEL1() ) );
@@ -49,21 +49,21 @@ public final class DynamicLevels {
         levelArray.add( new Level( "15, 8", objects.LEVEL15() ) ); // секретная лока
         levelArray.add( new Level( "16, 13, 17, 22", objects.LEVEL16() ) ); // ЗИМА
         levelArray.add( new Level( "17, 16, 18, 20", objects.LEVEL17() ) ); // ЗИМА
-        levelArray.add( new Level( "18, 17, 19" ) ); // дорожка к боссу
+        levelArray.add( new Level( "18, 17, 19", objects.LEVEL18() ) ); // дорожка к боссу
 
         levelArray.add( new Level( "19, 18, 31", objects.LEVEL19() ) );
-        levelArray.add( new Level( "20, 17, 21" ) );
-        levelArray.add( new Level( "21, 20, 22" ) );
-        levelArray.add( new Level( "22, 23, 16, 21" ) );
-        levelArray.add( new Level( "23, 24, 22" ) );
-        levelArray.add( new Level( "24, 25, 23" ) );
-        levelArray.add( new Level( "25, 10, 24, 26" ) );
-        levelArray.add( new Level( "26, 27, 25" ) );
-        levelArray.add( new Level( "27, 28, 26" ) );
-        levelArray.add( new Level( "28, 29, 27" ) );
-        levelArray.add( new Level( "29, 30, 28" ) );
-        levelArray.add( new Level( "30, 29" ) );
-        levelArray.add( new Level( "31, 19" ) );
+        levelArray.add( new Level( "20, 17, 21", objects.LEVEL20() ) );
+        levelArray.add( new Level( "21, 20, 22", objects.LEVEL21() ) );
+        levelArray.add( new Level( "22, 23, 16, 21", objects.LEVEL22() ) );
+        levelArray.add( new Level( "23, 24, 22", objects.LEVEL23() ) );
+        levelArray.add( new Level( "24, 25, 23", objects.LEVEL24() ) );
+        levelArray.add( new Level( "25, 10, 24, 26", objects.LEVEL25() ) );
+        levelArray.add( new Level( "26, 27, 25", objects.LEVEL26() ) );
+        levelArray.add( new Level( "27, 28, 26", objects.LEVEL27() ) );
+        levelArray.add( new Level( "28, 29, 27", objects.LEVEL28() ) );
+        levelArray.add( new Level( "29, 30, 28", objects.LEVEL29() ) );
+        levelArray.add( new Level( "30, 29", objects.LEVEL30() ) );
+        levelArray.add( new Level( "31, 19", objects.LEVEL31() ) );
 
         levels = new ImmutableArray< Level >( levelArray );
     }

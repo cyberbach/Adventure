@@ -77,6 +77,8 @@ public enum ModelAsset {
     HOG( "npc_hog" ),
     BEAR( "npc_bear" ),
     WOLF( "npc_wolf" ),
+    RACOON( "npc_racoon" ),
+    ELEPHANT( "npc_elephant" ),
 
     PLAYER01( "npc_squirrel" ),;
 

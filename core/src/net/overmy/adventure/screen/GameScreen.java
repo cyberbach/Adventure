@@ -123,16 +123,17 @@ public class GameScreen extends Base2DScreen {
         showGameGUI();
 
         if ( DEBUG.GAME_MASTER_MODE.get() ) {
-            String helpString = "ENTER - push position\n1- show bonus pos\n" +
+            /*String helpString = "ENTER - push position\n1- show bonus pos\n" +
                                 "2-show box pos\n3-show NPC move pos\n" +
                                 "\nBackSpace-clear positions\n\n" +
                                 "9 speed up\n" +
-                                "0 speed normal";
-            Label ingameMenuTitle = UIHelper.Label( helpString, FontAsset.IVENTORY_ITEM );
-            ingameMenuTitle.setPosition( 16, Core.HEIGHT_HALF );
+                                "0 speed normal";*/
+            String helpString="GM";
+            Label gameMasterTitle = UIHelper.Label( helpString, FontAsset.DIALOG_BODY );
+            gameMasterTitle.setPosition( 16, Core.HEIGHT_HALF );
 
-            MyRender.getStage().addActor( ingameMenuTitle );
-
+            MyRender.getStage().addActor( gameMasterTitle );
+/*
             Image image1 = IMG.SPEAKER.getImageActor( 64, 64 );
             image1.setPosition( Core.WIDTH * 0.3f, Core.HEIGHT * 0.8f );
             image1.addListener( new ClickListener() {
@@ -154,7 +155,7 @@ public class GameScreen extends Base2DScreen {
             } );
 
             MyRender.getStage().addActor( image1 );
-            MyRender.getStage().addActor( image2 );
+            MyRender.getStage().addActor( image2 );*/
         }
 
         //MusicAsset.WINDFILTER.play( true );
@@ -711,6 +712,14 @@ public class GameScreen extends Base2DScreen {
 
             case Dialog8NigelBirdQ4V1:
                 CollectableProcessor.process(Item.KALASH_WEAPON,pos1);
+                break;
+
+            case Dialog6TopaQ4V1:
+                CollectableProcessor.process(Item.COIN,pos1);
+                CollectableProcessor.process(Item.COIN,pos1);
+                CollectableProcessor.process(Item.COIN,pos1);
+                CollectableProcessor.process(Item.COIN,pos1);
+                CollectableProcessor.process(Item.COIN,pos1);
                 break;
 
             case Dialog7RacoonBabyQ4V1:

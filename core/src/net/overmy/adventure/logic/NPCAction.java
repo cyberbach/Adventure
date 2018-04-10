@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import net.overmy.adventure.resources.TextAsset;
 
+/** Одно действие в скрипте */
 public class NPCAction {
     public ACTION_ID id;
     public float     durationTime;
