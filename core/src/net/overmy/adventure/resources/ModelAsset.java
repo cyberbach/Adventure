@@ -19,85 +19,66 @@ import net.overmy.adventure.DEBUG;
  */
 
 public enum ModelAsset {
-    Level0,
-    Level1,
-    Level2,
-    Level3,
-    Level4,
-    Level5,
-    Level6,
-    Level7,
-    Level8,
-    Level9,
-    Level10,
-    Level11,
-    Level12,
-    Level13,
-    Level14,
-    Level15,
-    Level16,
-    Level17,
-    Level18,
-    Level19,
-    Level20,
-    Level21,
-    Level22,
-    Level23,
-    Level24,
-    Level25,
-    Level26,
-    Level27,
-    Level28,
-    Level29,
-    Level30,
+    Level0, Level1, Level2, Level3, Level4, Level5,
+    Level6, Level7, Level8, Level9, Level10,
+    Level11, Level12, Level13, Level14, Level15,
+    Level16, Level17, Level18, Level19, Level20,
+    Level21, Level22, Level23, Level24, Level25,
+    Level26, Level27, Level28, Level29, Level30,
     Level31,
 
-    GSTAR( "gstar" ),
-    BSTAR( "bstar" ),
-    YSTAR( "ystar" ),
-    BOOK( "book" ),
-    DOOR( "door" ),
-    LOCK( "lock" ),
-    KEY( "key" ),
+    // weapons
 
-    BROOM_WEAPON( "weapon1broom" ),
-    RAKE_WEAPON( "weapon2rake" ),
-    KALASH_WEAPON( "weapon3kalash" ),
-    FENCE_WEAPON( "weapon4fence" ),
-    PILLOW_WEAPON( "pillow" ),
-    GUN_WEAPON( "gun" ),
-    BAT_WEAPON( "bat" ),
+    BROOM_WEAPON( "weapon_broom" ),// 1
+    RAKE_WEAPON( "weapon_rake" ), // 2
+    KALASH_WEAPON( "weapon_kalash" ), // 3
+    FENCE_WEAPON( "weapon_fence" ),// 4
+    PILLOW_WEAPON( "weapon_pillow" ),// 5
+    GUN_WEAPON( "weapon_gun" ),// 6
+    BAT_WEAPON( "weapon_bat" ),// 7
 
-    ROCK_PART( "rockpart" ),
-    ROCK( "rock" ),
-    CHEST( "chest" ),
-    GIFT( "gift" ),
-    CRATE_PART( "cratepart" ),
-    CRATE( "crate" ),
-    COIN( "coin" ),
-    GREEN_BOTTLE( "greenbottle" ),
-    RED_BOTTLE( "redbottle" ),
-    PURPLE_BOTTLE( "purplebottle" ),
-    BLUE_BOTTLE( "bluebottle" ),
+    // items
 
-    LITTLE_BUNNY( "littlebunny" ),
-    SNOWMAN( "snowman" ),
-    BURDOK( "burdok" ),
-    SHARK( "shark" ),
+    COIN( "item_coin" ),
+    CHEST( "item_chest" ),
+    GIFT( "item_gift" ),
+    CRATE( "item_crate" ),
+    CRATE_PART( "item_cratepart" ),
+    GSTAR( "item_gstar" ),
+    BSTAR( "item_bstar" ),
+    YSTAR( "item_ystar" ),
+    ROCK( "item_rock" ),
+    ROCK_PART( "item_rockpart" ),
 
-    BIRD1( "bird1" ),
-    BIRD2ANGRY( "bird2" ),
-    BUTTERFLY( "butterfly" ),
-    SHEEP( "sheep" ),
-    CRAB( "crab" ),
-    STAR( "star" ),
-    FOX( "fox" ),
-    HOG( "hog" ),
-    BEAR( "bear" ),
-    WOLF( "wolf" ),
+    BOOK( "item_book" ),
+    KEY( "item_key" ),
+    LOCK( "item_lock" ),
+    DOOR( "item_door" ),
 
-    PLAYER01( "squirrel" ),
-    ;
+    GREEN_BOTTLE( "item_greenbottle" ),
+    RED_BOTTLE( "item_redbottle" ),
+    PURPLE_BOTTLE( "item_purplebottle" ),
+    BLUE_BOTTLE( "item_bluebottle" ),
+
+    // npc / enemy
+
+    LITTLE_BUNNY( "npc_littlebunny" ),
+    SNOWMAN( "npc_snowman" ),
+    BURDOK( "npc_burdok" ),
+    SHARK( "npc_shark" ),
+
+    BIRD1( "npc_bird1" ),
+    BIRD2ANGRY( "npc_bird2" ),
+    BUTTERFLY( "npc_butterfly" ),
+    SHEEP( "npc_sheep" ),
+    CRAB( "npc_crab" ),
+    STAR( "npc_star" ),
+    FOX( "npc_fox" ),
+    HOG( "npc_hog" ),
+    BEAR( "npc_bear" ),
+    WOLF( "npc_wolf" ),
+
+    PLAYER01( "npc_squirrel" ),;
 
     private StringBuilder stringBuilder = new StringBuilder();
 
@@ -119,8 +100,7 @@ public enum ModelAsset {
 
     ModelAsset () {
         String levelName = this.name().replace( "Level", "" );
-        //String DEFAULT_PATH = "models/world/";
-        String DEFAULT_PATH = "models/";
+        String DEFAULT_PATH = "models/world/";
         String DEFAULT_EXT = ".g3db";
         name = DEFAULT_PATH + levelName + DEFAULT_EXT;
     }

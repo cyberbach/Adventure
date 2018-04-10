@@ -12,8 +12,6 @@ import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.TextAsset;
 
 public enum Item {
-    //DIALOG(),
-
     YELLOW_STAR,
     BLUE_STAR,
     GREEN_STAR,
@@ -47,12 +45,6 @@ public enum Item {
     GUN_WEAPON_UPGRADED,
     BAT_WEAPON_UPGRADED,
 
-    /*GAME_STUFF1( "Первый предмет", "Подробное описание этого первого предмета", 0 ),
-    GAME_STUFF2( "Какой-то второй предмет", "Описание второго предмета", 1 ),
-    GAME_STUFF3( "Третий", "Очень длинное описание третьего предмета", 2 ),
-    GAME_STUFF4( "Четвертый предмет", "Описание четвертого", 3 ),
-    GAME_STUFF5( "предмет 5", "Описание пятое", 4 ),
-    GAME_STUFF6( "6 предмет", "Описание шестое", 5 ),*/
     TRIGGER1,// не забудь взять оружие
     TRIGGER2;
 
@@ -197,7 +189,7 @@ public enum Item {
         Item.BROOM_WEAPON_UPGRADED
                 .itIsWeapon()
                 .setIMG( IMG.WEAPON1 )
-                .setName( TextAsset.BROOM_WEAPON_UPGRADED  )
+                .setName( TextAsset.BROOM_WEAPON_UPGRADED )
                 .setAbout( TextAsset.BROOM_WEAPON_UPGRADED_ABOUT )
                 .setModel( ModelAsset.BROOM_WEAPON );
 
@@ -245,9 +237,8 @@ public enum Item {
     }
 
 
-    private Item setModel ( ModelAsset modelAsset ) {
+    private void setModel ( ModelAsset modelAsset ) {
         this.modelAsset = modelAsset;
-        return this;
     }
 
 

@@ -8,6 +8,7 @@ package net.overmy.adventure;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g3d.Attribute;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -307,11 +308,12 @@ public final class AshleySubs {
                 .defaultMotionState()
                 .setPosition( position )
                 .setMass( 1.0f )
-                .hullShape()
+                .boxShape()
                 .setStartImpulse( new Vector3( 0,8,0 ) )
                 .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                 .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
-                .setCallbackFilter( BulletWorld.PLAYER_FLAG );
+                .setCallbackFilter( BulletWorld.PLAYER_FLAG )
+                .disableDeactivation();
 
         Entity entity = new Entity();
         if ( modelInstance.animations.size > 0 ) {
@@ -527,10 +529,13 @@ public final class AshleySubs {
     public static Entity createWeapon ( Vector3 position,
                                         Item item,
                                         LevelObject object ) {
+        Gdx.app.debug( "model="+item.getModelAsset(),"item="+item );
+
         ModelInstance modelInstance = item.getModelAsset().get();
+        ModelInstance physicsInstance = item.getModelAsset().getSimple();
 
         PhysicalBuilder physicalBuilderWEAPON = new PhysicalBuilder()
-                .setModelInstance( modelInstance )
+                .setModelInstance( physicsInstance )
                 .defaultMotionState()
                 .setPosition( position )
                 .setMass( 3.0f )
@@ -641,8 +646,6 @@ public final class AshleySubs {
 
     public static Entity createHandWeapon ( ModelInstance instance, Node arm,
                                             Matrix4 bodyTransform ) {
-        // attach only model without physics
-        instance.nodes.get( 0 ).attachTo( arm );
 
         PhysicalBuilder physicalBuilder = new PhysicalBuilder()
                 .setModelInstance( instance )

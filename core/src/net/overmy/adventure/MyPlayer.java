@@ -585,7 +585,12 @@ public final class MyPlayer {
 
             // EQUIP weapon (attach in AshleySubs, detach here)
             weaponInstance = item.item.getModelAsset().get();
-            weaponEntity = AshleySubs.createHandWeapon( weaponInstance,
+            ModelInstance physics = item.item.getModelAsset().getSimple();
+
+            // attach only model without physics
+            weaponInstance.nodes.get( 0 ).attachTo( rightArmNode );
+
+            weaponEntity = AshleySubs.createHandWeapon( physics,
                                                         rightArmNode,
                                                         bodyTransform );
 
