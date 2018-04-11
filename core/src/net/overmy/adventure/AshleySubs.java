@@ -668,13 +668,14 @@ public final class AshleySubs {
 
     public static Entity createDoor ( Vector3 position, Item item, Vector2 doorAngles ) {
         ModelInstance instance = ModelAsset.DOOR.get();
+        ModelInstance physics = ModelAsset.DOOR.getSimple();
 
         PhysicalBuilder physicalBuilder = new PhysicalBuilder()
-                .setModelInstance( instance )
+                .setModelInstance( physics )
                 .setPosition( position )
                 .defaultMotionState()
                 .zeroMass()
-                .boxShape()
+                .hullShape()
                 .setCollisionFlag( CollisionFlags.CF_KINEMATIC_OBJECT )
                 .setCallbackFlag( BulletWorld.DOOR_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG );
@@ -928,7 +929,7 @@ public final class AshleySubs {
     }
 
 
-    private static void changeMaterialColor ( ModelInstance modelInstance, GameColor gameColor ) {
+    public static void changeMaterialColor ( ModelInstance modelInstance, GameColor gameColor ) {
         Attribute diffuseColor = ColorAttribute.createDiffuse( gameColor.get() );
         modelInstance.materials.first().clear();
         modelInstance.materials.first().set( diffuseColor );

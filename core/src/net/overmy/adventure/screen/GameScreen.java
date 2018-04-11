@@ -51,6 +51,7 @@ import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.IMG;
 import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.MusicAsset;
+import net.overmy.adventure.resources.Settings;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextAsset;
 import net.overmy.adventure.resources.TextInteractAsset;
@@ -159,6 +160,27 @@ public class GameScreen extends Base2DScreen {
         }
 
         //MusicAsset.WINDFILTER.play( true );
+
+
+        if ( Settings.KEY1.getBoolean() ) {
+            if(!MyPlayer.testBag( Item.KEY1 )) MyPlayer.addToBag( Item.KEY1 );
+        }
+        if ( Settings.KEY2.getBoolean() ) {
+            if(!MyPlayer.testBag( Item.KEY2 )) MyPlayer.addToBag( Item.KEY2 );
+        }
+        if ( Settings.KEY3.getBoolean() ) {
+            if(!MyPlayer.testBag( Item.KEY3 )) MyPlayer.addToBag( Item.KEY3 );
+        }
+        if ( Settings.KEY4.getBoolean() ) {
+            if(!MyPlayer.testBag( Item.KEY4 )) MyPlayer.addToBag( Item.KEY4 );
+        }
+        if ( Settings.KEY5.getBoolean() ) {
+            if(!MyPlayer.testBag( Item.KEY5 )) MyPlayer.addToBag( Item.KEY5 );
+        }
+        if ( Settings.KEY6.getBoolean() ) {
+            if(!MyPlayer.testBag( Item.KEY6 )) MyPlayer.addToBag( Item.KEY6 );
+        }
+
     }
 
 
@@ -712,6 +734,14 @@ public class GameScreen extends Base2DScreen {
 
             case Dialog8NigelBirdQ4V1:
                 CollectableProcessor.process(Item.KALASH_WEAPON,pos1);
+                break;
+
+            case Dialog5KaksonikV1:
+                if(MyPlayer.testBagCount( Item.COIN, 5 )){
+                    SoundAsset.Collect7.play();
+                    MyPlayer.removeItemInBag( Item.COIN, 5 );
+                    MyPlayer.addToBag( Item.GREEN_BOTTLE );
+                }
                 break;
 
             case Dialog6TopaQ4V1:

@@ -3,12 +3,17 @@ package net.overmy.adventure.logic;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.AshleyWorld;
 import net.overmy.adventure.DEBUG;
+import net.overmy.adventure.ashley.components.ModelComponent;
+import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
 
 /**
@@ -29,6 +34,7 @@ public class LevelObject {
     private   float                       heightOfLadder    = 0.0f;
     private   float                       rotation          = 0.0f;
     private   float                       size              = 1.0f;
+    private   GameColor                   tint              = null;
 
     private Vector2 doorAngles = null;
 
@@ -179,12 +185,23 @@ public class LevelObject {
                                                        textInteract, rotation );
                 break;
         }
+
+        if(tint!=null){
+            ModelInstance instance = entity.getComponent( ModelComponent.class ).modelInstance;
+            AshleySubs.changeMaterialColor(instance, tint);
+        }
     }
 
 
     public LevelObject setDoorAngles ( float fromAngle, float toAngle ) {
         doorAngles=new Vector2(  );
         doorAngles.set( fromAngle,toAngle );
+        return this;
+    }
+
+
+    public LevelObject setColorTint ( GameColor colorTint ) {
+        this.tint = colorTint;
         return this;
     }
 

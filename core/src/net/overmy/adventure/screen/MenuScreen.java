@@ -28,6 +28,7 @@ import net.overmy.adventure.MyGdxGame;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.MyRender;
 import net.overmy.adventure.logic.DynamicLevels;
+import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
@@ -58,7 +59,6 @@ public class MenuScreen extends Base2DScreen {
     public MenuScreen ( MyGdxGame game ) {
         super( game );
     }
-
 
 
     private AnimationController animationController = null;
@@ -92,6 +92,7 @@ public class MenuScreen extends Base2DScreen {
         animationController.animate( "DANCE", -1, 0.3f, null, 0f );
     }
 
+
     @Override
     public void draw ( float delta ) {
         spriteBatch.setColor( 1, 1, 1, 1 );
@@ -115,15 +116,15 @@ public class MenuScreen extends Base2DScreen {
     private void showIntroGUI () {
         guiType = GUI_TYPE.MAIN_MENU;
         introGroup.clear(); // disable clearGroup Runnable
-        
+
         Label title = UIHelper.Label( TextAsset.Title.get(), FontAsset.MENU_TITLE );
         title.setAlignment( Align.center );
         final Group titleGroup = UIHelper.convertActorToGroup( title );
-        titleGroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT*0.8f );
+        titleGroup.setPosition( Core.WIDTH_HALF, Core.HEIGHT * 0.8f );
         titleGroup.addAction( Actions.forever(
                 Actions.sequence(
                         Actions.scaleTo( 1.2f, 1.2f, 1, Interpolation.exp5Out ),
-                        Actions.scaleTo( 1.0f,1.0f,1, Interpolation.exp5In )
+                        Actions.scaleTo( 1.0f, 1.0f, 1, Interpolation.exp5In )
                                 )
                                              ) );
         introGroup.addActor( titleGroup );
@@ -168,9 +169,17 @@ public class MenuScreen extends Base2DScreen {
                 AshleyWorld.dispose();
                 AshleyWorld.init();
 
+                Settings.KEY1.setBoolean( false );
+                Settings.KEY2.setBoolean( false );
+                Settings.KEY3.setBoolean( false );
+                Settings.KEY4.setBoolean( false );
+                Settings.KEY5.setBoolean( false );
+                Settings.KEY6.setBoolean( false );
+
                 MyPlayer.clearAll();
 
-                UIHelper.rollOut( titleGroup,Core.WIDTH_HALF, Core.HEIGHT*0.8f,Core.WIDTH_HALF, Core.HEIGHT*1.5f );
+                UIHelper.rollOut( titleGroup, Core.WIDTH_HALF, Core.HEIGHT * 0.8f, Core.WIDTH_HALF,
+                                  Core.HEIGHT * 1.5f );
                 transitionTo( MyGdxGame.SCREEN_TYPE.LOADING_GAME );
             }
         } );
@@ -188,7 +197,8 @@ public class MenuScreen extends Base2DScreen {
 
                     transitionTo( MyGdxGame.SCREEN_TYPE.LOADING_GAME );
 
-                    UIHelper.rollOut( titleGroup,Core.WIDTH_HALF, Core.HEIGHT*0.8f,Core.WIDTH_HALF, Core.HEIGHT*1.5f );
+                    UIHelper.rollOut( titleGroup, Core.WIDTH_HALF, Core.HEIGHT * 0.8f,
+                                      Core.WIDTH_HALF, Core.HEIGHT * 1.5f );
                 }
             } );
         }
@@ -202,7 +212,8 @@ public class MenuScreen extends Base2DScreen {
                 UIHelper.rollOut( startLabel, labelPosX, label1PosY, leftPosX, label1PosY );
                 UIHelper.rollOut( resumeLabel, labelPosX, label3PosY, leftPosX, label3PosY );
                 titleGroup.clearActions();
-                UIHelper.rollOut( titleGroup,Core.WIDTH_HALF, Core.HEIGHT*0.8f,Core.WIDTH_HALF, Core.HEIGHT*1.5f );
+                UIHelper.rollOut( titleGroup, Core.WIDTH_HALF, Core.HEIGHT * 0.8f, Core.WIDTH_HALF,
+                                  Core.HEIGHT * 1.5f );
                 showSettingsGUI();
             }
         } );
@@ -225,7 +236,7 @@ public class MenuScreen extends Base2DScreen {
 
         optionsGroup.addActor( UIHelper.MenuLabel( TextAsset.SOUND.get(), Core.HEIGHT * 0.6f ) );
         if ( soundBar == null ) {
-            soundBar = UIHelper.Bar(GameColor.SQUIREL.get());
+            soundBar = UIHelper.Bar( GameColor.SQUIREL.get() );
             soundBar.setWidth( Core.WIDTH * 0.55f );
             soundBar.invalidate();
             soundBar.setValue( Settings.SOUND.getInteger() );
@@ -235,7 +246,7 @@ public class MenuScreen extends Base2DScreen {
 
         optionsGroup.addActor( UIHelper.MenuLabel( TextAsset.MUSIC.get(), Core.HEIGHT * 0.45f ) );
         if ( musicBar == null ) {
-            musicBar = UIHelper.Bar(GameColor.SQUIREL.get());
+            musicBar = UIHelper.Bar( GameColor.SQUIREL.get() );
             musicBar.setWidth( Core.WIDTH * 0.55f );
             musicBar.invalidate();
             musicBar.setValue( Settings.MUSIC.getInteger() );
@@ -245,7 +256,7 @@ public class MenuScreen extends Base2DScreen {
 
         optionsGroup.addActor( UIHelper.MenuLabel( TextAsset.HORIZ.get(), Core.HEIGHT * 0.3f ) );
         if ( horizontalSensBar == null ) {
-            horizontalSensBar = UIHelper.Bar(GameColor.FOX.get());
+            horizontalSensBar = UIHelper.Bar( GameColor.FOX.get() );
             horizontalSensBar.setWidth( Core.WIDTH * 0.55f );
             horizontalSensBar.invalidate();
             horizontalSensBar.setValue( Settings.HORIZ_SENS.getInteger() );
@@ -255,7 +266,7 @@ public class MenuScreen extends Base2DScreen {
 
         optionsGroup.addActor( UIHelper.MenuLabel( TextAsset.VERT.get(), Core.HEIGHT * 0.15f ) );
         if ( verticalSensBar == null ) {
-            verticalSensBar = UIHelper.Bar(GameColor.FOX.get());
+            verticalSensBar = UIHelper.Bar( GameColor.FOX.get() );
             verticalSensBar.setWidth( Core.WIDTH * 0.55f );
             verticalSensBar.invalidate();
             verticalSensBar.setValue( Settings.VERT_SENS.getInteger() );
@@ -289,9 +300,8 @@ public class MenuScreen extends Base2DScreen {
         super.dispose();
 
         heroInstance = null;
-        bg           = null;
-        spriteBatch  = null;
-
+        bg = null;
+        spriteBatch = null;
 
         introGroup = null;
         optionsGroup = null;

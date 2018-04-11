@@ -123,6 +123,27 @@ public final class MyPlayer {
 
         if ( !alreadyPresent ) {
             bag.add( new ItemInBagg( item ) );
+
+            switch ( item ) {
+                case KEY1:
+                    Settings.KEY1.setBoolean( true );
+                    break;
+                case KEY2:
+                    Settings.KEY2.setBoolean( true );
+                    break;
+                case KEY3:
+                    Settings.KEY3.setBoolean( true );
+                    break;
+                case KEY4:
+                    Settings.KEY4.setBoolean( true );
+                    break;
+                case KEY5:
+                    Settings.KEY5.setBoolean( true );
+                    break;
+                case KEY6:
+                    Settings.KEY6.setBoolean( true );
+                    break;
+            }
         }
 
         AshleySubs.addItemToBad( item );
@@ -185,7 +206,7 @@ public final class MyPlayer {
             new Vector3( -136.69661f, 2.7439363f, -362.21973f ),
             new Vector3( -245.94257f, 1.0721123f, -401.8604f ),
             new Vector3( -45.45584f, 3.2740111f, -442.94907f ),
-            new Vector3( -115.261314f, 2.7465405f, -436.0399f ),
+            new Vector3( -122.323654f, 1.9100869f, -439.41284f ),
             new Vector3( -191.47537f, 6.3835006f, -473.49835f ), // 08
             new Vector3( -101.14407f, 3.693308f, -473.77426f ),
             new Vector3( -20.104654f, 8.933582f, -457.48343f ),//10
@@ -277,10 +298,10 @@ public final class MyPlayer {
 
         v2Position.set( notFilteredPos.x, notFilteredPos.z );
 
-        environmentTimeFX-=deltaTime;
-        if(environmentTimeFX<0){
-            environmentTimeFX=0.4f;
-            AshleySubs.createEnvironmentFX(notFilteredPos,8, GameColor.BLUE);
+        environmentTimeFX -= deltaTime;
+        if ( environmentTimeFX < 0 ) {
+            environmentTimeFX = 0.4f;
+            AshleySubs.createEnvironmentFX( notFilteredPos, 8, GameColor.BLUE );
         }
     }
 
@@ -445,7 +466,9 @@ public final class MyPlayer {
         }
     }
 
+
     public static boolean immortal = false;
+
 
     private static void dust ( float deltaTime, boolean speedUpFX, boolean jumpUpFX ) {
         dustTimer -= deltaTime;
@@ -646,11 +669,11 @@ public final class MyPlayer {
         } else {
             item.count -= 1;
         }
-        SoundAsset.OPENBOTTLE.play();
 
         // USE item, not weapon
         switch ( item.item ) {
             case GREEN_BOTTLE:
+                SoundAsset.OPENBOTTLE.play();
                 speedUpTime = 15.0f;
                 if ( speedUpTimerLabel != null ) {
                     speedUpTimerLabel.clear();
@@ -660,6 +683,7 @@ public final class MyPlayer {
                 break;
 
             case BLUE_BOTTLE:
+                SoundAsset.OPENBOTTLE.play();
                 immortalTime = 30.0f;
                 if ( immortalTimerLabel != null ) {
                     immortalTimerLabel.clear();
@@ -669,6 +693,7 @@ public final class MyPlayer {
                 break;
 
             case PURPLE_BOTTLE:
+                SoundAsset.OPENBOTTLE.play();
                 jumpUpTime = 15.0f;
                 if ( jumpUpTimerLabel != null ) {
                     jumpUpTimerLabel.clear();
@@ -678,6 +703,7 @@ public final class MyPlayer {
                 break;
 
             case RED_BOTTLE:
+                SoundAsset.OPENBOTTLE.play();
                 MyMapper.LIFE.get( playerEntity ).decLife( 0 );
                 MyMapper.LIFE.get( playerEntity ).life = 100;
                 AshleySubs.createRaiseRedFX( notFilteredPos );
@@ -723,9 +749,34 @@ public final class MyPlayer {
 
 
     public static boolean testBag ( Item testItem ) {
-        for(ItemInBagg itemInBagg : bag){
-            if(itemInBagg.item.equals( testItem ))return true;
+        for ( ItemInBagg itemInBagg : bag ) {
+            if ( itemInBagg.item.equals( testItem ) ) {
+                return true;
+            }
         }
         return false;
+    }
+
+
+    public static boolean testBagCount ( Item testItem, int count ) {
+        for ( ItemInBagg itemInBagg : bag ) {
+            if ( itemInBagg.item.equals( testItem ) && itemInBagg.count >= count ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public static void removeItemInBag ( Item testItem, int count ) {
+        for ( ItemInBagg itemInBagg : bag ) {
+            if ( itemInBagg.item.equals( testItem ) ) {
+                itemInBagg.count -= count;
+                if ( itemInBagg.count < 1 ) {
+                    bag.remove( itemInBagg );
+                }
+                return;
+            }
+        }
     }
 }

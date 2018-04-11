@@ -112,7 +112,7 @@ public class NPCSystem extends IteratingSystem {
         int forceAnimate = -1;
 
         if ( needToSkip ) {
-            direction.set( 0, 0 );
+            keepCalm ();
         } else {
             switch ( npcAction.id ) {
                 case WAIT:

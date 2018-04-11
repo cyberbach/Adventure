@@ -102,7 +102,7 @@ public enum ModelAsset {
 
     ModelAsset () {
         String levelName = this.name().replace( "Level", "" );
-        String DEFAULT_PATH = "models/world/";
+        String DEFAULT_PATH = "models/world/";//
         String DEFAULT_EXT = ".g3db";
         name = DEFAULT_PATH + levelName + DEFAULT_EXT;
     }

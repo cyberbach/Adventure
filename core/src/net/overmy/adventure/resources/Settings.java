@@ -30,6 +30,12 @@ public enum Settings {
     HORIZ_SENS( Integer.TYPE ),
     PLAYER_MODEL( Integer.TYPE ),
     START_LOCATION( Integer.TYPE ),
+    KEY1( Boolean.TYPE ),
+    KEY2( Boolean.TYPE ),
+    KEY3( Boolean.TYPE ),
+    KEY4( Boolean.TYPE ),
+    KEY5( Boolean.TYPE ),
+    KEY6( Boolean.TYPE ),
     //FinishedLevels( Long.TYPE ),
     //Inv( String.class ),
     ;
@@ -75,6 +81,13 @@ public enum Settings {
             Settings.HORIZ_SENS.setInteger( 60 );
             Settings.PLAYER_MODEL.setInteger( 0 );
             Settings.START_LOCATION.setInteger( 4 );
+
+            Settings.KEY1.setBoolean( false );
+            Settings.KEY2.setBoolean( false );
+            Settings.KEY3.setBoolean( false );
+            Settings.KEY4.setBoolean( false );
+            Settings.KEY5.setBoolean( false );
+            Settings.KEY6.setBoolean( false );
         }
 
         if ( DEBUG.SETTINGS.get() ) {
