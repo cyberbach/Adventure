@@ -7,13 +7,13 @@ package net.overmy.adventure;
 
 public enum DEBUG {
     ENABLE_ENGLISH_TEXT( false ),
-    SETTINGS( true ),
+    SETTINGS( false ),
     STAGE( false ),
     DECAL_ENTITIES( false ),
     SHOW_MODEL_INFO( false ),
     NPC_ACTIONS( false ),
 
-    FPS( false ),
+    FPS( true ),
     SCREEN_FPS( false ), // должен быть включен FPS
 
     ON_WINDOWS( true ),

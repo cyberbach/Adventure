@@ -43,7 +43,7 @@ public class MyGdxGame implements ApplicationListener {
         Gdx.app.setLogLevel( Application.LOG_DEBUG );
         Settings.load();
         Assets.init();
-        Assets.setManagerLogLevel( Logger.DEBUG );
+        Assets.setManagerLogLevel( Logger.NONE );
 
         BulletWorld.init();
         MyRender.init();// Здесь создание всех камер (2д и 3д) и всех батчей (2д, 3д и Декали)

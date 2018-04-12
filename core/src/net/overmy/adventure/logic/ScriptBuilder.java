@@ -482,13 +482,13 @@ public final class ScriptBuilder {
 
     public static ImmutableArray< NPCAction > BUTTERFLY1_ON_LEVEL12 () {
         Array< NPCAction > queue = new Array< NPCAction >();
-        queue.add( move( -66.312195f, -610.7529f ) );
-        queue.add( wait( 1.3f ) );
-        queue.add( move( -70.295906f, -603.4875f ) );
-        queue.add( wait( 0.3f ) );
-        queue.add( move( -65.03553f, -599.2112f ) );
-        queue.add( wait( 0.8f ) );
-        queue.add( move( -76.46246f, -599.6772f ) );
+        queue.add( move(-81.55028f, -597.2928f) );
+        queue.add( wait( 0.5f ) );
+        queue.add( move(-89.02247f, -593.2276f) );
+        queue.add( wait( 1.5f ) );
+        queue.add( move(-93.18661f, -596.1083f) );
+        queue.add( wait( 0.5f ) );
+        queue.add( move(-84.850136f, -591.6094f) );
         queue.add( wait( 1.5f ) );
         return new ImmutableArray< NPCAction >( queue );
     }

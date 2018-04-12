@@ -442,17 +442,17 @@ class ObjectBuilder {
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.DOOR )
-                             .setDoorAngles( 251.0f, 350.0f )
+                             .setDoorAngles( 270.0f, 360.0f )
                              .setDynamicModelAsset( ModelAsset.DOOR )
                              .setItem( Item.KEY3 )
-                             .setPosition( new Vector3( -100.048386f, 3.0279393f, -554.2773f ) ) );
+                             .setPosition( new Vector3( -100.095f, 2.622f, -554.844f ) ) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.DOOR )
-                             .setDoorAngles( 75.0f+360.0f, 305.0f )
+                             .setDoorAngles( 90.0f, 0.0f )
                              .setDynamicModelAsset( ModelAsset.DOOR )
                              .setItem( Item.KEY3 )
-                             .setPosition( new Vector3( -114.85803f, 3.9332876f, -563.1705f ) ) );
+                             .setPosition( new Vector3( -107.958f, 2.622f, -554.844f ) ) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.DOOR_SWITCH )
@@ -505,7 +505,7 @@ class ObjectBuilder {
                              .setType( OBJECT_TYPE.NPC )
                              .setScript( ScriptBuilder.BUTTERFLY1_ON_LEVEL12() )
                              .setDynamicModelAsset( ModelAsset.BUTTERFLY )
-                             .setPosition( new Vector3( -66.312195f, 4.388742f, -610.7529f ) ) );
+                             .setPosition( new Vector3( -81.55028f, 3.8594851f, -597.2928f ) ) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
@@ -743,7 +743,7 @@ class ObjectBuilder {
                              .setDoorAngles(96.0f,170.0f)
                              .setDynamicModelAsset( ModelAsset.DOOR )
                              .setItem( Item.KEY5 )
-                             .setPosition( new Vector3( 75.35542f, 3.48f, -738.8f ) ) );
+                             .setPosition( new Vector3( 75.701f, 3.583f, -738.804f ) ) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.DOOR )
@@ -831,7 +831,7 @@ class ObjectBuilder {
         objects.add( hoverCoin( 45.126163f, 3.6815305f, -465.59164f) );
 
         objects.add( hoverCoin( 20.961477f, 7.8018475f, -462.9154f) );
-        objects.add( hoverBlueBottle( 22.374445f, 7.2441154f, -460.8769f) );
+        objects.add( hoverPurpleBottle( 22.374445f, 7.2441154f, -460.8769f) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
@@ -847,6 +847,12 @@ class ObjectBuilder {
                              .setItem( Item.KEY4 )
                              .setRotation( 98.0f )
                              .setPosition( new Vector3( 0.46133935f, 3.6817818f, -485.6289f ) ) );
+
+        objects.add( hoverGreenBottle( 24.077932f, 16.83891f, -499.51627f) );
+        objects.add( hoverBlueBottle( 16.463919f, 15.461495f, -495.5802f) );
+        objects.add( hoverCoin( 8.41675f, 16.335941f, -494.3725f) );
+        objects.add( hoverCoin( 6.5798264f, 15.012314f, -494.01224f) );
+        objects.add( hoverCoin( 3.5310376f, 16.335941f, -493.43625f) );
 
         return objects;
     }
