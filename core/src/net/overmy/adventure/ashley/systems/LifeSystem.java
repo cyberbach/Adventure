@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Matrix4;
@@ -16,11 +15,10 @@ import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.MyRender;
 import net.overmy.adventure.ashley.MyMapper;
 import net.overmy.adventure.ashley.components.LifeComponent;
+import net.overmy.adventure.ashley.components.ModelComponent;
 import net.overmy.adventure.ashley.components.RemoveByTimeComponent;
 import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.logic.Item;
-import net.overmy.adventure.resources.GameColor;
-import net.overmy.adventure.utils.GFXHelper;
 
 
 /**
@@ -33,12 +31,16 @@ public class LifeSystem extends IteratingSystem {
     private final DecalBatch        decalBatch;
     private final PerspectiveCamera camera;
 
-    private final Vector3 position = new Vector3();
+    private final Vector3 position   = new Vector3();
+    private       Vector3 myPosition = new Vector3();
+
+    private int     counter  = 0;
+    private boolean showMyHP = false;
 
 
     @SuppressWarnings( "unchecked" )
     public LifeSystem () {
-        super( Family.all( LifeComponent.class ).get() );
+        super( Family.all( LifeComponent.class, ModelComponent.class ).get() );
 
         this.decalBatch = MyRender.getDecalBatch();
         this.camera = MyCamera.get();
@@ -46,26 +48,43 @@ public class LifeSystem extends IteratingSystem {
 
 
     @Override
+    public void update ( float deltaTime ) {
+        counter = 0;
+        super.update( deltaTime );
+        showMyHP = counter > 0;
+    }
+
+
+    @Override
     protected void processEntity ( Entity entity, float delta ) {
-        LifeComponent lifeComponent = MyMapper.LIFE.get( entity );
-        float hideTime = lifeComponent.time;
-        if ( hideTime < 0 ) {
+        boolean myEntity = entity.equals( MyPlayer.getEntity() );
+        if ( myEntity && !showMyHP ) {
             return;
         }
 
-        lifeComponent.time = hideTime - delta;
-
         MyMapper.MODEL.get( entity ).modelInstance.transform.getTranslation( position );
+        myPosition.set( MyPlayer.getNotFilteredPos() );
+        myPosition.sub( position );
+
+        boolean showHP = myPosition.len() < 12.0f;
+
+        LifeComponent lifeComponent = MyMapper.LIFE.get( entity );
+
         position.add( 0, lifeComponent.heightOffset, 0 );
 
         Decal decal = lifeComponent.decal;
 
         if ( lifeComponent.life > 0.0f ) {
-            float width = lifeComponent.width * lifeComponent.getLifePercent();
-            decal.setWidth( width );
-            decal.setPosition( position );
-            decal.lookAt( camera.position, camera.up );
-            decalBatch.add( decal );
+            if ( showHP ) {
+                float width = lifeComponent.width * lifeComponent.getLifePercent();
+                decal.setWidth( width );
+                decal.setPosition( position );
+                decal.lookAt( camera.position, camera.up );
+                decalBatch.add( decal );
+                if ( !myEntity ) {
+                    counter++;
+                }
+            }
         } else {
             Matrix4 transform = MyMapper.PHYSICAL.get( entity ).body.getWorldTransform();
             transform.getTranslation( position );

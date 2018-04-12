@@ -779,4 +779,9 @@ public final class MyPlayer {
             }
         }
     }
+
+
+    public static Entity getEntity () {
+        return playerEntity;
+    }
 }

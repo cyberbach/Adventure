@@ -423,7 +423,7 @@ class ObjectBuilder {
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.BOSS_STONE_ON_LEVEL10() )
-                             .setDynamicModelAsset( ModelAsset.CRAB )
+                             .setDynamicModelAsset( ModelAsset.ROCKBOSS )
                              .setItem( Item.KEY4 )
                              .setPosition( new Vector3( -13.899722f, 3.4850523f, -483.95493f ) ) );
 
@@ -685,6 +685,34 @@ class ObjectBuilder {
         Array< LevelObject > objects = new Array< LevelObject >();
 
         objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR )
+                             .setDoorAngles(2.0f,104.0f)
+                             .setDynamicModelAsset( ModelAsset.DOOR )
+                             .setItem( Item.KEY6 )
+                             .setPosition( new Vector3( -125.976f, 0.827f, -846.7f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR )
+                             .setDoorAngles(174.0f,68.0f)
+                             .setDynamicModelAsset( ModelAsset.DOOR )
+                             .setItem( Item.KEY6 )
+                             .setPosition( new Vector3( -126.168f, 0.827f, -838.903f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR_SWITCH )
+                             .setDynamicModelAsset( ModelAsset.LOCK )
+                             .setItem( Item.KEY6 )
+                             .setRotation( 84.0f )
+                             .setPosition( new Vector3( -120.39172f, 1.9265f, -837.22784f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR_SWITCH )
+                             .setDynamicModelAsset( ModelAsset.LOCK )
+                             .setItem( Item.KEY6 )
+                             .setRotation( 267.0f )
+                             .setPosition( new Vector3(  -133.99472f, 2.0027666f, -850.478f ) ) );
+
+        objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.SNOWMAN_ON_LEVEL19() )
                              .setDynamicModelAsset( ModelAsset.SNOWMAN )
@@ -729,6 +757,7 @@ class ObjectBuilder {
                              .setScript( ScriptBuilder.BEAR_BOSS_ON_LEVEL21() )
                              .setDynamicModelAsset( ModelAsset.BEAR )
                              .setItem( Item.KEY5 )
+                             .setColorTint( GameColor.WHITE )
                              .setPosition( new Vector3( 125.90772f, 5.6211596f, -870.429f ) ) );
 
         return objects;
@@ -889,7 +918,8 @@ class ObjectBuilder {
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.BAMSI_BOSS_ON_LEVEL26() )
-                             .setDynamicModelAsset( ModelAsset.CRAB )
+                             .setDynamicModelAsset( ModelAsset.BEAR )
+                             .setColorTint( GameColor.SQUIREL )
                              .setItem( Item.KEY6 )
                              .setPosition( new Vector3( 106.69007f, 3.6817815f, -466.44888f ) ) );
 
@@ -1002,6 +1032,13 @@ class ObjectBuilder {
 
     public Array< LevelObject > LEVEL31 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.NPC )
+                             .setScript( ScriptBuilder.MIKI_ON_LEVEL31() )
+                             .setDynamicModelAsset( ModelAsset.SQUIRREL )
+                             .setColorTint( GameColor.GREEN )
+                             .setPosition( new Vector3( -171.53989f, 3.8552082f, -875.62476f ) ) );
 
         return objects;
     }

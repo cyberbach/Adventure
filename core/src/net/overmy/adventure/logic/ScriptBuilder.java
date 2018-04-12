@@ -871,6 +871,21 @@ public final class ScriptBuilder {
         return new ImmutableArray< NPCAction >( queue );
     }
 
+    public static ImmutableArray< NPCAction > MIKI_ON_LEVEL31 () {
+        Array< NPCAction > queue = new Array< NPCAction >();
+        queue.add( move(-171.53989f, -875.62476f) );
+        queue.add( wait( 1.0f ) );
+        queue.add( move(-172.55685f, -870.7101f) );
+        queue.add( wait( 4.0f ) );
+        queue.add( move(-176.55176f, -867.1971f) );
+        queue.add( wait( 3.0f ) );
+        queue.add( move(-180.68776f, -871.80096f) );
+        queue.add( wait( 4.0f ) );
+        queue.add( move(-172.4051f, -869.19025f) );
+        queue.add( wait( 2.0f ) );
+        return new ImmutableArray< NPCAction >( queue );
+    }
+
 
     private static NPCAction wait ( float time ) {
         return new NPCAction( ACTION_ID.WAIT, time );

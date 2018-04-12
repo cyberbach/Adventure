@@ -1,5 +1,6 @@
 package net.overmy.adventure.ashley.components;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Vector2;
@@ -13,7 +14,7 @@ import net.overmy.adventure.utils.GFXHelper;
  * 20.12.2016
  */
 
-public class LifeComponent extends TimeComponent {
+public class LifeComponent implements Component {
 
     public final float heightOffset;
     public final float width;
@@ -42,7 +43,6 @@ public class LifeComponent extends TimeComponent {
         if ( life < 1.0f ) {
             life = 0.0f;
         }
-        time += 1.8f;
     }
 
 

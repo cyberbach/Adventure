@@ -79,8 +79,11 @@ public enum ModelAsset {
     WOLF( "npc_wolf" ),
     RACOON( "npc_racoon" ),
     ELEPHANT( "npc_elephant" ),
+    ROCKBOSS( "npc_rock" ),
 
-    PLAYER01( "npc_squirrel" ),;
+    PLAYER01( "npc_squirrel" ),
+    SQUIRREL( "npc_squirrel" ),
+    ;
 
     private StringBuilder stringBuilder = new StringBuilder();
 
