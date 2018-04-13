@@ -13,7 +13,7 @@ public enum DEBUG {
     SHOW_MODEL_INFO( false ),
     NPC_ACTIONS( false ),
 
-    FPS( false ),
+    FPS( true ),
     SCREEN_FPS( false ), // должен быть включен FPS
 
     ON_WINDOWS( true ),
