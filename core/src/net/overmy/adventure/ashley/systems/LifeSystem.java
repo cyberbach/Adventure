@@ -81,7 +81,8 @@ public class LifeSystem extends IteratingSystem {
                 decal.setPosition( position );
                 decal.lookAt( camera.position, camera.up );
                 decalBatch.add( decal );
-                if ( !myEntity ) {
+
+                if ( MyMapper.NPC.has( entity ) && !myEntity ) {
                     counter++;
                 }
             }

@@ -27,18 +27,26 @@ class ObjectBuilder {
         objects.add( box( 2.0894058f, 0.9661126f, 17.144102f, Item.COIN ) );
         objects.add( box( -14.651095f, 0.5416093f, -0.73911595f, Item.COIN ) );
         objects.add( box( -14.834895f, 0.546132f, -5.104841f ) );
-        objects.add( trigger( Item.TRIGGER1, -3.2423413f, 0.5587765f, -12.5487385f, 3 ) );
+        objects.add( trigger( Item.TRIGGER_INTRO_GUNS, -3.2423413f, 0.5587765f, -12.5487385f, 3 ) );
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.STAR_ON_LEVEL0() )
                              .setDynamicModelAsset( ModelAsset.STAR )
                              .setPosition( new Vector3( -5.6010785f, 0.6358346f, -15.179978f ) ) );
+
+        objects.add( trigger( Item.TRIGGER_INTRO_GUNS2,-3.2168756f, 2.4004748f, 5.7865267f, 4) );
+        objects.add( trigger( Item.TRIGGER_INTRO_BOTTLE,5.9339743f, 2.269684f, 6.585695f, 3) );
         return objects;
     }
 
 
     Array< LevelObject > LEVEL1 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( trigger( Item.TRIGGER_INTRO_BOX, -15.007243f, 2.5831919f, -53.823032f, 3) );
+        objects.add( trigger( Item.TRIGGER_INTRO_TALK,-25.42757f, 2.9511707f, -67.447815f,2) );
+        objects.add( trigger( Item.TRIGGER_TRY_TO_JUMP,-34.39248f, 13.887711f, -74.07386f,2) );
+        objects.add( trigger( Item.TRIGGER_A_LONG_WAY, -63.436752f, 0.54160935f, -67.39833f,5) );
 
         objects.add( ladder( new Vector3( -33.666f, 12.0f, -79.593f ), 10.0f ) );
 
@@ -75,6 +83,8 @@ class ObjectBuilder {
     Array< LevelObject > LEVEL2 () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+        objects.add( trigger( Item.TRIGGER_INTRO_WEAPON_COMBINE,2.624308f, 2.3249323f, -153.69887f,3) );
+        objects.add( trigger( Item.TRIGGER_INTRO_HIDDEN_WALL, -4.0632124f, 2.0375128f, -163.06961f,4) );
         objects.add( weapon( -1.1865791f, 2.7401257f, -153.47026f, Item.RAKE_WEAPON ) );
 
         objects.add( hoverGreenBottle( -5.3636923f, 1.8259449f, -155.13283f ) );
@@ -97,6 +107,12 @@ class ObjectBuilder {
 
     Array< LevelObject > LEVEL3 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( trigger( Item.TRIGGER_SHARK_HELP,-75.267586f, 0.69686496f, -236.18509f,7) );
+        objects.add( trigger( Item.TRIGGER_GATE_HELP,-104.46029f, 1.6846528f, -274.8887f,3) );
+        objects.add( trigger( Item.TRIGGER_BLUE_BOTTLE,-147.7052f, 0.5416111f, -262.5539f,2) );
+
+        objects.add( trigger( Item.TRIGGER_MUSIC_TO_SEA,-108.447365f, 0.54161114f, -293.61478f,4) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
@@ -164,6 +180,15 @@ class ObjectBuilder {
     Array< LevelObject > LEVEL4 () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+        objects.add( trigger( Item.TRIGGER_MUSIC_TO_FOREST,-142.3424f, 0.54161084f, -329.46494f,6) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book1 )
+                             .setRotation( 0.0f )
+                             .setPosition( new Vector3( -142.84814f, 0.56055367f, -343.7017f ) ) );
+
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.BIRD1_LEVEL4() )
@@ -211,6 +236,13 @@ class ObjectBuilder {
         Array< LevelObject > objects = new Array< LevelObject >();
 
         objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book2 )
+                             .setRotation( 160.0f )
+                             .setPosition( new Vector3( -238.29837f, 2.9409232f, -383.93765f ) ) );
+
+        objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.BURDOK_ON_LEVEL5() )
                              .setDynamicModelAsset( ModelAsset.BURDOK )
@@ -249,6 +281,15 @@ class ObjectBuilder {
     Array< LevelObject > LEVEL6 () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+        objects.add( trigger( Item.TRIGGER_ALICE,-67.582634f, 0.55653006f, -431.0696f,3) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book3 )
+                             .setRotation( 326.0f )
+                             .setPosition( new Vector3(  -62.17136f, 0.57809526f, -448.0939f) ) );
+
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
                              .setScript( ScriptBuilder.BUTTERFLY_ON_LEVEL6() )
@@ -279,6 +320,8 @@ class ObjectBuilder {
 
     Array< LevelObject > LEVEL7 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( trigger( Item.TRIGGER_SECRETLOCATION1,-103.11569f, 2.023168f, -440.53986f,2) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.DOOR )
@@ -316,9 +359,17 @@ class ObjectBuilder {
         Array< LevelObject > objects = new Array< LevelObject >();
 
         objects.add( new LevelObject()
-                             .setType( OBJECT_TYPE.NPC )
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book4 )
+                             .setRotation( 130.0f )
+                             .setPosition( new Vector3( -216.14719f, 7.427118f, -460.93408f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.BEAR1_ON_LEVEL8() )
                              .setDynamicModelAsset( ModelAsset.BEAR )
+                             .setItem( Item.GUN_WEAPON )
                              .setPosition( new Vector3( -171.49295f, 6.6022253f, -518.231f ) ) );
 
         objects.add( new LevelObject()
@@ -337,7 +388,6 @@ class ObjectBuilder {
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.BEAR4_ON_LEVEL8() )
                              .setDynamicModelAsset( ModelAsset.BEAR )
-                             .setItem( Item.GUN_WEAPON )
                              .setPosition( new Vector3( -167.88797f, 5.4292164f, -498.12292f ) ) );
 
         objects.add( hoverGreenBottle( -210.48468f, 7.024612f, -471.9825f ) );
@@ -355,6 +405,13 @@ class ObjectBuilder {
 
     public Array< LevelObject > LEVEL9 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book7 )
+                             .setRotation( 66.0f )
+                             .setPosition( new Vector3( -104.541176f, 3.6797745f, -476.30933f ) ) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
@@ -408,7 +465,6 @@ class ObjectBuilder {
                              .setRotation( 257.0f )
                              .setPosition( new Vector3( -10.499138f, 3.9870257f, -475.7233f ) ) );
 
-        objects.add( weapon( -48.00395f, 3.2169616f, -482.1736f, Item.GUN_WEAPON ) );
 
         objects.add( hoverCoin( -48.00395f, 2.2169616f, -482.1736f ) );
         objects.add( hoverCoin( -43.452667f, 2.0220072f, -481.96835f ) );
@@ -439,6 +495,22 @@ class ObjectBuilder {
 
     public Array< LevelObject > LEVEL11 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book18 )
+                             .setRotation( 267.0f )
+                             .setPosition( new Vector3( -18.540747f, 2.300292f, -529.1308f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book19 )
+                             .setRotation( 331.0f )
+                             .setPosition( new Vector3( -16.038496f, 0.9700879f, -558.2357f ) ) );
+
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.DOOR )
@@ -484,11 +556,9 @@ class ObjectBuilder {
         objects.add( hoverCoin( -12.581354f, 1.8918121f, -559.5787f ) );
         objects.add( hoverCoin( -11.679665f, 1.8914082f, -548.3028f ) );
         objects.add( hoverCoin( -14.917933f, 2.235294f, -538.73193f ) );
-        objects.add( hoverCoin( -29.773043f, 2.6531353f, -527.09644f ) );
-        objects.add( hoverCoin( -33.861378f, 2.0955467f, -530.23035f ) );
         objects.add( hoverCoin( -55.476734f, 0.2184845f, -526.9232f ) );
         objects.add( box( -66.84727f, 0.7216492f, -542.59534f ) );
-        objects.add( box( -88.407104f, 2.0471447f, -534.7304f,Item.KEY3 ) );
+        objects.add( box( -88.407104f, 2.0471447f, -534.7304f ) );
 
         objects.add( hoverCoin( -87.91464f, 3.344211f, -554.1267f ) );
         objects.add( hoverCoin( -85.8045f, 3.5456748f, -553.71796f ) );
@@ -500,6 +570,22 @@ class ObjectBuilder {
 
     public Array< LevelObject > LEVEL12 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.DOOR_SWITCH )
+                             .setDynamicModelAsset( ModelAsset.LOCK )
+                             .setItem( Item.KEY3 )
+                             .setRotation( 181.0f )
+                             .setPosition( new Vector3( -100.08671f, 3.245918f, -565.0366f ) ) );
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book20 )
+                             .setRotation( 342.0f )
+                             .setPosition( new Vector3( -88.89619f, 4.218597f, -648.4376f ) ) );
+
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
@@ -534,6 +620,8 @@ class ObjectBuilder {
 
     public Array< LevelObject > LEVEL13 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( trigger( Item.TRIGGER_MUSIC_TO_FOREST,-2.384388f, 2.9306993f, -687.5016f,8) );
 
         objects.add( hoverCoin( -27.482477f, 2.2798924f, -651.31683f ) );
         objects.add( hoverCoin( -22.793148f, 2.4052672f, -649.64197f ) );
@@ -580,6 +668,20 @@ class ObjectBuilder {
         Array< LevelObject > objects = new Array< LevelObject >();
 
         objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book5 )
+                             .setRotation( 303.0f )
+                             .setPosition( new Vector3( -218.9553f, 14.2520685f, -605.8526f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book6 )
+                             .setRotation( 104.0f )
+                             .setPosition( new Vector3( -273.6948f, 13.17102f, -604.2974f ) ) );
+
+        objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.BEAR1_ON_LEVEL15() )
                              .setDynamicModelAsset( ModelAsset.BEAR )
@@ -603,12 +705,6 @@ class ObjectBuilder {
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
-                             .setScript( ScriptBuilder.BEAR1_ON_LEVEL8() )
-                             .setDynamicModelAsset( ModelAsset.BEAR )
-                             .setPosition( new Vector3( -171.49295f, 6.6022253f, -518.231f ) ) );
-
-        objects.add( new LevelObject()
-                             .setType( OBJECT_TYPE.NPC )
                              .setScript( ScriptBuilder.RACOOR_ON_LEVEL15() )
                              .setTextInteract( TextInteract.Dialog9CheinieRacoon )
                              .setDynamicModelAsset( ModelAsset.RACOON )
@@ -620,6 +716,8 @@ class ObjectBuilder {
 
     public Array< LevelObject > LEVEL16 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+        objects.add( trigger( Item.TRIGGER_MUSIC_TO_WINTER,11.770343f, 3.6465282f, -698.8538f,10) );
 
         objects.add( hoverGreenBottle( -7.8974643f, 5.6301675f, -732.95526f ) );
 
@@ -810,6 +908,8 @@ class ObjectBuilder {
     public Array< LevelObject > LEVEL23 () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+        objects.add( trigger( Item.TRIGGER_MUSIC_TO_WINTER,57.33409f, 4.9017806f, -607.8461f ,10) );
+
         objects.add( hoverCoin( 119.385124f, 5.2080026f, -703.41846f) );
         objects.add( hoverGreenBottle( 125.96447f, 4.1128645f, -703.307f) );
         objects.add( hoverCoin( 136.06882f, 5.8890643f, -714.3209f) );
@@ -837,6 +937,8 @@ class ObjectBuilder {
     public Array< LevelObject > LEVEL24 () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+        objects.add( trigger( Item.TRIGGER_MUSIC_TO_FOREST,67.42714f, 6.327668f, -578.48334f ,10) );
+
         objects.add( box( 64.614624f, 6.352461f, -579.0819f,Item.RED_BOTTLE) );
         objects.add( box( 65.64196f, 6.6177845f, -571.94354f,Item.COIN) );
         objects.add( hoverPurpleBottle( 78.57974f, 7.144694f, -559.2202f) );
@@ -853,6 +955,23 @@ class ObjectBuilder {
 
     public Array< LevelObject > LEVEL25 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book8 )
+                             .setRotation( 0.0f )
+                             .setPosition( new Vector3( 24.11309f, 3.6817803f, -501.70892f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book9 )
+                             .setRotation( 309.0f )
+                             .setPosition( new Vector3( 54.985355f, 3.6817815f, -488.08624f ) ) );
+
+
         objects.add( hoverRedBottle( 19.500439f, 3.6817815f, -493.19937f) );
         objects.add( hoverGreenBottle( 40.1507f, 3.6817815f, -489.07715f) );
         objects.add( hoverCoin( 44.46308f, 3.6794279f, -475.19965f) );
@@ -889,6 +1008,30 @@ class ObjectBuilder {
 
     public Array< LevelObject > LEVEL26 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book10 )
+                             .setRotation( 157.0f )
+                             .setPosition( new Vector3( 37.180817f, 3.6817734f, -419.48877f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book11 )
+                             .setRotation( 35.0f )
+                             .setPosition( new Vector3( 76.62763f, 3.6817024f, -496.05392f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book12 )
+                             .setRotation( 272.0f )
+                             .setPosition( new Vector3( 118.292404f, 3.6817815f, -496.50342f ) ) );
+
+
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.DOOR )
                              .setDoorAngles(100.0f,189.0f)
@@ -929,6 +1072,16 @@ class ObjectBuilder {
 
     public Array< LevelObject > LEVEL27 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book13 )
+                             .setRotation( 173.0f )
+                             .setPosition( new Vector3( 104.036064f, 3.603501f, -396.69916f ) ) );
+        objects.add( chest( 118.239105f, 3.6768372f, -381.03702f) );
+
         objects.add( hoverGreenBottle( 120.674675f, 3.7841527f, -400.37845f) );
         objects.add( chest( 138.64107f, 3.9085371f, -408.1089f) );
 
@@ -943,6 +1096,16 @@ class ObjectBuilder {
 
     public Array< LevelObject > LEVEL28 () {
         Array< LevelObject > objects = new Array< LevelObject >();
+
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book14 )
+                             .setRotation( 163.0f )
+                             .setPosition( new Vector3( 140.96918f, 3.6781952f, -338.83157f ) ) );
+
+
         objects.add( weapon( 124.6337f, 3.8980358f, -356.72656f, Item.FENCE_WEAPON ) );
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
@@ -1001,6 +1164,27 @@ class ObjectBuilder {
     public Array< LevelObject > LEVEL30 () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book15 )
+                             .setRotation( 90.0f )
+                             .setPosition( new Vector3( 102.91206f, 4.0369787f, -258.38925f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book16 )
+                             .setRotation( 5.0f )
+                             .setPosition( new Vector3( 149.60074f, 3.7898595f, -248.03104f ) ) );
+
+        objects.add( new LevelObject()
+                             .setType( OBJECT_TYPE.INTERACTIVE )
+                             .setDynamicModelAsset( ModelAsset.BOOK )
+                             .setTextInteract( TextInteract.Book17 )
+                             .setRotation( 55.0f )
+                             .setPosition( new Vector3( 124.604576f, 5.074566f, -229.64171f ) ) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )

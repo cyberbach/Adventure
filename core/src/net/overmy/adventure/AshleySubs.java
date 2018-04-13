@@ -283,7 +283,8 @@ public final class AshleySubs {
                 .hullShape()
                 .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                 .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
-                .setCallbackFilter( BulletWorld.PLAYER_FLAG );
+                .setCallbackFilter( BulletWorld.PLAYER_FLAG )
+                .disableDeactivation();
 
         Entity entity = new Entity();
         if ( modelInstance.animations.size > 0 ) {
@@ -448,6 +449,7 @@ public final class AshleySubs {
                 .setCollisionFlag( CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.NPC_FLAG )
                 .setCallbackFilter( BulletWorld.FILTER_NPC )
+                .disableRotation ()
                 .disableDeactivation();
 
         PhysicalComponent physicalComponent = physicalBuilderNPC.buildPhysicalComponent();
@@ -495,6 +497,7 @@ public final class AshleySubs {
                 .setCollisionFlag( CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.NPC_FLAG )
                 .setCallbackFilter( BulletWorld.FILTER_NPC )
+        .disableRotation ()
                 .disableDeactivation();
 
         float damage = 15.0f;
@@ -727,17 +730,17 @@ public final class AshleySubs {
             float timeOfLife = MathUtils.random( 1.0f, 2.0f );
 
             randomPosition.x = MathUtils.random( -1.0f, 1.0f );
-            randomPosition.y = MathUtils.random( -1.0f, 1.0f );
+            randomPosition.y = MathUtils.random( 0.5f, 1.5f );
             randomPosition.z = MathUtils.random( -1.0f, 1.0f );
 
             partPosition.set( position );
-            partPosition.add( randomPosition ).add( 0, 0.5f, 0 );
+            partPosition.add( randomPosition );//.add( 0, 0.5f, 0 );
 
             ModelInstance modelInstance = ModelAsset.CRATE_PART.get();
             float scale = MathUtils.random( 0.3f, 1.0f );
             modelInstance.transform.scl( scale, scale, scale );
 
-            randomPosition.scl( 0.6f );
+            //randomPosition.scl( 0.6f );
 
             PhysicalBuilder physicalBuilder = new PhysicalBuilder()
                     .setModelInstance( modelInstance )
@@ -748,21 +751,21 @@ public final class AshleySubs {
                                   MathUtils.random( 360.0f ) )
                     .setPosition( partPosition )
                     .setScale( MathUtils.random( 0.4f, 1.0f ) )
-                    .boxShape()
+                    .hullShape()
                     .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                     .setCallbackFlag( BulletWorld.PART_FLAG )
                     .setCallbackFilter( BulletWorld.GROUND_FLAG )
-                    .setStartImpulse( randomPosition )
-                    .setCallbackFilter( 0 );
+                    .setStartImpulse( randomPosition.scl( parts * 0.1f ) )
+                    .disableDeactivation();
 
             Entity partEntity = new Entity();
             partEntity.add( new ModelComponent( modelInstance ) );
             partEntity.add( new RemoveByTimeComponent( timeOfLife ) );
             partEntity.add( physicalBuilder.buildPhysicalComponent() );
             engine.addEntity( partEntity );
-
-            SoundAsset.BoxCrush.play();
         }
+
+        SoundAsset.BoxCrush.play();
     }
 
 
@@ -864,7 +867,7 @@ public final class AshleySubs {
                     .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                     .setCallbackFlag( BulletWorld.PART_FLAG )
                     .setStartImpulse( randomPosition )
-                    .setCallbackFilter( 0 );
+                    .setCallbackFilter( BulletWorld.GROUND_FLAG );
 
             Entity partEntity = new Entity();
             partEntity.add( new ModelComponent( modelInstance ) );

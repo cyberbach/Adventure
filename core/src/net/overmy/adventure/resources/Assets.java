@@ -22,6 +22,7 @@ public final class Assets {
 
     private static AssetManager manager = null;
 
+
     private Assets () {
     }
 
@@ -95,12 +96,10 @@ public final class Assets {
 
 
     public static void unload () {
-
         FontAsset.unload( manager );
         MusicAsset.unload( manager );
         SoundAsset.unload( manager );
         IMG.unload( manager );
-
 
         TextureAsset.unload();
 

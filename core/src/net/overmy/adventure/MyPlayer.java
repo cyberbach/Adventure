@@ -182,6 +182,7 @@ public final class MyPlayer {
                 .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                 .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
                 .setCallbackFilter( BulletWorld.FILTER_ALL )
+                .disableRotation()
                 .disableDeactivation();
 
         weaponEntity = new Entity();

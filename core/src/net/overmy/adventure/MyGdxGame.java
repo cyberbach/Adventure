@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Logger;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.resources.Assets;
 import net.overmy.adventure.resources.GameColor;
+import net.overmy.adventure.resources.MusicAsset;
 import net.overmy.adventure.resources.Settings;
 import net.overmy.adventure.screen.GameScreen;
 import net.overmy.adventure.screen.LoadingScreen;

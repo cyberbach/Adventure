@@ -32,6 +32,7 @@ import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
+import net.overmy.adventure.resources.MusicAsset;
 import net.overmy.adventure.resources.Settings;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextAsset;
@@ -110,6 +111,8 @@ public class MenuScreen extends Base2DScreen {
         batch.end();
 
         animationController.update( delta );
+
+        MusicAsset.playRandom(delta);
     }
 
 
@@ -129,7 +132,7 @@ public class MenuScreen extends Base2DScreen {
                                              ) );
         introGroup.addActor( titleGroup );
 
-        final boolean canResume = MyPlayer.live || DynamicLevels.getCurrent() != 0;
+        final boolean canResume = MyPlayer.live && DynamicLevels.getCurrent() != 0;
 
         final float labelPosX = Core.WIDTH * 0.75f;
         final float label2PosY = Core.HEIGHT * 0.23f;

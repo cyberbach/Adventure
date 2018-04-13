@@ -45,8 +45,25 @@ public enum Item {
     GUN_WEAPON_UPGRADED,
     BAT_WEAPON_UPGRADED,
 
-    TRIGGER1,// не забудь взять оружие
-    TRIGGER2;
+    TRIGGER_INTRO_GUNS,// не забудь взять оружие
+    TRIGGER_INTRO_GUNS2,
+    TRIGGER_INTRO_BOTTLE,
+    TRIGGER_INTRO_BOX,
+    TRIGGER_INTRO_TALK,
+    TRIGGER_INTRO_WEAPON_COMBINE,
+    TRIGGER_INTRO_HIDDEN_WALL,
+    TRIGGER_TRY_TO_JUMP,
+    TRIGGER_A_LONG_WAY,
+    TRIGGER_SHARK_HELP,
+    TRIGGER_GATE_HELP,
+    TRIGGER_BLUE_BOTTLE,
+    TRIGGER_ALICE,
+    TRIGGER_SECRETLOCATION1,
+
+    TRIGGER_MUSIC_TO_SEA,
+    TRIGGER_MUSIC_TO_FOREST,
+    TRIGGER_MUSIC_TO_WINTER
+    ;
 
     private TextAsset  name       = null;
     private TextAsset  about      = null;

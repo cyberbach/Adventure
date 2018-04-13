@@ -81,7 +81,7 @@ public class TextDecalSystem extends IteratingSystem {
         textLabel.setText( text );
         float textWidth = textLabel.getPrefWidth();
 
-        position.add( 0, 1.6f, 0 ).scl( 100 );
+        position.add( 0, 2.0f, 0 ).scl( 100 );
         // Это позиция 3д-объекта, к которому привязан текст
         // Чуть сдвигаем текст вверх
         // Умножение на 100 нужно, чтобы правильно прибавилась позиция

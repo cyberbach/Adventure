@@ -107,7 +107,27 @@ public enum TextInteract {
 
 
 
-    Book1;
+    Book1,
+    Book2,
+    Book3,
+    Book4,
+    Book5,
+    Book6,
+    Book7,
+    Book8,
+    Book9,
+    Book10,
+    Book11,
+    Book12,
+    Book13,
+    Book14,
+    Book15,
+    Book16,
+    Book17,
+    Book18,
+    Book19,
+    Book20,
+    ;
 
     private Array< TextInteract > connection = new Array< TextInteract >();
 
@@ -522,8 +542,30 @@ public enum TextInteract {
 
         // Книги
 
-        Book1.setText( TextInteractAsset.BookName, TextInteractAsset.Book1Body,
-                       TextInteractAsset.Empty );
+        Book1.setBookText( TextInteractAsset.Book1Body );
+        Book2.setBookText( TextInteractAsset.Book2Body );
+        Book3.setBookText( TextInteractAsset.Book3Body );
+        Book4.setBookText( TextInteractAsset.Book4Body );
+        Book5.setBookText( TextInteractAsset.Book5Body );
+        Book6.setBookText( TextInteractAsset.Book6Body );
+        Book7.setBookText( TextInteractAsset.Book7Body );
+        Book8.setBookText( TextInteractAsset.Book8Body );
+        Book9.setBookText( TextInteractAsset.Book9Body );
+        Book10.setBookText( TextInteractAsset.Book10Body );
+        Book11.setBookText( TextInteractAsset.Book11Body );
+        Book12.setBookText( TextInteractAsset.Book12Body );
+        Book13.setBookText( TextInteractAsset.Book13Body );
+        Book14.setBookText( TextInteractAsset.Book14Body );
+        Book15.setBookText( TextInteractAsset.Book15Body );
+        Book16.setBookText( TextInteractAsset.Book16Body );
+        Book17.setBookText( TextInteractAsset.Book17Body );
+        Book18.setBookText( TextInteractAsset.Book18Body );
+        Book19.setBookText( TextInteractAsset.Book19Body );
+        Book20.setBookText( TextInteractAsset.Book20Body );
+    }
+
+    private void setBookText(TextInteractAsset asset){
+        this.setText( TextInteractAsset.BookName, asset, TextInteractAsset.Empty );
     }
 
 

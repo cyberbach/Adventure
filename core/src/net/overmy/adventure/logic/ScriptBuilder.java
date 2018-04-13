@@ -565,15 +565,15 @@ public final class ScriptBuilder {
     public static ImmutableArray< NPCAction > BEAR1_ON_LEVEL8 () {
         Array< NPCAction > queue = new Array< NPCAction >();
         queue.add( move( -171.49295f, -518.231f ) );
-        queue.add( say( TextAsset.BEARTEXT1, 2 ) );
-        queue.add( wait( 1.2f ) );
+        queue.add( say( TextAsset.BEARTEXT1, 4 ) );
+        queue.add( wait( 2.2f ) );
         queue.add( move( -170.6102f, -513.2062f ) );
-        queue.add( wait( 1.5f ) );
+        queue.add( wait( 2.5f ) );
         queue.add( move( -166.10829f, -514.4292f ) );
-        queue.add( say( TextAsset.BEARTEXT2, 4 ) );
+        queue.add( say( TextAsset.BEARTEXT2, 5 ) );
         queue.add( wait( 0.8f ) );
         queue.add( move( -169.84256f, -515.8019f ) );
-        queue.add( wait( 1.5f ) );
+        queue.add( wait( 4.5f ) );
         return new ImmutableArray< NPCAction >( queue );
     }
 

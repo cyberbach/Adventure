@@ -226,14 +226,15 @@ public class PhysicalBuilder {
 
 
     public PhysicalBuilder disableDeactivation () {
-        disableRotation();
+        disableRotation ();
         deactivationFlag = true;
         return this;
     }
 
 
-    private void disableRotation () {
+    public PhysicalBuilder disableRotation () {
         disableRotationFlag = true;
+        return this;
     }
 
 

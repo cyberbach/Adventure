@@ -129,7 +129,7 @@ public class GameScreen extends Base2DScreen {
                                 "\nBackSpace-clear positions\n\n" +
                                 "9 speed up\n" +
                                 "0 speed normal";*/
-            String helpString="GM";
+            String helpString = "GM";
             Label gameMasterTitle = UIHelper.Label( helpString, FontAsset.DIALOG_BODY );
             gameMasterTitle.setPosition( 16, Core.HEIGHT_HALF );
 
@@ -161,26 +161,58 @@ public class GameScreen extends Base2DScreen {
 
         //MusicAsset.WINDFILTER.play( true );
 
-
         if ( Settings.KEY1.getBoolean() ) {
-            if(!MyPlayer.testBag( Item.KEY1 )) MyPlayer.addToBag( Item.KEY1 );
+            if ( !MyPlayer.testBag( Item.KEY1 ) ) {
+                MyPlayer.addToBag( Item.KEY1 );
+            }
         }
         if ( Settings.KEY2.getBoolean() ) {
-            if(!MyPlayer.testBag( Item.KEY2 )) MyPlayer.addToBag( Item.KEY2 );
+            if ( !MyPlayer.testBag( Item.KEY2 ) ) {
+                MyPlayer.addToBag( Item.KEY2 );
+            }
         }
         if ( Settings.KEY3.getBoolean() ) {
-            if(!MyPlayer.testBag( Item.KEY3 )) MyPlayer.addToBag( Item.KEY3 );
+            if ( !MyPlayer.testBag( Item.KEY3 ) ) {
+                MyPlayer.addToBag( Item.KEY3 );
+            }
         }
         if ( Settings.KEY4.getBoolean() ) {
-            if(!MyPlayer.testBag( Item.KEY4 )) MyPlayer.addToBag( Item.KEY4 );
+            if ( !MyPlayer.testBag( Item.KEY4 ) ) {
+                MyPlayer.addToBag( Item.KEY4 );
+            }
         }
         if ( Settings.KEY5.getBoolean() ) {
-            if(!MyPlayer.testBag( Item.KEY5 )) MyPlayer.addToBag( Item.KEY5 );
+            if ( !MyPlayer.testBag( Item.KEY5 ) ) {
+                MyPlayer.addToBag( Item.KEY5 );
+            }
         }
         if ( Settings.KEY6.getBoolean() ) {
-            if(!MyPlayer.testBag( Item.KEY6 )) MyPlayer.addToBag( Item.KEY6 );
+            if ( !MyPlayer.testBag( Item.KEY6 ) ) {
+                MyPlayer.addToBag( Item.KEY6 );
+            }
         }
 
+        switch ( DynamicLevels.getCurrent() ) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                MusicAsset.SEA.play( true );
+                break;
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 31:
+                MusicAsset.WINTER.play( true );
+                break;
+            default:
+                MusicAsset.FOREST.play( true );
+                break;
+        }
     }
 
 
@@ -225,6 +257,8 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void update ( float delta ) {
         super.update( delta );
+
+        MusicAsset.playRandom( delta );
 
         if ( DEBUG.GAME_MASTER_MODE.get() ) {
             if ( Gdx.input.isKeyJustPressed( Input.Keys.NUM_9 ) ) {
@@ -531,46 +565,47 @@ public class GameScreen extends Base2DScreen {
 
         // scroll pane?
 
-        int offset = (int) ( Core.HEIGHT * 0.1f );
+        final int SCR_H_01 = (int) ( Core.HEIGHT * 0.1f );
         gameGroup.addActor( UIHelper.BlackBG() );
 
         Label ingameMenuTitle = UIHelper.Label( TextAsset.INVENTORY.get(), FontAsset.MENU_TITLE );
-        float fontOffset = ingameMenuTitle.getHeight() * 1.5f;
-        ingameMenuTitle.setPosition( offset + fontOffset,
-                                     Core.HEIGHT - offset - fontOffset );
+        //float fontOffset = ingameMenuTitle.getHeight() * 1.5f;
+        ingameMenuTitle.setPosition( SCR_H_01 * 2.0f,
+                                     Core.HEIGHT - SCR_H_01 * 2.0f );
         gameGroup.addActor( ingameMenuTitle );
 
         Table table = new Table();
-        table.setWidth( Core.WIDTH - offset * 2 );
+        table.setWidth( Core.WIDTH - SCR_H_01 * 2 );
 
         for ( final ItemInBagg itemInBagg : MyPlayer.getBag() ) {
-            Image upgradeIcon = IMG.UPGRADE.getImageActor( offset, offset );
-            Image img = itemInBagg.item.getImage( offset, offset );
-            Label txt = UIHelper.Label( itemInBagg.item.getName(), FontAsset.IVENTORY_ITEM );
+            Item thisItem = itemInBagg.item;
+
+            Image upgradeIcon = IMG.UPGRADE.getImageActor( SCR_H_01, SCR_H_01 );
+            Image img = thisItem.getImage( SCR_H_01, SCR_H_01 );
+            Label txt = UIHelper.Label( thisItem.getName(), FontAsset.IVENTORY_ITEM );
             txt.setWrap( true );
             String cntString = itemInBagg.count > 1 ? "" + itemInBagg.count : "";
-            Label count = UIHelper.Label( cntString, FontAsset.IVENTORY_ITEM );
-            Label fullTxt = UIHelper.Label( itemInBagg.item.getAbout(),
-                                            FontAsset.IVENTORY_ITEM_TEXT );
+            Label count = UIHelper.Label( cntString, FontAsset.IVENTORY_ITEM_TEXT );
+            Label fullTxt = UIHelper.Label( thisItem.getAbout(), FontAsset.IVENTORY_ITEM_TEXT );
             fullTxt.setWrap( true );
 
-            boolean itemIsMoney = itemInBagg.item.equals( Item.COIN ) ||
-                                  itemInBagg.item.equals( Item.BLUE_STAR ) ||
-                                  itemInBagg.item.equals( Item.YELLOW_STAR ) ||
-                                  itemInBagg.item.equals( Item.GREEN_STAR ) ||
-                                  itemInBagg.item.equals( Item.KEY1 ) ||
-                                  itemInBagg.item.equals( Item.KEY2 ) ||
-                                  itemInBagg.item.equals( Item.KEY3 ) ||
-                                  itemInBagg.item.equals( Item.KEY4 ) ||
-                                  itemInBagg.item.equals( Item.KEY5 ) ||
-                                  itemInBagg.item.equals( Item.KEY6 );
+            boolean itemIsMoney = thisItem.equals( Item.COIN ) ||
+                                  thisItem.equals( Item.BLUE_STAR ) ||
+                                  thisItem.equals( Item.YELLOW_STAR ) ||
+                                  thisItem.equals( Item.GREEN_STAR ) ||
+                                  thisItem.equals( Item.KEY1 ) ||
+                                  thisItem.equals( Item.KEY2 ) ||
+                                  thisItem.equals( Item.KEY3 ) ||
+                                  thisItem.equals( Item.KEY4 ) ||
+                                  thisItem.equals( Item.KEY5 ) ||
+                                  thisItem.equals( Item.KEY6 );
 
-            boolean itemIsBottle = itemInBagg.item.equals( Item.BLUE_BOTTLE ) ||
-                                   itemInBagg.item.equals( Item.RED_BOTTLE ) ||
-                                   itemInBagg.item.equals( Item.GREEN_BOTTLE ) ||
-                                   itemInBagg.item.equals( Item.PURPLE_BOTTLE );
+            boolean itemIsBottle = thisItem.equals( Item.BLUE_BOTTLE ) ||
+                                   thisItem.equals( Item.RED_BOTTLE ) ||
+                                   thisItem.equals( Item.GREEN_BOTTLE ) ||
+                                   thisItem.equals( Item.PURPLE_BOTTLE );
 
-            final Image useImage = IMG.USABLE.getImageActor( offset, offset );
+            final Image useImage = IMG.USABLE.getImageActor( SCR_H_01, SCR_H_01 );
             if ( !itemIsMoney ) {
                 useImage.addListener( new ClickListener() {
                     public void clicked ( InputEvent event, float x, float y ) {
@@ -584,15 +619,13 @@ public class GameScreen extends Base2DScreen {
                 } );
             }
 
-            float offset_half = offset / 2;
-
-            table.add( img ).left().minWidth( offset );
-            table.add( count ).left();
-            table.add( txt ).left().width( offset * 4 );
-            table.add( fullTxt ).left().width( offset * 6 );
+            table.add( img ).left().minWidth( SCR_H_01 );
+            table.add( count ).left().pad( 0, SCR_H_01 / 4, 0, SCR_H_01 / 4 );
+            table.add( txt ).left().width( SCR_H_01 * 3.6f );
+            table.add( fullTxt ).left().width( SCR_H_01 * 6 ).pad( 0, 0, 0, SCR_H_01 / 4 );
             if ( !itemIsMoney ) {
                 if ( itemInBagg.count > 1 && !itemIsBottle ) {
-                    table.add( upgradeIcon ).left().minWidth( offset );
+                    table.add( upgradeIcon ).left().minWidth( SCR_H_01 );
                     upgradeIcon.addListener( new ClickListener() {
                         public void clicked ( InputEvent event, float x, float y ) {
                             SoundAsset.Click.play();
@@ -602,22 +635,22 @@ public class GameScreen extends Base2DScreen {
                         }
                     } );
                 } else {
-                    table.add().left().minWidth( offset );
+                    table.add().left().minWidth( SCR_H_01 );
                 }
-                table.add( useImage ).left().minWidth( offset );
+                table.add( useImage ).left().minWidth( SCR_H_01 );
             }
             table.row();
 
-            Sprite lineSprite = GFXHelper.createSpriteRGB888( Core.WIDTH - offset * 2.5f,
-                                                              offset / 8 );
+            Sprite lineSprite = GFXHelper.createSpriteRGB888( Core.WIDTH - SCR_H_01 * 2.5f,
+                                                              SCR_H_01 / 8 );
             Image lineImage = new Image( lineSprite );
             lineImage.setColor( GameColor.BLACKGL.get() );
             table.add( lineImage ).center().colspan( 6 ).row();
         }
 
         ScrollPane scrollPane = new ScrollPane( table );
-        scrollPane.setPosition( offset, offset );
-        scrollPane.setSize( Core.WIDTH - offset * 2, Core.HEIGHT - offset * 3.5f );
+        scrollPane.setPosition( SCR_H_01, SCR_H_01 );
+        scrollPane.setSize( Core.WIDTH - SCR_H_01 * 2, Core.HEIGHT - SCR_H_01 * 3.5f );
         scrollPane.setFadeScrollBars( true );
         scrollPane.setScrollingDisabled( true, false );
 
@@ -662,11 +695,11 @@ public class GameScreen extends Base2DScreen {
         Label dialogTitle = UIHelper.Label( currentTextInteract.getTitle(), FontAsset.MENU_TITLE );
         dialogTitle.setWrap( true );
         float fontOffset = dialogTitle.getHeight() * 1.5f;
-        dialogTitle.setPosition( offset * 1.4f,
-                                 Core.HEIGHT - offset - fontOffset / 2 );
+        dialogTitle.setPosition( offset * 1.4f, Core.HEIGHT - offset * 2.0f );
+        dialogTitle.setWidth( offset * 3.5f );
         gameGroup.addActor( dialogTitle );
 
-        // setBody
+        // body
 
         Label dialogBody = UIHelper.Label( currentTextInteract.getBody(), FontAsset.DIALOG_BODY );
         dialogBody.setWidth( Core.WIDTH - offset * 6.5f );
@@ -722,22 +755,22 @@ public class GameScreen extends Base2DScreen {
 
     private void processTextBlock ( TextInteract connection ) {
 
-        Vector3 pos1 = new Vector3( MyPlayer.getNotFilteredPos() ).add( 0,0.5f,0 );
+        Vector3 pos1 = new Vector3( MyPlayer.getNotFilteredPos() ).add( 0, 0.5f, 0 );
 
-        switch ( connection ){
+        switch ( connection ) {
             case Dialog3FoxAliceQ3V1:
-                CollectableProcessor.process(Item.PILLOW_WEAPON,pos1);
+                CollectableProcessor.process( Item.PILLOW_WEAPON, pos1 );
                 TextInteract.Dialog3FoxAlice.getConnections().clear();
                 TextInteract.Dialog3FoxAlice.connect( TextInteract.Dialog3FoxAliceV1,
                                                       TextInteract.Dialog3FoxAliceV2 );
                 break;
 
             case Dialog8NigelBirdQ4V1:
-                CollectableProcessor.process(Item.KALASH_WEAPON,pos1);
+                CollectableProcessor.process( Item.KALASH_WEAPON, pos1 );
                 break;
 
             case Dialog5KaksonikV1:
-                if(MyPlayer.testBagCount( Item.COIN, 5 )){
+                if ( MyPlayer.testBagCount( Item.COIN, 5 ) ) {
                     SoundAsset.Collect7.play();
                     MyPlayer.removeItemInBag( Item.COIN, 5 );
                     MyPlayer.addToBag( Item.GREEN_BOTTLE );
@@ -745,23 +778,23 @@ public class GameScreen extends Base2DScreen {
                 break;
 
             case Dialog6TopaQ4V1:
-                CollectableProcessor.process(Item.COIN,pos1);
-                CollectableProcessor.process(Item.COIN,pos1);
-                CollectableProcessor.process(Item.COIN,pos1);
-                CollectableProcessor.process(Item.COIN,pos1);
-                CollectableProcessor.process(Item.COIN,pos1);
+                CollectableProcessor.process( Item.COIN, pos1 );
+                CollectableProcessor.process( Item.COIN, pos1 );
+                CollectableProcessor.process( Item.COIN, pos1 );
+                CollectableProcessor.process( Item.COIN, pos1 );
+                CollectableProcessor.process( Item.COIN, pos1 );
                 break;
 
             case Dialog7RacoonBabyQ4V1:
-                pos1.add( 0.0f,1.2f,0 );
-                for(int i=0;i<10;i++){
-                    CollectableProcessor.process(Item.COIN,pos1);
+                pos1.add( 0.0f, 1.2f, 0 );
+                for ( int i = 0; i < 10; i++ ) {
+                    CollectableProcessor.process( Item.COIN, pos1 );
                 }
 
                 break;
 
             case Dialog9CheinieRacoonQ4V1:
-                CollectableProcessor.process(Item.GREEN_BOTTLE,pos1);
+                CollectableProcessor.process( Item.GREEN_BOTTLE, pos1 );
                 break;
         }
     }
@@ -897,7 +930,7 @@ public class GameScreen extends Base2DScreen {
         AshleyWorld.getEngine().getSystem( NPCSystem.class ).disableWalkSound();
 
         MyPlayer.stopSound();
-        MusicAsset.stopAll();
+        MusicAsset.stopEnvironment();
 
         jumpButton = null;
         touchpad = null;

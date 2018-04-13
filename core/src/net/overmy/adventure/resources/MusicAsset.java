@@ -21,8 +21,15 @@ import net.overmy.adventure.DEBUG;
  */
 
 public enum MusicAsset {
-    WINDFILTER( "windfilter.ogg" ),
-    FOREST( "forest.ogg" ),;
+    SEA( "sea.ogg" ),
+    WINTER( "winter.ogg" ),
+    FOREST( "forest.ogg" ),
+
+    TRACK1( "track1.ogg" ),
+    TRACK2( "track2.ogg" ),
+    TRACK3( "track3.ogg" ),
+    TRACK4( "track4.ogg" ),
+    TRACK5( "track5.ogg" ),;
 
     private final String path;
     private        Music music = null;
@@ -44,6 +51,28 @@ public enum MusicAsset {
     }
 
 */
+
+
+    public static void stopEnvironment () {
+        if ( DEBUG.ON_WINDOWS.get() ) {
+            return;
+        }
+/*
+        for ( int i = 0; i < MusicAsset.values().length; i++ ) {
+            if ( MusicAsset.values()[ i ].music != null ) {
+                MusicAsset.values()[ i ].music.stop();
+            }
+        }*/
+        if ( MusicAsset.WINTER.music.isPlaying() ) {
+            MusicAsset.WINTER.music.stop();
+        }
+        if ( MusicAsset.FOREST.music.isPlaying() ) {
+            MusicAsset.FOREST.music.stop();
+        }
+        if ( MusicAsset.SEA.music.isPlaying() ) {
+            MusicAsset.SEA.music.stop();
+        }
+    }
 
 
     public static void stopAll () {
@@ -68,8 +97,6 @@ public enum MusicAsset {
             MusicAsset.values()[ i ].music = manager.get( MusicAsset.values()[ i ].path,
                                                           Music.class );
         }
-
-        //currentTrack = MusicAsset.values()[ 0 ].music;
     }
 
 
@@ -89,7 +116,6 @@ public enum MusicAsset {
             return;
         }
 
-        //currentTrack = null;
         stopAll();
         for ( int i = 0; i < MusicAsset.values().length; i++ ) {
 
@@ -103,52 +129,35 @@ public enum MusicAsset {
     }
 
 
-    private static int bars      = 0;
-    private static int currentID = 0;
-
-
     public static void playRandom ( float delta ) {
-        timer -= delta;
+        if ( DEBUG.ON_WINDOWS.get() ) {
+            return;
+        }
 
+        timer -= delta;
         if ( timer > 0 ) {
             return;
         }
-        timer = 0.1f;
-/*
+        timer = 3.0f;
 
-        if ( currentTrack.isPlaying() ) {
+        boolean track1Playing = MusicAsset.TRACK1.music.isPlaying();
+        boolean track2Playing = MusicAsset.TRACK2.music.isPlaying();
+        boolean track3Playing = MusicAsset.TRACK3.music.isPlaying();
+        boolean track4Playing = MusicAsset.TRACK4.music.isPlaying();
+        boolean track5Playing = MusicAsset.TRACK5.music.isPlaying();
+
+        if ( track1Playing || track2Playing || track3Playing || track4Playing || track5Playing ) {
             return;
         }
-*/
 
-        if ( bars > 0 ) {
-            MusicAsset.values()[ currentID ].play();
-            bars--;
-        } else {
-            bars = MathUtils.randomBoolean() ? 4 : 6;
-            int tracks = MusicAsset.values().length;
-            currentID = MathUtils.random( tracks - 1 );
-            MusicAsset.values()[ currentID ].play();
-        }
-    }
+        MusicAsset.TRACK1.music.stop();
+        MusicAsset.TRACK2.music.stop();
+        MusicAsset.TRACK3.music.stop();
+        MusicAsset.TRACK4.music.stop();
+        MusicAsset.TRACK5.music.stop();
 
-
-    public void playNext ( float delta ) {
-        timer -= delta;
-
-        if ( timer > 0 ) {
-            return;
-        }
-        timer = 0.1f;
-/*
-
-        if ( currentTrack.isPlaying() ) {
-            return;
-        }
-*/
-
-        //currentTrack.stop();
-        this.play( true );
+        int nextTrack = MusicAsset.TRACK1.ordinal() + MathUtils.random( 0, 4 );
+        MusicAsset.values()[ nextTrack ].play( false );
     }
 
 
@@ -157,18 +166,12 @@ public enum MusicAsset {
             return;
         }
 
-   /*if ( currentTrack.isPlaying() ) {
-            currentTrack.pause();
-        }*/
-
         float musicVolume = (float) Settings.MUSIC.getInteger() / 100.0f;
         if ( musicVolume > 0 ) {
-            //currentTrack = music;
-
             this.music.setVolume( musicVolume );
             this.music.setLooping( loop );
 
-            Gdx.app.debug( "play( boolean loop ) volume" + musicVolume, "" + this.music );
+            Gdx.app.debug( "play( loop=" + loop + " ) volume " + musicVolume, "" + this.music );
 
             this.music.play();
         } else {
@@ -201,6 +204,10 @@ public enum MusicAsset {
 
 
     public void stopLoop () {
+        if ( DEBUG.ON_WINDOWS.get() ) {
+            return;
+        }
+
         if ( this.music.isPlaying() ) {
             this.music.setLooping( false );
         }

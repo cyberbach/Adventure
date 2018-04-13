@@ -18,19 +18,19 @@ public enum TextInteractAsset {
 
 
 
-    HogPrickle( "ежик\nКолючка" ),
+    HogPrickle( "Ежик Колючка" ),
     Dialog1Text( "Ты ищешь своего братишку? Я видел его последний раз рядом с большой елкой на поляне с бабочками. Тебе пригодятся в пути припасы, которые ты можешь купить у меня." ),
     Dialog1TextV1( "Купить бутылку жизни 10 монет" ),
     Dialog1TextV2( "Купить бутылку ускорения 10 монет" ),
     Dialog1TextV3( "Купить метлу 15 монет" ),
 
-    HogPester( "ежик\nПриставучка" ),
+    HogPester( "Ежик Приставучка" ),
     Dialog2Text( "Если тебе нужны припасы, то у меня кое-что есть." ),
     Dialog2TextV1( "Купить бутылку жизни 10 монет" ),
     Dialog2TextV2( "бутылка ускорения 10 монет" ),
     Dialog2TextV3( "бутылка прыжок 3 фиалетовых звезды" ),
 
-    FoxAlice( "Лисичка\nАлиса" ),
+    FoxAlice( "Лисичка Алиса" ),
     Dialog3Text1( "Послушай дружок. Если сможешь отгадать 3 моих загадки, я дам отдам тебе подушку." ),
     Dialog3Text1V1( "Купить бутылка прыжок 3 фиалетовых звезды" ),
     Dialog3Text1V2( "Купить подушку за 20 монет" ),
@@ -150,8 +150,31 @@ public enum TextInteractAsset {
     NPC3text( "Собирай бонусы.", "1 eng" ),
     NPC4text( "Не хочешь говорить - твои проблемы!", "1 eng" ),
 
-    BookName( "Книга помощи","Help Book" ),
-    Book1Body( "asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    // BOOOOOKS
+
+    BookName( "Интересная книга","Interesting book" ),
+    Book1Body( "1111111 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book2Body( "22 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book3Body( "3333 as3Bofsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book4Body( "asdfsda4Bo sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book5Body( "asdfsda5Bo sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book6Body( "asdfsda6Bo sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book7Body( "asdfsda7Bo sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book8Body( "asdfsda8Bo sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book9Body( "asdfsda9Bo sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book10Body( "asdfsd10Bf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+
+    Book11Body( "11 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book12Body( "12 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book13Body( "13 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book14Body( "14 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book15Body( "15 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book16Body( "16 1 6 16 1 61 6 16 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book17Body( "17 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book18Body( "18 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book19Body( "19 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+    Book20Body( "20 asdfsdaf sdf dsf sdfds fsd fdКнига помощи","Help Book" ),
+
 
     BuyRedBottle( "Купить бутылку жизни 10 монет","BuyRedBottle 10 coins" ),
     BuyGreenBottle( "Купить бутылку ускорения 10 монет","BuyGreenBottle 10 coins" ),
@@ -180,7 +203,8 @@ public enum TextInteractAsset {
 
     public static void init() {
         String defaultLocale = java.util.Locale.getDefault().toString();
-        Gdx.app.debug( "Default locale", "" + defaultLocale );
+        String clsName = TextInteractAsset.class.getSimpleName();
+        Gdx.app.debug( "" + clsName + " locale", "" + defaultLocale );
         russianLocale = !DEBUG.ENABLE_ENGLISH_TEXT.get() && "ru_RU".equals( defaultLocale );
     }
 
