@@ -16,7 +16,7 @@ public enum DEBUG {
     FPS( false ),
     SCREEN_FPS( false ), // должен быть включен FPS
 
-    ON_WINDOWS( true ),
+    ON_WINDOWS( false ),
 
     CONTACTS( false ),
     ENTITIES( false ),

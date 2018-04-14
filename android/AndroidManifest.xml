@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.overmy.adventure"
-    android:versionCode="3"
-    android:versionName="1.03" >
+    package="net.overmy.adventure" >
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="27" />
 

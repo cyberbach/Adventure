@@ -39,7 +39,7 @@ public enum DialogAsset {
 
     FoxAlice( "Лисичка Алиса", "Chanterelle Alice" ),
     Dialog3Text1(
-            "Послушай дружок. Если сможешь отгадать 3 моих загадки, я дам отдам тебе подушку.",
+            "Послушай дружок. Если сможешь отгадать 3 моих загадки, я дам тебе всё, что у меня есть.",
             "If you can guess my 3 riddles, I'll give you all I have." ),
     Dialog3Text1V3( "Я попробую.", "I'll try." ),
     Dialog3Text2( "Первый вопрос, слушай внимательно! Что такое:\n\n" +
@@ -58,7 +58,7 @@ public enum DialogAsset {
     Dialog3Text3V1( "Рапунцель", "Rapunzel" ),
     Dialog3Text3V2( "Варвара-краса", "Barbie" ),
     Dialog3Text3V3( "Морковка", "Carrot" ),
-    Dialog3Text4( "Отлично! А сейчас самый сложная загадка:\n\n" +
+    Dialog3Text4( "Отлично! А сейчас самая сложная загадка:\n\n" +
                   "Кто по елкам ловко скачет\n" +
                   "И взлетает на дубы?\n" +
                   "Кто в дупле орешки прячет,\n" +
@@ -74,7 +74,7 @@ public enum DialogAsset {
     Dialog3Text5( "Великолепно! Держи свою подушку!", "Keep your pillow!" ),
 
     Kaksonic( "Ежик Кексоник", "Keksonik the hog " ),
-    Dialog5Text( "Бельчонок Квики. Тебе нужно зелье ускорения?",
+    Dialog5Text( "Бельчонок Квики. Тебе нужен зеленый сироп?",
                  "Quicky, do you need an acceleration stuff?" ),
 
     TopaElephant( "Слоник Топа", "Elephant Boomer" ),

@@ -314,7 +314,7 @@ public final class MyPlayer {
     private static void updateFX ( float deltaTime ) {
         boolean timerWorked = speedUpTime >= 0;
         speedUpTime -= deltaTime;
-        float extraSpeed = 0.0f;
+        extraSpeed = 0.0f;
         speedUpFX = speedUpTime >= 0;
         if ( speedUpFX ) {
             int textOfTimer = (int) speedUpTime + 1;
