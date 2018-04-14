@@ -13,7 +13,7 @@ public enum DEBUG {
     SHOW_MODEL_INFO( false ),
     NPC_ACTIONS( false ),
 
-    FPS( true ),
+    FPS( false ),
     SCREEN_FPS( false ), // должен быть включен FPS
 
     ON_WINDOWS( true ),
@@ -22,7 +22,7 @@ public enum DEBUG {
     ENTITIES( false ),
     PHYSICAL_MESH( false ),
     DYNAMIC_LEVELS( false ),
-    GAME_MASTER_MODE( true ),
+    GAME_MASTER_MODE( false ),
     ;
 
     private final boolean value;

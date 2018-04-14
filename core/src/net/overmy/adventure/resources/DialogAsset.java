@@ -17,9 +17,9 @@ public enum DialogAsset {
     Next( "Далее", "Next" ),
 
 
-    Miki( "Братишка Мики", "Brother Miki" ),
-    Dialog10Text1( "О! Квики, ты нашел меня!", "Oh, Kwiki, you've found me!" ),
-    Dialog10Text1V( "Мики, как ты здесь очутился?", "Miki, how did you end up here?" ),
+    Miki( "Братишка Мики", "Brother Mickey" ),
+    Dialog10Text1( "О! Квики, ты нашел меня!", "Oh, Quicky, you've found me!" ),
+    Dialog10Text1V( "Мики, как ты здесь очутился?", "Mickey, how did you end up here?" ),
     Dialog10Text2( "Я гулял и забыл куда шел =) Надеюсь мама не будет сердиться! =)",
                    "I walked and I forgot where I was going =) I hope my mother will not be angry! =) " ),
     Dialog10Text2V( "Отправляемся домой =)", "We go home =)" ),
@@ -75,10 +75,10 @@ public enum DialogAsset {
 
     Kaksonic( "Ежик Кексоник", "Keksonik the hog " ),
     Dialog5Text( "Бельчонок Квики. Тебе нужно зелье ускорения?",
-                 "Qwiki, do you need an acceleration potion?" ),
+                 "Quicky, do you need an acceleration stuff?" ),
 
     TopaElephant( "Слоник Топа", "Elephant Boomer" ),
-    Dialog6Text( "Бельчонок Квики. Отгадаешь мои загадки?", "Squirrel Quiki, guess my riddles?" ),
+    Dialog6Text( "Бельчонок Квики. Отгадаешь мои загадки?", "Squirrel Quicky, guess my riddles?" ),
     Dialog6Text1V1( "Попробую!", "Ok. I'll try!" ),
     Dialog6Text2( "Чтож начнем! Попробуй отгадай:\n\n" +
                   "Конь бежит, Земля дрожит.",
@@ -107,9 +107,8 @@ public enum DialogAsset {
     Dialog6Text5( "Отлично. Держи монеты!", "Fine, hold the coins!" ),
 
     RacoonBaby( "Енотик Крошка", "Raccoon Little One" ),
-    Dialog7Text1_afterQuest( "Здравствуй Квики.", "Hello Kwiki." ),
     Dialog7Text1( "Здравствуй Квики. Наверное ты хочешь разгадать интересные загадки?",
-                  "Hello Qwiki, do you want to solve interesting riddles?" ),
+                  "Helloб Quicky, do you want to solve interesting riddles?" ),
     Dialog7Text1V1( "Конечно!", "Of course!"
     ),
     Dialog7Text2( "Отгадай загадку:\n\n" +
@@ -123,7 +122,7 @@ public enum DialogAsset {
     Dialog7Text2V3( "Дерево", "Tree" ),
     Dialog7Text3( "Правильно, Квики. Попробуй отгадать такую загадку:\n\n" +
                   "Рогатый, а не бодается.",
-                  "Quite right, Kwiki. Try to guess this riddle:\n\n" +
+                  "Quite right, Quicky. Try to guess this riddle:\n\n" +
                   "Horned, not baked." ),
     Dialog7Text3V1( "Месяц", "The moon" ),
     Dialog7Text3V2( "Муж", "Husband" ),
@@ -140,14 +139,16 @@ public enum DialogAsset {
     Dialog7Text4V1( "Ветер", "Wind" ),
     Dialog7Text4V2( "Солнечный зайчик", "Sunny bunny" ),
     Dialog7Text4V3( "Ветка дерева", "Tree branch" ),
-    Dialog7Text5( "Отлично, Квики. Вот твоя награда!", "Fine, Quiki, here's your reward!" ),
+    Dialog7Text5( "Отлично, Квики. Вот твоя награда!", "Fine, Quicky, here's your reward!" ),
 
     NigelBird( "Птичка Найджел", "Birdie Nigel" ),
     Dialog8Text1(
             "Квики, как рад тебя видеть! У меня кое-что есть, и я тебе это дам, если отгадаешь мои загадки.",
-            "Kwiki, it's good to see you, I have something, and I'll give it to you, if you guess my riddles." ),
+            "Quicky, it's good to see you. I have something, and I'll give it to you, if you guess my riddles." ),
     Dialog8Text1V1( "Я попробую.", "I'll try." ),
-    Dialog8Text2( "Первая загадка:\nБелый камушек растаял,\nна доске следы оставил.",
+    Dialog8Text2( "Первая загадка:\n" +
+                  "Белый камушек растаял,\n" +
+                  "на доске следы оставил.",
                   "The first riddle:\n\n" +
                   "The white pebble melted,\n" +
                   "left traces on the board." ),
@@ -175,14 +176,14 @@ public enum DialogAsset {
     Dialog8Text4V2( "Солнце", "The sun" ),
     Dialog8Text4V3( "Луна", "Moon" ),
     Dialog8Text5( "Молодец, бельчонок Квики. Держи, это убойный аппарат!",
-                  "Well done, little squirrel Kwiki. Take it, it's a killer device!" ),
+                  "Well done, little squirrel Quicky. Take it, it's a killer device!" ),
 
     CheinieRacoon( "Енотик Чейни", "Raccoon Cheney" ),
     Dialog9Text1( "Квики. Ты просто скажи мне: когда\n" +
                   "Мне ничто осветит этот путь в никуда?\n" +
                   "Трудна твоя дорога в поиске Мики? Да!\n" +
                   "Хочешь ускориться? Отгадай тогда.",
-                  "Quikis, you just tell me: when \n" +
+                  "Quicky, you just tell me: when \n" +
                   "Nothing will illuminate this path to nowhere? \n" +
                   "Is your path in finding Miki difficult? Yes! \n" +
                   "Do you want to accelerate? Guess then." ),
@@ -197,7 +198,7 @@ public enum DialogAsset {
                   "Моя речь вопросами обрастает:\n\n" +
                   "Целый день летает, всем надоедает,\n" +
                   "Ночь настанет, тогда перестанет.",
-                  "True, Kwiki, beauty, but \n" +
+                  "True, Quicky, beauty, but \n" +
                   "My speech is becoming obsolete:\n\n" +
                   "The whole day flies, all bored, \n" +
                   "The night will come, then it will stop." ),
@@ -236,95 +237,98 @@ public enum DialogAsset {
             "\n Mars rocket, rocket to Mars," +
             "\n Sometimes we are invisible, but fast as a leopard." ),
 
+
+    Dialog_afterQuest( "Здравствуй, Квики.", "Hello, Quicky." ),
+
     // BOOOOOKS
 
     BookName( "Интересная книга", "Interesting book" ),
 
     Book1Body( "Бельчонок Квики всегда сильно переживает, когда Мики убегает.",
-               "The whiskey of Kwiki always experiences a lot when Miki runs away." ),
+               "The little squirrel Quicky always experiences a lot when Mickey runs away." ),
     Book2Body(
             "Мики всегда больше любили в семье, из-за этого он вырос избалованным. Любитель пошалить!",
-            "Miki always liked more in the family, because of this he grew spoiled. Lover to fool around!" ),
+            "Mickey always liked more in the family, because of this he grew spoiled. Lover to fool around!" ),
     Book3Body( "Квики очень много помогает по дому своей маме. Она его за это хвалит.",
-               "Quiki helps a lot in the house of her mother. She praises him for it." ),
+               "Quicky helps a lot in the house of her mother. She praises him for it." ),
     Book4Body(
             "Родители Квики и Мики часто купали их вместе. А бельчата резво плескались в воде и играли.",
-            "Kwiki grew a carrot near the house, and Miki often pulled carrots from the bed and changed it for Green Syrup. He called syrup - glycodin." ),
+            "The parents of Quicky and Mickey often bathed them together. And the belchachas briskly splashed in the water and played." ),
     Book5Body(
             "Квики выращивал возле дома морковку, а Мики часто вытаскивал морковь с грядки и менял ее за Зеленый сироп. Он называл сироп - гликодин.",
-            "Help Book" ),
+            "Quicky grew a carrot near the house, and Mickey often pulled carrots from the bed and changed it for Green Syrup. He called syrup - glycodin." ),
     Book6Body(
             "Мики приходилось часто восстанавливаться после зеленого сиропа, ведь он отнимал не только силы, но и разум.",
-            "Miki often had to recover from the green syrup, because he took away not only the strength, but also the mind." ),
+            "Mickey often had to recover from the green syrup, because he took away not only the strength, but also the mind." ),
     Book7Body( "За Квики и Мики ухаживала бабушка, она им часто готовила пирожки с мясом.",
-               "Grandma took care of Kwiki and Miki, she often cooked pies with meat." ),
+               "Grandma took care of Quicky and Mickey, she often cooked pies with meat." ),
     Book8Body( "Квики испытывал нежные чувства к бабушке. Она ему никогда ни в чем не отказывала.",
-               "Kwicki had tender feelings for his grandmother. She never refused anything to him." ),
+               "Quicky had tender feelings for his grandmother. She never refused anything to him." ),
     Book9Body(
             "У Квики и Мики был еще один братишка - белка летяга. Он рано покинул родное гнездо.",
-            "Kwiki and Mickey had one more brother - a flying squirrel. He left his native nest early." ),
+            "Quicky and Mickey had one more brother - a flying squirrel. He left his native nest early." ),
     Book10Body(
             "Белки девочки часто собирают в лесу всякий хлам. За это их ласково называют - Гаечка.",
             "Proteins girls often collect in the forest any rubbish. For this they are affectionately called - Gadget." ),
 
     Book11Body(
             "В семье Квики иногда рождались сестренки. Но они куда-то исчезали. А бабушка в отчаянии пекла пирожки, чтобы успокоить бельчат.",
-            "In the Kwiki family, sisters were sometimes born. But they disappeared somewhere. Grandmother, in desperation, baked pies to appease the squirrels." ),
+            "In the Quicky family, sisters were sometimes born. But they disappeared somewhere. Grandmother, in desperation, baked pies to appease the squirrels." ),
     Book12Body(
             "Одним голодным летом бельчатам приходилось питаться тем, что находили в лесу. Они искали свежие кучки, странно что они не питались ягодами.",
             "One hungry summer squirrels had to eat what they found in the forest. They were looking for fresh heaps, it's strange that they did not eat berries." ),
     Book13Body(
             "Когда Мики сильно шалил, его мама запирала в подвале. Но все равно очень любила его.",
-            "When Miki was very naughty, his mother locked in the basement. But still very fond of him." ),
+            "When Mickey was very naughty, his mother locked in the basement. But still very fond of him." ),
     Book14Body(
             "Квики любил пошутить над Мики. Когда Мики заперли в подвале, Квики использовал подвал в качестве туалета.",
-            "Quiki liked to make fun of Miki. When Miki was locked in the basement, Kwiki used the basement as a toilet." ),
+            "Quicky liked to make fun of Mickey. When Mickey was locked in the basement, Quicky used the basement as a toilet." ),
     Book15Body(
             "Отец Квики рано ушел из семьи и их мать постоянно приводила чужих белочек в дом. Эти чужие плохо относились к бельчатам, об этом говорят постоянные синяки под глазами.",
-            "Kwiki's father left the family early and their mother constantly brought in other people's squirrels into the house. These strangers treated poorly belchatians, this is indicated by permanent bruises under the eyes." ),
+            "Quicky's father left the family early and their mother constantly brought in other people's squirrels into the house. These strangers treated poorly little squirrels, this is indicated by permanent bruises under the eyes." ),
     Book16Body(
             "Семью Квики и Мики ненавидят в волшебном лесу. Всем известно, что они любители поохотится на других белок. А потом рядом с их домом очень неприятные запахи.",
-            "The family Kwiki and Miki hate in the magic forest. Everyone knows that they like hunters for other proteins. And then next to their house very unpleasant smells." ),
+            "The family Quicky and Mickey hate in the magic forest. Everyone knows that they like hunters for other proteins. And then next to their house very unpleasant smells." ),
     Book17Body(
             "Пока Мики был совсем малышом, Квики забирался в его кроватку и оставлял в ней небольшую кучку. Родители никак не могли догадаться, что это делал Квики.",
-            "While Mickey was quite a kid, Kwicki climbed into his crib and left in it a small pile. Parents could not guess what Quiki did." ),
+            "While Mickey was quite a kid, Quicky climbed into his crib and left in it a small pile. Parents could not guess what Quicky did." ),
     Book18Body(
             "Семья бельчат любит отмечать праздники. Они накрывают стол перед домом, зовут гостей и угощают их пирожками с мясом. Очень дружелюбная семья.",
             "The squirrels family likes to celebrate holidays. They set the table in front of the house, call the guests and treat them to meat pies. Very friendly family." ),
     Book19Body(
             "Квики часто показывает Мики как нужно себя вести, как добывать себе еду и что пригодно в пищу. Мики не очень нравятся нравоучения и он все делает по-своему.",
-            "Kwiki often shows Miki how to behave, how to get your own food and what is suitable for food. Miki does not really like moralizing and he does everything in his own way." ),
+            "Quicky often shows Mickey how to behave, how to get your own food and what is suitable for food. Mickey does not really like moralizing and he does everything in his own way." ),
     Book20Body(
             "Мики и Квики очень любят пирожки. Но пока что мама и бабушка их не пускают на кухню. Хранят кулинарные секретики!",
-            "Miki and Kviki are very fond of pies. But meanwhile, my mother and grandmother are not allowed to enter the kitchen. Keep culinary secrets!" ),
+            "Mickey and Quicky are very fond of pies. But meanwhile, mother and grandmother are not allowed to enter the kitchen. Keep culinary secrets!" ),
 
     Book21Body( "Раньше Квики и Мики часто играли под мостом. Что же они там делали?",
-                "Previously, Kwiki and Miki often played under the bridge. What did they do there?" ),
+                "Previously, Quicky and Mickey often played under the bridge. What did they do there?" ),
     Book22Body(
             "Квики никогда долго не сердился над Мики. Даже если подвешивал его за хвост на дереве, Квики быстро успокаивался и снимал его.",
-            "Kwiki never longed to be angry with Miki. Even if he hung it by the tail on a tree, Quicky is quickly calmed down and took it off." ),
+            "Quicky never longed to be angry with Mickey. Even if he hung it by the tail on a tree, Quicky is quickly calmed down and took it off." ),
     Book23Body(
             "Дома у Квики на полу лежит болшая шкура белого медведя. Бельчата любят валяться на шкуре и играть.",
-            "At home, Vicki has a big polar bear skin on the floor. Squirrels like to wallow on the skin and play." ),
+            "At home, Quicky has a big polar bear skin on the floor. Squirrels like to wallow on the skin and play." ),
     Book24Body( "В особенно холодные зимы, бельчата носят варежки из кроличьего меха.",
                 "In especially cold winters, squirrels wear rabbit fur." ),
     Book25Body(
             "Мики очень любит играть с зайчатами и кроликами. Что он с ними только не делает. Вот озорник-затейник!",
-            "Miki likes to play with rabbits and rabbits very much. What he does with them just does not. Here is a mischievous inventor!" ),
+            "Mickey likes to play with rabbits and rabbits very much. What he does with them just does not. Here is a mischievous inventor!" ),
     Book26Body(
             "Папа Квики пропал. Мама никак не могла прекратить плакать. Одно не понятно - откуда у них дома под кроватью валяется чей-то оторванный хвост.",
-            "Pwa Kwika disappeared. Mom could not stop crying. One thing is not clear - whence they have someone's tail torn off under the bed." ),
+            "Quicky's farther is disappeared. Mom could not stop crying. One thing is not clear - whence they have someone's tail torn off under the bed." ),
     Book27Body(
             "Однажды Мики и Квики нашли далеко от дома чьи-то лапки, торчащие из земли. Они были очень похожи на лапки их отца, но это скорее всего совпадение.",
-            "Once Miki and Quiki found far away from the house someone's paws sticking out of the ground. They were very similar to their father's paws, but this is most likely a coincidence." ),
+            "Once Mickey and Quicky found far away from the house someone's paws sticking out of the ground. They were very similar to their father's paws, but this is most likely a coincidence." ),
     Book28Body(
             "Квики часто снился сон. Он разговаривал с Богом, вернее выслушивал его нравоучения. Но на утро всегда забывал сон.",
-            "Quiks often dreamed a dream. He talked with God, or rather listened to his moralizing. But in the morning I always forgot a dream." ),
+            "Quicky often dreamed a dream. He talked with God, or rather listened to his moralizing. But in the morning he always forgot a dream." ),
     Book29Body(
             "Квики старше своего братика на 15 лет. Квики умнее Мики и часто объясняет ему простые вещи.",
-            "Kviki is older than his brother for 15 years. Kwiki is smarter than Mickey and often explains simple things to him." ),
+            "Quicky is older than his brother for 15 years. Quicky is smarter than Mickey and often explains simple things to him." ),
     Book30Body( "Мики никогда не помогал Квики ни в чем. Он только радуется жизни и бездельничает.",
-                "Miki never helped Quiki in anything. He only enjoys life and idles." ),
+                "Mickey never helped Quicky in anything. He only enjoys life and idles." ),
 
     // Покупки в магазине
 

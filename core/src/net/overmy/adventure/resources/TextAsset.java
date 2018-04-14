@@ -39,24 +39,28 @@ public enum TextAsset {
     KEY1( "Песочный ключ", "Sand key" ),
     KEY1_ABOUT( "Открывает дверь на острове", "Opens the door on the island" ),
     KEY2( "Цветочный ключ", "Flower key" ),
-    KEY2_ABOUT( "Возможно этот ключ подойдет к замку, где-то за невидимой стеной",
-                "Perhaps this key will fit the lock, somewhere behind the invisible wall" ),
+    KEY2_ABOUT(
+            "Возможно этот ключ подойдет к замку, где-то за невидимой стеной",
+            "Perhaps this key will fit the lock, somewhere behind the invisible wall" ),
     KEY3( "Деревянный ключ", "Wooden key" ),
-    KEY3_ABOUT( "Открывает деревянные двери на зеленой поляне",
-                "Opens the wooden door on a green meadow" ),
+    KEY3_ABOUT(
+            "Открывает деревянные двери на зеленой поляне",
+            "Opens the wooden door on a green meadow" ),
     KEY4( "Каменный ключ", "Stone key" ),
-    KEY4_ABOUT( "Открывает ворота замка", "Opens the gate of the castle" ),
+    KEY4_ABOUT( "Открывает ворота замка", "Opens the gates of the castle" ),
     KEY5( "Ледяной ключ", "Ice key" ),
     KEY5_ABOUT( "Подойдет к замку на снежных тропах", "Will fit the lock on the snowy trails" ),
     KEY6( "Ржавый ключ", "Rusty key" ),
-    KEY6_ABOUT( "Этим ключом можно открыть двери на задворках замка",
-                "With this key you can open the doors at the back of the castle." ),
+    KEY6_ABOUT(
+            "Этим ключом можно открыть двери на задворках замка",
+            "With this key you can open the doors at the back of the castle." ),
 
     BLUE_BOTTLE( "Синий компот", "Blue compote" ),
     BLUE_BOTTLE_ABOUT( "Бессмертие на 30 секунд", "Immortality for 30 seconds" ),
     GREEN_BOTTLE( "Зеленый сироп", "Green syrup" ),
-    GREEN_BOTTLE_ABOUT( "Ускоряет передвижение на 15 секунд",
-                        "Accelerates movement for 15 seconds" ),
+    GREEN_BOTTLE_ABOUT(
+            "Ускоряет передвижение на 15 секунд",
+            "Accelerates movement for 15 seconds" ),
     RED_BOTTLE( "Красный сок", "Red juice" ),
     RED_BOTTLE_ABOUT( "Восполняет здоровье", "Restore health points" ),
     PURPLE_BOTTLE( "Виноградный нектар", "Grape nectar" ),
@@ -67,19 +71,20 @@ public enum TextAsset {
 
     // Фразы NPC
 
-    BEWARE_ME_BUNNY( "Ну, заяц, погоди!", "Feel my power!" ),
+    BEWARE_ME_BUNNY( "Ну, заяц, погоди!", "Behold my power!" ),
 
     BEARTEXT1( "Гульман, выходи!", "Gulman, come on!" ),
     BEARTEXT2( "Опять шедевр делает...", "New masterpiece is coming..." ),
 
     HOG1TEXT1( "Как там моя прелесть?", "How there my charm?" ),
-    HOG1TEXT2( "Ясно. Понятно.", "I see. Ok." ),
+    HOG1TEXT2( "Ясно. Понятно.", "Ok. I see." ),
 
     // Оружие
 
     BAT_WEAPON( "Примадонна Дорогуша", "Famous bat Darlin" ),
-    BAT_WEAPON_ABOUT( "Этой битой была выиграна известная игра в Чикаго.\nУрон: 50",
-                      "This bat won a famous game in Chicago.\nDamage: 50" ),
+    BAT_WEAPON_ABOUT(
+            "Этой битой была выиграна известная игра в Чикаго.\nУрон: 50",
+            "This bat won a famous game in Chicago.\nDamage: 50" ),
 
     PILLOW_WEAPON( "Подушка", "Pillow" ),
     PILLOW_WEAPON_ABOUT(
@@ -90,15 +95,17 @@ public enum TextAsset {
     BROOM_WEAPON_ABOUT( "Любимая метла Золушки. Она ей очень дорожила.\nУрон: 35",
                         "Favorite Cinderella broom. She treasured her very much.\nDamage: 35" ),
     RAKE_WEAPON( "Грабли", "Rake" ),
-    RAKE_WEAPON_ABOUT( "Джек ухаживал этими граблями за волшебными бобами.\nУрон:60",
-                       "Jack took care of these rakes for magic beans.\nDamage: 60" ),
+    RAKE_WEAPON_ABOUT(
+            "Джек ухаживал этими граблями за волшебными бобами.\nУрон:60",
+            "Jack took care of these rakes for magic beans.\nDamage: 60" ),
     KALASH_WEAPON( "Убойный аппарат", "Slaughter machine" ),
     KALASH_WEAPON_ABOUT(
             "Это знаменитый аппарат, который не поделили Братья Гавс.\nУрон: 110",
             "This is a famous device that the Beagle Boys did not share.\nDamage: 110" ),
     FENCE_WEAPON( "Забор", "Fence" ),
-    FENCE_WEAPON_ABOUT( "Эту часть забора разрушил Фердинанд, перед своим побегом.\nУрон: 150",
-                        "This part of the fence was destroyed by Ferdinand, before his escape.\nDamage: 150" ),
+    FENCE_WEAPON_ABOUT(
+            "Эту часть забора разрушил Фердинанд, перед своим побегом.\nУрон: 150",
+            "This part of the fence was destroyed by Ferdinand, before his escape.\nDamage: 150" ),
     GUN_WEAPON( "Пистолет. На палке", "Gun. On stick" ),
     GUN_WEAPON_ABOUT(
             "Черный плащ потерял это оружие во время последней схватки с Морганой Макабр.\nУрон: 120",
@@ -116,15 +123,15 @@ public enum TextAsset {
             "Epic heavy pillow of the hero, on which Shrek could have slept.\nDamage: 30" ),
     BROOM_WEAPON_UPGRADED( "Метла уборщика", "The cleaner broom" ),
     BROOM_WEAPON_UPGRADED_ABOUT(
-            "Любимая метла Золушки. После волшеного вмешательства Крестной она получила удивительные ствойства.\nУрон: 80",
-            "Favorite Cinderella broom. After the wolf intervention of the godmother, she received amazing characteristics.\nDamage: 80" ),
+            "Любимая метла Золушки. После волшебного вмешательства Крестной, она получила удивительные ствойства.\nУрон: 80",
+            "Favorite Cinderella broom. After the magic intervention of the godmother, she received amazing characteristics.\nDamage: 80" ),
     RAKE_WEAPON_UPGRADED( "Новые грабли", "New Rake" ),
     RAKE_WEAPON_UPGRADED_ABOUT( "Джек ухаживал этими граблями за волшебным стеблем.\nУрон: 120",
                                 "Jack took care of these rakes for the magic stalk.\nDamage: 120" ),
     KALASH_WEAPON_UPGRADED( "Мощный аппарат", "Power machine" ),
     KALASH_WEAPON_UPGRADED_ABOUT(
             "Это любимый аппарат Мамаши Гавс.\nУрон: 170",
-            "This is the favorite device of Ma Beagle.\nDamage: 170" ),
+            "This is the favorite device of Beagle Ma.\nDamage: 170" ),
     FENCE_WEAPON_UPGRADED( "Укрепленный забор", "Fortified Fence" ),
     FENCE_WEAPON_UPGRADED_ABOUT(
             "Часть нового укрепленного забора, которую опять разрушил Фердинанд, перед своим побегом.\nУрон: 190",

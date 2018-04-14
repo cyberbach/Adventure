@@ -24,7 +24,7 @@ public final class DialogProcessor {
             SoundAsset.Collect7.play();
             MyPlayer.removeItemInBag( money, count );
             MyPlayer.addToBag( what );
-        }else{
+        } else {
             AshleySubs.createText( TextAsset.NOT_ENOUGH_MONEY.get() );
         }
     }
@@ -39,6 +39,7 @@ public final class DialogProcessor {
                 MyPlayer.addToBag( Item.KALASH_WEAPON );
 
                 MyDialog.NigelBird
+                        .setBody( DialogAsset.Dialog_afterQuest )
                         .connect( MyDialog.BUY_RedBottle_10coins,
                                   MyDialog.BUY_GreenBottle_10coins );
                 break;
@@ -54,7 +55,9 @@ public final class DialogProcessor {
                     MyPlayer.addToBag( Item.COIN );
                 }
 
-                MyDialog.Topa.connect( MyDialog.BUY_RedBottle_10coins );
+                MyDialog.Topa
+                        .setBody( DialogAsset.Dialog_afterQuest )
+                        .connect( MyDialog.BUY_RedBottle_10coins );
                 break;
 
             case RacoonBabyQ4V1_last:
@@ -64,7 +67,7 @@ public final class DialogProcessor {
                 }
 
                 MyDialog.RacoonBaby
-                        .setBody( DialogAsset.Dialog7Text1_afterQuest )
+                        .setBody( DialogAsset.Dialog_afterQuest )
                         .connect( MyDialog.BUY_BlueBottle_3BlueStars,
                                   MyDialog.BUY_BlueBottle_3yellowStars );
                 break;
@@ -73,19 +76,21 @@ public final class DialogProcessor {
                 SoundAsset.Collect7.play();
                 MyPlayer.addToBag( Item.GREEN_BOTTLE );
 
-                MyDialog.CheinieRacoon.connect(
-                        MyDialog.BUY_BlueBottle_3yellowStars,
-                        MyDialog.BUY_BlueBottle_3BlueStars );
+                MyDialog.CheinieRacoon
+                        .setBody( DialogAsset.Dialog_afterQuest )
+                        .connect( MyDialog.BUY_BlueBottle_3yellowStars,
+                                  MyDialog.BUY_BlueBottle_3BlueStars );
                 break;
 
             case FoxAliceQ3V1_last:
                 SoundAsset.Collect7.play();
                 MyPlayer.addToBag( Item.PILLOW_WEAPON );
 
-                MyDialog.FoxAlice.connect(
-                        MyDialog.BUY_PurpleBottle_5coins,
-                        MyDialog.BUY_BlueBottle_3BlueStars,
-                        MyDialog.BUY_PurpleBottle_5coins );
+                MyDialog.FoxAlice
+                        .setBody( DialogAsset.Dialog_afterQuest )
+                        .connect( MyDialog.BUY_PurpleBottle_5coins,
+                                  MyDialog.BUY_BlueBottle_3BlueStars,
+                                  MyDialog.BUY_PurpleBottle_5coins );
                 break;
 
             // --------- shop -------------
