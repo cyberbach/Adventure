@@ -51,8 +51,8 @@ import net.overmy.adventure.ashley.components.TYPE_OF_ENTITY;
 import net.overmy.adventure.ashley.components.TYPE_OF_INTERACT;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.LevelObject;
+import net.overmy.adventure.logic.MyDialog;
 import net.overmy.adventure.logic.NPCAction;
-import net.overmy.adventure.logic.TextInteract;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
@@ -205,7 +205,8 @@ public final class AshleySubs {
                 .setCollisionFlag( btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.PLAYER_FLAG )
                 .setCallbackFilter( BulletWorld.FILTER_ALL )
-                .disableDeactivation();
+                .disableDeactivation()
+                .disableRotation();
 
         Entity entity = new Entity();
         entity.add( physicalBuilder.buildPhysicalComponent() );
@@ -309,12 +310,13 @@ public final class AshleySubs {
                 .defaultMotionState()
                 .setPosition( position )
                 .setMass( 1.0f )
-                .boxShape()
-                .setStartImpulse( new Vector3( 0,8,0 ) )
+                .hullShape()
+                .setStartImpulse( new Vector3( 0,6,0 ) )
                 .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                 .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG )
-                .disableDeactivation();
+                .disableDeactivation()
+                .disableRotation();
 
         Entity entity = new Entity();
         if ( modelInstance.animations.size > 0 ) {
@@ -425,7 +427,7 @@ public final class AshleySubs {
 
     public static Entity createNPC ( Vector3 position,
                                      ModelAsset modelAsset,
-                                     TextInteract textInteract,
+                                     MyDialog myDialog,
                                      ImmutableArray< NPCAction > actionArray ) {
 
         ModelInstance modelInstance = modelAsset.get();
@@ -460,8 +462,8 @@ public final class AshleySubs {
         Entity entity = new Entity();
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( new AnimationComponent( modelInstance ) );
-        if ( textInteract != null ) {
-            entity.add( new InteractComponent( TYPE_OF_INTERACT.TALK, textInteract ) );
+        if ( myDialog != null ) {
+            entity.add( new InteractComponent( TYPE_OF_INTERACT.TALK, myDialog ) );
         }
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.NPC ) );
         entity.add( new NPCComponent( actionArray ) );
@@ -755,7 +757,7 @@ public final class AshleySubs {
                     .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                     .setCallbackFlag( BulletWorld.PART_FLAG )
                     .setCallbackFilter( BulletWorld.GROUND_FLAG )
-                    .setStartImpulse( randomPosition.scl( parts * 0.1f ) )
+                    .setStartImpulse( randomPosition.scl( 0.6f ) )
                     .disableDeactivation();
 
             Entity partEntity = new Entity();
@@ -903,7 +905,7 @@ public final class AshleySubs {
 
 
     public static Entity createInteractive ( Vector3 position, ModelAsset modelAsset,
-                                             TextInteract textInteract, float rotation ) {
+                                             MyDialog myDialog, float rotation ) {
 
         ModelInstance modelInstance = modelAsset.get();
         modelInstance.transform.idt();
@@ -922,8 +924,8 @@ public final class AshleySubs {
         Entity entity = new Entity();
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( physicalBuilder.buildPhysicalComponent() );
-        if ( textInteract != null ) {
-            entity.add( new InteractComponent( TYPE_OF_INTERACT.READ, textInteract ) );
+        if ( myDialog != null ) {
+            entity.add( new InteractComponent( TYPE_OF_INTERACT.READ, myDialog ) );
         }
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.INTERACTIVE ) );
         engine.addEntity( entity );

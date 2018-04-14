@@ -3,9 +3,7 @@ package net.overmy.adventure.logic;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -27,7 +25,7 @@ public class LevelObject {
     protected Vector3                     position          = null;
     private   OBJECT_TYPE                 type              = null;
     public    Item                        item              = null;
-    private   TextInteract                textInteract      = null;
+    private   MyDialog                    myDialog          = null;
     private   ImmutableArray< NPCAction > script            = null; // очередь действий - это скрипт
     protected Entity                      entity            = null;
     public    boolean                     used              = false;
@@ -56,6 +54,12 @@ public class LevelObject {
         return this;
     }
 
+    public LevelObject setPositionR ( float x, float y, float z, float rot ) {
+        this.position = new Vector3( x,y,z );
+        setRotation( rot );
+        return this;
+    }
+
 
     public LevelObject setType ( OBJECT_TYPE type ) {
         this.type = type;
@@ -72,8 +76,8 @@ public class LevelObject {
     }
 
 
-    public LevelObject setTextInteract ( TextInteract textInteract ) {
-        this.textInteract = textInteract;
+    public LevelObject setMyDialog ( MyDialog myDialog ) {
+        this.myDialog = myDialog;
         return this;
     }
 
@@ -168,7 +172,7 @@ public class LevelObject {
                 break;
 
             case NPC:
-                entity = AshleySubs.createNPC( position, dynamicModelAsset, textInteract,
+                entity = AshleySubs.createNPC( position, dynamicModelAsset, myDialog,
                                                script );
                 break;
 
@@ -182,7 +186,7 @@ public class LevelObject {
 
             case INTERACTIVE:
                 entity = AshleySubs.createInteractive( position, dynamicModelAsset,
-                                                       textInteract, rotation );
+                                                       myDialog, rotation );
                 break;
         }
 

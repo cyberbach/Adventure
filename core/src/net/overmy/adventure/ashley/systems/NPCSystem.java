@@ -216,12 +216,14 @@ public class NPCSystem extends IteratingSystem {
                     if ( attack ) {
                         if ( !npcIsAttacking && !npcIsHurt ) {
                             animationComponent.play( ATTACK, animationSpeed );
+                            animationComponent.queue( IDLE, 2.0f );
                         } else {
                             animationComponent.queue( ATTACK, animationSpeed );
                         }
                     } else {
                         if ( !npcIsHurt ) {
                             animationComponent.play( RUN, animationSpeed );
+                            animationComponent.queue( IDLE, 2.0f );
                         }
                     }
                 }
@@ -250,6 +252,7 @@ public class NPCSystem extends IteratingSystem {
                         animationComponent.queue( IDLE, 2.0f );
                     } else {
                         animationComponent.play( IDLE, 2.0f );
+                        animationComponent.queue( IDLE, 2.0f );
                     }
                 }
                 speed = 0.0f;
@@ -260,6 +263,7 @@ public class NPCSystem extends IteratingSystem {
 
         if ( npcComponent.hurt ) {
             animationComponent.play( HURT, 3.5f );
+            animationComponent.queue( IDLE, 2.0f );
             npcComponent.hurt = false;
         }
 

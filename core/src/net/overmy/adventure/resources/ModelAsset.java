@@ -82,7 +82,7 @@ public enum ModelAsset {
     ROCKBOSS( "npc_rock" ),
 
     PLAYER01( "npc_squirrel" ),
-    SQUIRREL( "npc_squirrel" ),
+    SQUIRREL( "npc_squirrel2" ),
     ;
 
     private StringBuilder stringBuilder = new StringBuilder();

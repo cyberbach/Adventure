@@ -182,7 +182,6 @@ public final class MyPlayer {
                 .setCollisionFlag( CollisionFlags.CF_NO_CONTACT_RESPONSE )
                 .setCallbackFlag( BulletWorld.MYWEAPON_FLAG )
                 .setCallbackFilter( BulletWorld.FILTER_ALL )
-                .disableRotation()
                 .disableDeactivation();
 
         weaponEntity = new Entity();
@@ -307,48 +306,16 @@ public final class MyPlayer {
     }
 
 
-    private static void updateAnimation ( float deltaTime ) {
+    private static float   extraSpeed;
+    private static boolean speedUpFX;
+    private static boolean jumpUpFX;
 
-        if ( !live ) {
-            return;
-        }
 
-        final AnimationComponent animationComponent = MyMapper.ANIMATION.get( playerEntity );
-        final String ID_CURRENT = animationComponent.getID();
-        final String ID_ATTACK = "ATTACK";
-        final String ID_RUN = "RUN";
-        final String ID_IDLE = "IDLE";
-        final String ID_HURT = "HURT";
-
-        final boolean playerOnGround = MyMapper.GROUNDED.get( playerEntity ).grounded;
-        final boolean playerInIDLE = ID_IDLE.equals( ID_CURRENT );
-        final boolean playerIsRunning = ID_RUN.equals( ID_CURRENT );
-        final boolean playerIsAttacking = ID_ATTACK.equals( ID_CURRENT );
-        final boolean playerIsHurt = ID_HURT.equals( ID_CURRENT );
-//        final boolean playerJump = ID_JUMP.equals( ID_CURRENT );
-
-        final int IDLE = 0;
-        final int RUN = 1;
-        final int ATTACK = 2;
-        final int HURT = 4;
-
-        // SET sound of walking steps
-        if ( !onLadder ) {
-            if ( direction.len() > 0 && playerOnGround ) {
-                float walkSpeed = ( 2.5f + direction.len() * 0.5f ) / 4;
-                walk.setVolume( 1.0f );
-                walk.setPitch( walkSpeed );
-            } else {
-                walk.setVolume( 0.0f );
-            }
-        } else {
-            walk.setVolume( 0.0f );
-        }
-
+    private static void updateFX ( float deltaTime ) {
         boolean timerWorked = speedUpTime >= 0;
         speedUpTime -= deltaTime;
         float extraSpeed = 0.0f;
-        boolean speedUpFX = speedUpTime >= 0;
+        speedUpFX = speedUpTime >= 0;
         if ( speedUpFX ) {
             int textOfTimer = (int) speedUpTime + 1;
             speedUpTimerLabel.setText( "" + textOfTimer );
@@ -381,7 +348,7 @@ public final class MyPlayer {
 
         timerWorked = jumpUpTime >= 0;
         jumpUpTime -= deltaTime;
-        boolean jumpUpFX = jumpUpTime >= 0;
+        jumpUpFX = jumpUpTime >= 0;
         if ( jumpUpFX ) {
             int textOfTimer = (int) jumpUpTime + 1;
             jumpUpTimerLabel.setText( "" + textOfTimer );
@@ -395,6 +362,48 @@ public final class MyPlayer {
                 SoundAsset.ENDBOTTLE.play();
             }
         }
+    }
+
+
+    private static void updateAnimation ( float deltaTime ) {
+
+        if ( !live ) {
+            return;
+        }
+
+        final AnimationComponent animationComponent = MyMapper.ANIMATION.get( playerEntity );
+        final String ID_CURRENT = animationComponent.getID();
+        final String ID_IDLE = "IDLE";
+        final String ID_RUN = "RUN";
+        final String ID_ATTACK = "ATTACK";
+        final String ID_HURT = "HURT";
+
+        final boolean playerOnGround = MyMapper.GROUNDED.get( playerEntity ).grounded;
+        final boolean playerInIDLE = ID_IDLE.equals( ID_CURRENT );
+        final boolean playerIsRunning = ID_RUN.equals( ID_CURRENT );
+        final boolean playerIsAttacking = ID_ATTACK.equals( ID_CURRENT );
+        final boolean playerIsHurt = ID_HURT.equals( ID_CURRENT );
+//        final boolean playerJump = ID_JUMP.equals( ID_CURRENT );
+
+        final int IDLE = 0;
+        final int RUN = 1;
+        final int ATTACK = 2;
+        final int HURT = 4;
+
+        // SET sound of walking steps
+        if ( !onLadder ) {
+            if ( direction.len() > 0 && playerOnGround ) {
+                float walkSpeed = ( 2.5f + direction.len() * 0.5f ) / 4;
+                walk.setVolume( 1.0f );
+                walk.setPitch( walkSpeed );
+            } else {
+                walk.setVolume( 0.0f );
+            }
+        } else {
+            walk.setVolume( 0.0f );
+        }
+
+        updateFX( deltaTime );
 
         if ( attack && !playerIsHurt ) {
             animationComponent.play( ATTACK, 3.0f );
@@ -415,6 +424,7 @@ public final class MyPlayer {
                         animationComponent.queue( RUN, animationSpeed );
                     } else {
                         animationComponent.play( RUN, animationSpeed );
+                        animationComponent.queue( IDLE, 2.0f );
                     }
                 }
             }
@@ -427,6 +437,7 @@ public final class MyPlayer {
                         animationComponent.queue( IDLE, 2.0f );
                     } else {
                         animationComponent.play( IDLE, 2.0f );
+                        animationComponent.queue( IDLE, 2.0f );
                     }
                 } else {
                     animationComponent.queue( IDLE, 2.0f );
@@ -453,6 +464,7 @@ public final class MyPlayer {
                         animationComponent.queue( IDLE, 2.0f );
                     } else {
                         animationComponent.play( IDLE, 2.0f );
+                        animationComponent.queue( IDLE, 2.0f );
                     }
                 }
             } else {
@@ -464,6 +476,7 @@ public final class MyPlayer {
         if ( hurt ) {
             hurt = false;
             animationComponent.play( HURT, 3.5f );
+            animationComponent.queue( IDLE, 2.0f );
         }
     }
 

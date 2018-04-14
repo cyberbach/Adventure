@@ -41,20 +41,19 @@ import net.overmy.adventure.ashley.systems.InteractSystem;
 import net.overmy.adventure.ashley.systems.NPCSystem;
 import net.overmy.adventure.ashley.systems.RenderSystem;
 import net.overmy.adventure.ashley.systems.TextDecalSystem;
-import net.overmy.adventure.logic.CollectableProcessor;
+import net.overmy.adventure.logic.DialogProcessor;
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
-import net.overmy.adventure.logic.TextInteract;
+import net.overmy.adventure.logic.MyDialog;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.IMG;
-import net.overmy.adventure.resources.ModelAsset;
 import net.overmy.adventure.resources.MusicAsset;
 import net.overmy.adventure.resources.Settings;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextAsset;
-import net.overmy.adventure.resources.TextInteractAsset;
+import net.overmy.adventure.resources.DialogAsset;
 import net.overmy.adventure.resources.TextureAsset;
 import net.overmy.adventure.utils.GFXHelper;
 import net.overmy.adventure.utils.LoadIndicator;
@@ -213,6 +212,23 @@ public class GameScreen extends Base2DScreen {
                 MusicAsset.FOREST.play( true );
                 break;
         }
+
+        // FIXME удалить после теста
+
+        for(int i=0;i<40;i++) {
+            MyPlayer.addToBag( Item.COIN );
+            MyPlayer.addToBag( Item.YELLOW_STAR );
+            MyPlayer.addToBag( Item.BLUE_STAR );
+            MyPlayer.addToBag( Item.GREEN_STAR );
+        }
+
+        MyPlayer.addToBag( Item.KEY1 );
+        MyPlayer.addToBag( Item.KEY2 );
+        MyPlayer.addToBag( Item.KEY3 );
+        MyPlayer.addToBag( Item.KEY4 );
+        MyPlayer.addToBag( Item.KEY5 );
+        MyPlayer.addToBag( Item.KEY6 );
+        MyPlayer.addToBag( Item.GUN_WEAPON_UPGRADED );
     }
 
 
@@ -448,7 +464,7 @@ public class GameScreen extends Base2DScreen {
                     log.append( interactSystem.getCurrentItem().getName() );
                     itemInInventory = MyPlayer.testBag( interactSystem.getCurrentItem() );
                 } else {
-                    log.append( interactSystem.getCurrentTextInteract().getTitle() );
+                    log.append( interactSystem.getCurrentMyDialog().getTitle() );
                 }
                 Label interactText = UIHelper.Label( log.toString(), FontAsset.IVENTORY_ITEM );
                 float w = interactText.getWidth();
@@ -462,28 +478,31 @@ public class GameScreen extends Base2DScreen {
                 lineImage.setColor( GameColor.BLACKGL.get() );
                 lineImage.setPosition( -lineImage.getWidth() / 2, -lineImage.getHeight() / 2 );
 
-                interactGroup.addActor( lineImage );
-                interactGroup.addActor( interactText );
-                final boolean finalIsBook = isBook;
-                final boolean finalUSEinteract = USEinteract;
-                final boolean finalItemInInventory = itemInInventory;
-                interactGroup.addListener( new ClickListener() {
-                    public void clicked ( InputEvent event, float x, float y ) {
-                        SoundAsset.EQUIP.play();
-                        UIHelper.clickAnimation( interactGroup );
-                        if ( finalUSEinteract ) {
-                            if ( finalItemInInventory ) {
+                if ( !showGameOver ) {
+                    interactGroup.addActor( lineImage );
+                    interactGroup.addActor( interactText );
+                    final boolean finalIsBook = isBook;
+                    final boolean finalUSEinteract = USEinteract;
+                    final boolean finalItemInInventory = itemInInventory;
+                    interactGroup.addListener( new ClickListener() {
+                        public void clicked ( InputEvent event, float x, float y ) {
+                            SoundAsset.EQUIP.play();
+                            UIHelper.clickAnimation( interactGroup );
+                            if ( finalUSEinteract ) {
+                                if ( finalItemInInventory ) {
+                                    interactSystem.act();
+                                }
+                            } else {
                                 interactSystem.act();
                             }
-                        } else {
-                            interactSystem.act();
-                        }
 
-                        if ( interactSystem.getCurrentTextInteract() != null ) {
-                            showDialogMenu( interactSystem.getCurrentTextInteract(), finalIsBook );
+                            if ( interactSystem.getCurrentMyDialog() != null ) {
+                                showDialogMenu( interactSystem.getCurrentMyDialog(),
+                                                finalIsBook );
+                            }
                         }
-                    }
-                } );
+                    } );
+                }
             }
         } else {
             readyToPick = false;
@@ -500,7 +519,7 @@ public class GameScreen extends Base2DScreen {
 
         // GAME is OVER
 
-        if ( !MyPlayer.live && !showGameOver ) {
+        if ( !MyPlayer.live && !showGameOver || DialogProcessor.gameFinished && !showGameOver ) {
             showGameOver = true;
 
             SoundAsset.GAMEOVER.play();
@@ -518,6 +537,8 @@ public class GameScreen extends Base2DScreen {
                 public void clicked ( InputEvent event, float x, float y ) {
                     SoundAsset.BackSound.play();
                     UIHelper.scaleOut( gameOverGroup );
+                    DialogProcessor.gameFinished=false;
+                    MyPlayer.live=false;
                     transitionTo( MyGdxGame.SCREEN_TYPE.MENU );
                 }
             } );
@@ -658,8 +679,8 @@ public class GameScreen extends Base2DScreen {
     }
 
 
-    private void showDialogMenu ( TextInteract currentTextInteract, final boolean isBook ) {
-        if ( currentTextInteract.haveNotBody() ) {
+    private void showDialogMenu ( MyDialog currentMyDialog, final boolean isBook ) {
+        if ( currentMyDialog.haveNotBody() ) {
             showGameGUI();
             return;
         }
@@ -692,7 +713,7 @@ public class GameScreen extends Base2DScreen {
 
         // title
 
-        Label dialogTitle = UIHelper.Label( currentTextInteract.getTitle(), FontAsset.MENU_TITLE );
+        Label dialogTitle = UIHelper.Label( currentMyDialog.getTitle(), FontAsset.MENU_TITLE );
         dialogTitle.setWrap( true );
         float fontOffset = dialogTitle.getHeight() * 1.5f;
         dialogTitle.setPosition( offset * 1.4f, Core.HEIGHT - offset * 2.0f );
@@ -701,7 +722,7 @@ public class GameScreen extends Base2DScreen {
 
         // body
 
-        Label dialogBody = UIHelper.Label( currentTextInteract.getBody(), FontAsset.DIALOG_BODY );
+        Label dialogBody = UIHelper.Label( currentMyDialog.getBody(), FontAsset.DIALOG_BODY );
         dialogBody.setWidth( Core.WIDTH - offset * 6.5f );
         dialogBody.setWrap( true );
         Gdx.app.debug( "height", "" + dialogBody.getHeight() );
@@ -709,13 +730,13 @@ public class GameScreen extends Base2DScreen {
                                 Core.HEIGHT - offset * 1.5f - dialogBody.getHeight() );
         gameGroup.addActor( dialogBody );
 
-        Gdx.app.debug( "connections", "" + currentTextInteract.getConnections() );
+        Gdx.app.debug( "connections", "" + currentMyDialog.getConnections() );
 
         // variants
 
         int j = 0;
-        for ( int i = 0; i < currentTextInteract.getConnections().size; i++ ) {
-            final TextInteract connection = currentTextInteract.getConnections().get( i );
+        for ( int i = 0; i < currentMyDialog.getConnections().size; i++ ) {
+            final MyDialog connection = currentMyDialog.getConnections().get( i );
 
             Label dialogVariant = UIHelper.Label( connection.getAction(),
                                                   FontAsset.DIALOG_VARIANT );
@@ -724,7 +745,7 @@ public class GameScreen extends Base2DScreen {
             dialogVariant.addListener( new ClickListener() {
                 public void clicked ( InputEvent event, float x, float y ) {
                     SoundAsset.Click.play();
-                    processTextBlock( connection );
+                    DialogProcessor.process( connection );
                     showDialogMenu( connection, isBook );
                 }
             } );
@@ -734,10 +755,10 @@ public class GameScreen extends Base2DScreen {
 
         Label dialogVariant;
         if ( isBook ) {
-            dialogVariant = UIHelper.Label( TextInteractAsset.CloseBook.get(),
+            dialogVariant = UIHelper.Label( DialogAsset.CloseBook.get(),
                                             FontAsset.DIALOG_VARIANT );
         } else {
-            dialogVariant = UIHelper.Label( TextInteractAsset.CloseDialog.get(),
+            dialogVariant = UIHelper.Label( DialogAsset.CloseDialog.get(),
                                             FontAsset.DIALOG_VARIANT );
         }
 
@@ -752,24 +773,25 @@ public class GameScreen extends Base2DScreen {
         gameGroup.addActor( dialogVariant );
     }
 
+/*
 
-    private void processTextBlock ( TextInteract connection ) {
+    private void processTextBlock ( MyDialog connection ) {
 
         Vector3 pos1 = new Vector3( MyPlayer.getNotFilteredPos() ).add( 0, 0.5f, 0 );
 
         switch ( connection ) {
-            case Dialog3FoxAliceQ3V1:
+            case FoxAliceQ3V1_last:
                 CollectableProcessor.process( Item.PILLOW_WEAPON, pos1 );
-                TextInteract.Dialog3FoxAlice.getConnections().clear();
-                TextInteract.Dialog3FoxAlice.connect( TextInteract.Dialog3FoxAliceV1,
-                                                      TextInteract.Dialog3FoxAliceV2 );
+                MyDialog.FoxAlice.getConnections().clear();
+                MyDialog.FoxAlice.connect( MyDialog.BUY_BlueBottle_3BlueStars,
+                                                      MyDialog.BUY_PurpleBottle_5coins );
                 break;
 
-            case Dialog8NigelBirdQ4V1:
+            case NigelBirdQ4V1_last:
                 CollectableProcessor.process( Item.KALASH_WEAPON, pos1 );
                 break;
 
-            case Dialog5KaksonikV1:
+            case BUY_GreenBottle_10coins:
                 if ( MyPlayer.testBagCount( Item.COIN, 5 ) ) {
                     SoundAsset.Collect7.play();
                     MyPlayer.removeItemInBag( Item.COIN, 5 );
@@ -777,7 +799,7 @@ public class GameScreen extends Base2DScreen {
                 }
                 break;
 
-            case Dialog6TopaQ4V1:
+            case TopaQ4V1_last:
                 CollectableProcessor.process( Item.COIN, pos1 );
                 CollectableProcessor.process( Item.COIN, pos1 );
                 CollectableProcessor.process( Item.COIN, pos1 );
@@ -785,7 +807,7 @@ public class GameScreen extends Base2DScreen {
                 CollectableProcessor.process( Item.COIN, pos1 );
                 break;
 
-            case Dialog7RacoonBabyQ4V1:
+            case RacoonBabyQ4V1_last:
                 pos1.add( 0.0f, 1.2f, 0 );
                 for ( int i = 0; i < 10; i++ ) {
                     CollectableProcessor.process( Item.COIN, pos1 );
@@ -793,11 +815,12 @@ public class GameScreen extends Base2DScreen {
 
                 break;
 
-            case Dialog9CheinieRacoonQ4V1:
+            case CheinieRacoonQ4V1_last:
                 CollectableProcessor.process( Item.GREEN_BOTTLE, pos1 );
                 break;
         }
     }
+*/
 
 
     private void showGameGUI () {
@@ -840,6 +863,9 @@ public class GameScreen extends Base2DScreen {
             jumpButton.addListener( new ClickListener() {
                 @Override
                 public void clicked ( InputEvent event, float x, float y ) {
+                    if ( showGameOver ) {
+                        return;
+                    }
                     if ( MyPlayer.canJump ) {
                         MyPlayer.startJump();
                         UIHelper.clickAnimation( jumpButton );
@@ -861,6 +887,9 @@ public class GameScreen extends Base2DScreen {
             attackButton.addListener( new ClickListener() {
                 @Override
                 public void clicked ( InputEvent event, float x, float y ) {
+                    if ( showGameOver ) {
+                        return;
+                    }
                     if ( MyPlayer.canAttack ) {
                         MyPlayer.startAttack();
                         SoundAsset.HUU.play();
@@ -897,6 +926,9 @@ public class GameScreen extends Base2DScreen {
                                              Core.HEIGHT - inGameIconSize );
             showIngameMenuImage.addListener( new ClickListener() {
                 public void clicked ( InputEvent event, float x, float y ) {
+                    if ( showGameOver ) {
+                        return;
+                    }
                     SoundAsset.Click.play();
                     UIHelper.clickAnimation( showIngameMenuImage );
                     showInGameMenu();

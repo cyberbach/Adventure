@@ -226,7 +226,6 @@ public class PhysicalBuilder {
 
 
     public PhysicalBuilder disableDeactivation () {
-        disableRotation ();
         deactivationFlag = true;
         return this;
     }

@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
-import net.overmy.adventure.logic.TextInteract;
+import net.overmy.adventure.logic.MyDialog;
 
 /*
      Created by Andrey Mikheev on 29.09.2017
@@ -45,8 +45,8 @@ public final class Assets {
 
     public static void load () {
         TextAsset.init();
-        TextInteractAsset.init();
-        TextInteract.init();
+        DialogAsset.init();
+        MyDialog.init();
 
         FontAsset.load( manager );
         MusicAsset.load( manager );

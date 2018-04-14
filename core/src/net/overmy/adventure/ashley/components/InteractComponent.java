@@ -3,7 +3,7 @@ package net.overmy.adventure.ashley.components;
 import com.badlogic.ashley.core.Component;
 
 import net.overmy.adventure.logic.Item;
-import net.overmy.adventure.logic.TextInteract;
+import net.overmy.adventure.logic.MyDialog;
 
 
 /**
@@ -15,7 +15,7 @@ public class InteractComponent implements Component {
 
     private TYPE_OF_INTERACT type;
     private Item             item;
-    private TextInteract     textInteract;
+    private MyDialog         myDialog;
 
 
     public Item getItem () {
@@ -23,22 +23,22 @@ public class InteractComponent implements Component {
     }
 
 
-    public TextInteract getTextInteract () {
-        return textInteract;
+    public MyDialog getMyDialog () {
+        return myDialog;
     }
 
 
     public InteractComponent ( TYPE_OF_INTERACT type, Item id ) {
         this.type = type;
         this.item = id;
-        this.textInteract = null;
+        this.myDialog = null;
     }
 
 
-    public InteractComponent ( TYPE_OF_INTERACT type, TextInteract textInteract ) {
+    public InteractComponent ( TYPE_OF_INTERACT type, MyDialog myDialog ) {
         this.type = type;
         this.item = null;
-        this.textInteract = textInteract;
+        this.myDialog = myDialog;
     }
 
 
