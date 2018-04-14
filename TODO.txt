@@ -15,7 +15,9 @@ keyPassword "pass22"
 - перевести диалоги на английский
 
 
+- kwiki kviki
 
+- miki mikkey mikey
 
 
 

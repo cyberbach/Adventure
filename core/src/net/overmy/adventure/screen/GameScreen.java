@@ -24,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import net.overmy.adventure.AshleySubs;
@@ -46,6 +47,7 @@ import net.overmy.adventure.logic.DynamicLevels;
 import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.logic.ItemInBagg;
 import net.overmy.adventure.logic.MyDialog;
+import net.overmy.adventure.resources.DialogAsset;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.IMG;
@@ -53,51 +55,46 @@ import net.overmy.adventure.resources.MusicAsset;
 import net.overmy.adventure.resources.Settings;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.TextAsset;
-import net.overmy.adventure.resources.DialogAsset;
 import net.overmy.adventure.resources.TextureAsset;
 import net.overmy.adventure.utils.GFXHelper;
-import net.overmy.adventure.utils.LoadIndicator;
 import net.overmy.adventure.utils.UIHelper;
 
 import java.util.ArrayList;
 
 public class GameScreen extends Base2DScreen {
-    private Image         showIngameMenuImage = null;
-    private Image         aimImage            = null;
-    private Image         attackButton        = null;
-    private Image         jumpButton          = null;
-    private Touchpad      touchpad            = null;
-    private LoadIndicator indicatorGroup      = null;
-    private Group         interactGroup       = null;
-    private Group         touchPadGroup       = null;
-    private Group         bagButtonGroup      = null;
+    private SpriteBatch spriteBatch;
+    private Texture     bg;
+    private Image showIngameMenuImage = null;
+    private Image aimImage            = null;
+    private Image attackButton        = null;
+    private Image jumpButton          = null;
 
-    private TextDecalSystem textDecalSystem = null;
+    private Touchpad touchpad = null;
+    private Label    fpsLabel = null;
 
-    private InteractSystem interactSystem = null;
-
+    private Group interactGroup = null;
+    private Group touchPadGroup = null;
+    private Group gameGroup     = null;
 
     private GUI_TYPE guiType;
 
-    private Group gameGroup = null;
+    private TextDecalSystem textDecalSystem = null;
+    private InteractSystem  interactSystem  = null;
 
-    private long startTime;
+    private static ArrayList< Vector3 > pushedPositions = new ArrayList< Vector3 >();
+
     private StringBuilder log = new StringBuilder();
 
-
-    private boolean readyToPick = false;
+    private final float MAX_CLOUD_TIMER = 2.0f;
+    private       float cloudTimer      = MAX_CLOUD_TIMER;
+    private long startTime;
+    private boolean readyToPick  = false;
+    private boolean showGameOver = false;
 
 
     public GameScreen ( MyGdxGame game ) {
         super( game );
     }
-
-
-    private SpriteBatch spriteBatch;
-    private Texture     bg;
-
-
-    private static ArrayList< Vector3 > pushedPositions = new ArrayList< Vector3 >();
 
 
     @Override
@@ -117,7 +114,7 @@ public class GameScreen extends Base2DScreen {
         MyPlayer.init();
 
         touchPadGroup = new Group();
-        MyRender.getStage().addActor( indicatorGroup = UIHelper.initLoadIndicator() );
+        MyRender.getStage().addActor( UIHelper.initLoadIndicator() );
         MyRender.getStage().addActor( gameGroup = new Group() );
 
         showGameGUI();
@@ -133,32 +130,7 @@ public class GameScreen extends Base2DScreen {
             gameMasterTitle.setPosition( 16, Core.HEIGHT_HALF );
 
             MyRender.getStage().addActor( gameMasterTitle );
-/*
-            Image image1 = IMG.SPEAKER.getImageActor( 64, 64 );
-            image1.setPosition( Core.WIDTH * 0.3f, Core.HEIGHT * 0.8f );
-            image1.addListener( new ClickListener() {
-                public void clicked ( InputEvent event, float x, float y ) {
-                    // TODO
-                    MusicAsset.WINDFILTER.play( true );
-                    MusicAsset.FOREST.stopLoop();
-                }
-            } );
-
-            Image image2 = IMG.SOUNDON.getImageActor( 64, 64 );
-            image2.setPosition( Core.WIDTH * 0.3f, Core.HEIGHT * 0.6f );
-            image2.addListener( new ClickListener() {
-                public void clicked ( InputEvent event, float x, float y ) {
-                    // TODO
-                    MusicAsset.FOREST.play( true );
-                    MusicAsset.WINDFILTER.stopLoop();
-                }
-            } );
-
-            MyRender.getStage().addActor( image1 );
-            MyRender.getStage().addActor( image2 );*/
         }
-
-        //MusicAsset.WINDFILTER.play( true );
 
         if ( Settings.KEY1.getBoolean() ) {
             if ( !MyPlayer.testBag( Item.KEY1 ) ) {
@@ -213,22 +185,22 @@ public class GameScreen extends Base2DScreen {
                 break;
         }
 
-        // FIXME удалить после теста
+        if ( DEBUG.GAME_MASTER_MODE.get() ) {
+            for ( int i = 0; i < 20; i++ ) {
+                MyPlayer.addToBag( Item.COIN );
+                MyPlayer.addToBag( Item.YELLOW_STAR );
+                MyPlayer.addToBag( Item.BLUE_STAR );
+                MyPlayer.addToBag( Item.GREEN_STAR );
+            }
 
-        for(int i=0;i<40;i++) {
-            MyPlayer.addToBag( Item.COIN );
-            MyPlayer.addToBag( Item.YELLOW_STAR );
-            MyPlayer.addToBag( Item.BLUE_STAR );
-            MyPlayer.addToBag( Item.GREEN_STAR );
+            MyPlayer.addToBag( Item.KEY1 );
+            MyPlayer.addToBag( Item.KEY2 );
+            MyPlayer.addToBag( Item.KEY3 );
+            MyPlayer.addToBag( Item.KEY4 );
+            MyPlayer.addToBag( Item.KEY5 );
+            MyPlayer.addToBag( Item.KEY6 );
+            MyPlayer.addToBag( Item.GUN_WEAPON_UPGRADED );
         }
-
-        MyPlayer.addToBag( Item.KEY1 );
-        MyPlayer.addToBag( Item.KEY2 );
-        MyPlayer.addToBag( Item.KEY3 );
-        MyPlayer.addToBag( Item.KEY4 );
-        MyPlayer.addToBag( Item.KEY5 );
-        MyPlayer.addToBag( Item.KEY6 );
-        MyPlayer.addToBag( Item.GUN_WEAPON_UPGRADED );
     }
 
 
@@ -262,12 +234,6 @@ public class GameScreen extends Base2DScreen {
 
         MyRender.getDecalBatch().flush();
     }
-
-
-    private final float MAX_CLOUD_TIMER = 2.0f;
-    private       float cloudTimer      = MAX_CLOUD_TIMER;
-
-    private Label fpsLabel = null;
 
 
     @Override
@@ -537,8 +503,8 @@ public class GameScreen extends Base2DScreen {
                 public void clicked ( InputEvent event, float x, float y ) {
                     SoundAsset.BackSound.play();
                     UIHelper.scaleOut( gameOverGroup );
-                    DialogProcessor.gameFinished=false;
-                    MyPlayer.live=false;
+                    DialogProcessor.gameFinished = false;
+                    MyPlayer.live = false;
                     transitionTo( MyGdxGame.SCREEN_TYPE.MENU );
                 }
             } );
@@ -558,9 +524,6 @@ public class GameScreen extends Base2DScreen {
             MyPlayer.stopSound();
         }
     }
-
-
-    private boolean showGameOver = false;
 
 
     private void showInGameMenu () {
@@ -715,7 +678,6 @@ public class GameScreen extends Base2DScreen {
 
         Label dialogTitle = UIHelper.Label( currentMyDialog.getTitle(), FontAsset.MENU_TITLE );
         dialogTitle.setWrap( true );
-        float fontOffset = dialogTitle.getHeight() * 1.5f;
         dialogTitle.setPosition( offset * 1.4f, Core.HEIGHT - offset * 2.0f );
         dialogTitle.setWidth( offset * 3.5f );
         gameGroup.addActor( dialogTitle );
@@ -727,7 +689,7 @@ public class GameScreen extends Base2DScreen {
         dialogBody.setWrap( true );
         Gdx.app.debug( "height", "" + dialogBody.getHeight() );
         dialogBody.setPosition( offset * 5.5f,
-                                Core.HEIGHT - offset * 1.5f - dialogBody.getHeight() );
+                                Core.HEIGHT - offset * 3.0f - dialogBody.getHeight()/2 );
         gameGroup.addActor( dialogBody );
 
         Gdx.app.debug( "connections", "" + currentMyDialog.getConnections() );
@@ -772,55 +734,6 @@ public class GameScreen extends Base2DScreen {
         } );
         gameGroup.addActor( dialogVariant );
     }
-
-/*
-
-    private void processTextBlock ( MyDialog connection ) {
-
-        Vector3 pos1 = new Vector3( MyPlayer.getNotFilteredPos() ).add( 0, 0.5f, 0 );
-
-        switch ( connection ) {
-            case FoxAliceQ3V1_last:
-                CollectableProcessor.process( Item.PILLOW_WEAPON, pos1 );
-                MyDialog.FoxAlice.getConnections().clear();
-                MyDialog.FoxAlice.connect( MyDialog.BUY_BlueBottle_3BlueStars,
-                                                      MyDialog.BUY_PurpleBottle_5coins );
-                break;
-
-            case NigelBirdQ4V1_last:
-                CollectableProcessor.process( Item.KALASH_WEAPON, pos1 );
-                break;
-
-            case BUY_GreenBottle_10coins:
-                if ( MyPlayer.testBagCount( Item.COIN, 5 ) ) {
-                    SoundAsset.Collect7.play();
-                    MyPlayer.removeItemInBag( Item.COIN, 5 );
-                    MyPlayer.addToBag( Item.GREEN_BOTTLE );
-                }
-                break;
-
-            case TopaQ4V1_last:
-                CollectableProcessor.process( Item.COIN, pos1 );
-                CollectableProcessor.process( Item.COIN, pos1 );
-                CollectableProcessor.process( Item.COIN, pos1 );
-                CollectableProcessor.process( Item.COIN, pos1 );
-                CollectableProcessor.process( Item.COIN, pos1 );
-                break;
-
-            case RacoonBabyQ4V1_last:
-                pos1.add( 0.0f, 1.2f, 0 );
-                for ( int i = 0; i < 10; i++ ) {
-                    CollectableProcessor.process( Item.COIN, pos1 );
-                }
-
-                break;
-
-            case CheinieRacoonQ4V1_last:
-                CollectableProcessor.process( Item.GREEN_BOTTLE, pos1 );
-                break;
-        }
-    }
-*/
 
 
     private void showGameGUI () {
@@ -966,7 +879,6 @@ public class GameScreen extends Base2DScreen {
 
         jumpButton = null;
         touchpad = null;
-        indicatorGroup = null;
         touchPadGroup = null;
         gameGroup = null;
 

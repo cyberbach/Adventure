@@ -10,8 +10,9 @@ import com.badlogic.gdx.Gdx;
 import net.overmy.adventure.DEBUG;
 
 public enum TextAsset {
-    Title( "Квики\nв поисках Мики", "Quicky\nin search of Mikkey" ),
-    // buttons
+    Title( "Квики\nв поисках Мики", "Quicky\nin search of Mickey" ),
+
+    // main text
     END_GAME( "Приключения закончились", "Adventures are finished" ),
     START_GAME( "Начать игру", "Start game" ),
     RESUME_GAME( "Продолжить", "Resume" ),
@@ -21,6 +22,7 @@ public enum TextAsset {
     END( "конец игры", "Game over" ),
     VERT( "вертикально", "Vertical" ),
     HORIZ( "горизонтально", "Horizontal" ),
+
     // ingame text
     INVENTORY( "Инвентарь", "Inventory" ),
     LOOT( "Подобрать : ", "Loot : " ),
@@ -40,7 +42,7 @@ public enum TextAsset {
     KEY2_ABOUT( "Возможно этот ключ подойдет к замку, где-то за невидимой стеной",
                 "Perhaps this key will fit the lock, somewhere behind the invisible wall" ),
     KEY3( "Деревянный ключ", "Wooden key" ),
-    KEY3_ABOUT( "Открывает деревянные двери на зелёной поляне",
+    KEY3_ABOUT( "Открывает деревянные двери на зеленой поляне",
                 "Opens the wooden door on a green meadow" ),
     KEY4( "Каменный ключ", "Stone key" ),
     KEY4_ABOUT( "Открывает ворота замка", "Opens the gate of the castle" ),
@@ -52,7 +54,7 @@ public enum TextAsset {
 
     BLUE_BOTTLE( "Синий компот", "Blue compote" ),
     BLUE_BOTTLE_ABOUT( "Бессмертие на 30 секунд", "Immortality for 30 seconds" ),
-    GREEN_BOTTLE( "Зелёный сироп", "Green syrup" ),
+    GREEN_BOTTLE( "Зеленый сироп", "Green syrup" ),
     GREEN_BOTTLE_ABOUT( "Ускоряет передвижение на 15 секунд",
                         "Accelerates movement for 15 seconds" ),
     RED_BOTTLE( "Красный сок", "Red juice" ),
@@ -61,10 +63,17 @@ public enum TextAsset {
     PURPLE_BOTTLE_ABOUT( "Большие прыжки на 15 секунд", "Big jumps for 15 seconds" ),
 
     COIN( "Золотая монета", "Gold coin" ),
+    NOT_ENOUGH_MONEY( "Не хватает денег!", "Not enough money!" ),
 
     // Фразы NPC
 
     BEWARE_ME_BUNNY( "Ну, заяц, погоди!", "Feel my power!" ),
+
+    BEARTEXT1( "Гульман, выходи!", "Gulman, come on!" ),
+    BEARTEXT2( "Опять шедевр делает...", "New masterpiece is coming..." ),
+
+    HOG1TEXT1( "Как там моя прелесть?", "How there my charm?" ),
+    HOG1TEXT2( "Ясно. Понятно.", "I see. Ok." ),
 
     // Оружие
 
@@ -107,7 +116,7 @@ public enum TextAsset {
             "Epic heavy pillow of the hero, on which Shrek could have slept.\nDamage: 30" ),
     BROOM_WEAPON_UPGRADED( "Метла уборщика", "The cleaner broom" ),
     BROOM_WEAPON_UPGRADED_ABOUT(
-            "Любимая метла Золушки. После волшеного вмешательства Крёстной она получила удивительные ствойства.\nУрон: 80",
+            "Любимая метла Золушки. После волшеного вмешательства Крестной она получила удивительные ствойства.\nУрон: 80",
             "Favorite Cinderella broom. After the wolf intervention of the godmother, she received amazing characteristics.\nDamage: 80" ),
     RAKE_WEAPON_UPGRADED( "Новые грабли", "New Rake" ),
     RAKE_WEAPON_UPGRADED_ABOUT( "Джек ухаживал этими граблями за волшебным стеблем.\nУрон: 120",
@@ -116,7 +125,7 @@ public enum TextAsset {
     KALASH_WEAPON_UPGRADED_ABOUT(
             "Это любимый аппарат Мамаши Гавс.\nУрон: 170",
             "This is the favorite device of Ma Beagle.\nDamage: 170" ),
-    FENCE_WEAPON_UPGRADED( "Укреплённый забор", "Fortified Fence" ),
+    FENCE_WEAPON_UPGRADED( "Укрепленный забор", "Fortified Fence" ),
     FENCE_WEAPON_UPGRADED_ABOUT(
             "Часть нового укрепленного забора, которую опять разрушил Фердинанд, перед своим побегом.\nУрон: 190",
             "Part of the new fortified fence, which Ferdinand again destroyed, before his escape.\nDamage: 190" ),
@@ -130,7 +139,7 @@ public enum TextAsset {
     TRIGGER_HELP1( "Не забудь взять оружие!", "Do not forget\nto take the weapon!" ),
     TRIGGER_HELP2( "Чтобы использовать оружие,\nзайди в инвентарь и возьми его в руку.",
                    "To use weapons,\nopen inventory and put it in your hand." ),
-    TRIGGER_HELP3( "Зелёные бутылки\nускоряют передвижение!",
+    TRIGGER_HELP3( "Зеленые бутылки\nускоряют передвижение!",
                    "Green Bottles\naccelerate the movement!" ),
     TRIGGER_HELP4( "Разрушай коробки.\nОни могут содержать интересные вещи!",
                    "Destroy the boxes.\nThey can contain interesting things inside!" ),
@@ -139,7 +148,8 @@ public enum TextAsset {
                    "In inventory, you can combine\ntwo identical weapons\nto one more powerful!" ),
     TRIGGER_HELP7( "Не все стены одинаково прочны.", "Not all walls are equally strong." ),
     TRIGGER_HELP8( "Попробуй прыгнуть", "Try to jump" ),
-    TRIGGER_HELP9( "Бельчонку предстоит длинное путешествие", "The squirrel will have a long journey" ),
+    TRIGGER_HELP9( "Бельчонку предстоит длинное путешествие",
+                   "The squirrel will have a long journey" ),
     TRIGGER_HELP10( "У акулы ключ от ворот!", "The shark has the key to the gate!" ),
     TRIGGER_HELP11( "Ворота можно открыть только\nподходящим ключом.",
                     "The gate can only be opened\nthe right key." ),
@@ -147,28 +157,18 @@ public enum TextAsset {
                     "The invulnerability potion is useful in battle" ),
     TRIGGER_HELP13( "Лиса Алиса хочет загадать несколько загадок",
                     "Alice the Fox wants to make a few riddles" ),
-    TRIGGER_HELP14( "Это место полно секретов", "This place is full of secrets" ),
-
-    BEARTEXT1( "Гульман, выходи!", "Gulman, come on!" ),
-    BEARTEXT2( "Опять шедевр делает...", "New masterpiece is coming..." ),
-
-    //33 43
-    TestString1(
-            "aaaaa12345aaaaa 6789 , 9876 aaaaa54321aaaaa\naaaaa12345aaaaa 6789 , 9876 aaaaa54321aaaaa",
-            "Опять шедевр делает...\nasdf sdaf dsfsdfdsfsdf sdf dsfdsfds" ),
-    TestString2( "12345 6789 0 9876 54321" ),
-    TestString3( "a . b" ),
-    ;
+    TRIGGER_HELP14( "Это место полно секретов", "This place is full of secrets" ),;
 
     public static boolean russianLocale = true;
     private final String russianText;
     private final String englishText;
 
-
+/*
     TextAsset ( String russianText ) {
         this.russianText = russianText;
         this.englishText = "";
     }
+*/
 
 
     TextAsset ( String russianText, String englishText ) {

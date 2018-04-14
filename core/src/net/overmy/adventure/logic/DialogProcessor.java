@@ -5,9 +5,11 @@ package net.overmy.adventure.logic;
         Contact me → http://vk.com/id17317
 */
 
+import net.overmy.adventure.AshleySubs;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.resources.SoundAsset;
 import net.overmy.adventure.resources.DialogAsset;
+import net.overmy.adventure.resources.TextAsset;
 
 public final class DialogProcessor {
     private DialogProcessor () {
@@ -22,6 +24,8 @@ public final class DialogProcessor {
             SoundAsset.Collect7.play();
             MyPlayer.removeItemInBag( money, count );
             MyPlayer.addToBag( what );
+        }else{
+            AshleySubs.createText( TextAsset.NOT_ENOUGH_MONEY.get() );
         }
     }
 
