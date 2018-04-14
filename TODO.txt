@@ -1,3 +1,5 @@
+play.google.com/store/apps/details?id=net.overmy.adventure
+
 
 storeFile file("E:\\cb.jks")
 storePassword "pass22"
@@ -9,6 +11,67 @@ keyPassword "pass22"
 
 ♦♦♦♦♦ TODO ♦♦♦♦♦ ♦♦♦♦♦ ♦♦♦♦♦ ♦♦♦♦♦ ♦♦♦♦♦ ♦♦♦♦♦
 
+
+Квики ищет Мики
+Quicky in search of Mickey
+
+
+
+Бельчонок Квики ищет своего брата Мики
+Quicky the squirrel is looking for his brother Mickey
+
+--------------------
+
+В прекрасном волшебном лесу живут волшебные звери. Среди них - наши друзья: Квики и Мики.
+Но однажды Мики потерялся. Что же с ним случилось?
+Квики предстоит отыскать своего брата и разгадать загадки волшебного леса.
+
+Управление:
+- для передвижения используйте джойстик слева внизу экрана
+- для обзора - задержите палец на экране в любом месте и тяните в любую сторону
+- прыжок и удар - кнопками на экране
+- справа вверху экрана - кнопка инвентаря. В нём можно использовать бутылочки для ускорения или восстановления очков жизней или менять оружие в руках.
+- чтобы подобрать оружие с земли, нужно повернуть центр экрана на это оружие и появится кнопка "подобрать оружие"
+- чтобы поговорить с персонажем или прочитать книгу, подойдите поближе и появится надпись "поговорить с персонажем" или "прочитать книгу"
+
+В игре использована музыка с сайта freemusicarchive.org
+Julie Maxwells Piano Music - Odyssey
+Julie Maxwells Piano Music - The Samurais Dilemma
+Julie Maxwells Piano Music - A Sorta Fairytale With You
+Julie Maxwells Piano Music - Labyrinth Dreams
+Julie Maxwells Piano Music - Fish in the Pond
+---
+Игра написана на фреймворке libgdx с использованием компонентной системы Ashley ECS и физического движка Bullet Physical Engine.
+
+Открытый исходный код: http://github.com/cyberbach/Adventure
+Автор: Андрей (cb) Михеев
+
+------------------------------
+
+In a beautiful magical forest magic live animals. Among them are our friends Quicky and Mickey.
+But once Mickey got lost. What happened to him?
+Quicky will have to find his brother and unravel the mysteries of the magic forest.
+
+Management:
+- to move, use the joystick at the bottom left of the screen
+- for review-hold your finger on the screen anywhere and drag to any direction
+- jump and kick buttons on the screen
+- right at the top of the screen - inventory button. In it you can use bottles to speed up or restore points of lives or change weapons in the hands.
+- to pick up weapons from the ground, you need to turn the center of the screen on this weapon and the button " pick up weapons"
+- to talk to a character or read a book, come closer and see the inscription "talk to a character" or " read a book"
+
+The game uses music from the site freemusicarchive.org
+Julie Maxwells Piano Music - Odyssey
+Julie Maxwells Piano Music - The Samurais Dilemma
+Julie Maxwells Piano Music - A Sorta Fairytale With You
+Julie Maxwells Piano Music - Labyrinth Dreams
+Julie Maxwells Piano Music - Fish in the Pond
+
+---
+The game is written on the libgdx framework using the Ashley ECS component system and the Bullet Physical Engine.
+
+Open source: http://github.com/cyberbach/Adventure
+Author: Andrey (cb) Mikheev
 
 
 
