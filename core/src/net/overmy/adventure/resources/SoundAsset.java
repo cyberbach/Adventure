@@ -1,11 +1,3 @@
-/**
- * OVERMY.NET - Make your device live! *
- * <p/>
- * Games: http://play.google.com/store/apps/developer?id=OVERMY
- *
- * @author Andrey Mikheev (cb)
- */
-
 package net.overmy.adventure.resources;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -65,12 +57,18 @@ public enum SoundAsset {
     ;
 
     private final String path;
-    private Sound snd = null;
-    private long  id  = 0;
+    private        Sound snd    = null;
+    private        long  id     = 0;
+    private static float volume = 0.0f;
 
 
-    public void setVolume ( float volume ) {
-        this.snd.setVolume( id, volume );
+    public static void setVolume ( float fvolume ) {
+        volume = fvolume;
+    }
+
+
+    public void setThisVolume ( float newVolume ) {
+        this.snd.setVolume( id, volume * newVolume );
     }
 
 
@@ -79,12 +77,13 @@ public enum SoundAsset {
         this.path = DEFAULT_DIR + path;
     }
 
-
+/*
     public static void stopAll () {
         for ( int i = 0; i < SoundAsset.values().length; i++ ) {
             SoundAsset.values()[ i ].snd.stop();
         }
     }
+*/
 
 
     public static void build ( final AssetManager manager ) {
@@ -116,9 +115,8 @@ public enum SoundAsset {
 
 
     public void playLoop () {
-        float soundVolume = (float) Settings.SOUND.getInteger() / 100.0f;
-        if ( soundVolume > 0.0f ) {
-            id = this.snd.loop( soundVolume, 1, 1 );
+        if ( volume >= 0.0f ) {
+            id = this.snd.loop( volume, 1, 1 );
             //this.snd.setLooping( id, true );
             //this.snd.setVolume( id, soundVolume );
         }
@@ -126,11 +124,10 @@ public enum SoundAsset {
 
 
     public void play () {
-        float soundVolume = (float) Settings.SOUND.getInteger() / 100.0f;
-        if ( soundVolume > 0.0f ) {
+        if ( volume >= 0.0f ) {
             id = this.snd.play();
             this.snd.setLooping( id, false );
-            this.snd.setVolume( id, soundVolume );
+            this.snd.setVolume( id, volume );
         }
     }
 

@@ -24,7 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import net.overmy.adventure.AshleySubs;
@@ -210,11 +209,8 @@ public class GameScreen extends Base2DScreen {
             return false;
         }
 
-        final float SPEED_BY_X = 0.02f;
-        final float SPEED_BY_Y = 0.0005f;
-
-        MyCamera.addCameraAngle( x * SPEED_BY_X );
-        MyCamera.addVerticalDirection( -y * SPEED_BY_Y );
+        MyCamera.addCameraAngle( x * Core.SensitivitySpeedByX );
+        MyCamera.addVerticalDirection( -y * Core.SensitivitySpeedByY );
         return true;
     }
 
@@ -687,12 +683,9 @@ public class GameScreen extends Base2DScreen {
         Label dialogBody = UIHelper.Label( currentMyDialog.getBody(), FontAsset.DIALOG_BODY );
         dialogBody.setWidth( Core.WIDTH - offset * 6.5f );
         dialogBody.setWrap( true );
-        Gdx.app.debug( "height", "" + dialogBody.getHeight() );
         dialogBody.setPosition( offset * 5.5f,
-                                Core.HEIGHT - offset * 3.0f - dialogBody.getHeight()/2 );
+                                Core.HEIGHT - offset * 3.0f - dialogBody.getHeight() / 2 );
         gameGroup.addActor( dialogBody );
-
-        Gdx.app.debug( "connections", "" + currentMyDialog.getConnections() );
 
         // variants
 

@@ -1,14 +1,10 @@
-/**
- * OVERMY.NET - Make your device live! *
- * <p/>
- * Games: http://play.google.com/store/apps/developer?id=OVERMY
- *
- * @author Andrey Mikheev (cb)
+/*
+      Created by Andrey Mikheev
+      Contact me → http://vk.com/id17317
  */
 
 package net.overmy.adventure.resources;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.MathUtils;
@@ -32,8 +28,20 @@ public enum MusicAsset {
     TRACK5( "track5.ogg" ),;
 
     private final String path;
-    private        Music music = null;
-    private static float timer = 0.01f;
+    private        Music music  = null;
+    private static float timer  = 0.01f;
+    private static float volume = 0.0f;
+
+
+    public static void setVolume ( float fvolume ) {
+        volume = fvolume;
+
+        for ( int i = 0; i < MusicAsset.values().length; i++ ) {
+            if ( MusicAsset.values()[ i ].music != null ) {
+                MusicAsset.values()[ i ].music.setVolume( volume );
+            }
+        }
+    }
 
 
     MusicAsset ( final String path ) {
@@ -130,7 +138,7 @@ public enum MusicAsset {
 
 
     public static void playRandom ( float delta ) {
-        if ( DEBUG.ON_WINDOWS.get() ) {
+        if ( DEBUG.ON_WINDOWS.get() || volume == 0.0f ) {
             return;
         }
 
@@ -162,37 +170,31 @@ public enum MusicAsset {
 
 
     public void play ( boolean loop ) {
-        if ( DEBUG.ON_WINDOWS.get() ) {
+        if ( DEBUG.ON_WINDOWS.get() || volume == 0.0f ) {
             return;
         }
 
-        float musicVolume = (float) Settings.MUSIC.getInteger() / 100.0f;
-        if ( musicVolume > 0 ) {
-            this.music.setVolume( musicVolume );
-            this.music.setLooping( loop );
-
-            Gdx.app.debug( "play( loop=" + loop + " ) volume " + musicVolume, "" + this.music );
-
-            this.music.play();
-        } else {
-            stopAll();
-        }
+        this.music.setLooping( loop );
+        this.music.play();
+        this.music.setVolume( volume );
     }
 
-
+/*
     public void setPan ( float x ) {
         this.music.setPan( x, 1 );
     }
+*/
 
 
     public void play () {
         play( false );
     }
 
-
+/*
     public void stop () {
         this.music.stop();
     }
+*/
 
     // HARDCODE!
     //public Music get() { return Gdx.audio.newMusic( Gdx.files.internal( this.path ) ); }

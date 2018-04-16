@@ -113,7 +113,9 @@ public class MyGdxGame implements ApplicationListener {
             screen.dispose();
         }
 
-        Gdx.app.debug( "► Screen switch to", screenType.toString() );
+        if ( DEBUG.anything() ) {
+            Gdx.app.debug( "► Screen switch to", screenType.toString() );
+        }
 
         switch ( screenType ) {
             case LOADING_MENU:

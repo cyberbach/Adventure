@@ -8,7 +8,6 @@ package net.overmy.adventure;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g3d.Attribute;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -82,7 +81,8 @@ public final class AshleySubs {
 
     // GUI entities
 
-    static Label createTopTimer ( Item item, int numberOfPosition, float time ){
+
+    static Label createTopTimer ( Item item, int numberOfPosition, float time ) {
 
         int iconSize = (int) ( Core.HEIGHT * 0.1f );
         float offset = iconSize * 1.5f * numberOfPosition;
@@ -119,6 +119,7 @@ public final class AshleySubs {
         engine.addEntity( timerEntity );
         return label;
     }
+
 
     static Label createTopTimer ( Item item, int numberOfPosition ) {
         return createTopTimer( item, numberOfPosition, 15 );
@@ -302,7 +303,8 @@ public final class AshleySubs {
         return entity;
     }
 
-    public static Entity createPickable ( Vector3 position, Item item ) {
+
+    public static void createPickable ( Vector3 position, Item item ) {
         ModelInstance modelInstance = item.getModelAsset().get();
 
         PhysicalBuilder physicalBuilderPICKABLE = new PhysicalBuilder()
@@ -311,7 +313,7 @@ public final class AshleySubs {
                 .setPosition( position )
                 .setMass( 1.0f )
                 .hullShape()
-                .setStartImpulse( new Vector3( 0,6,0 ) )
+                .setStartImpulse( new Vector3( 0, 6, 0 ) )
                 .setCollisionFlag( CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK )
                 .setCallbackFlag( BulletWorld.PICKABLE_FLAG )
                 .setCallbackFilter( BulletWorld.PLAYER_FLAG )
@@ -328,8 +330,6 @@ public final class AshleySubs {
         entity.add( new InteractComponent( TYPE_OF_INTERACT.LOOT, item ) );
         entity.add( physicalBuilderPICKABLE.buildPhysicalComponent() );
         engine.addEntity( entity );
-
-        return entity;
     }
 
 
@@ -362,6 +362,7 @@ public final class AshleySubs {
 
         return entity;
     }
+/*
 
     public static Entity createCollectable ( Vector3 position, Item item, ModelAsset modelAsset ) {
 
@@ -390,6 +391,7 @@ public final class AshleySubs {
 
         return entity;
     }
+*/
 
 
     public static Entity createHoverCollectable ( Vector3 position,
@@ -451,7 +453,7 @@ public final class AshleySubs {
                 .setCollisionFlag( CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.NPC_FLAG )
                 .setCallbackFilter( BulletWorld.FILTER_NPC )
-                .disableRotation ()
+                .disableRotation()
                 .disableDeactivation();
 
         PhysicalComponent physicalComponent = physicalBuilderNPC.buildPhysicalComponent();
@@ -499,7 +501,7 @@ public final class AshleySubs {
                 .setCollisionFlag( CollisionFlags.CF_CHARACTER_OBJECT )
                 .setCallbackFlag( BulletWorld.NPC_FLAG )
                 .setCallbackFilter( BulletWorld.FILTER_NPC )
-        .disableRotation ()
+                .disableRotation()
                 .disableDeactivation();
 
         float damage = 15.0f;
@@ -521,7 +523,7 @@ public final class AshleySubs {
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( new AnimationComponent( modelInstance ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.NPC ) );
-        entity.add( new NPCComponent( actionArray, damage,dropItem ) );
+        entity.add( new NPCComponent( actionArray, damage, dropItem ) );
         entity.add( physicalBuilderENEMY.buildPhysicalComponent() );
         entity.add( new LevelObjectComponent( object ) );
         entity.add( new LifeComponent( 100, 1.5f, 2.0f ) );
@@ -534,8 +536,6 @@ public final class AshleySubs {
     public static Entity createWeapon ( Vector3 position,
                                         Item item,
                                         LevelObject object ) {
-        Gdx.app.debug( "model="+item.getModelAsset(),"item="+item );
-
         ModelInstance modelInstance = item.getModelAsset().get();
         ModelInstance physicsInstance = item.getModelAsset().getSimple();
 
@@ -694,6 +694,7 @@ public final class AshleySubs {
         return entity;
     }
 
+
     public static Entity createDoorSwitch ( Vector3 position, Item item, float rotation ) {
         ModelInstance modelInstance = ModelAsset.LOCK.get();
         modelInstance.transform.idt();
@@ -712,12 +713,11 @@ public final class AshleySubs {
         Entity entity = new Entity();
         entity.add( new ModelComponent( modelInstance ) );
         entity.add( physicalBuilder.buildPhysicalComponent() );
-            entity.add( new InteractComponent( TYPE_OF_INTERACT.USE, item ) );
+        entity.add( new InteractComponent( TYPE_OF_INTERACT.USE, item ) );
         entity.add( new EntityTypeComponent( TYPE_OF_ENTITY.INTERACTIVE ) );
         engine.addEntity( entity );
 
         return entity;
-
     }
 
     // FX entities
@@ -779,7 +779,9 @@ public final class AshleySubs {
         engine.addEntity( entity );
     }
 
-    public static void createEnvironmentFX ( Vector3 position, float timeToRemove, GameColor gameColor ) {
+
+    public static void createEnvironmentFX ( Vector3 position, float timeToRemove,
+                                             GameColor gameColor ) {
         Entity entity = new Entity();
         entity.add( DecalSubs.EnvironmentDustEffect( timeToRemove, gameColor ) );
         entity.add( new PositionComponent( position ) );

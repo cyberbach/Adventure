@@ -20,8 +20,8 @@ public enum TextAsset {
     MUSIC( "Музыка", "Music" ),
     SOUND( "Звуки", "Sound" ),
     END( "конец игры", "Game over" ),
-    VERT( "вертикально", "Vertical" ),
-    HORIZ( "горизонтально", "Horizontal" ),
+    VERT( "Камера по Y", "View by Y" ),
+    HORIZ( "Камера по X", "View by X" ),
 
     // ingame text
     INVENTORY( "Инвентарь", "Inventory" ),
@@ -187,7 +187,9 @@ public enum TextAsset {
     public static void init () {
         String defaultLocale = java.util.Locale.getDefault().toString();
         String clsName = TextAsset.class.getSimpleName();
-        Gdx.app.debug( "" + clsName + " locale", "" + defaultLocale );
+        if ( DEBUG.SETTINGS.get() ) {
+            Gdx.app.debug( "" + clsName + " locale", "" + defaultLocale );
+        }
         russianLocale = !DEBUG.ENABLE_ENGLISH_TEXT.get() && "ru_RU".equals( defaultLocale );
     }
 

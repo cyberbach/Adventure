@@ -171,7 +171,7 @@ public final class MyPlayer {
 
         walk = SoundAsset.Step3;
         walk.playLoop();
-        walk.setVolume( 0.0f );
+        walk.setThisVolume( 0.0f );
 
         /////// create empty-hand weapon
 
@@ -394,13 +394,13 @@ public final class MyPlayer {
         if ( !onLadder ) {
             if ( direction.len() > 0 && playerOnGround ) {
                 float walkSpeed = ( 2.5f + direction.len() * 0.5f ) / 4;
-                walk.setVolume( 1.0f );
+                walk.setThisVolume( 1.0f );
                 walk.setPitch( walkSpeed );
             } else {
-                walk.setVolume( 0.0f );
+                walk.setThisVolume( 0.0f );
             }
         } else {
-            walk.setVolume( 0.0f );
+            walk.setThisVolume( 0.0f );
         }
 
         updateFX( deltaTime );
@@ -608,7 +608,7 @@ public final class MyPlayer {
             }
 
             if ( itemInHand != null ) {
-                bag.add( itemInHand );
+                addToBag( itemInHand.item );
             }
 
             if ( weaponEntity != null ) {
@@ -617,7 +617,7 @@ public final class MyPlayer {
             }
 
             itemInHand = item;
-            bag.remove( item );
+            removeFromBag( item );
             SoundAsset.EQUIP.play();
 
             // EQUIP weapon (attach in AshleySubs, detach here)
@@ -678,11 +678,7 @@ public final class MyPlayer {
             return;
         }
 
-        if ( item.count < 2 ) {
-            bag.remove( item );
-        } else {
-            item.count -= 1;
-        }
+        removeFromBag( item );
 
         // USE item, not weapon
         switch ( item.item ) {
@@ -726,9 +722,18 @@ public final class MyPlayer {
     }
 
 
+    private static void removeFromBag ( ItemInBagg item ) {
+        if ( item.count < 2 ) {
+            bag.remove( item );
+        } else {
+            item.count -= 1;
+        }
+    }
+
+
     public static void stopSound () {
         if ( walk != null ) {
-            walk.setVolume( 0.0f );
+            walk.setThisVolume( 0.0f );
             walk.stop();
         }
     }

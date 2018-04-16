@@ -22,8 +22,18 @@ public enum DEBUG {
     ENTITIES( false ),
     PHYSICAL_MESH( false ),
     DYNAMIC_LEVELS( false ),
-    GAME_MASTER_MODE( false ),
-    ;
+    GAME_MASTER_MODE( false ),;
+
+
+    public static boolean anything () {
+        for ( DEBUG d : DEBUG.values() ) {
+            if ( d.get() ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private final boolean value;
 

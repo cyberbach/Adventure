@@ -1,11 +1,3 @@
-/**
- * OVERMY.NET - Make your device live! *
- * <p/>
- * Games: http://play.google.com/store/apps/developer?id=OVERMY
- *
- * @author Andrey Mikheev (cb)
- */
-
 package net.overmy.adventure.resources;
 
 import com.badlogic.gdx.Gdx;
@@ -49,7 +41,7 @@ public enum Settings {
     private       long       lData;
 
 
-    private Settings ( Class< ? > cls ) {
+    Settings ( Class< ? > cls ) {
         this.type = cls;
     }
 
@@ -75,12 +67,12 @@ public enum Settings {
 
         if ( !Settings.NOT_FIRST_RUN.getBoolean() ) {
             Settings.NOT_FIRST_RUN.setBoolean( true );
-            Settings.MUSIC.setInteger( 80 );
-            Settings.SOUND.setInteger( 80 );
+            Settings.MUSIC.setInteger( 35 );
+            Settings.SOUND.setInteger( 50 );
             Settings.VERT_SENS.setInteger( 25 );
             Settings.HORIZ_SENS.setInteger( 60 );
             Settings.PLAYER_MODEL.setInteger( 0 );
-            Settings.START_LOCATION.setInteger( 4 );
+            Settings.START_LOCATION.setInteger( 0 );
 
             Settings.KEY1.setBoolean( false );
             Settings.KEY2.setBoolean( false );
@@ -172,7 +164,7 @@ public enum Settings {
         iData = value;
     }
 
-
+/*
     public long getLong () {
         return lData;
     }
@@ -181,4 +173,6 @@ public enum Settings {
     public void setLong ( final long value ) {
         lData = value;
     }
+*/
+
 }

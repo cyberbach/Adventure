@@ -56,7 +56,7 @@ public class NPCSystem extends IteratingSystem {
     public void setWalkSound () {
         walk = SoundAsset.Step1;
         walk.playLoop();
-        walk.setVolume( 0.0f );
+        walk.setThisVolume( 0.0f );
     }
 
 
@@ -284,7 +284,7 @@ public class NPCSystem extends IteratingSystem {
 
     private void keepCalm () {
         direction.set( 0, 0 );
-        walk.setVolume( 0.0f );
+        walk.setThisVolume( 0.0f );
     }
 
 
@@ -304,7 +304,7 @@ public class NPCSystem extends IteratingSystem {
 
         if ( !isFlyingNPC ) {
             float walkVolume = distance < MAX_LISTEN_DISTANCE ? distance / MAX_LISTEN_DISTANCE : 0;
-            walk.setVolume( walkVolume );
+            walk.setThisVolume( walkVolume );
         }
     }
 

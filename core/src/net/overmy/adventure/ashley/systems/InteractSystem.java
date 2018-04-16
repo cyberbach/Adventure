@@ -90,13 +90,13 @@ public class InteractSystem extends IteratingSystem {
                         break;
 
                     case TALK:
-                        Gdx.app.debug( "говорим с нпс", "" + currentMyDialog.getTitle() );
+                        //Gdx.app.debug( "говорим с нпс", "" + currentMyDialog.getTitle() );
                         break;
 
                     case USE:
                         DoorSystem doorSystem = getEngine().getSystem( DoorSystem.class );
                         doorSystem.processKey( currentItem );
-                        Gdx.app.debug( "используем", "" + currentItem.getName() );
+                        //Gdx.app.debug( "используем", "" + currentItem.getName() );
 
                         break;
                 }

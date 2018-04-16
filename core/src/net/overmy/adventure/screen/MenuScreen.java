@@ -5,7 +5,6 @@ package net.overmy.adventure.screen;
       Contact me → http://vk.com/id17317
  */
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -28,7 +27,6 @@ import net.overmy.adventure.MyGdxGame;
 import net.overmy.adventure.MyPlayer;
 import net.overmy.adventure.MyRender;
 import net.overmy.adventure.logic.DynamicLevels;
-import net.overmy.adventure.logic.Item;
 import net.overmy.adventure.resources.FontAsset;
 import net.overmy.adventure.resources.GameColor;
 import net.overmy.adventure.resources.ModelAsset;
@@ -69,6 +67,9 @@ public class MenuScreen extends Base2DScreen {
     public void show () {
         super.show();
 
+        updateVolume ();
+        updateSensitivity();
+
         bg = TextureAsset.BG_GRADIENT.get();
         spriteBatch = MyRender.getSpriteBatch();
 
@@ -92,6 +93,7 @@ public class MenuScreen extends Base2DScreen {
         //String id = heroInstance.animations.first().id;
         animationController.animate( "DANCE", -1, 0.3f, null, 0f );
     }
+
 
 
     @Override
@@ -286,15 +288,36 @@ public class MenuScreen extends Base2DScreen {
             showIntroGUI();
             UIHelper.rollOut( optionsGroup, 0, 0, -Core.WIDTH, 0 );
 
-            Settings.HORIZ_SENS.setInteger( (int) horizontalSensBar.getValue() );
-            Settings.VERT_SENS.setInteger( (int) verticalSensBar.getValue() );
-            Settings.MUSIC.setInteger( (int) musicBar.getValue() );
-            Settings.SOUND.setInteger( (int) soundBar.getValue() );
+            saveVolumeToSettings();
+            saveSensitivityToSettings();
         } else {
             UIHelper.rollOut( introGroup, 0, 0, -Core.WIDTH_HALF, 0 );
 
             transitionTo( MyGdxGame.SCREEN_TYPE.EXIT );
         }
+    }
+
+
+    private void saveVolumeToSettings () {
+        Settings.SOUND.setInteger( (int) soundBar.getValue() );
+        Settings.MUSIC.setInteger( (int) musicBar.getValue() );
+        updateVolume ();
+    }
+
+    private void updateVolume () {
+        SoundAsset.setVolume((float)Settings.SOUND.getInteger() / 100.0f);
+        MusicAsset.setVolume((float)Settings.MUSIC.getInteger() / 100.0f);
+    }
+
+    private void saveSensitivityToSettings () {
+        Settings.HORIZ_SENS.setInteger( (int) horizontalSensBar.getValue() );
+        Settings.VERT_SENS.setInteger( (int) verticalSensBar.getValue() );
+        updateSensitivity ();
+    }
+
+    private void updateSensitivity () {
+        Core.SensitivitySpeedByX = sensIntToFloat( Settings.HORIZ_SENS.getInteger() );
+        Core.SensitivitySpeedByY = sensIntToFloat(  Settings.VERT_SENS.getInteger() );
     }
 
 
@@ -318,5 +341,53 @@ public class MenuScreen extends Base2DScreen {
     private enum GUI_TYPE {
         MAIN_MENU,
         OPTIONS
+    }
+
+
+    private static float sensIntToFloat ( int value ) {
+        switch ( value ) {
+            default:
+                return 0.000001f;
+            case 5:
+                return 0.000017f;
+            case 10:
+                return 0.00003f;
+            case 15:
+                return 0.000056f;
+            case 20:
+                return 0.0001f;
+            case 25:
+                return 0.00018f;
+            case 30:
+                return 0.00033f;
+            case 35:
+                return 0.0006f;
+            case 40:
+                return 0.001f;
+            case 45:
+                return 0.002f;
+            case 50:
+                return 0.0037f;
+            case 55:
+                return 0.0067f;
+            case 60:
+                return 0.012f;
+            case 65:
+                return 0.022f;
+            case 70:
+                return 0.04f;
+            case 75:
+                return 0.073f;
+            case 80:
+                return 0.13f;
+            case 85:
+                return 0.242f;
+            case 90:
+                return 0.44f;
+            case 95:
+                return 0.8f;
+            case 100:
+                return 1f;
+        }
     }
 }

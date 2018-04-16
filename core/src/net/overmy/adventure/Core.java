@@ -15,6 +15,9 @@ public final class Core {
     public static int HEIGHT;
     public static int HEIGHT_HALF;
 
+    public static float SensitivitySpeedByX = 0.0f;
+    public static float SensitivitySpeedByY = 0.0f;
+
 
     private Core () {
     }

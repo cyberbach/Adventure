@@ -360,7 +360,9 @@ public enum DialogAsset {
     public static void init () {
         String defaultLocale = java.util.Locale.getDefault().toString();
         String clsName = DialogAsset.class.getSimpleName();
-        Gdx.app.debug( "" + clsName + " locale", "" + defaultLocale );
+        if ( DEBUG.SETTINGS.get() ) {
+            Gdx.app.debug( "" + clsName + " locale", "" + defaultLocale );
+        }
         russianLocale = !DEBUG.ENABLE_ENGLISH_TEXT.get() && "ru_RU".equals( defaultLocale );
     }
 

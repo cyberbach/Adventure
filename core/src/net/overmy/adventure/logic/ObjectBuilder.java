@@ -96,7 +96,7 @@ class ObjectBuilder {
         objects.add( hoverCoin( 23.473248f, 3.3257918f, -149.59673f ) );
         objects.add( hoverGreenBottle( 26.942774f, 3.3635728f, -151.56834f ) );
         objects.add( hoverCoin( 16.20091f, 2.1369853f, -156.37874f ) );
-        objects.add( hoverCoin( -0.08271152f, 2.3794906f, -155.92131f ) );
+        objects.add( hoverCoin( -0.08271152f, 3.3794906f, -155.92131f ) );
 
         objects.add( box( -12.749359f, 0.83835983f, -158.29185f, Item.BLUE_STAR ) );
         objects.add( box( 21.482891f, 0.69398946f, -163.47675f ) );
@@ -132,14 +132,14 @@ class ObjectBuilder {
 
         objects.add( hoverCoin( -75.930626f, 4.587798f, -189.51195f ) );
         objects.add( hoverGreenBottle( -79.52511f, 4.0374074f, -189.01859f ) );
-        objects.add( hoverCoin( -78.972694f, 4.2645297f, -192.8407f ) );
+        objects.add( hoverCoin( -78.972694f, 5.2645297f, -192.8407f ) );
         objects.add( box( -62.12069f, 1.772642f, -216.14336f, Item.COIN ) );
         objects.add( hoverCoin( -66.58269f, 1.1613581f, -250.24501f ) );
 
         objects.add( box( -98.25061f, 0.15273489f, -251.49251f, Item.BLUE_STAR ) );
         objects.add( box( -109.57931f, 2.135044f, -255.94427f, Item.COIN ) );
         objects.add( hoverCoin( -110.871895f, 2.261999f, -268.09924f ) );
-        objects.add( hoverCoin( -105.03497f, 0.5416111f, -286.58466f ) );
+        objects.add( hoverCoin( -105.03497f, 1.5416111f, -286.58466f ) );
         objects.add( box( -88.986496f, 0.5552391f, -286.54108f, Item.COIN ) );
 
         objects.add( box( -116.59903f, 2.5893686f, -263.89517f, Item.YELLOW_STAR ) );
@@ -220,8 +220,8 @@ class ObjectBuilder {
                              .setPosition( new Vector3( -139.17807f, 1.187504f, -393.3555f ) ) );
 
         objects.add( hoverGreenBottle( -134.07967f, 3.0370257f, -367.3695f ) );
-        objects.add( hoverCoin( -131.90904f, 3.248974f, -364.48978f ) );
-        objects.add( hoverCoin( -127.98646f, 2.9535644f, -367.3582f ) );
+        objects.add( hoverCoin( -131.90904f, 4.248974f, -364.48978f ) );
+        objects.add( hoverCoin( -127.98646f, 3.9535644f, -367.3582f ) );
         objects.add( hoverCoin( -112.93195f, 3.9779391f, -388.627f ) );
 
         objects.add( hoverCoin( -107.47616f, 4.7119007f, -393.81418f ) );
@@ -268,7 +268,7 @@ class ObjectBuilder {
         objects.add( weapon( -244.39001f, 1.686245f, -420.27023f, Item.KALASH_WEAPON ) );
 
         objects.add( hoverCoin( -218.1792f, 1.2710103f, -408.69302f ) );
-        objects.add( hoverCoin( -218.30159f, 1.1370168f, -404.0892f ) );
+        objects.add( hoverCoin( -218.30159f, 2.1370168f, -404.0892f ) );
         objects.add( hoverCoin( -236.23094f, 1.7357274f, -415.68683f ) );
 
         objects.add( hoverCoin( -240.30139f, 2.2858207f, -382.78412f ) );
@@ -304,7 +304,6 @@ class ObjectBuilder {
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.CRAB_ON_LEVEL6() )
                              .setDynamicModelAsset( ModelAsset.CRAB )
-                             .setItem( Item.KEY2 )
                              .setPosition( new Vector3( -46.878883f, 2.9280591f, -410.01724f ) ) );
 
         objects.add( new LevelObject()
@@ -397,11 +396,11 @@ class ObjectBuilder {
 
         objects.add( hoverGreenBottle( -210.48468f, 7.024612f, -471.9825f ) );
         objects.add( hoverCoin( -216.46123f, 2.8955421f, -490.04166f ) );
-        objects.add( hoverCoin( -218.1026f, 2.4937649f, -494.65573f ) );
+        objects.add( hoverCoin( -218.1026f, 3.4937649f, -494.65573f ) );
         objects.add( hoverCoin( -219.36427f, 2.7714198f, -498.1379f ) );
-        objects.add( hoverCoin( -229.38776f, 2.8697674f, -512.4073f ) );
+        objects.add( hoverCoin( -229.38776f, 3.8697674f, -512.4073f ) );
         objects.add( hoverCoin( -235.3857f, 2.6575413f, -519.5951f ) );
-        objects.add( hoverCoin( -239.52682f, 2.691349f, -524.5798f ) );
+        objects.add( hoverCoin( -239.52682f, 3.691349f, -524.5798f ) );
         objects.add( hoverCoin( -243.74919f, 2.6288273f, -533.02795f ) );
 
         return objects;
@@ -431,9 +430,9 @@ class ObjectBuilder {
                              .setPosition( new Vector3( -80.6879f, 2.2810526f, -494.6508f ) ) );
 
         objects.add( hoverCoin( -58.12171f, 2.095977f, -476.83038f ) );
-        objects.add( hoverCoin( -59.177914f, 2.3366253f, -474.5389f ) );
-        objects.add( hoverCoin( -63.63271f, 3.1093438f, -473.07233f ) );
-        objects.add( hoverCoin( -60.6767f, 4.441463f, -495.30865f ) );
+        objects.add( hoverCoin( -59.177914f, 3.3366253f, -474.5389f ) );
+        objects.add( hoverCoin( -63.63271f, 4.1093438f, -473.07233f ) );
+        objects.add( hoverCoin( -60.6767f, 5.441463f, -495.30865f ) );
         objects.add( hoverCoin( -63.5629f, 4.4407034f, -496.05893f ) );
         objects.add( hoverCoin( -62.72697f, 5.149046f, -502.2121f ) );
         objects.add( hoverPurpleBottle( -81.8414f, 2.281053f, -494.192f ) );
@@ -468,9 +467,9 @@ class ObjectBuilder {
                              .setRotation( 257.0f )
                              .setPosition( new Vector3( -10.499138f, 3.9870257f, -475.7233f ) ) );
 
-        objects.add( hoverCoin( -48.00395f, 2.2169616f, -482.1736f ) );
+        objects.add( hoverCoin( -48.00395f, 3.2169616f, -482.1736f ) );
         objects.add( hoverCoin( -43.452667f, 2.0220072f, -481.96835f ) );
-        objects.add( hoverCoin( -39.90795f, 2.1651149f, -482.22363f ) );
+        objects.add( hoverCoin( -39.90795f, 3.1651149f, -482.22363f ) );
         objects.add( hoverCoin( -27.60128f, 2.9553905f, -480.87576f ) );
         objects.add( hoverCoin( -24.873093f, 3.1316793f, -480.59894f ) );
 
@@ -537,7 +536,6 @@ class ObjectBuilder {
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.BOSS_RED_CRAB_ON_LEVEL11() )
                              .setDynamicModelAsset( ModelAsset.CRAB )
-                             .setItem( Item.KEY3 )
                              .setPosition( new Vector3( -84.048195f, 2.627729f, -522.14417f ) ) );
 
         objects.add( new LevelObject()
@@ -551,13 +549,14 @@ class ObjectBuilder {
                              .setType( OBJECT_TYPE.ENEMY )
                              .setScript( ScriptBuilder.CRAB3_ON_LEVEL11() )
                              .setDynamicModelAsset( ModelAsset.CRAB )
+                             .setItem( Item.KEY3 )
                              .setPosition( new Vector3( -42.565582f, 1.7068304f, -532.7986f ) ) );
 
         objects.add( hoverCoin( -16.361292f, 1.8263655f, -561.09094f ) );
-        objects.add( hoverCoin( -12.581354f, 1.8918121f, -559.5787f ) );
-        objects.add( hoverCoin( -11.679665f, 1.8914082f, -548.3028f ) );
+        objects.add( hoverCoin( -12.581354f, 2.8918121f, -559.5787f ) );
+        objects.add( hoverCoin( -11.679665f, 2.8914082f, -548.3028f ) );
         objects.add( hoverCoin( -14.917933f, 2.235294f, -538.73193f ) );
-        objects.add( hoverCoin( -55.476734f, 0.2184845f, -526.9232f ) );
+        objects.add( hoverCoin( -55.476734f, 1.2184845f, -526.9232f ) );
         objects.add( box( -66.84727f, 0.7216492f, -542.59534f ) );
         objects.add( box( -88.407104f, 2.0471447f, -534.7304f ) );
 
@@ -601,10 +600,10 @@ class ObjectBuilder {
 
         objects.add( hoverCoin( -114.81785f, 5.7118063f, -614.2721f ) );
         objects.add( hoverCoin( -113.83685f, 6.114312f, -626.1583f ) );
-        objects.add( hoverCoin( -108.039696f, 5.897209f, -636.67316f ) );
-        objects.add( hoverCoin( -100.61613f, 4.7539616f, -641.0951f ) );
+        objects.add( hoverCoin( -108.039696f, 6.897209f, -636.67316f ) );
+        objects.add( hoverCoin( -100.61613f, 5.7539616f, -641.0951f ) );
         objects.add( hoverCoin( -90.344696f, 3.6528409f, -640.7886f ) );
-        objects.add( hoverCoin( -83.120316f, 3.3251157f, -634.3404f ) );
+        objects.add( hoverCoin( -83.120316f, 4.3251157f, -634.3404f ) );
 
         objects.add( box( -62.397404f, 5.7943006f, -631.7061f, Item.GREEN_STAR ) );
         objects.add( box( -69.153275f, 5.886171f, -635.40906f, Item.COIN ) );
@@ -669,8 +668,8 @@ class ObjectBuilder {
         objects.add( hoverCoin( 19.769403f, -2.9720454f, -519.43097f ) );
         objects.add( box( 21.610739f, -2.3029711f, -513.0358f, Item.GREEN_STAR ) );
         objects.add( hoverPurpleBottle( 15.532761f, -1.4892286f, -513.135f ) );
-        objects.add( hoverCoin( 7.1455574f, 0.6216613f, -508.3141f ) );
-        objects.add( hoverCoin( -1.5353625f, 1.973329f, -509.11398f ) );
+        objects.add( hoverCoin( 7.1455574f, 1.6216613f, -508.3141f ) );
+        objects.add( hoverCoin( -1.5353625f, 2.973329f, -509.11398f ) );
 
         return objects;
     }
@@ -742,11 +741,11 @@ class ObjectBuilder {
         objects.add( hoverGreenBottle( -7.8974643f, 5.6301675f, -732.95526f ) );
 
         objects.add( hoverCoin( 6.180406f, 4.92046f, -755.2134f ) );
-        objects.add( hoverCoin( 6.5615478f, 5.033896f, -759.8981f ) );
+        objects.add( hoverCoin( 6.5615478f, 6.033896f, -759.8981f ) );
         objects.add( hoverCoin( 6.9435754f, 5.235846f, -764.89624f ) );
-        objects.add( hoverCoin( 8.855463f, 4.854029f, -765.96893f ) );
+        objects.add( hoverCoin( 8.855463f, 5.854029f, -765.96893f ) );
         objects.add( hoverCoin( 12.120924f, 4.1332316f, -764.93915f ) );
-        objects.add( hoverCoin( -6.454001f, 5.343664f, -740.2662f ) );
+        objects.add( hoverCoin( -6.454001f, 6.343664f, -740.2662f ) );
 
         objects.add( chest( 23.842335f, 5.420668f, -755.87427f, Item.GREEN_STAR ) );
         objects.add( box( 20.534079f, 4.2681427f, -757.6646f, Item.BLUE_STAR ) );
@@ -781,12 +780,12 @@ class ObjectBuilder {
 
         objects.add( hoverCoin( -7.7378583f, 5.4489617f, -836.1298f ) );
         objects.add( hoverCoin( -10.758249f, 5.796095f, -834.1596f ) );
-        objects.add( hoverCoin( -23.012491f, 5.0994725f, -836.59576f ) );
+        objects.add( hoverCoin( -23.012491f, 6.0994725f, -836.59576f ) );
         objects.add( hoverCoin( -25.855799f, 4.1877203f, -830.0857f ) );
         objects.add( hoverCoin( -22.660063f, 5.445558f, -810.1364f ) );
-        objects.add( hoverCoin( -25.024685f, 5.4443707f, -808.82117f ) );
+        objects.add( hoverCoin( -25.024685f, 6.4443707f, -808.82117f ) );
         objects.add( hoverCoin( -24.42993f, 5.4369473f, -805.3749f ) );
-        objects.add( hoverCoin( -20.635303f, 5.414798f, -803.8069f ) );
+        objects.add( hoverCoin( -20.635303f, 6.414798f, -803.8069f ) );
 
         objects.add( box( -5.0326953f, 3.6815329f, -802.6161f ) );
         objects.add( box( 17.296389f, 6.279765f, -807.19037f, Item.COIN ) );
@@ -850,7 +849,7 @@ class ObjectBuilder {
     public Array< LevelObject > LEVEL20 () {
         Array< LevelObject > objects = new Array< LevelObject >();
 
-        objects.add( hoverBlueBottle( 45.492798f, 5.524384f, -839.609f ) );
+        objects.add( hoverBlueBottle( 45.492798f, 6.524384f, -839.609f ) );
         objects.add( hoverGreenBottle( 42.138107f, 6.1654263f, -861.3935f ) );
         objects.add( box( 35.686115f, 6.0288854f, -866.81726f, Item.COIN ) );
         objects.add( hoverRedBottle( 57.030735f, 5.4931827f, -882.1655f ) );
@@ -870,7 +869,7 @@ class ObjectBuilder {
         Array< LevelObject > objects = new Array< LevelObject >();
         objects.add( hoverCoin( 156.76332f, 8.490572f, -857.2877f ) );
         objects.add( hoverCoin( 154.05219f, 4.2644234f, -838.41f ) );
-        objects.add( hoverCoin( 134.03911f, 4.552184f, -823.2897f ) );
+        objects.add( hoverCoin( 134.03911f, 5.552184f, -823.2897f ) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.ENEMY )
@@ -962,12 +961,12 @@ class ObjectBuilder {
                 trigger( Item.TRIGGER_MUSIC_TO_WINTER, 57.33409f, 4.9017806f, -607.8461f, 10 ) );
 
         objects.add( hoverCoin( 119.385124f, 5.2080026f, -703.41846f ) );
-        objects.add( hoverGreenBottle( 125.96447f, 4.1128645f, -703.307f ) );
+        objects.add( hoverGreenBottle( 125.96447f, 5.1128645f, -703.307f ) );
         objects.add( hoverCoin( 136.06882f, 5.8890643f, -714.3209f ) );
         objects.add( hoverCoin( 139.26462f, 6.011526f, -711.488f ) );
-        objects.add( hoverCoin( 138.49075f, 3.9282749f, -684.64966f ) );
+        objects.add( hoverCoin( 138.49075f, 4.9282749f, -684.64966f ) );
         objects.add( box( 134.19417f, 3.8336446f, -675.05945f, Item.RED_BOTTLE ) );
-        objects.add( hoverCoin( 84.924675f, 3.6871655f, -669.8853f ) );
+        objects.add( hoverCoin( 84.924675f, 4.6871655f, -669.8853f ) );
 
         objects.add( new LevelObject()
                              .setType( OBJECT_TYPE.NPC )
@@ -998,7 +997,7 @@ class ObjectBuilder {
         objects.add( box( 62.988968f, 8.327591f, -534.76227f, Item.KEY4 ) );
         objects.add( hoverRedBottle( 48.669895f, 8.318932f, -538.196f ) );
         objects.add( box( 43.34707f, 8.466038f, -579.97675f, Item.GUN_WEAPON ) );
-        objects.add( hoverBlueBottle( 43.151905f, 8.481845f, -584.6953f ) );
+        objects.add( hoverBlueBottle( 43.151905f, 9.481845f, -584.6953f ) );
 
         return objects;
     }
@@ -1038,10 +1037,10 @@ class ObjectBuilder {
         objects.add( hoverRedBottle( 19.500439f, 3.6817815f, -493.19937f ) );
         objects.add( hoverGreenBottle( 40.1507f, 3.6817815f, -489.07715f ) );
         objects.add( hoverCoin( 44.46308f, 3.6794279f, -475.19965f ) );
-        objects.add( hoverCoin( 43.98868f, 3.6808317f, -469.98956f ) );
+        objects.add( hoverCoin( 43.98868f, 4.6808317f, -469.98956f ) );
         objects.add( hoverCoin( 45.126163f, 3.6815305f, -465.59164f ) );
 
-        objects.add( hoverCoin( 20.961477f, 7.8018475f, -462.9154f ) );
+        objects.add( hoverCoin( 20.961477f, 8.8018475f, -462.9154f ) );
         objects.add( hoverPurpleBottle( 22.374445f, 7.2441154f, -460.8769f ) );
 
         objects.add( new LevelObject()
@@ -1060,9 +1059,9 @@ class ObjectBuilder {
                              .setPosition( new Vector3( 0.46133935f, 3.6817818f, -485.6289f ) ) );
 
         objects.add( hoverGreenBottle( 24.077932f, 16.83891f, -499.51627f ) );
-        objects.add( hoverBlueBottle( 16.463919f, 15.461495f, -495.5802f ) );
+        objects.add( hoverBlueBottle( 16.463919f, 16.461495f, -495.5802f ) );
         objects.add( hoverCoin( 8.41675f, 16.335941f, -494.3725f ) );
-        objects.add( hoverCoin( 6.5798264f, 15.012314f, -494.01224f ) );
+        objects.add( hoverCoin( 6.5798264f, 16.012314f, -494.01224f ) );
         objects.add( hoverCoin( 3.5310376f, 16.335941f, -493.43625f ) );
 
         return objects;
@@ -1142,12 +1141,12 @@ class ObjectBuilder {
                              .setPosition( new Vector3( 104.036064f, 3.603501f, -396.69916f ) ) );
         objects.add( chest( 118.239105f, 3.6768372f, -381.03702f ) );
 
-        objects.add( hoverGreenBottle( 120.674675f, 3.7841527f, -400.37845f ) );
+        objects.add( hoverGreenBottle( 120.674675f, 4.7841527f, -400.37845f ) );
         objects.add( chest( 138.64107f, 3.9085371f, -408.1089f ) );
 
         objects.add( hoverCoin( 133.36534f, 3.6799679f, -401.76685f ) );
         objects.add( hoverCoin( 131.26073f, 3.5736165f, -396.87714f ) );
-        objects.add( hoverCoin( 134.99786f, 3.9320524f, -391.84518f ) );
+        objects.add( hoverCoin( 134.99786f, 4.9320524f, -391.84518f ) );
         objects.add( hoverCoin( 139.51044f, 4.084862f, -387.53348f ) );
         objects.add( box( 136.68161f, 3.4317925f, -379.14432f, Item.RED_BOTTLE ) );
         return objects;
@@ -1176,10 +1175,10 @@ class ObjectBuilder {
                              .setDynamicModelAsset( ModelAsset.BUTTERFLY )
                              .setPosition( new Vector3( 146.89696f, 4.263083f, -351.98505f ) ) );
 
-        objects.add( box( 149.15324f, 4.5427837f, -342.08868f ) );
+        objects.add( box( 149.15324f, 5.5427837f, -342.08868f ) );
         objects.add( box( 153.32574f, 4.019588f, -351.6611f, Item.COIN ) );
         objects.add( box( 151.01051f, 4.3754964f, -360.60553f ) );
-        objects.add( box( 111.76163f, 4.085724f, -356.4495f, Item.GREEN_BOTTLE ) );
+        objects.add( box( 111.76163f, 5.085724f, -356.4495f, Item.GREEN_BOTTLE ) );
         objects.add( box( 110.84757f, 5.340686f, -350.90497f, Item.COIN ) );
         objects.add( box( 112.12677f, 4.4811945f, -348.49518f, Item.COIN ) );
 
@@ -1192,7 +1191,7 @@ class ObjectBuilder {
         Array< LevelObject > objects = new Array< LevelObject >();
         objects.add( box( 119.17969f, 3.8504348f, -357.0277f, Item.COIN ) );
         objects.add( chest( 123.77172f, 3.6716413f, -317.04858f, Item.COIN ) );
-        objects.add( hoverCoin( 122.35327f, 3.5027664f, -313.3654f ) );
+        objects.add( hoverCoin( 122.35327f, 4.5027664f, -313.3654f ) );
         objects.add( hoverCoin( 135.85274f, 3.3933597f, -310.70547f ) );
         objects.add( box( 138.87085f, 3.4291122f, -307.43936f, Item.COIN ) );
         objects.add( box( 141.56155f, 3.7035723f, -304.6718f ) );
@@ -1200,7 +1199,7 @@ class ObjectBuilder {
         objects.add( hoverCoin( 141.50421f, 4.2291846f, -291.30292f ) );
         objects.add( box( 118.3027f, 3.6428094f, -300.60953f, Item.COIN ) );
         objects.add( chest( 118.37793f, 3.585391f, -303.6922f, Item.GREEN_BOTTLE ) );
-        objects.add( hoverCoin( 106.292625f, 4.0615335f, -309.0212f ) );
+        objects.add( hoverCoin( 106.292625f, 5.0615335f, -309.0212f ) );
         objects.add( hoverCoin( 103.701675f, 3.776405f, -304.35788f ) );
 
         objects.add( new LevelObject()
@@ -1262,10 +1261,10 @@ class ObjectBuilder {
                              .setDynamicModelAsset( ModelAsset.SHEEP )
                              .setPosition( new Vector3( 141.78217f, 4.032937f, -244.33516f ) ) );
         objects.add( hoverGreenBottle( 133.16759f, 4.333866f, -253.51202f ) );
-        objects.add( hoverGreenBottle( 111.76997f, 4.588354f, -248.95076f ) );
+        objects.add( hoverGreenBottle( 111.76997f, 5.588354f, -248.95076f ) );
         objects.add( box( 104.13993f, 4.1218762f, -229.21765f, Item.BLUE_STAR ) );
         objects.add( box( 139.24007f, 3.4452322f, -208.44476f, Item.COIN ) );
-        objects.add( hoverCoin( 142.43042f, 3.515439f, -206.49643f ) );
+        objects.add( hoverCoin( 142.43042f, 4.515439f, -206.49643f ) );
 
         return objects;
     }
